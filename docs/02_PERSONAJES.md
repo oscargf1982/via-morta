@@ -61,6 +61,8 @@
 ## Tío David (la Fraternal)
 - Compañero de Champions de Martín. Cuenta mil veces su gol al Ourense en Tercera, «un domingo de sol».
 - Xoán le corrige: «Foi en mércores, David. E chovía». Le apuesta cinco euros a todo.
+- **Aspecto (hoja de Oscar, `assets/personajes/tio-david-hoja.png`):** pelo cano alborotado, bigote blanco, gafas de pasta negras, polo azul claro con un escudo verde en el pecho, vaqueros oscuros con cinturón marrón y zapatos marrones.
+- **Recursos gráficos:** `david-sprite.png` (celdas de 160×280, 8 columnas: 0 frente, 1 perfil derecha, 2 espalda, 3 tres cuartos derecha, 4 habla señalando, 5 brazos cruzados, 6 pensativo, 7 sonriendo, 8 neutro, 9 boca abierta de 3; mirando a la izquierda = las mismas celdas con `flip: true`) y retrato `david-face.png`. Se regeneran con `python3 tools/sprite-david.py`. No hay ciclo de andar.
 
 ## Don Eladio (ventanilla del Concello)
 - Funcionario que «naceu pechando». La ventanilla 1 «agora tamén é a 3».
