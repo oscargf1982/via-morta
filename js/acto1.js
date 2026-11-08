@@ -436,7 +436,7 @@ SCENES.arenal = {
   hotspots: [
     { name: 'Praza da Estación', key: true, r: [0, 470, 110, 70], at: [50, 524], face: 'F', exit: ['praza2', [818, 330]],
       look: () => MA('De vuelta a la plaza de la estación. Concha, el quiosco y la fuente de proporciones perfectas.', 'pensativo') },
-    { name: 'Rúa Morín', r: [36, 282, 66, 56], at: [70, 340], face: 'L', exit: ['morin', [430, 500]],
+    { name: 'Rúa Morín', r: [36, 282, 66, 56], at: [70, 340], face: 'L', exit: ['morin', [430, 500]], hint: 'U',
       look: () => MA('Siguiendo recto se llega a la calle Morín, la de la gasolinera, y de ahí a Doctor Casares. Hoy no necesito gasolina: he venido en tren.', 'risueno') },
     { name: 'Porta da Fraternal', key: true, r: [646, 282, 56, 140], at: [672, 438], face: 'B', exit: ['__fraternal'], done: () => flag('davidAmparo'),
       act: async () => {
