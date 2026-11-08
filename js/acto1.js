@@ -12,6 +12,7 @@ const XO = t => say('Xoán Carballeira', t);
 /* ---------- obxectos novos ---------- */
 Object.assign(ico, {
   xornal(c) { c.fillStyle = '#efe8d8'; c.fillRect(8, 10, 32, 28); c.fillStyle = '#2a2a2a'; c.fillRect(11, 13, 26, 5); c.fillStyle = '#8a8478'; for (let i = 0; i < 4; i++) { c.fillRect(11, 21 + i * 4, 12, 2); c.fillRect(26, 21 + i * 4, 11, 2); } },
+  desaparafusador(c) { c.save(); c.translate(24, 24); c.rotate(-0.75); c.fillStyle = '#d23a2a'; c.fillRect(-20, -5, 18, 10); c.fillStyle = '#a82a1e'; c.fillRect(-20, -5, 18, 3); c.fillStyle = '#c9ccd2'; c.fillRect(-2, -2, 20, 4); c.fillRect(18, -3, 3, 6); c.restore(); },
   cadeira(c) { c.fillStyle = '#2f4fa8'; c.fillRect(12, 6, 22, 20); c.fillRect(10, 24, 28, 7); c.strokeStyle = '#9aa0aa'; c.lineWidth = 3; c.beginPath(); c.moveTo(14, 31); c.lineTo(12, 44); c.moveTo(34, 31); c.lineTo(36, 44); c.moveTo(34, 18); c.lineTo(40, 18); c.lineTo(40, 26); c.stroke(); },
   boli(c) { c.save(); c.translate(24, 24); c.rotate(-0.7); c.fillStyle = '#1f4fa8'; c.fillRect(-18, -3, 30, 6); c.fillStyle = '#e8e8ec'; c.fillRect(12, -3, 6, 6); c.fillStyle = '#2a2a2a'; c.beginPath(); c.moveTo(18, -3); c.lineTo(23, 0); c.lineTo(18, 3); c.fill(); c.fillStyle = '#c9c9cf'; c.fillRect(-14, -5, 12, 2); c.restore(); },
   contrato(c) { c.fillStyle = '#f4efe2'; c.fillRect(11, 6, 26, 36); c.fillStyle = '#8a8478'; for (let i = 0; i < 5; i++) c.fillRect(15, 12 + i * 5, 18 - (i % 2) * 5, 2); c.strokeStyle = '#1f4fa8'; c.lineWidth = 2; c.beginPath(); c.moveTo(15, 38); c.bezierCurveTo(19, 32, 23, 42, 27, 35); c.lineTo(33, 37); c.stroke(); },
@@ -19,6 +20,7 @@ Object.assign(ico, {
 });
 Object.assign(ITEMS, {
   xornal: { name: 'Xornal', icon: ico.xornal, look: () => lerXornal() },
+  desaparafusador: { name: 'Desaparafusador', icon: ico.desaparafusador, look: () => MA('Un destornillador de estrella, mango rojo. En cualquier cajón de cocina de España hay uno. Es ley.', 'sonriente') },
   cadeira: { name: 'Cadeira de espera', icon: ico.cadeira, look: () => MA('Una silla azul de la sala de espera del Concello. Mobiliario público: técnicamente, un trocito es mío. Pienso devolverla entera.', 'risueno') },
   boli: { name: 'Bolígrafo de Concha', icon: ico.boli, look: () => MA('El bolígrafo de los crucigramas de Concha. Azul, mordisqueado y con la tapa atada con una goma. Una reliquia.', 'sonriente') },
   contrato: { name: 'Contrato de aluguer', icon: ico.contrato, look: () => MA('El contrato de alquiler de la Casa Juana, firmado por Rosario y por mí. Oficialmente, vuelvo a ser de Monforte. Con papeles.', 'orgulloso') },
@@ -772,6 +774,14 @@ SCENES.casaCocina = {
     { name: 'Neveira', r: [0, 60, 40, 300], look: () => MA('La nevera. La abro con fe... vacía, salvo una botella de agua. Ah, mira: agua. La guardo para una emergencia.', 'risueno') },
     { name: 'Froiteiro', r: [52, 264, 70, 50], look: () => MA('Un frutero con naranjas y manzanas de verdad. La casera piensa en todo. Hasta en mi colesterol.', 'sonriente') },
     { name: 'Illa', r: [40, 284, 356, 116], look: () => MA('Una isla de cocina con encimera de madera. Para desayunar de pie, como un maquinista con prisa.', 'risueno') },
+    { name: 'Caixóns', key: true, done: () => !flag('cadeiraAparafusada') || hasItem('desaparafusador'), r: [508, 258, 194, 116], at: [600, 410], face: 'B',
+      look: () => MA('Cajones de cocina. En el primero, los cubiertos. En el último, el caos de cada casa: pilas, gomas, llaves que no abren nada...', 'pensativo'),
+      act: async () => {
+        if (hasItem('desaparafusador')) return MA('Cubiertos, gomas, pilas gastadas. Lo útil ya me lo he llevado.', 'neutro');
+        if (!flag('cadeiraAparafusada')) return MA('Cubiertos, pilas, gomas y un destornillador. El kit básico de supervivencia. De momento no necesito nada.', 'neutro');
+        give('desaparafusador');
+        await MA('El último cajón, el del caos: pilas, gomas, un abrebotellas... ¡y un destornillador de estrella! Lo sabía. Es ley.', 'orgulloso');
+      } },
     { name: 'Taburete', r: [274, 402, 74, 138], look: () => MA('Un taburete. Uno solo. Esta cocina ya sabe que vivo solo.', 'pensativo') },
     { name: 'Placa', r: [440, 240, 100, 18], look: () => MA('Placa de inducción. Sin fuego, sin gas, sin humo. Nada que ver con una locomotora de vapor.', 'risueno') },
     { name: 'Forno', r: [430, 262, 78, 114], look: () => MA('Un horno limpísimo. Nadie ha hecho una empanada aquí. Todavía.', 'neutro') },
@@ -921,7 +931,7 @@ SCENES.concelloVest = {
     { name: 'Expositor', r: [852, 214, 104, 226], look: () => MA('Folletos turísticos de Monforte: el castillo, el Cabe, la Ribeira Sacra... Ni uno sobre cómo dar de alta el agua. Ese sería el más leído.', 'risueno') },
     { name: 'Cadeiras', key: true, done: () => !flag('reloxoAlto') || hasItem('cadeira') || flag('cadeiraDevolta'), r: [0, 350, 170, 190], at: [200, 470], face: 'L',
       look: () => MA('Sillas azules para esperar. Desgastadas justo donde se apoyan los codos. Aquí se espera con oficio.', 'esceptico'),
-      act: () => cadeirasEspera(), use: { cadeira: () => cadeirasEspera() } },
+      act: () => cadeirasEspera(), use: { cadeira: () => cadeirasEspera(), desaparafusador: () => cadeirasEspera() } },
     { name: 'Plantas', r: [204, 258, 66, 122], look: () => MA('Plantas en maceta, bien regadas. Hasta ellas tienen el agua dada de alta.', 'esceptico') },
   ],
 };
@@ -999,13 +1009,22 @@ async function adiantarReloxo() {
 async function cadeirasEspera() {
   if (hasItem('cadeira')) {
     take('cadeira'); setFlag('cadeiraDevolta');
-    await MA('Silla en su sitio. Ni un rasguño. Si alguien pregunta, solo la he sacado a pasear.', 'aliviado');
+    await MA('Silla en su sitio y sus cuatro tornillos, otra vez apretados. Ni un rasguño. Si alguien pregunta, solo la he sacado a pasear.', 'aliviado');
     if (flag('eladioVolveu') && !flag('aguaAlta')) toast('Pista: agora, a ventanilla 1');
     return;
   }
   if (flag('reloxoAlto') && !flag('eladioVolveu')) {
+    if (!hasItem('desaparafusador')) {
+      if (!flag('cadeiraAparafusada')) {
+        setFlag('cadeiraAparafusada');
+        await MA('Tiro de la del final de la fila... y no se mueve. Atornillada al suelo, como los taburetes del bar. En Monforte atornillan todo lo que sirve para sentarse.', 'frustrado');
+        await MA('Cuatro tornillos de estrella. Con un destornillador, sale en un minuto. Y en algún cajón de la cocina de casa tiene que haber uno: en todas las cocinas hay uno.', 'convencido');
+        toast('Pista: nos caixóns da cociña da Casa Juana');
+      } else await MA('Sigue atornillada. Sin destornillador, lo único que me llevo de aquí es la paciencia de esperar.', 'esceptico');
+      return;
+    }
     give('cadeira');
-    await MA('La del final de la fila no está atornillada. Mobiliario público: la pago con mis impuestos. Me la llevo prestada... y la devuelvo, que conste.', 'risueno');
+    await MA('Cuatro tornillos, cuatro vueltas... fuera. Mobiliario público: la pago con mis impuestos. Me la llevo prestada... y la devuelvo, que conste.', 'risueno');
     return;
   }
   await MA('Me siento un momento... No. Si me siento aquí, me convierto en uno más de la cola. Y no hay cola.', 'esceptico');
