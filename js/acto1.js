@@ -667,10 +667,7 @@ SCENES.casaSalon = {
       act: () => estanciaPechada('El dormitorio. Ya lo estrenaré esta noche... si el silbato me deja dormir.', 'dudoso') },
     { name: 'Saír á rúa', r: [300, 516, 340, 24], at: [470, 530], face: 'F', exit: ['casares', [690, 430]], hint: 'D',
       look: () => MA('La puerta de la calle. Doctor Casares, 211. Todavía me suena raro decir «mi puerta».', 'sonriente') },
-    { name: 'Igrexa da estación', r: [770, 116, 80, 84], look: () => MA('La iglesia del barrio de la estación, asomando por encima de los árboles. Desde aquí la veo mejor que el horario de trenes.', 'sonriente') },
-    { name: 'Gasolinera', r: [784, 196, 176, 62], look: () => MA('La gasolinera de la calle Morín, aquí mismo. Si un día me quedo sin gasolina, llego empujando el coche. Si tuviera coche.', 'risueno') },
-    { name: 'Colexio ferroviario', r: [850, 120, 110, 76], look: () => MA('Y por ahí, el colegio ferroviario. En este barrio hasta los niños aprenden a leer con horarios de tren.', 'sonriente') },
-    { name: 'Balcón', r: [770, 252, 190, 86], look: () => MA('Un balcón de hierro forjado. Para tomar el café viendo pasar coches, trenes y vecinos. Sobre todo vecinos.', 'sonriente') },
+    { name: 'Fiestras do balcón', key: true, done: () => flag('vistaSalon'), r: [766, 60, 194, 280], at: [800, 400], face: 'R', act: () => vistaSalon(), look: () => vistaSalon() },
     { name: 'Fiestra da esquerda', r: [128, 60, 136, 150], look: () => MA('Árboles y tejados. Entra luz a raudales. Del resto de suministros ya hablaremos.', 'pensativo') },
     { name: 'Lámpada', r: [180, 8, 92, 66], look: () => MA('Una lámpara de tela, grande como un tambor de feria. Mientras no la toque, no se mueve.', 'risueno') },
     { name: 'Lámpadas colgantes', r: [544, 28, 164, 116], look: () => MA('Tres lámparas colgando sobre la mesa. A distinta altura, como las señales de una estación mal calibrada.', 'risueno') },
@@ -684,6 +681,17 @@ SCENES.casaSalon = {
     { name: 'Mesiñas', r: [80, 316, 72, 124], look: () => MA('Dos mesitas nido. Una dentro de la otra, como las muñecas rusas, pero en serio.', 'risueno') },
   ],
 };
+
+// vista desde o balcón do salón (imaxe de Oscar): gasolinera, capela, supermercado e, ao fondo, o museo do ferrocarril coa Mikado
+async function vistaSalon() {
+  const primeira = !flag('vistaSalon'); setFlag('vistaSalon');
+  await cine('img/vista-salon.jpg', primeira ? [
+    'Martín: «Desde aquí se ve medio barrio: la gasolinera, la capillita, el supermercado de enfrente...»',
+    'Martín: «Y al fondo, el museo del ferrocarril. Con la Mikado delante, quieta, como esperando turno.»',
+    'Martín: «Una locomotora de vapor parada desde hace décadas, y un maquinista mirándola desde su salón. Xoán tenía razón: buen balcón.»',
+  ] : ['Martín: «La Mikado sigue ahí. Quieta. Ella no tiene prisa; yo tampoco.»']);
+  if (primeira) await MA('Si alguna noche oigo un silbato de vapor, ya sé hacia dónde mirar.', 'dudoso');
+}
 
 /* ---------- A5b · Casa Juana: cociña ----------
    Desde o balcón vense o supermercado e a Torre da Homenaxe. Na billa descóbrese que non hai auga (gancho do M2). */

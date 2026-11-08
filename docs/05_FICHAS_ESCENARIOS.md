@@ -78,7 +78,8 @@
   - Derecha → cocina (próximo escenario; de momento, aviso «en construción»).
   - Izquierda → dormitorio (próximo escenario; ídem).
   - Abajo → vuelta a la calle, Doutor Casares (A4). Así nunca hay callejón sin salida.
-- **Hotspots:** ventanas del balcón (la gasolinera, la iglesia de la estación, el colegio ferroviario: Martín ve su barrio desde casa), ventana de la izquierda, sofá, cojines, mesitas, aparador, planta, cuadros, mesa y sillas, lámparas, interruptor, tarima.
+- **Vista del balcón (decidido por Oscar):** al usar o mirar las ventanas del balcón salta a pantalla completa `img/vista-salon.jpg`, ilustración de Oscar: la gasolinera, la capillita, el supermercado y, al fondo, el museo del ferrocarril con la Mikado. Martín lo comenta y recuerda la pista de Xoán («Bo balcón. Dende el vése o depósito»). Marca `vistaSalon`.
+- **Hotspots:** ventanas del balcón (la vista), ventana de la izquierda, sofá, cojines, mesitas, aparador, planta, cuadros, mesa y sillas, lámparas, interruptor, tarima.
 - **Tono:** primera impresión de Martín en su casa. Todo parece en orden… salvo detalles que preparan la casa sin agua del M2 (no se resuelve aquí).
 - **Personas reales:** ninguna.
 
