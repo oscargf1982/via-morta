@@ -102,6 +102,28 @@
 - **Hotspots:** muro blanco, puerta del taller, puerta de la casa, ventanas, sofá y butacas, mesita, arbolito, árboles de detrás, macetas, rejillas, bajante, césped.
 - **Personas reales:** ninguna.
 
+## B4a · Concello, exterior (`concelloExt`)
+- **Fondo:** `img/bg-concello-exterior.jpg`, ilustración de Oscar recortada a 16:9. Edificio del Concello con banderas (Galicia, España, Unión Europea) en el balcón, escalinata y puerta principal, jardinera con arbustos y, en primer plano, un estanque con una roca en el centro.
+- **Llegada (decidido por Oscar):** desde el mapa, zona «Centro», que se abre al tener el contrato firmado. Antes, la zona sigue cerrada con su comentario.
+- **Suelo:** la franja de la plaza entre el edificio y el estanque. El estanque y la jardinera son obstáculos.
+- **Salidas:**
+  - Puerta principal (escalinata) → vestíbulo con las ventanillas de Eladio (B4). Si Martín aún no sabe que no hay agua, comenta que no tiene nada que hacer dentro.
+  - Izquierda → mapa de Monforte.
+- **Hotspots:** puerta principal, escalinata, banderas, balcón, edificio, ventanas en arco, jardinera, estanque, roca, árboles.
+- **Personas reales:** ninguna. El Concello solo se ve por fuera; nada de información oficial.
+
+## B4 · Concello, vestíbulo y ventanillas (`concelloVest`)
+- **Fondo:** `img/bg-concello-vestibulo.jpg`, ilustración de Oscar. Vestíbulo con suelo de mármol, escalera con barandilla, escudo, farol, puerta en arco abierta al exterior, panel de servicios (Rexistro, Atención Cidadá, Servizos Sociais, Urbanismo, Salón de Plenos), mostrador «Atención ao público» con tres ventanillas, expositor de folletos, sillas azules y plantas.
+- **Llegada:** por la puerta principal del exterior (B4a), con `sinAgua`. La puerta del fondo vuelve al exterior.
+- **Suelo:** el mármol entre la escalera, las sillas y el mostrador. Macetas y expositor como obstáculos; la planta de primer plano tapa a Martín.
+- **Ventanillas (Don Eladio, ficción):**
+  - 1: cartel «Volvo nun momento». Eladio no está: se ha ido al café (B5). Marca `eladioAusente`.
+  - 2: «Pechada».
+  - 3: «Esta ventanilla agora é a 1» (la 1 «agora tamén é a 3»).
+  - El puzzle para que Eladio vuelva está pendiente de que Oscar lo elija; de momento, aviso de próximo paso.
+- **Hotspots:** ventanillas, panel de servicios, escudo, escalera, farol, expositor de folletos, sillas, plantas.
+- **Personas reales:** ninguna. Nada de información oficial: los carteles son del juego.
+
 ## B3 · A Fraternal, interior (`fraternal`)
 - **Fondo:** `img/bg-fraternal.jpg`, ilustración de Oscar. Barra con lista de precios, cafetera y botellas; mesas de brisca con tapete verde, columnas, cuadros, tele con el fútbol y tragaperras.
 - **Suelo:** el terrazo. Obstáculos: la barra, la columna y los grupos de mesas. Capas delanteras: la mesa de delante (con La Voz y la baraja), la columna y las mesas laterales.

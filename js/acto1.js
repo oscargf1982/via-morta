@@ -805,10 +805,80 @@ SCENES.casaPatio = {
   ],
 };
 
+/* ---------- B4a · Concello, exterior ----------
+   Chégase dende o mapa (zona Centro) co contrato asinado. A porta leva ao vestíbulo das ventanillas de Eladio (pendente). */
+SCENES.concelloExt = {
+  name: 'Concello de Monforte', bg: 'img/bg-concello-exterior.jpg', music: 'estacion', floor: 'pedra',
+  walk: [[40, 352], [160, 302], [300, 284], [440, 292], [530, 296], [940, 360], [940, 428], [860, 406], [700, 362], [520, 350], [330, 350], [170, 370], [40, 412]],
+  scale: [290, 0.17, 430, 0.36], actorH: 300, start: [90, 360], minSpeed: 0.4,
+  hotspots: [
+    { name: 'Mapa de Monforte', key: true, r: [0, 300, 44, 120], at: [50, 370], face: 'L', exit: ['mapa'], hint: 'L' },
+    { name: 'Porta do Concello', key: true, r: [496, 178, 96, 82], at: [470, 292], face: 'B', exit: ['__concello'],
+      act: async () => {
+        if (!flag('sinAgua')) { await MA('El Concello. Seguro que tengo algún papel pendiente, siempre se tiene alguno. Pero antes miraré qué le falta a la casa, para venir una sola vez.', 'pensativo'); return; }
+        SFX.door(); await goScene('concelloVest', [330, 400]);
+      },
+      look: () => MA('La puerta principal, entre columnas. Por aquí se entra a las ventanillas. Y a las colas.', 'esceptico') },
+    { name: 'Escalinata', r: [436, 250, 84, 42], look: () => MA('Una escalinata con barandilla. Seis escalones: los justos para llegar a la ventanilla sin aliento.', 'risueno') },
+    { name: 'Bandeiras', r: [424, 84, 132, 76], look: () => MA('Tres banderas en el balcón: Galicia, España y Europa. Ondean de lado, como los papeles que se mueven de mesa en mesa.', 'risueno') },
+    { name: 'Balcón', r: [484, 120, 110, 40], look: () => MA('El balcón de las banderas. Desde ahí se saluda en las fiestas. Desde abajo se aplaude, o no.', 'sonriente') },
+    { name: 'Estanque', r: [40, 344, 900, 196], look: () => MA('Un estanque con agua de sobra. Si el grifo de casa no se arregla, ya sé dónde lavarme. Es broma, señor alcalde.', 'risueno') },
+    { name: 'Rocha', r: [354, 308, 136, 106], look: () => MA('Una roca enorme en medio del estanque. O es arte moderno o un meteorito con licencia municipal.', 'dudoso') },
+    { name: 'Xardineira', r: [522, 226, 418, 132], look: () => MA('Una jardinera de ladrillo con arbustos recortados. Más ordenada que mis papeles. Bastante más.', 'pensativo') },
+    { name: 'Fiestras en arco', r: [656, 0, 300, 76], look: () => MA('Ventanas en arco, con ladrillo rojo. Elegantes. Detrás, seguro, alguien sellando algo.', 'sonriente') },
+    { name: 'Edificio', r: [100, 40, 556, 236], look: () => MA('El Concello. Paredes claras, ladrillo rojo y muchas ventanas. Cada ventana, una ventanilla. Cada ventanilla, un «volva mañá».', 'esceptico') },
+    { name: 'Árbores', r: [0, 130, 100, 150], look: () => MA('Árboles detrás del edificio. Ellos no necesitan alta del agua: les llueve gratis.', 'risueno') },
+  ],
+};
+
+/* ---------- B4 · Concello: vestíbulo e ventanillas ----------
+   Don Eladio (ficción) marchou ao café: «Volvo nun momento». O puzzle para que volva está pendente de Oscar. */
+async function ventanilla(n) {
+  if (!flag('sinAgua')) { await MA('Las ventanillas. Hoy no tengo nada que pedir... que yo sepa. Ya me enteraré en casa de lo que me falta.', 'pensativo'); return; }
+  if (n === 2) { await MA('Ventanilla 2: «Pechada». Sin fecha, sin hora, sin explicación. Muy municipal.', 'esceptico'); return; }
+  if (n === 3) { await MA('Ventanilla 3: «Esta ventanilla agora é a 1». Vamos, que la 3 es la 1. Y la 1...', 'dudoso'); return ventanilla(1); }
+  if (!flag('eladioAusente')) {
+    setFlag('eladioAusente');
+    await MA('Ventanilla 1. Un cartel escrito a mano, pegado al cristal: «Volvo nun momento. Eladio». El ordenador encendido y la silla vacía.', 'esceptico');
+    await MA('Eladio. Ya nos conocemos. Es como un jefe final de videojuego, pero con sello.', 'risueno');
+    await MA('El café de enfrente, seguro. Un «momento» de funcionario dura lo que dura un café con churros.', 'pensativo');
+  } else await MA('«Volvo nun momento». El momento sigue siendo largo.', 'esceptico');
+  toast('O café de Eladio chega no seguinte paso');
+}
+SCENES.concelloVest = {
+  name: 'Concello · Vestíbulo', bg: 'img/bg-concello-vestibulo.jpg', music: 'casa', floor: 'pedra',
+  walk: [[200, 372], [270, 362], [460, 356], [540, 366], [700, 386], [840, 416], [866, 470], [876, 540], [170, 540], [160, 472], [196, 424]],
+  holes: [
+    [[200, 352], [272, 352], [272, 384], [200, 384]],   // maceta da esquerda
+    [[434, 342], [504, 342], [504, 370], [434, 370]],   // maceta da dereita
+  ],
+  front: [
+    { y: 600, r: [816, 420, 144, 120] },                  // planta de primeiro plano
+    { y: 600, r: [0, 350, 172, 190] },                    // cadeiras azuis
+  ],
+  scale: [360, 0.42, 540, 0.9], actorH: 300, start: [330, 400], minSpeed: 0.45,
+  hotspots: [
+    { name: 'Saída á praza', key: true, r: [250, 150, 170, 206], at: [330, 372], face: 'B', exit: ['concelloExt', [470, 292]], hint: 'U', door: true },
+    { name: 'Ventanilla 1', key: true, done: () => flag('eladioAusente'), r: [578, 168, 74, 132], at: [624, 390], face: 'B', act: () => ventanilla(1),
+      look: () => MA('La ventanilla 1, la de Eladio. Cristal, mostrador, un ordenador y nadie detrás. Volverá. Algún día.', 'esceptico') },
+    { name: 'Ventanilla 2', r: [664, 150, 88, 146], at: [716, 400], face: 'B', act: () => ventanilla(2),
+      look: () => MA('La ventanilla 2. Ordenador apagado y archivadores azules. Silencio administrativo, en directo.', 'esceptico') },
+    { name: 'Ventanilla 3', r: [774, 128, 112, 172], at: [806, 420], face: 'B', act: () => ventanilla(3),
+      look: () => MA('La ventanilla 3. Una planta y nadie. La planta, por lo menos, atiende con buena cara.', 'risueno') },
+    { name: 'Panel de servizos', r: [462, 136, 72, 146], look: () => MA('Rexistro, Atención Cidadá, Servizos Sociais, Urbanismo, Salón de Plenos. Todas las flechas apuntan a la derecha. Y a la derecha, las ventanillas vacías.', 'risueno') },
+    { name: 'Escudo', r: [82, 52, 76, 86], look: () => MA('El escudo de Monforte, enmarcado. Más serio que cualquier funcionario. Y eso es mucho decir.', 'sonriente') },
+    { name: 'Escaleira', r: [0, 100, 200, 280], look: () => MA('La escalera noble, con barandilla de forja. Arriba estará el Salón de Plenos. Yo, con llegar a la ventanilla, me conformo.', 'pensativo') },
+    { name: 'Farol', r: [336, 0, 80, 104], look: () => MA('Un farol de bronce colgando del techo. Ilumina mucho más que algunas resoluciones.', 'risueno') },
+    { name: 'Expositor', r: [852, 214, 104, 226], look: () => MA('Folletos turísticos de Monforte: el castillo, el Cabe, la Ribeira Sacra... Ni uno sobre cómo dar de alta el agua. Ese sería el más leído.', 'risueno') },
+    { name: 'Cadeiras', r: [0, 350, 170, 190], look: () => MA('Sillas azules para esperar. Desgastadas justo donde se apoyan los codos. Aquí se espera con oficio.', 'esceptico') },
+    { name: 'Plantas', r: [204, 258, 66, 122], look: () => MA('Plantas en maceta, bien regadas. Hasta ellas tienen el agua dada de alta.', 'esceptico') },
+  ],
+};
+
 /* ---------- Mapa de Monforte (pantalla de viaxe entre zonas) ---------- */
 const ZONAS = [
   { id: 'estacion', name: 'Barrio da Estación', x: 760, y: 380, open: () => true },
-  { id: 'centro', name: 'Centro · rúa do Cardeal', x: 560, y: 300, open: () => false },
+  { id: 'centro', name: 'Centro · Concello', x: 560, y: 300, open: () => flag('contratoAsinado') },
   { id: 'rio', name: 'Río Cabe · Malecón', x: 300, y: 330, open: () => false },
   { id: 'castelo', name: 'Castelo de San Vicente', x: 486, y: 160, open: () => false },
 ];
@@ -831,7 +901,8 @@ SCENES.mapa = {
   },
   hotspots: [
     { name: 'Barrio da Estación', key: true, r: [700, 340, 150, 90], exit: ['praza', [600, 420]] },
-    { name: 'Centro · rúa do Cardeal', r: [490, 270, 150, 80], act: () => mapaPechado(flag('objetivoContrato') ? 'La Fraternal está en el centro: allí me espera Rosario para firmar. Pero ese camino aún está en obras.' : 'El centro. La rúa do Cardeal, la Fraternal, el Concello... Primero, las llaves de casa.', 'M2') },
+    { name: 'Centro · Concello', r: [490, 270, 150, 80], exit: ['__centro'],
+      act: async () => { if (flag('contratoAsinado')) return goScene('concelloExt', [90, 360]); await mapaPechado('El centro, con el Concello. Sin casa ni contrato, ¿a qué voy? ¿A empadronarme en un banco del parque? Primero, las llaves y la firma.', 'M2'); } },
     { name: 'Río Cabe · Malecón', r: [230, 300, 150, 80], act: () => mapaPechado('El Malecón, junto al Cabe. Para pasear hace falta tener casa a la que volver. Primero, instalarse.', 'M3') },
     { name: 'Castelo de San Vicente', r: [410, 110, 160, 80], act: () => mapaPechado('Subir al castillo de San Vicente el primer día. Ni en mis tiempos de cross, y eso que los ganaba todos.', 'M3') },
     { name: 'Vilatán', r: [28, 440, 230, 66], act: () => mapaPechado('Vilatán. Mi madre me espera el domingo para el caldo. Si voy hoy, me pregunta por qué no he avisado. Mejor el domingo.', 'M6') },
