@@ -164,7 +164,7 @@ async function run(fn) { if (!fn) return; E.busy++; try { await fn(); } catch (e
 function enterScene(id, at) {
   const S = SCENES[id]; if (!S) { console.error('Escena descoñecida', id); return; }
   E.scene = S; E.sceneId = id; prepWalk(S); (S.zones || []).forEach(z => { z._in = false; }); const A = E.actor;
-  const p = at || S.start || [480, 500]; A.x = A.tx = p[0]; A.y = A.ty = p[1]; A.walking = false; A.path = []; A.visible = !S.noActor; A.pose = null;
+  const p = at || S.start || [480, 500]; A.x = A.tx = p[0]; A.y = A.ty = p[1]; A.walking = false; A.path = []; A.visible = !S.noActor; A.pose = null; A.lift = 0;
   E.barks = []; E.olloT = 0; E.hover = null;
   SFX.music(S.music || null);
   if (S.onEnter) run(S.onEnter);
@@ -479,7 +479,12 @@ function drawActor() {
     idx = A.face === 'B' ? MARTIN.idleB : A.face === 'F' ? MARTIN.idleF : MARTIN.idleR; flip = A.face === 'L';
     if (talking) { if (A.face === 'F') idx = MARTIN.talkF[Math.floor(E.t * 4) % 4]; else bob = (Math.floor(E.t * 7) % 2) * 2 * s; }
   }
-  drawSprite(MARTIN.sheet, idx, A.x, A.y - bob, h, flip, MARTIN);
+  drawSprite(MARTIN.sheet, idx, A.x, A.y - bob - (A.lift || 0) * s, h, flip, MARTIN);
+}
+/* eleva a Martín sobre o chan (subir a unha cadeira, a un banco...): `to` en píxeles a escala 1, a sombra queda no chan */
+async function actorLift(to, ms = 450) {
+  const A = E.actor, from = A.lift || 0, t0 = performance.now();
+  for (;;) { const k = Math.min(1, (performance.now() - t0) / ms), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2; A.lift = from + (to - from) * e; if (k >= 1) break; await sleep(16); }
 }
 function drawNpc(n) {
   const s = npcScale(n), talking = (E.dlg && E.dlg.who === n.name && E.dlg.shown < E.dlg.text.length) || E.barks.some(b => b.who === n.name);
