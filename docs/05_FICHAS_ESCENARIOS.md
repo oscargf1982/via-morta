@@ -70,6 +70,27 @@
   - la Champions: martes y miércoles a las 20:00, y Martín a dormir a las 23:00;
   - despedida.
 
+## A5 · Casa Juana, salón comedor (`casaSalon`)
+- **Fondo:** `img/bg-casa-salon.jpg`, ilustración de Oscar. Salón comedor amueblado, de alquiler: sofá rinconera gris con cojines, mesitas, aparador de madera tallada con una planta, dos cuadros de paisaje, mesa de comedor con seis sillas y lámparas colgantes. A la izquierda una ventana; a la derecha, puertas balconeras que dan a la gasolinera, la iglesia de la estación y el colegio ferroviario.
+- **Llegada:** desde la puerta de la Casa Juana (A4) con llaves y contrato. La primera vez Martín abre, entra y comenta la casa; después aparece el aviso de fin de tramo.
+- **Suelo:** la tarima. Obstáculos: el sofá, las mesitas y la mesa con las sillas (Martín pasa por delante).
+- **Salidas:**
+  - Derecha → cocina (próximo escenario; de momento, aviso «en construción»).
+  - Izquierda → dormitorio (próximo escenario; ídem).
+  - Abajo → vuelta a la calle, Doutor Casares (A4). Así nunca hay callejón sin salida.
+- **Vista del balcón (decidido por Oscar):** al usar o mirar las ventanas del balcón salta a pantalla completa `img/vista-salon.jpg`, ilustración de Oscar: la gasolinera, la capillita, el supermercado y, al fondo, el museo del ferrocarril con la Mikado. Martín lo comenta y recuerda la pista de Xoán («Bo balcón. Dende el vése o depósito»). Marca `vistaSalon`.
+- **Hotspots:** ventanas del balcón (la vista), ventana de la izquierda, sofá, cojines, mesitas, aparador, planta, cuadros, mesa y sillas, lámparas, interruptor, tarima.
+- **Tono:** primera impresión de Martín en su casa. Todo parece en orden… salvo detalles que preparan la casa sin agua del M2 (no se resuelve aquí).
+- **Personas reales:** ninguna.
+
+## A5b · Casa Juana, cocina (`casaCocina`)
+- **Fondo:** `img/bg-casa-cocina.jpg`, ilustración de Oscar. Cocina reformada: muebles crema, encimera de madera, azulejos hidráulicos, placa, horno, microondas, fregadero, lavavajillas, tabla de cortar, nevera e isla con frutero y taburete. Puerta balconera a la izquierda: se ven el supermercado de enfrente y, en lo alto del monte, la Torre del Homenaje de Monforte.
+- **Llegada:** desde el salón (A5), salida derecha.
+- **Suelo:** la tarima entre la isla y los muebles. Obstáculos: la isla y el taburete quedan fuera del suelo.
+- **Salidas:** puerta de la pared derecha → salón (A5).
+- **Hotspots:** grifo (clave: **no sale agua**; Martín deduce que hay que dar de alta el agua en el Concello con el contrato, que llegará en M2; marca `sinAgua`), balcón, Torre del Homenaje, supermercado, nevera, frutero, isla, taburete, placa, horno, microondas, tabla de cortar, lavavajillas, azulejos, armarios.
+- **Personas reales:** ninguna. La Torre del Homenaje solo se nombra y se ve.
+
 ## B3 · A Fraternal, interior (`fraternal`)
 - **Fondo:** `img/bg-fraternal.jpg`, ilustración de Oscar. Barra con lista de precios, cafetera y botellas; mesas de brisca con tapete verde, columnas, cuadros, tele con el fútbol y tragaperras.
 - **Suelo:** el terrazo. Obstáculos: la barra, la columna y los grupos de mesas. Capas delanteras: la mesa de delante (con La Voz y la baraja), la columna y las mesas laterales.
