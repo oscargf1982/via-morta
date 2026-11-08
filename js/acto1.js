@@ -11,10 +11,14 @@ const XO = t => say('Xoán Carballeira', t);
 /* ---------- obxectos novos ---------- */
 Object.assign(ico, {
   xornal(c) { c.fillStyle = '#efe8d8'; c.fillRect(8, 10, 32, 28); c.fillStyle = '#2a2a2a'; c.fillRect(11, 13, 26, 5); c.fillStyle = '#8a8478'; for (let i = 0; i < 4; i++) { c.fillRect(11, 21 + i * 4, 12, 2); c.fillRect(26, 21 + i * 4, 11, 2); } },
+  boli(c) { c.save(); c.translate(24, 24); c.rotate(-0.7); c.fillStyle = '#1f4fa8'; c.fillRect(-18, -3, 30, 6); c.fillStyle = '#e8e8ec'; c.fillRect(12, -3, 6, 6); c.fillStyle = '#2a2a2a'; c.beginPath(); c.moveTo(18, -3); c.lineTo(23, 0); c.lineTo(18, 3); c.fill(); c.fillStyle = '#c9c9cf'; c.fillRect(-14, -5, 12, 2); c.restore(); },
+  contrato(c) { c.fillStyle = '#f4efe2'; c.fillRect(11, 6, 26, 36); c.fillStyle = '#8a8478'; for (let i = 0; i < 5; i++) c.fillRect(15, 12 + i * 5, 18 - (i % 2) * 5, 2); c.strokeStyle = '#1f4fa8'; c.lineWidth = 2; c.beginPath(); c.moveTo(15, 38); c.bezierCurveTo(19, 32, 23, 42, 27, 35); c.lineTo(33, 37); c.stroke(); },
   chaves(c) { c.fillStyle = '#9a6a3a'; c.fillRect(6, 16, 14, 18); c.fillStyle = '#f2ead8'; c.font = 'bold 8px sans-serif'; c.fillText('211', 7, 28); c.strokeStyle = '#c9c9cf'; c.lineWidth = 3; c.beginPath(); c.arc(24, 18, 5, 0, 7); c.stroke(); c.fillStyle = '#c9c9cf'; c.fillRect(27, 20, 15, 3); c.fillRect(37, 23, 3, 5); c.fillRect(30, 26, 12, 3); c.fillRect(39, 29, 3, 4); },
 });
 Object.assign(ITEMS, {
-  xornal: { name: 'Xornal', icon: ico.xornal, look: () => MA('El periódico de hoy. En portada, obras. En deportes, el Dépor. Leo deportes primero, como un caballero.', 'sonriente') },
+  xornal: { name: 'Xornal', icon: ico.xornal, look: () => lerXornal() },
+  boli: { name: 'Bolígrafo de Concha', icon: ico.boli, look: () => MA('El bolígrafo de los crucigramas de Concha. Azul, mordisqueado y con la tapa atada con una goma. Una reliquia.', 'sonriente') },
+  contrato: { name: 'Contrato de aluguer', icon: ico.contrato, look: () => MA('El contrato de alquiler de la Casa Juana, firmado por Rosario y por mí. Oficialmente, vuelvo a ser de Monforte. Con papeles.', 'orgulloso') },
   chavesCasa: { name: 'Chaves da casa', icon: ico.chaves, look: () => MA('Las llaves de la Casa Juana, con un llavero de madera y un «211» pintado a mano. Parece cosa de carpintero.', 'pensativo') },
 });
 PORTRAIT_COLORS['Xoán Carballeira'] = '#d8ec2a';
@@ -195,6 +199,8 @@ async function conchaQuiosco() {
       ...(flag('chavesDadas') && !hasItem('chavesCasa') ? [{ t: 'Concha... creo que he perdido las llaves.', k: 'chaves2' }] : []),
       ...(!hasItem('ositos') ? [{ t: 'Una bolsa de ositos, de los de siempre.', k: 'ositos' }] : []),
       ...(!hasItem('xornal') ? [{ t: 'El periódico de hoy, por favor.', k: 'xornal' }] : []),
+      ...(flag('faltaBoli') && !hasItem('boli') && !flag('boliDado') && !flag('contratoAsinado') ? [{ t: '¿Me prestas un bolígrafo?', k: 'boli' }] : []),
+      ...(flag('sabePalabra') && !flag('boliDado') ? [{ t: 'El siete horizontal del crucigrama: MAQUINISTA.', k: 'palabra' }] : []),
       { t: '¿Qué se cuenta por Monforte?', k: 'conto' },
       { t: '¿Qué sabes de la Casa Juana?', k: 'casa' },
       { t: 'Hasta luego, Concha.', k: 'adeus' },
@@ -220,6 +226,13 @@ async function conchaQuiosco() {
       await CO('O xornal de hoxe. Xa o lin eu, pero vai coma novo. Só lle sei as noticias.');
       give('xornal');
     }
+    if (k === 'boli') {
+      await CO('O meu bolígrafo? É o dos crucigramas. Ata que non remate o de hoxe, non sae do quiosco.');
+      await CO('E lévame atascada toda a mañá nunha palabra. Non che digo cal, que despois vas contándoo por aí.');
+      await CO(hasItem('xornal') ? 'Se tanto che interesa, mira no teu xornal, na páxina dos pasatempos.' : 'Se tanto che interesa, cómprame o xornal e mira na páxina dos pasatempos. Que hai que ler, rapaz.');
+      setFlag('sabeCrucigrama');
+    }
+    if (k === 'palabra') await crucigramaResolto();
     if (k === 'conto') {
       await CO('Que se conta? Pois que de noite se oe un tren onde non hai tren. O tren pantasma, chámanlle.');
       await CO('A min non me mires. Eu ás once xa estou deitada. Pero o oín. Dúas veces. Ben, unha e media.');
@@ -276,6 +289,22 @@ SCENES.praza = {
    Esquerda: primeira pantalla da praza. Arriba: rúa Calvo Sotelo (esquerda, pechada no Acto 1),
    rúa Coruña (centro, colexio ferroviario) e rúa Concepción Arenal (dereita, a Fraternal).
    Dereita: rúa das Vacas (Martín non quere manchar os zapatos). */
+/* ---------- puzzle da firma: o bolígrafo de Concha (escollido por Oscar) ----------
+   Rosario non ten con que asinar → Concha só empresta o bolígrafo dos crucigramas se lle resolves
+   a palabra que lle falta → está no xornal (7 horizontal, dez letras: quen conduce un tren). */
+async function lerXornal() {
+  if (!flag('sabeCrucigrama')) return MA('El periódico de hoy. En portada, obras. En deportes, el Dépor. Leo deportes primero, como un caballero.', 'sonriente');
+  await MA('Pasatiempos. El crucigrama, casi entero... menos el siete horizontal: «Dez letras: quen conduce un tren».', 'pensativo');
+  await MA('¿Diez letras, quien conduce un tren? Concha, Concha. Me lo preguntas a mí, que llevo quince años haciéndolo.', 'risueno');
+  if (!flag('sabePalabra')) { setFlag('sabePalabra'); toast('Martín xa sabe a palabra que lle falta a Concha'); }
+}
+async function crucigramaResolto() {
+  await MA('El siete horizontal, Concha: MAQUINISTA. Diez letras. Las he contado dos veces, como los vagones.', 'orgulloso');
+  await CO('Maquinista! M, a, q, u... cabe! E eu dándolle voltas a «ferroviario», que ten once.');
+  await CO('Toma o bolígrafo. Pero devólvemo, eh? É o da sorte: con el acertei catorce na quiniela. Ben, trece.');
+  give('boli'); setFlag('boliDado');
+  await MA('Un crucigrama a cambio de un bolígrafo. En Monforte, así se firman los contratos.', 'sonriente');
+}
 async function ruaPechada(linea, mood) { await MA(linea, mood || 'pensativo'); toast('Rúa en construción · chega nun próximo hito'); }
 SCENES.praza2 = {
   name: 'Praza da Estación', bg: 'img/bg-praza-estacion-2.jpg', music: 'estacion', floor: 'pedra',
@@ -320,7 +349,8 @@ SCENES.praza2 = {
       talk: () => conchaQuiosco(),
       give: {
         ositos: async () => { await CO('Ositos? Pero se os acabas de mercar aquí! Gárdaos, rapaz, que xa haberá ocasión de ter un detalle.'); },
-        xornal: async () => { await CO('Non, non, quédao. Eu xa o lin. Dúas veces.'); },
+        xornal: async () => { if (flag('sabePalabra') && !flag('boliDado')) return crucigramaResolto(); await CO('Non, non, quédao. Eu xa o lin. Dúas veces.'); },
+        boli: async () => { await CO('Xa mo devolves? Non, non: lévao á Fraternal, que Rosario non ten con que asinar. Despois xa mo traerás.'); },
         chavesCasa: async () => { await CO('Non mas devolvas, home! Que mo vexo: xa te arrepentiches de volver.'); await MA('No, no. Solo quería ver tu cara.', 'risueno'); },
       } },
   ],
@@ -424,13 +454,41 @@ SCENES.arenal = {
    Rosario Higueras xoga á brisca na mesa do fondo, á dereita (sentada, co sprite da folla de Oscar). */
 const RO = t => say('Rosario Higueras', t);
 async function rosarioBrisca() {
+  if (flag('contratoAsinado')) {
+    await RO('Xa es veciño oficial, Martín. Agora só che falta poñerlle auga á casa. Pero iso xa é cousa do Concello.');
+    return;
+  }
   if (!flag('amparoMan')) {
     await RO('Copas! E arrastro!');
     await MA('¿Rosario? Perdona. Soy Martín, el del alquiler de la Casa Juana. Concha me ha dado las llaves y...', 'avergonzado');
     await RO('Shhh! Non ves que estou na metade da man? Ata que non remate, nin o Papa. E ti non es o Papa.');
     await MA('Concha me lo avisó. David me lo avisó. Y aun así. Soy el único de Monforte que interrumpe una brisca.', 'avergonzado');
     setFlag('amparoMan');
-  } else await RO('Aínda non rematou a man, rapaz. As cartas non se xogan soas. Ben, as miñas case.');
+    await sleep(700);
+    await RO('...E sete de ouros. Man gañada! Agora si, rapaz: o contrato. Asinamos e listo.');
+  }
+  if (hasItem('boli')) return asinarContrato();
+  if (!flag('faltaBoli')) {
+    await RO('Tes bolígrafo?');
+    await MA('¿Yo? Vengo de un tren, no de una notaría.', 'esceptico');
+    await RO('Eu tampouco. O meu levouno o meu home, que corrixe exames de matemáticas. E o de reserva, Eugenia, para debuxar. Ten nove anos e xa me rouba o material.');
+    await RO('Concha, a do quiosco, ten sempre un, para os crucigramas. Pero non o empresta nin á súa nai.');
+    setFlag('faltaBoli');
+    return;
+  }
+  await RO('Sen bolígrafo non hai firma. Concha ten un, o dos crucigramas. Ponlle boa cara.');
+}
+async function asinarContrato() {
+  await RO('O bolígrafo de Concha! Como o conseguiches? Ese non o solta nin para asinar o testamento.');
+  await MA('Un crucigrama. Diez letras: maquinista. Quince años de oficio para ganarme un bolígrafo.', 'orgulloso');
+  await RO('Asina aquí... e aquí. Listo. Benvido á Casa Juana, veciño.');
+  take('boli'); give('contrato'); setFlag('contratoAsinado');
+  await RO('O bolígrafo xa llo devolvo eu a Concha, que paso polo quiosco. Senón, mañá sae no xornal: «Desaparece o bolígrafo dos crucigramas».');
+  await RO('Sabes de quen era a casa? Do señor Alfredo Fernández, carpinteiro e industrial. Púxolle o nome pola súa segunda muller, Juana.');
+  await RO('Atrás tiña unha carpintaría mecanizada: un motor Siemens de dez cabalos, transmisións con poleas... Daquela era coma unha fábrica.');
+  await RO('E o dous de xuño do cincuenta e dous vendeuno todo, toda a maquinaria, por trinta mil pesetas. A un enxeñeiro de Camiños e a un contratista.');
+  await MA('¿Un ingeniero de Caminos? ¿Para qué quiere un ingeniero de Caminos una carpintería entera?', 'dudoso');
+  await RO('Iso pregúntome eu. O meu home, que é de matemáticas, di que a conta non lle sae. Pero el di iso de todo.');
   await fimTramo();
 }
 SCENES.fraternal = {
@@ -472,12 +530,18 @@ SCENES.fraternal = {
       get idle() { return flag('amparoMan') ? 11 : 8; }, talkFrames: [13, 9], x: 796, y: 334, w: 70, h: 320, at: [730, 352], face: 'R',
       done: () => flag('contratoAsinado'),
       look: () => MA('Rosario Higueras, en la mesa del fondo. Rizos, aros de plata y cara de llevar triunfos. Juega a la brisca como otros pilotan aviones: sin pestañear.', 'pensativo'),
-      talk: () => rosarioBrisca() },
+      talk: () => rosarioBrisca(),
+      give: {
+        boli: async () => { if (!flag('amparoMan')) return rosarioBrisca(); await asinarContrato(); },
+        chavesCasa: async () => { await RO('As chaves quédaas ti, home. Eu só quero a firma. E que non me interrompas a brisca.'); },
+        xornal: async () => { await RO('Xa o lin. E o crucigrama déixollo a Concha, que se non, non me fala.'); },
+        ositos: async () => { await RO('Ositos? Para Eugenia, que lle encantan. Ben... para Eugenia e para min.'); },
+      } },
   ],
 };
 async function fimTramo() {
-  await MA('Pues nada: a esperar a que acabe la mano. Con las llaves en el bolsillo y una brisca por delante.', 'convencido');
-  await showDoc('<h4>FIN DO TRAMO M1</h4><p>Martín xa ten as chaves da Casa Juana e atopou a Rosario na Fraternal, en plena brisca. A firma do contrato, a historia da casa e o resto do Acto 1 chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
+  await MA('Contrato firmado. Tengo casa, tengo llaves y tengo una pregunta. Para ser lunes, no está mal.', 'convencido');
+  await showDoc('<h4>FIN DO TRAMO</h4><p>Martín xa asinou o contrato da Casa Juana. A casa sen auga, o Concello e o resto do Acto 1 chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
 }
 
 /* ---------- Mapa de Monforte (pantalla de viaxe entre zonas) ---------- */

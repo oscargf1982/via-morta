@@ -35,7 +35,7 @@
   - Derecha: rúa das Vacas. Martín no quiere mancharse los zapatos.
 - **Hotspots:** quiosco (clave), revistas, fuente (Martín comenta que tiene las proporciones justas para una fuente), jardinera, señal, árbol, farol, edificio de la esquina, casa amarilla y edificios de la izquierda.
 - **NPC:** **Dona Concha**, de pie al lado del quiosco, leyendo el periódico mientras no habla. Árbol de diálogo: llaves de la casa, bolsa de ositos, periódico, «qué se cuenta» (el tren fantasma), la Casa Juana (Alfredo, Juana, el serrón), despedida. Si Martín pierde las llaves, Concha tiene otra copia (sin callejones sin salida).
-- **Objetos:** `chavesCasa`, `ositos`, `xornal`.
+- **Objetos:** `chavesCasa`, `ositos`, `xornal`, `boli` (tras resolver el crucigrama).
 - **Desbloquea:** marca `objetivoContrato` (firmar con Rosario en la Fraternal).
 
 ## A4b · Rúa Concepción Arenal (`arenal`)
@@ -59,7 +59,7 @@
 - **Salidas:** puertas de cristal del fondo → rúa Concepción Arenal (A4b).
 - **Hotspots:** Rosario Higueras (clave, en la mesa del fondo a la derecha), lista de precios, cafetera, botellas, barra, taburetes, tele, tragaperras, periódico y baraja, aviso de la columna, cuadros, pizarra y planta.
 - **NPC:** **Rosario Higueras**, jugando a la brisca. Sentada en la silla del lado derecho de la mesa de las cartas (sprite con su propia silla, mirando a la mesa); al interrumpirla se cruza de brazos. Abre con «Copas! E arrastro!» y no suelta las cartas a mitad de mano.
-- **Fin del tramo M1:** después de la primera conversación con Rosario. La firma del contrato (puzzle por decidir con Oscar) y la historia de la casa llegan en M2.
+- **Puzzle de la firma (elegido por Oscar):** Rosario gana la mano y pide bolígrafo; no tiene (pista: Concha tiene el de los crucigramas). Concha no lo presta hasta acabar el crucigrama y manda a Martín a mirar su periódico. En el periódico, 7 horizontal: «Dez letras: quen conduce un tren». Martín le dice MAQUINISTA (o le da el periódico) y Concha le presta el bolígrafo. Con él, Rosario firma (objeto `contrato`), cuenta la historia de la casa (Alfredo, Juana, el motor Siemens, la venta de 1952) y deja la pregunta del ingeniero de Caminos. Ahí termina el tramo.
 
 ## Portada
 - **Fondo del menú:** `img/portada-rotonda.jpg`, ilustración de Oscar de la rotonda del museo del ferrocarril de Monforte, con un velo oscuro para que se lea el menú.
