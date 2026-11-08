@@ -417,7 +417,7 @@ SCENES.arenal = {
   hotspots: [
     { name: 'Praza da Estación', key: true, r: [0, 470, 110, 70], at: [50, 524], face: 'F', exit: ['praza2', [818, 330]],
       look: () => MA('De vuelta a la plaza de la estación. Concha, el quiosco y la fuente de proporciones perfectas.', 'pensativo') },
-    { name: 'Rúa Morín', r: [36, 282, 66, 56], at: [70, 340], face: 'L', exit: ['casares', [120, 500]],
+    { name: 'Rúa Morín', r: [36, 282, 66, 56], at: [70, 340], face: 'L', exit: ['morin', [430, 500]],
       look: () => MA('Siguiendo recto se llega a la calle Morín, la de la gasolinera, y de ahí a Doctor Casares. Hoy no necesito gasolina: he venido en tren.', 'risueno') },
     { name: 'Porta da Fraternal', key: true, r: [646, 282, 56, 140], at: [672, 438], face: 'B', exit: ['__fraternal'], done: () => flag('davidAmparo'),
       act: async () => {
@@ -541,10 +541,49 @@ SCENES.fraternal = {
       } },
   ],
 };
+/* ---------- A4c · Rúa Morín ----------
+   Fondo: ilustración de Oscar (img/bg-rua-morin.jpg). A rúa sobe cara ao fondo; á esquerda casas baixas de tella,
+   á dereita a casa pistacho con galerías. Arriba → Doutor Casares (a casa vermella); abaixo → volta cara á Fraternal.
+   Ao pasar preto da porta da casa pistacho, Martín ve unha sombra negra moverse dentro (de momento, nada máis). */
+SCENES.morin = {
+  name: 'Rúa Morín', bg: 'img/bg-rua-morin.jpg', music: 'casa', floor: 'pedra',
+  walk: [[0, 452], [150, 420], [330, 376], [396, 344], [440, 344], [560, 386], [700, 420], [790, 450], [960, 500], [960, 540], [0, 540]],
+  holes: [
+    [[492, 402], [580, 402], [580, 426], [492, 426]],          // coche azul
+    [[462, 362], [520, 362], [520, 386], [462, 386]],          // coches do fondo
+    [[322, 384], [338, 384], [338, 392], [322, 392]],          // farola
+  ],
+  front: [
+    { y: 425, r: [488, 360, 94, 68] },                         // coche azul
+    { y: 386, r: [438, 330, 84, 58] },                         // coches do fondo
+    { y: 391, r: [320, 118, 20, 274] },                        // farola
+  ],
+  scale: [340, 0.08, 540, 0.7], actorH: 300, start: [430, 500], minSpeed: 0.3,
+  zones: [
+    { r: [600, 400, 260, 90], enter: () => {
+      if (!flag('sombraVista')) { setFlag('sombraVista'); bark('¿Eh? A través de esa puerta... una sombra negra. Se ha movido dentro. Juraría que se ha movido.', 'Martín', 4500); }
+      else bark('Otra vez esa puerta. No miro. No miro... He mirado.', 'Martín', 3000);
+    } },
+  ],
+  hotspots: [
+    { name: 'Rúa Doutor Casares', key: true, r: [392, 300, 56, 44], at: [418, 350], face: 'B', exit: ['casares', [120, 500]],
+      look: () => MA('Calle arriba se llega a Doctor Casares. A la casa roja. A mi casa, si Rosario firma.', 'pensativo') },
+    { name: 'Cara á Fraternal', key: true, r: [300, 514, 260, 26], at: [430, 530], face: 'F', exit: ['arenal', [70, 342]],
+      look: () => MA('Por ahí abajo vuelvo hacia la Fraternal.', 'pensativo') },
+    { name: 'Porta da casa pistacho', key: true, r: [700, 268, 50, 166], at: [700, 440], face: 'R',
+      act: () => bark(flag('sombraVista') ? 'Llamar no voy a llamar. No después de lo de la sombra.' : 'No tengo nada que hacer en esta casa. Que yo sepa.'),
+      look: () => MA(flag('sombraVista') ? 'Cristal labrado y, detrás, oscuridad. Hace un momento algo negro se movió ahí dentro. Ahora, nada. Y eso es peor.' : 'Una puerta con cristal labrado. Detrás no se ve gran cosa.', flag('sombraVista') ? 'preocupado' : 'pensativo') },
+    { name: 'Casa pistacho', r: [520, 0, 440, 400], look: () => MA('Una casa color pistacho, con galerías y balcones de hierro. Elegante. Y con una puerta que no me quita ojo.', 'dudoso') },
+    { name: 'Coches', r: [438, 330, 144, 98], look: () => MA('Coches aparcados en fila. El azul está tan limpio que deja en evidencia a toda la calle.', 'risueno') },
+    { name: 'Farola', r: [320, 118, 90, 274], look: () => MA('Otra farola de brazo largo. En esta zona todas se asoman a ver quién pasa.', 'sonriente') },
+    { name: 'Portas de madeira', r: [124, 276, 96, 124], look: () => MA('Puertas de madera de las de antes, con la pintura cansada. Detrás de esas, por lo menos, no se mueve nada.', 'esceptico') },
+    { name: 'Casas baixas', r: [0, 150, 330, 300], look: () => MA('Casas bajas, con teja y paredes desconchadas. El Monforte de toda la vida, puerta con puerta con el de ahora.', 'pensativo') },
+  ],
+};
 /* ---------- A4 · Rúa Doutor Casares, 211 (exterior da Casa Juana) ----------
    Fondo: ilustración de Oscar (img/bg-doutor-casares.jpg). A casa vermella co balcón de ferro e tres portas
    en arco; á dereita, o muro vermello do patio (detrás, a nave da carpintaría); á esquerda, unha nave de chapa.
-   Ao fondo, a rúa segue cara ao Gadis. Chégase dende a rúa Morín (provisional: pendente de que Oscar o confirme). */
+   Ao fondo, a rúa segue cara ao Gadis. Chégase dende a rúa Morín (confirmado por Oscar). */
 SCENES.casares = {
   name: 'Rúa Doutor Casares', bg: 'img/bg-doutor-casares.jpg', music: 'casa', floor: 'pedra',
   walk: [[0, 350], [180, 336], [300, 330], [340, 342], [480, 368], [600, 386], [730, 410], [960, 452], [960, 540], [0, 540]],
@@ -558,7 +597,7 @@ SCENES.casares = {
   ],
   scale: [330, 0.15, 540, 0.88], actorH: 300, start: [120, 500], minSpeed: 0.35,
   hotspots: [
-    { name: 'Rúa Morín', key: true, r: [0, 440, 120, 100], at: [60, 515], face: 'F', exit: ['arenal', [70, 342]],
+    { name: 'Rúa Morín', key: true, r: [0, 440, 120, 100], at: [60, 515], face: 'F', exit: ['morin', [418, 352]],
       look: () => MA('Por ahí vuelvo hacia la calle Morín y la Fraternal.', 'pensativo') },
     { name: 'Rúa cara ao centro', r: [180, 300, 120, 40], at: [240, 342], face: 'B', exit: ['__rua'],
       act: () => ruaPechada('La calle sigue hacia el centro. Hoy ya he visto bastante Monforte para un lunes.', 'pensativo') },

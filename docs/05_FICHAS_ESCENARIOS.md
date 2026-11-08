@@ -1,7 +1,7 @@
 # «Vía morta» · Fichas de escenarios
 
 > Cada escenario se describe aquí antes de programarlo en `js/acto*.js`. Coordenadas en el lienzo lógico de 960×540.
-> Los fondos de A1, A2, A3, A3b, A4, A4b, B3 y la portada son ilustraciones de Oscar. El mapa sigue siendo un **boceto provisional** generado con `tools/fondos.py`.
+> Los fondos de A1, A2, A3, A3b, A4, A4b, A4c, B3 y la portada son ilustraciones de Oscar. El mapa sigue siendo un **boceto provisional** generado con `tools/fondos.py`.
 
 ## A1 · Andén 1 (`anden`)
 - **Fondo:** `img/bg-anden-estacion.jpg`, ilustración de Oscar. Marquesina con columnas de pie azul, la fachada con puertas azules en arco, el letrero «Monforte de Lemos», bancos, papelera y el regional parado en la vía 1.
@@ -38,11 +38,18 @@
 - **Objetos:** `chavesCasa`, `ositos`, `xornal`, `boli` (tras resolver el crucigrama).
 - **Desbloquea:** marca `objetivoContrato` (firmar con Rosario en la Fraternal).
 
+## A4c · Rúa Morín (`morin`)
+- **Fondo:** `img/bg-rua-morin.jpg`, ilustración de Oscar. La calle sube hacia el fondo. A la izquierda, casas bajas de teja con puertas de madera; a la derecha, la casa pistacho con galerías y balcones, y coches aparcados.
+- **Suelo:** las dos aceras y la calzada. Obstáculos y capas delanteras: los coches y la farola.
+- **Salidas:** arriba → Doutor Casares, 211 (A4). Abajo → vuelta a Concepción Arenal (A4b). Oscar la llamó «calle Rosalía de Castro»: falta confirmar si es la misma calle de la Fraternal.
+- **Zona de paso:** al pasar junto a la puerta de la casa pistacho, Martín dice que a través de la puerta ha visto una sombra negra moverse dentro. La primera vez marca `sombraVista`; las siguientes, una broma corta. Usa la mecánica general `zones` del motor. De momento no hay nada más.
+- **Hotspots:** puerta de la casa pistacho (clave; mirar y tocar cambian tras ver la sombra), fachada pistacho, coches, farola, puertas de madera y casas bajas.
+
 ## A4 · Rúa Doutor Casares, 211 (`casares`)
 - **Fondo:** `img/bg-doutor-casares.jpg`, ilustración de Oscar. La casa roja con balcón de hierro y tres puertas en arco, el muro rojo del patio a la derecha (detrás, la nave de la carpintería), una nave de chapa, un banco con jardinera, la farola y la calle que sigue hacia el supermercado.
 - **Suelo:** la acera y la calzada. Obstáculos y capas delanteras: el banco y la farola.
 - **Salidas:**
-  - Abajo a la izquierda: rúa Morín, de vuelta a Concepción Arenal (A4b). **Provisional:** se llega desde la rúa Morín, a falta de que Oscar lo confirme.
+  - Abajo a la izquierda: rúa Morín (A4c), confirmado por Oscar.
   - Calle hacia el fondo: cerrada hasta un hito próximo.
   - Puerta de la Casa Juana (la de la derecha). Sin llaves: Concha las tiene. Con llaves pero sin contrato: primero firmar con Rosario. Con las dos cosas: **fin del tramo** (el interior, la casa sin agua y el Concello llegan en M2).
 - **Hotspots:** puerta de casa (clave), portalón con vado, puerta estrecha, balcón, fachada, muro rojo (clave: detrás está la nave), nave de chapa, banco, farola, supermercado (broma del agua), tapa de alcantarilla y edificios.
