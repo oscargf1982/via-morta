@@ -109,6 +109,7 @@
 - **Salidas:**
   - Puerta principal (escalinata) → vestíbulo con las ventanillas de Eladio (B4). Si Martín aún no sabe que no hay agua, comenta que no tiene nada que hacer dentro.
   - Izquierda → mapa de Monforte.
+  - Derecha → café de enfrente (B5), donde está Eladio.
 - **Hotspots:** puerta principal, escalinata, banderas, balcón, edificio, ventanas en arco, jardinera, estanque, roca, árboles.
 - **Personas reales:** ninguna. El Concello solo se ve por fuera; nada de información oficial.
 
@@ -123,6 +124,14 @@
   - El puzzle para que Eladio vuelva está pendiente de que Oscar lo elija; de momento, aviso de próximo paso.
 - **Hotspots:** ventanillas, panel de servicios, escudo, escalera, farol, expositor de folletos, sillas, plantas.
 - **Personas reales:** ninguna. Nada de información oficial: los carteles son del juego.
+
+## B5 · Café de Eladio (`cafeEladio`)
+- **Fondo:** `img/bg-cafe-eladio.jpg`, ilustración de Oscar. Bar cerca del Concello: barra de azulejo blanco y negro con taburetes, pizarra de precios, botellero, cafetera, grifo de cerveza, reloj de pared, cartel «Boa Festa», cuadros, corcho con avisos, planta y puerta de cristal al fondo.
+- **Llegada:** desde el exterior del Concello (B4a), salida derecha «Café de enfrente». La puerta del fondo vuelve al Concello.
+- **Suelo:** el pasillo de baldosa entre la barra y la pared derecha. La barra y los taburetes son obstáculos.
+- **NPC:** **Don Eladio** (ficción), en un taburete con su café. **Pendiente:** hoja de personaje de Oscar (sprite y retrato) y el puzzle para que vuelva a la ventanilla (tarjeta a Oscar con tres propuestas nuevas: reloj de fichar —recomendada—, inspección sorpresa, que no le reabran la ventanilla 2).
+- **Hotspots:** pizarra de precios, botellas, cafetera, grifo de cerveza, reloj (pista de la hora para el puzzle), cartel «Boa Festa», cuadros, corcho, taburetes, barra, tacita de café, servilletero, planta, puerta.
+- **Personas reales:** ninguna.
 
 ## B3 · A Fraternal, interior (`fraternal`)
 - **Fondo:** `img/bg-fraternal.jpg`, ilustración de Oscar. Barra con lista de precios, cafetera y botellas; mesas de brisca con tapete verde, columnas, cuadros, tele con el fútbol y tragaperras.

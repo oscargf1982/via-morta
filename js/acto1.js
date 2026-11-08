@@ -819,6 +819,8 @@ SCENES.concelloExt = {
         SFX.door(); await goScene('concelloVest', [330, 400]);
       },
       look: () => MA('La puerta principal, entre columnas. Por aquí se entra a las ventanillas. Y a las colas.', 'esceptico') },
+    { name: 'Café de enfrente', key: true, r: [904, 356, 56, 80], at: [916, 404], face: 'R', exit: ['cafeEladio', [700, 330]], hint: 'R',
+      look: () => MA('Al otro lado, un café. A cien pasos de las ventanillas: la distancia justa para un «volvo nun momento».', 'esceptico') },
     { name: 'Escalinata', r: [436, 250, 84, 42], look: () => MA('Una escalinata con barandilla. Seis escalones: los justos para llegar a la ventanilla sin aliento.', 'risueno') },
     { name: 'Bandeiras', r: [424, 84, 132, 76], look: () => MA('Tres banderas en el balcón: Galicia, España y Europa. Ondean de lado, como los papeles que se mueven de mesa en mesa.', 'risueno') },
     { name: 'Balcón', r: [484, 120, 110, 40], look: () => MA('El balcón de las banderas. Desde ahí se saluda en las fiestas. Desde abajo se aplaude, o no.', 'sonriente') },
@@ -843,7 +845,7 @@ async function ventanilla(n) {
     await MA('Eladio. Ya nos conocemos. Es como un jefe final de videojuego, pero con sello.', 'risueno');
     await MA('El café de enfrente, seguro. Un «momento» de funcionario dura lo que dura un café con churros.', 'pensativo');
   } else await MA('«Volvo nun momento». El momento sigue siendo largo.', 'esceptico');
-  toast('O café de Eladio chega no seguinte paso');
+  toast('Pista: o café está á dereita da praza do Concello');
 }
 SCENES.concelloVest = {
   name: 'Concello · Vestíbulo', bg: 'img/bg-concello-vestibulo.jpg', music: 'casa', floor: 'pedra',
@@ -872,6 +874,34 @@ SCENES.concelloVest = {
     { name: 'Expositor', r: [852, 214, 104, 226], look: () => MA('Folletos turísticos de Monforte: el castillo, el Cabe, la Ribeira Sacra... Ni uno sobre cómo dar de alta el agua. Ese sería el más leído.', 'risueno') },
     { name: 'Cadeiras', r: [0, 350, 170, 190], look: () => MA('Sillas azules para esperar. Desgastadas justo donde se apoyan los codos. Aquí se espera con oficio.', 'esceptico') },
     { name: 'Plantas', r: [204, 258, 66, 122], look: () => MA('Plantas en maceta, bien regadas. Hasta ellas tienen el agua dada de alta.', 'esceptico') },
+  ],
+};
+
+/* ---------- B5 · O café de Eladio ----------
+   Preto do Concello. Eladio (ficción) toma o café aquí mentres a ventanilla 1 di «Volvo nun momento».
+   Pendente: folla de personaxe de Eladio e o puzzle para que volva (escolle Oscar). */
+SCENES.cafeEladio = {
+  name: 'Café', bg: 'img/bg-cafe-eladio.jpg', music: 'casa', floor: 'pedra',
+  walk: [[668, 292], [790, 292], [960, 424], [960, 540], [640, 540], [668, 420]],
+  front: [
+    { y: 540, r: [550, 296, 122, 230] },   // taburetes
+  ],
+  scale: [290, 0.33, 540, 1.0], actorH: 300, start: [700, 330], minSpeed: 0.45,
+  hotspots: [
+    { name: 'Porta', key: true, r: [664, 120, 64, 168], at: [700, 300], face: 'B', exit: ['concelloExt', [900, 400]], hint: 'U', door: true,
+      look: () => MA('La puerta de cristal. Por ahí se ve el Concello. Eladio también lo ve. Y aun así, aquí sigue.', 'esceptico') },
+    { name: 'Reloxo', key: true, r: [496, 70, 32, 48], look: () => MA('Un reloj de pared. Cerca de las dos. En el Concello cierran a las dos... y Eladio, aquí, con el café.', 'dudoso') },
+    { name: 'Lousa', r: [24, 4, 142, 196], look: () => MA('Café a 1,20, aguardiente a 2. En Monforte el desayuno completo sale por 3,20. El de los funcionarios, por 3,20 y una hora.', 'risueno') },
+    { name: 'Botellas', r: [228, 40, 186, 102], look: () => MA('Licores de colores en fila, como vagones de un mercancías. Este va cargado.', 'risueno') },
+    { name: 'Cafeteira', r: [312, 140, 98, 100], look: () => MA('Una cafetera de las de verdad, de dos brazos. Silba como una locomotora pequeña. Me cae bien.', 'sonriente') },
+    { name: 'Billa da cervexa', r: [460, 166, 46, 102], look: () => MA('El grifo de cerveza, dorado y reluciente. A las dos de la tarde, en día laborable, mejor no mirarlo mucho.', 'esceptico') },
+    { name: 'Cartel', r: [494, 122, 32, 84], look: () => MA('«Boa Festa». Un cartel de fiestas. En este bar, por lo que veo, la fiesta empieza al salir de la ventanilla.', 'risueno') },
+    { name: 'Cadros', r: [786, 10, 166, 208], look: () => MA('Cuadros de Monforte: un pazo, un parque... Pintados con más paciencia que la que yo tengo hoy.', 'sonriente') },
+    { name: 'Corcho de avisos', r: [742, 134, 46, 100], look: () => MA('Un corcho con avisos: «Véndese bicicleta», «Clases de gaita», «Perdeuse gato». Monforte en estado puro.', 'sonriente') },
+    { name: 'Taburetes', r: [552, 296, 120, 230], look: () => MA('Taburetes altos con asiento negro. Uno está calentito: alguien acaba de levantarse... o va y viene.', 'dudoso') },
+    { name: 'Cunca de café', r: [274, 290, 62, 36], look: () => MA('Una tacita de café, a medias. Con el sobre de azúcar sin abrir. Alguien que lo toma amargo, como las colas del Concello.', 'esceptico') },
+    { name: 'Barra', r: [0, 280, 620, 260], look: () => MA('Una barra larga de azulejo blanco y negro. En estas barras se han arreglado más asuntos que en muchas ventanillas.', 'pensativo') },
+    { name: 'Planta', r: [756, 220, 46, 76], look: () => MA('Una planta en la esquina. Bien regada. En Monforte, todo el mundo tiene agua menos yo. Y ya empieza a ser personal.', 'esceptico') },
   ],
 };
 
