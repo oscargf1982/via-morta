@@ -662,8 +662,7 @@ SCENES.casaSalon = {
     await fimTramo();
   },
   hotspots: [
-    { name: 'Cociña', key: true, r: [880, 330, 80, 210], at: [900, 470], face: 'R', exit: ['__cocina'], hint: 'R',
-      act: () => estanciaPechada('Por aquí, la cocina. Luego le echo un vistazo; primero, que me dé el aire de casa nueva.', 'sonriente') },
+    { name: 'Cociña', key: true, r: [880, 330, 80, 210], at: [900, 470], face: 'R', exit: ['casaCocina', [790, 480]], hint: 'R' },
     { name: 'Dormitorio', key: true, r: [0, 300, 110, 240], at: [140, 490], face: 'L', exit: ['__dormitorio'], hint: 'L',
       act: () => estanciaPechada('El dormitorio. Ya lo estrenaré esta noche... si el silbato me deja dormir.', 'dudoso') },
     { name: 'Saír á rúa', r: [300, 516, 340, 24], at: [470, 530], face: 'F', exit: ['casares', [690, 430]], hint: 'D',
@@ -683,6 +682,49 @@ SCENES.casaSalon = {
     { name: 'Sofá', r: [100, 232, 396, 196], look: () => MA('Un sofá rinconera, gris y mullido. Peligroso: me siento ahí y no me levanto hasta el Acto 3.', 'risueno') },
     { name: 'Coxíns', r: [318, 240, 100, 82], look: () => MA('Cojines verdes y crema, colocados con escuadra y cartabón. Aquí ha pasado una casera concienzuda.', 'sonriente') },
     { name: 'Mesiñas', r: [80, 316, 72, 124], look: () => MA('Dos mesitas nido. Una dentro de la otra, como las muñecas rusas, pero en serio.', 'risueno') },
+  ],
+};
+
+/* ---------- A5b · Casa Juana: cociña ----------
+   Desde o balcón vense o supermercado e a Torre da Homenaxe. Na billa descóbrese que non hai auga (gancho do M2). */
+async function billaSenAuga() {
+  if (flag('sinAgua')) { await MA('Lo vuelvo a intentar, por si acaso... Nada. El grifo sigue en huelga.', 'esceptico'); return; }
+  setFlag('sinAgua');
+  await MA('Vamos a estrenar el grifo. Abro...', 'sonriente');
+  await sleep(500);
+  await MA('...', 'dudoso');
+  await MA('Ni una gota. Ni un gorgoteo. Ni un triste suspiro de tubería.', 'sorprendido');
+  await MA('Claro: el contrato está firmado, pero el agua hay que darla de alta en el Concello. Con el contrato en la mano, como todo en esta vida.', 'pensativo');
+  await MA('Y la planta del salón tan verde... Esa sabe algo que yo no sé.', 'esceptico');
+  toast('O Concello e a alta da auga chegan no hito M2');
+}
+SCENES.casaCocina = {
+  name: 'Casa Juana · Cociña', bg: 'img/bg-casa-cocina.jpg', music: 'casa', floor: 'madeira',
+  walk: [[356, 540], [352, 404], [398, 386], [700, 398], [706, 432], [836, 446], [880, 500], [904, 540]],
+  front: [
+    { y: 480, poly: [[30, 282], [396, 300], [396, 346], [278, 404], [278, 540], [30, 540]] },   // illa
+    { y: 540, r: [270, 398, 80, 142] },                                                           // taburete
+  ],
+  scale: [385, 0.85, 540, 1.08], actorH: 300, start: [790, 480], minSpeed: 0.5,
+  hotspots: [
+    { name: 'Salón', key: true, r: [900, 150, 60, 330], at: [870, 500], face: 'R', exit: ['casaSalon', [880, 470]], hint: 'R',
+      look: () => MA('Por ahí se vuelve al salón. La casa no es grande, pero tiene de todo. Casi de todo.', 'pensativo') },
+    { name: 'Billa', key: true, done: () => flag('sinAgua'), r: [604, 196, 92, 60], at: [650, 404], face: 'B', act: () => billaSenAuga(),
+      look: () => MA(flag('sinAgua') ? 'Un grifo precioso, de diseño. Decorativo, de momento. Muy decorativo.' : 'Un grifo moderno, de los que suben y bajan. Seguro que da gusto fregar aquí.', flag('sinAgua') ? 'esceptico' : 'sonriente') },
+    { name: 'Torre da Homenaxe', r: [234, 70, 34, 44], look: () => MA('La Torre del Homenaje, allá arriba, en el monte de San Vicente. Monforte te vigila desde la cocina. Y yo sin fregar.', 'sonriente') },
+    { name: 'Supermercado', r: [210, 226, 72, 34], look: () => MA(flag('sinAgua') ? 'El supermercado de enfrente. Bendito sea: hoy cenaré agua embotellada, como los ricos.' : 'Un supermercado justo enfrente. Esta casa tiene todo a mano: la estación, la gasolinera y el pan.', 'risueno') },
+    { name: 'Balcón', r: [204, 20, 160, 364], look: () => MA('Una puerta balconera con barandilla de forja. Sol de tarde, vistas al monte y el olor del supermercado a pan recién hecho. Podría acostumbrarme.', 'sonriente') },
+    { name: 'Neveira', r: [0, 60, 40, 300], look: () => MA('La nevera. La abro con fe... vacía, salvo una botella de agua. Ah, mira: agua. La guardo para una emergencia.', 'risueno') },
+    { name: 'Froiteiro', r: [52, 264, 70, 50], look: () => MA('Un frutero con naranjas y manzanas de verdad. La casera piensa en todo. Hasta en mi colesterol.', 'sonriente') },
+    { name: 'Illa', r: [40, 284, 356, 116], look: () => MA('Una isla de cocina con encimera de madera. Para desayunar de pie, como un maquinista con prisa.', 'risueno') },
+    { name: 'Taburete', r: [274, 402, 74, 138], look: () => MA('Un taburete. Uno solo. Esta cocina ya sabe que vivo solo.', 'pensativo') },
+    { name: 'Placa', r: [440, 240, 100, 18], look: () => MA('Placa de inducción. Sin fuego, sin gas, sin humo. Nada que ver con una locomotora de vapor.', 'risueno') },
+    { name: 'Forno', r: [430, 262, 78, 114], look: () => MA('Un horno limpísimo. Nadie ha hecho una empanada aquí. Todavía.', 'neutro') },
+    { name: 'Microondas', r: [512, 88, 84, 64], look: () => MA('Un microondas. La cena de los maquinistas de guardia desde que se inventó.', 'risueno') },
+    { name: 'Táboa de cortar', r: [542, 166, 62, 80], look: () => MA('Una tabla de cortar de madera buena. En la casa de un carpintero, hasta la tabla de la cocina tiene oficio.', 'pensativo') },
+    { name: 'Lavalouzas', r: [704, 268, 132, 176], look: () => MA('Un lavavajillas. Sin agua, es el armario más caro de la casa.', 'risueno') },
+    { name: 'Azulexos', r: [384, 160, 456, 86], look: () => MA('Azulejos hidráulicos, de dibujos. Si te quedas mirando mucho rato, parecen estrellas de mar. O ruedas de tren, según el día.', 'pensativo') },
+    { name: 'Armarios', r: [396, 20, 444, 136], look: () => MA('Armarios hasta el techo. Tengo cosas para llenar uno. Con suerte, uno y medio.', 'risueno') },
   ],
 };
 

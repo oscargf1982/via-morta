@@ -82,6 +82,14 @@
 - **Tono:** primera impresión de Martín en su casa. Todo parece en orden… salvo detalles que preparan la casa sin agua del M2 (no se resuelve aquí).
 - **Personas reales:** ninguna.
 
+## A5b · Casa Juana, cocina (`casaCocina`)
+- **Fondo:** `img/bg-casa-cocina.jpg`, ilustración de Oscar. Cocina reformada: muebles crema, encimera de madera, azulejos hidráulicos, placa, horno, microondas, fregadero, lavavajillas, tabla de cortar, nevera e isla con frutero y taburete. Puerta balconera a la izquierda: se ven el supermercado de enfrente y, en lo alto del monte, la Torre del Homenaje de Monforte.
+- **Llegada:** desde el salón (A5), salida derecha.
+- **Suelo:** la tarima entre la isla y los muebles. Obstáculos: la isla y el taburete quedan fuera del suelo.
+- **Salidas:** puerta de la pared derecha → salón (A5).
+- **Hotspots:** grifo (clave: **no sale agua**; Martín deduce que hay que dar de alta el agua en el Concello con el contrato, que llegará en M2; marca `sinAgua`), balcón, Torre del Homenaje, supermercado, nevera, frutero, isla, taburete, placa, horno, microondas, tabla de cortar, lavavajillas, azulejos, armarios.
+- **Personas reales:** ninguna. La Torre del Homenaje solo se nombra y se ve.
+
 ## B3 · A Fraternal, interior (`fraternal`)
 - **Fondo:** `img/bg-fraternal.jpg`, ilustración de Oscar. Barra con lista de precios, cafetera y botellas; mesas de brisca con tapete verde, columnas, cuadros, tele con el fútbol y tragaperras.
 - **Suelo:** el terrazo. Obstáculos: la barra, la columna y los grupos de mesas. Capas delanteras: la mesa de delante (con La Voz y la baraja), la columna y las mesas laterales.
