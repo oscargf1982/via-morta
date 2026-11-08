@@ -299,11 +299,8 @@ SCENES.praza2 = {
       act: () => bark('La calle Calvo Sotelo. Hoy no se me ha perdido nada por ahí, y bastante tengo con encontrar lo que sí se me ha perdido.') },
     { name: 'Rúa Coruña', r: [546, 284, 48, 40], at: [572, 324], face: 'B', exit: ['__rua'],
       act: () => ruaPechada('La calle Coruña, la del colegio ferroviario. Aquí hasta los colegios llevan apellido de tren.', 'sonriente') },
-    { name: 'Rúa Concepción Arenal', key: true, r: [794, 270, 52, 52], at: [818, 324], face: 'B', exit: ['__rua'], done: () => hasItem('chavesCasa'),
-      act: async () => {
-        if (!flag('objetivoContrato')) { await bark('La calle Concepción Arenal. Por ahí está la Fraternal. Pero lo primero son las llaves, y las llaves las tiene Concha.'); return; }
-        await fimTramo();
-      } },
+    { name: 'Rúa Concepción Arenal', key: true, r: [794, 270, 52, 52], at: [818, 324], face: 'B', exit: ['arenal', [90, 515]],
+      look: () => MA('La calle Concepción Arenal. Por ahí está la Fraternal: el bar de la brisca, la Champions y, si todo va bien, mi contrato.', 'pensativo') },
     { name: 'Rúa das Vacas', r: [900, 326, 60, 90], at: [940, 384], face: 'R', exit: ['__rua'],
       act: () => bark('¿La calle de las Vacas? Con estos zapatos, no. Con ese nombre, prefiero no averiguar si es por historia o por costumbre.') },
     { name: 'Sinal', r: [558, 250, 40, 64], look: () => MA('Prohibido aparcar, en los dos sentidos. Por si alguien pensaba aparcar en diagonal, que también lo he visto.', 'esceptico') },
@@ -328,10 +325,153 @@ SCENES.praza2 = {
       } },
   ],
 };
+/* ---------- A4b · Rúa Concepción Arenal (exterior da Fraternal) ----------
+   Fondo: ilustración de Oscar (img/bg-concepcion-arenal.jpg, recortada a 16:9).
+   A rúa afástase cara á esquerda: seguindo recto chégase á rúa Morín (a gasolineira).
+   Fóra da Fraternal está o tío David contando batallitas; se lle preguntas por Amparo, dálle paso á porta. */
+const DA = t => say('Tío David', t);
+async function davidTalk() {
+  if (!flag('davidSauda')) {
+    await DA('...e entón collo o balón no medio do campo, e... Martín?! O de Vilatán! Volviches, rapaz!');
+    await MA('He vuelto, David. Y veo que el gol sigue entrando.', 'sonriente');
+    await DA('Cada día un pouco mellor. Coma o viño.');
+    setFlag('davidSauda');
+  } else await DA('Outra vez por aquí? Iso é que che falta unha batallita.');
+  for (;;) {
+    const opts = [
+      ...(flag('objetivoContrato') && !flag('davidAmparo') ? [{ t: '¿Has visto a Amparo?', k: 'amparo' }] : []),
+      ...(flag('davidAmparo') ? [{ t: '¿Amparo sigue dentro?', k: 'amparo2' }] : []),
+      { t: '¿Qué tal el fútbol?', k: 'gol' },
+      { t: '¿Y la Champions?', k: 'champions' },
+      { t: 'Hasta luego, David.', k: 'adeus' },
+    ];
+    const k = opts[await choose(opts)].k;
+    if (k === 'amparo') {
+      await DA('Amparo? Dentro, na mesa do fondo, coa brisca. Non levanta a vista das cartas nin para pedir.');
+      await DA('Entra, entra. Pero non lle fales ata que remate a man, que despois a culpa da derrota é túa.');
+      await MA('Entrar, esperar a que acabe la mano, y no tener la culpa de nada. Como en el trabajo.', 'risueno');
+      setFlag('davidAmparo');
+    }
+    if (k === 'amparo2') await DA('Alí segue. Cando Amparo xoga, o mundo espera. E o mundo son eu, que estou aquí fóra.');
+    if (k === 'gol') {
+      await DA('Contei algunha vez o meu gol ao Ourense, en Terceira?');
+      await MA('Alguna vez. Alguna que otra.', 'esceptico');
+      await DA('Un domingo de sol. Collo o balón, un, dous, tres rivais, o porteiro no chan... e dentro! A grada tolea.');
+      await MA('Xoán dice que fue un miércoles. Y que llovía.', 'risueno');
+      await DA('Xoán! Cinco euros a que era domingo. Cinco euros a que había sol. E outros cinco a que Xoán nin estaba.');
+      await MA('No apuesto contra un gol de Tercera. Esos goles crecen con los años, como los peces de los pescadores.', 'sonriente');
+    }
+    if (k === 'champions') {
+      await DA('Martes e mércores, ás oito, aquí dentro. Vés, non? Gárdoche sitio.');
+      await MA('Allí estaré. Y a las once, a dormir: ni prórroga ni penaltis.', 'convencido');
+      await DA('Ás once! Coma os nenos. Ben, mellor: así non ves como perdemos.');
+    }
+    if (k === 'adeus') { await DA('Vai, vai. E se ves a Xoán, dille que era domingo.'); return; }
+  }
+}
+SCENES.arenal = {
+  name: 'Rúa Concepción Arenal', bg: 'img/bg-concepcion-arenal.jpg', music: 'estacion', floor: 'pedra',
+  walk: [[40, 336], [96, 332], [290, 388], [600, 452], [612, 420], [790, 402], [960, 412], [960, 540], [0, 540], [0, 350]],
+  holes: [
+    [[146, 386], [262, 386], [262, 408], [146, 408]],          // coche vermello
+    [[800, 404], [960, 404], [960, 482], [822, 482]],          // mesas da terraza
+    [[726, 470], [792, 470], [792, 494], [726, 494]],          // lousa
+  ],
+  front: [
+    { y: 492, r: [726, 384, 66, 110] },                        // lousa
+    { y: 482, r: [800, 360, 160, 124] },                       // mesas e cadeiras
+    { y: 408, r: [138, 336, 128, 74] },                        // coche
+  ],
+  scale: [336, 0.05, 540, 0.78], actorH: 300, start: [90, 515], minSpeed: 0.3,
+  hotspots: [
+    { name: 'Praza da Estación', key: true, r: [0, 470, 110, 70], at: [50, 524], face: 'F', exit: ['praza2', [818, 330]],
+      look: () => MA('De vuelta a la plaza de la estación. Concha, el quiosco y la fuente de proporciones perfectas.', 'pensativo') },
+    { name: 'Rúa Morín', r: [36, 282, 66, 56], at: [70, 340], face: 'L', exit: ['__rua'],
+      act: () => ruaPechada('Siguiendo recto se llega a la calle Morín, la de la gasolinera. Hoy no necesito gasolina: he venido en tren.', 'risueno') },
+    { name: 'Porta da Fraternal', key: true, r: [646, 282, 56, 140], at: [672, 438], face: 'B', exit: ['__fraternal'], done: () => flag('davidAmparo'),
+      act: async () => {
+        if (!flag('objetivoContrato')) { await bark('La Fraternal. Ahora no tengo nada que hacer dentro. Primero, las llaves de casa: las tiene Concha, en el quiosco.'); return; }
+        if (!flag('davidAmparo')) { await bark('¿Estará Amparo dentro? No quiero entrar a ciegas en mitad de una brisca. El tío David está en la puerta: él lo sabrá.'); return; }
+        SFX.door(); await goScene('fraternal', [590, 266]);
+      },
+      look: () => MA('La puerta de la Fraternal. Por aquí han entrado más goles de Champions que en muchos estadios.', 'sonriente') },
+    { name: 'Lousa', r: [726, 384, 66, 110], look: () => MA('Una pizarra con el menú escrito a tiza. Leo «caldo» y luego la letra se rinde. Como yo a estas horas.', 'risueno') },
+    { name: 'Fiestras da Fraternal', r: [296, 236, 254, 160], look: () => MA('Detrás del cristal, mesas, sillas y alguien con las cartas pegadas al pecho. Aquí la brisca se juega con la seriedad de una final.', 'pensativo') },
+    { name: 'Toldo', r: [292, 186, 264, 60], look: () => MA('«La Fraternal», en el toldo verde. Hay bares que tienen nombre y bares que tienen apellido. Este tiene las dos cosas.', 'sonriente') },
+    { name: 'Rótulo do cine', r: [688, 86, 146, 72], look: () => MA('«CINE», en rojo y en mayúsculas. No dice qué ponen. En Monforte, eso ya es suspense.', 'risueno') },
+    { name: 'Terraza', r: [800, 350, 160, 134], look: () => MA('Mesas de terraza bajo el soportal. Aquí se puede tomar algo al aire libre sin que te llueva encima. En Galicia, eso es un lujo.', 'convencido') },
+    { name: 'Coche vermello', r: [138, 336, 128, 74], look: () => MA('Un coche rojo aparcado delante. Tiene pinta de ser de alguien que solo ha bajado un momento. Hace tres horas.', 'esceptico') },
+    { name: 'Varandas', r: [270, 0, 560, 190], look: () => MA('Balcones con balaustres blancos sobre fachada azul. Desde ahí arriba se debe oír cada gol que se canta abajo.', 'pensativo') },
+    { name: 'Edificios', r: [70, 40, 200, 290], look: () => MA('Casas de colores calle abajo, una detrás de otra. Monforte, en fila y bien peinada.', 'sonriente') },
+  ],
+  npcs: [
+    { id: 'david', name: 'Tío David', key: true, sheet: 'img/david-sprite.png', spec: { cw: 160, ch: 280, cols: 8 },
+      get idle() { return E.dlg ? 3 : 5; }, talkFrames: [4, 9, 3, 7],
+      x: 556, y: 468, w: 90, h: 290, at: [480, 470], face: 'R',
+      done: () => flag('davidAmparo') || !flag('objetivoContrato') && flag('davidSauda'),
+      look: () => MA('El tío David, en la puerta de la Fraternal. Si pasas cerca, te cuenta su gol al Ourense. Si pasas lejos, también, pero más alto.', 'risueno'),
+      talk: () => davidTalk(),
+      give: {
+        ositos: async () => { await DA('Ositos? Eu son de cacahuetes, rapaz. Os ositos son para os nenos e para Concha.'); },
+        xornal: async () => { await DA('A páxina de deportes xa a sei de memoria. E aínda non saio eu.'); },
+        chavesCasa: async () => { await DA('As chaves da casa de Alfredo? Gárdaas ben, que Amparo cóntaas.'); },
+      } },
+  ],
+};
+/* ---------- B3 · A Fraternal (interior) ----------
+   Fondo: ilustración de Oscar (img/bg-fraternal.jpg). Barra á esquerda, mesas de brisca, columna, tele co fútbol,
+   tragaperras á dereita. Saída á rúa Concepción Arenal polas portas de cristal do fondo.
+   Dona Amparo xoga á brisca na mesa do fondo, á dereita (sprite pendente: de momento fala dende a mesa). */
+const AM = t => say('Dona Amparo', t);
+async function amparoBrisca() {
+  if (!flag('amparoMan')) {
+    await AM('Copas! E arrastro!');
+    await MA('Doña Amparo, perdone. Soy Martín, el del alquiler de la Casa Juana. Concha me ha dado las llaves y...', 'avergonzado');
+    await AM('Shhh! Non ves que estou na metade da man? Ata que non remate, nin o Papa. E ti non es o Papa.');
+    await MA('Concha me lo avisó. David me lo avisó. Y aun así. Soy el único de Monforte que interrumpe una brisca.', 'avergonzado');
+    setFlag('amparoMan');
+  } else await AM('Aínda non rematou a man, rapaz. As cartas non se xogan soas. Ben, as miñas case.');
+  await fimTramo();
+}
+SCENES.fraternal = {
+  name: 'A Fraternal', bg: 'img/bg-fraternal.jpg', music: 'casa', floor: 'pedra',
+  walk: [[222, 250], [430, 236], [520, 212], [610, 212], [860, 222], [880, 260], [830, 330], [820, 540], [160, 540], [172, 470], [222, 350]],
+  holes: [
+    [[428, 352], [700, 350], [700, 476], [560, 492], [460, 492], [428, 470]],   // mesa da fronte e cadeiras
+    [[440, 280], [522, 280], [522, 306], [440, 306]],                           // columna
+    [[214, 256], [378, 256], [378, 308], [214, 308]],                           // mesas da esquerda
+    [[654, 262], [812, 262], [812, 330], [654, 330]],                           // mesas da dereita
+    [[524, 214], [650, 214], [650, 250], [524, 250]],                           // mesas do medio
+  ],
+  front: [
+    { y: 488, r: [428, 296, 276, 200] },                 // mesa da fronte, cadeiras e xornal
+    { y: 306, r: [438, 0, 86, 306] },                    // columna
+    { y: 330, r: [650, 190, 166, 142] },                 // mesas da dereita
+    { y: 308, r: [212, 200, 170, 110] },                 // mesas da esquerda
+  ],
+  scale: [212, 0.18, 540, 0.85], actorH: 300, start: [590, 266], minSpeed: 0.4,
+  hotspots: [
+    { name: 'Rúa Concepción Arenal', key: true, r: [520, 82, 76, 128], at: [590, 262], face: 'B', exit: ['arenal', [672, 446]], door: true,
+      look: () => MA('La puerta a la calle. Fuera, el tío David seguirá metiendo el gol al Ourense. Ya va por el décimo.', 'risueno') },
+    { name: 'Dona Amparo', key: true, r: [676, 196, 120, 72], at: [740, 340], face: 'B', act: () => amparoBrisca(), done: () => flag('contratoAsinado'),
+      look: () => MA('Doña Amparo, en la mesa del fondo, con las cartas pegadas al pecho. Juega a la brisca como otros pilotan aviones: sin pestañear.', 'pensativo') },
+    { name: 'Lista de prezos', r: [20, 44, 82, 66], look: () => MA('Café, 1,20. Cerveza, 1,80. Precios de bar de los de antes. Aquí la inflación entra, pero se sienta y pide un café.', 'sonriente') },
+    { name: 'Cafeteira', r: [0, 158, 66, 54], look: () => MA('Una cafetera de las de verdad, con su vapor y su ruido. Como una locomotora, pero de las que te despiertan.', 'risueno') },
+    { name: 'Botellas', r: [0, 108, 40, 50], look: () => MA('Botellas en fila. Las de abajo, para diario. Las de arriba, para cuando gana el equipo. Están llenas.', 'esceptico') },
+    { name: 'Barra', r: [0, 212, 176, 328], look: () => MA('La barra de la Fraternal. Si esta madera hablase, sabría más de fútbol que la radio.', 'pensativo') },
+    { name: 'Taburetes', r: [80, 262, 140, 210], look: () => MA('Taburetes de barra. Uno está más gastado que los demás: alguien lleva media vida sentándose en el mismo.', 'sonriente') },
+    { name: 'Tele', r: [724, 76, 70, 50], look: () => MA('Fútbol en la tele, sin volumen. Aquí no hace falta: los comentarios los pone la clientela, y gratis.', 'risueno') },
+    { name: 'Tragaperras', r: [818, 200, 142, 340], look: () => MA('Una tragaperras. Mucha luz, mucho ruido y ninguna prisa por devolver nada.', 'esceptico') },
+    { name: 'Xornal e baralla', r: [506, 300, 130, 58], look: () => MA('Un periódico y una baraja en la misma mesa. El kit completo de la tarde gallega. Solo falta quien se queje del tiempo.', 'sonriente') },
+    { name: 'Aviso', r: [494, 140, 24, 40], look: () => MA('Un aviso en la columna, en letra pequeña. Desde aquí solo leo «prohibido». Para un bar, me basta.', 'esceptico') },
+    { name: 'Cadros', r: [94, 80, 330, 60], look: () => MA('Cuadros de montes y castillos. Uno se parece a Monforte, si lo miras con cariño y sin gafas.', 'pensativo') },
+    { name: 'Lousa', r: [108, 158, 34, 46], look: () => MA('Otra pizarra con letra de tiza. Aquí todo se escribe a mano, como debe ser.', 'sonriente') },
+    { name: 'Planta', r: [232, 120, 46, 90], look: () => MA('Una planta que ha sobrevivido a cientos de goles cantados a gritos. Es la socia más dura del bar.', 'risueno') },
+  ],
+};
 async function fimTramo() {
-  await MA('Las llaves en el bolsillo. Ahora, a la Fraternal, a firmar con Amparo. Y sin interrumpir la brisca.', 'convencido');
-  await showDoc('<h4>FIN DO TRAMO M1</h4><p>Martín xa ten as chaves da Casa Juana. A Fraternal (Amparo e a brisca), a Casa Juana sen auga e o resto do Acto 1 chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
-  face('L');
+  await MA('Pues nada: a esperar a que acabe la mano. Con las llaves en el bolsillo y una brisca por delante.', 'convencido');
+  await showDoc('<h4>FIN DO TRAMO M1</h4><p>Martín xa ten as chaves da Casa Juana e atopou a Amparo na Fraternal, en plena brisca. A firma do contrato, a historia da casa e o resto do Acto 1 chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
 }
 
 /* ---------- Mapa de Monforte (pantalla de viaxe entre zonas) ---------- */

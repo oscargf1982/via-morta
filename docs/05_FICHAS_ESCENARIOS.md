@@ -1,7 +1,7 @@
 # «Vía morta» · Fichas de escenarios
 
 > Cada escenario se describe aquí antes de programarlo en `js/acto*.js`. Coordenadas en el lienzo lógico de 960×540.
-> Los fondos de A1, A2, A3 y A3b son ilustraciones de Oscar. El mapa sigue siendo un **boceto provisional** generado con `tools/fondos.py`.
+> Los fondos de A1, A2, A3, A3b, A4b, B3 y la portada son ilustraciones de Oscar. El mapa sigue siendo un **boceto provisional** generado con `tools/fondos.py`.
 
 ## A1 · Andén 1 (`anden`)
 - **Fondo:** `img/bg-anden-estacion.jpg`, ilustración de Oscar. Marquesina con columnas de pie azul, la fachada con puertas azules en arco, el letrero «Monforte de Lemos», bancos, papelera y el regional parado en la vía 1.
@@ -31,12 +31,38 @@
   - Izquierda: primera pantalla de la plaza (A3).
   - Arriba a la izquierda: rúa Calvo Sotelo. En el Acto 1 no se entra: no hay nada relevante y Martín lo dice.
   - Arriba al centro: rúa Coruña, la del colegio ferroviario. Cerrada hasta un hito próximo.
-  - Arriba a la derecha: rúa Concepción Arenal, donde está la Fraternal. Sin las llaves, Martín recuerda que antes hay que pasar por Concha; con el objetivo del contrato, lleva al **fin del tramo M1**.
+  - Arriba a la derecha: rúa Concepción Arenal, donde está la Fraternal. Lleva a A4b.
   - Derecha: rúa das Vacas. Martín no quiere mancharse los zapatos.
 - **Hotspots:** quiosco (clave), revistas, fuente (Martín comenta que tiene las proporciones justas para una fuente), jardinera, señal, árbol, farol, edificio de la esquina, casa amarilla y edificios de la izquierda.
 - **NPC:** **Dona Concha**, de pie al lado del quiosco, leyendo el periódico mientras no habla. Árbol de diálogo: llaves de la casa, bolsa de ositos, periódico, «qué se cuenta» (el tren fantasma), la Casa Juana (Alfredo, Juana, el serrón), despedida. Si Martín pierde las llaves, Concha tiene otra copia (sin callejones sin salida).
 - **Objetos:** `chavesCasa`, `ositos`, `xornal`.
-- **Desbloquea:** marca `objetivoContrato` (firmar con Amparo en la Fraternal), que abre el fin del tramo por Concepción Arenal.
+- **Desbloquea:** marca `objetivoContrato` (firmar con Amparo en la Fraternal).
+
+## A4b · Rúa Concepción Arenal (`arenal`)
+- **Fondo:** `img/bg-concepcion-arenal.jpg`, ilustración de Oscar recortada a 16:9. La Fraternal con su toldo verde, el soportal del «CINE» con la terraza, la pizarra, el coche rojo y la calle que se aleja hacia la izquierda.
+- **Suelo:** la acera, el soportal y la calzada. Obstáculos: el coche, las mesas de la terraza y la pizarra. Capas delanteras: las tres.
+- **Salidas:**
+  - Abajo a la izquierda: vuelta a la segunda pantalla de la plaza (A3b).
+  - Calle recta hacia el fondo: rúa Morín, la de la gasolinera. Cerrada hasta un hito próximo; Martín dice que hoy no necesita gasolina porque ha venido en tren.
+  - Puerta de la Fraternal (B3). Sin el objetivo del contrato, Martín dice que primero necesita las llaves. Con el objetivo pero sin haber preguntado a David, Martín prefiere preguntarle antes de entrar. Después de preguntar, se entra.
+- **Hotspots:** puerta de la Fraternal (clave), ventanas del bar, toldo, rótulo del cine, pizarra, terraza, coche rojo, balcones y edificios.
+- **NPC:** **tío David**, en la puerta de la Fraternal con los brazos cruzados (sprite de la hoja de Oscar). Árbol de diálogo:
+  - saludo («O de Vilatán!»);
+  - «¿Has visto a Amparo?» (solo con el objetivo del contrato): está dentro, en la mesa del fondo, y no hay que interrumpir la mano. Marca `davidAmparo`;
+  - el fútbol: el gol al Ourense en Tercera, «un domingo de sol», la corrección de Xoán («un miércoles, y llovía») y la apuesta de cinco euros;
+  - la Champions: martes y miércoles a las 20:00, y Martín a dormir a las 23:00;
+  - despedida.
+
+## B3 · A Fraternal, interior (`fraternal`)
+- **Fondo:** `img/bg-fraternal.jpg`, ilustración de Oscar. Barra con lista de precios, cafetera y botellas; mesas de brisca con tapete verde, columnas, cuadros, tele con el fútbol y tragaperras.
+- **Suelo:** el terrazo. Obstáculos: la barra, la columna y los grupos de mesas. Capas delanteras: la mesa de delante (con La Voz y la baraja), la columna y las mesas laterales.
+- **Salidas:** puertas de cristal del fondo → rúa Concepción Arenal (A4b).
+- **Hotspots:** Dona Amparo (clave, en la mesa del fondo a la derecha), lista de precios, cafetera, botellas, barra, taburetes, tele, tragaperras, periódico y baraja, aviso de la columna, cuadros, pizarra y planta.
+- **NPC:** **Dona Amparo**, jugando a la brisca. Su sprite está pendiente de la hoja de Oscar; de momento habla desde la mesa. Abre con «Copas! E arrastro!» y no suelta las cartas a mitad de mano.
+- **Fin del tramo M1:** después de la primera conversación con Amparo. La firma del contrato (puzzle por decidir con Oscar) y la historia de la casa llegan en M2.
+
+## Portada
+- **Fondo del menú:** `img/portada-rotonda.jpg`, ilustración de Oscar de la rotonda del museo del ferrocarril de Monforte, con un velo oscuro para que se lea el menú.
 
 ## Mapa de Monforte (`mapa`)
 - **Fondo:** `img/bg-mapa.png`, mapa ilustrado en papel (no a escala, y así lo dice): río Cabe, Ponte Vella, monte de San Vicente, calles en esquema, vías que convergen en la estación y la rotonda del depósito.
