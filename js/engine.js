@@ -184,11 +184,19 @@ function npcScale(n) { return n.fixedScale || scaleAt(n.y); }
 
 /* acción por defecto / mirar / usar obxecto */
 const NOPE_LINES = ['Eso no funciona así. Ni en Renfe ni en ningún sitio.', 'No. Y mira que lo he intentado con convicción.', 'Mi madre diría que eso no tiene ni pies ni cabeza.', 'No pega. Como un Dépor-Celta en el mismo sofá.', 'Ni con el manual de Renfe delante.'];
+/* `at` e `face` poden ser valores ou funcións (para NPC que se moven) */
+const val = (v, o) => typeof v === 'function' ? v.call(o) : v;
 async function interact(hit, look) {
+  const o = hit.o;
+  if (!o.patrol) return interact0(hit, look);
+  o._hold = (o._hold || 0) + 1;            // un NPC que pasea párase mentres Martín vai falar con el
+  try { await interact0(hit, look); } finally { o._hold--; }
+}
+async function interact0(hit, look) {
   const o = hit.o, held = E.held;
   if (o.olloOnly) setFlag(o.olloOnly);
-  const goNear = async () => { if (o.at && E.actor.visible) { await walkTo(o.at[0], o.at[1]); if (o.face) face(o.face); } };
-  if (look) { await run(async () => { if (o.face && E.actor.visible) face(o.face); await (o.look ? o.look() : say('Martín', 'Lo miro bien... y no me dice nada. Será tímido.')); }); return; }
+  const goNear = async () => { const at = val(o.at, o); if (at && E.actor.visible) { await walkTo(at[0], at[1]); const f = val(o.face, o); if (f) face(f); } };
+  if (look) { await run(async () => { const f = val(o.face, o); if (f && E.actor.visible) face(f); await (o.look ? o.look() : say('Martín', 'Lo miro bien... y no me dice nada. Será tímido.')); }); return; }
   if (held) {
     await run(async () => {
       await goNear();
@@ -305,6 +313,7 @@ function update(dt) {
       A.stepT += dt; if (A.stepT > 0.3) { A.stepT = 0; SFX.step(E.scene.floor); }
     }
   }
+  for (const n of visibleNpcs()) if (n.patrol) patrolStep(n, dt);
   E.fade += (E.fadeTo - E.fade) * Math.min(1, dt * 10);
   if (E.olloT > 0) E.olloT = Math.max(0, E.olloT - dt);
   if (E.dlg && E.dlg.shown < E.dlg.text.length) E.dlg.shown = Math.min(E.dlg.text.length, E.dlg.shown + dt * (E.opts.fast ? 150 : 55));
@@ -382,6 +391,39 @@ function drawBarks() {
     c.textAlign = 'left';
   }
 }
+/* ---------- NPC que pasean ----------
+  patrol: { pts: [[x, y, dirAoChegar?], ...], speed, pause: [min, max], fps, when?: () => bool,
+            walk: { dir: [celas] }, idle: { dir: cela }, talk: { dir: [celas] } }
+  dir: F (cara á cámara), B (de costas), L, R, FL, FR, BL, BR. Se falta unha dirección úsase
+  a contraria en espello (L↔R). Párase mentres Martín interactúa con el e mira cara a Martín. */
+const MIRROR = { L: 'R', R: 'L', FL: 'FR', FR: 'FL', BL: 'BR', BR: 'BL', F: 'F', B: 'B' };
+function dir8(dx, dy) {
+  if (Math.abs(dy) < Math.abs(dx) * 0.4) return dx < 0 ? 'L' : 'R';
+  if (Math.abs(dx) < Math.abs(dy) * 0.4) return dy < 0 ? 'B' : 'F';
+  return (dy < 0 ? 'B' : 'F') + (dx < 0 ? 'L' : 'R');
+}
+function patrolStep(n, dt) {
+  const P = n.patrol, st = n._p || (n._p = { i: 0, wait: P.startWait ?? 0.8, dir: n.dir || 'F', moving: false, t: 0 });
+  st.moving = false;
+  if (n._hold || (E.dlg && E.dlg.who === n.name)) { const A = E.actor; if (A.visible && Math.abs(A.x - n.x) > 4) st.dir = A.x < n.x ? 'FL' : 'FR'; return; }
+  if (P.when && !P.when()) return;
+  if (st.wait > 0) { st.wait -= dt; return; }
+  const pt = P.pts[st.i], dx = pt[0] - n.x, dy = pt[1] - n.y, d = Math.hypot(dx, dy), sp = (P.speed || 80) * npcScale(n) * dt;
+  if (d <= sp) {
+    n.x = pt[0]; n.y = pt[1]; if (pt[2]) st.dir = pt[2];
+    const [a, b] = P.pause || [1, 3]; st.wait = a + Math.random() * (b - a); st.i = (st.i + 1) % P.pts.length;
+  } else { n.x += dx / d * sp; n.y += dy / d * sp; st.dir = dir8(dx, dy); st.moving = true; st.t += dt; }
+}
+function patrolFrame(n, talking) {
+  const P = n.patrol, st = n._p || { dir: n.dir || 'F', moving: false, t: 0 };
+  const pick = tbl => tbl && (tbl[st.dir] !== undefined ? [tbl[st.dir], false] : tbl[MIRROR[st.dir]] !== undefined ? [tbl[MIRROR[st.dir]], true] : null);
+  let r = st.moving && pick(P.walk);
+  if (r) return [r[0][Math.floor(st.t * (P.fps || 8)) % r[0].length], r[1]];
+  r = talking && pick(P.talk);
+  if (r) return [r[0][Math.floor(E.t * 6) % r[0].length], r[1]];
+  r = pick(P.idle) || [n.idle, false];
+  return r;
+}
 function drawActor() {
   const A = E.actor, s = scaleAt(A.y), h = (E.scene.actorH || 330) * s;
   drawShadow(A.x, A.y, 34 * s);
@@ -401,6 +443,7 @@ function drawNpc(n) {
   const s = npcScale(n), talking = (E.dlg && E.dlg.who === n.name && E.dlg.shown < E.dlg.text.length) || E.barks.some(b => b.who === n.name);
   if (n.shadow !== false) drawShadow(n.x, n.y, 30 * s);
   if (n.draw) { n.draw(E.ctx, E.t, talking, s); return; }
+  if (n.patrol) { const [idx, flip] = patrolFrame(n, talking); drawSprite(n.sheet, idx, n.x, n.y, n.h * s, flip, n.spec); return; }
   const idx = talking && n.talkFrames ? n.talkFrames[Math.floor(E.t * 6) % n.talkFrames.length] : n.idle;
   drawSprite(n.sheet, idx, n.x, n.y, n.h * s, n.flip, n.spec);
 }

@@ -175,6 +175,6 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
   - menú con Continuar, Nueva partida, Escoller acto, Opcións (texto rápido, música, efectos) y Créditos e fontes;
   - sonido sintetizado sin archivos: pasos según el suelo, coger, puertas, papel, música por zona y el silbato «dos largos y uno corto»;
   - móvil: en horizontal el inventario va en columna a la derecha; en vertical sale un aviso para girar y, si se sigue en vertical, la escena va arriba a todo el ancho con diálogo e inventario grandes debajo (elegido por Oscar).
-  - **Acto 1, primer tramo jugable:** A1 andén → A2 vestíbulo (Xoán y el mural) → A3 plaza (quiosco de Concha: llaves, ositos, periódico) → mapa de Monforte. Fichas en `05_FICHAS_ESCENARIOS.md`. Termina al ir a Doutor Casares con las llaves.
+  - **Acto 1, primer tramo jugable:** A1 andén → A2 vestíbulo (Xoán y el mural) → A3 plaza → A3b segunda pantalla de la plaza (quiosco de Concha: llaves, ositos, periódico) → mapa de Monforte. Fichas en `05_FICHAS_ESCENARIOS.md`. Termina al ir por Concepción Arenal hacia la Fraternal con las llaves.
 - **Provisional:** el mapa es un boceto por código (`tools/fondos.py`). El sprite y el retrato de Xoán Carballeira (antes Iván Nogal) salen de la hoja de personaje de Oscar con `tools/sprite-xoan.py`.
 - **Siguiente paso:** M2 (resto del Acto 1: A4 exterior de la Casa Juana, casa sin agua, Fraternal y Concello). Antes hay que cerrar con Oscar los dos puzzles marcados como propuesta (bolígrafo de Concha y Eladio en el café).

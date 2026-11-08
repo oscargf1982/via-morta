@@ -55,7 +55,7 @@ const SCENES = {
         use: { chave: async () => { setFlag('patioAberto'); await MA('Gira dura, pero gira. Setenta años de óxido diciendo que no... y luego que sí.', 'aliviado'); await goScene('taller', [120, 505]); } } },
     ],
     npcs: [
-      { id: 'concha', name: 'Dona Concha', sheet: 'img/concha.png', spec: { cw: 220, ch: 385, cols: 4 }, idle: 4, talkFrames: [5, 4], x: 650, y: 470, w: 110, h: 240, at: [565, 485], face: 'R',
+      { id: 'concha', name: 'Dona Concha', sheet: 'img/concha-sprite.png', spec: { cw: 160, ch: 280, cols: 8 }, idle: 4, talkFrames: [6, 4], flip: true, x: 650, y: 470, w: 110, h: 264, at: [565, 485], face: 'R',
         when: () => !flag('fin'),
         look: () => MA('Doña Concha, la del quiosco de la estación. Sabe más de Monforte que el Concello y el catastro juntos.', 'sonriente'),
         talk: () => conchaTalk(),
@@ -147,7 +147,7 @@ async function conchaTalk() {
 /* ---------- presets do selector de acto ----------
    O primeiro é o que usa «Nova partida». Os actos sen facer saen desactivados. */
 const ACTS = [
-  { id: 'acto1', name: 'Acto 1 · O regreso', desc: 'Luns. Martín chega no rexional (tramo M1: andén, vestíbulo e praza)', scene: 'anden', at: [600, 450], inv: [],
+  { id: 'acto1', name: 'Acto 1 · O regreso', desc: 'Luns. Martín chega no rexional (tramo M1: andén, vestíbulo e praza da estación)', scene: 'anden', at: [600, 450], inv: [],
     intro: () => introAnden() },
   { id: 'acto2', name: 'Acto 2 · O reencontro', desc: 'En construción (M3)', disabled: true },
   { id: 'acto3', name: 'Acto 3 · A curiosidade', desc: 'En construción (M4)', disabled: true },
@@ -160,6 +160,6 @@ const ACTS = [
 /* ---------- créditos e fontes (sempre no menú) ---------- */
 const CREDITS = `<p><b>«Vía morta»</b> é unha obra de ficción inspirada en lugares reais de Monforte de Lemos. <b>Non é información oficial</b>, nin catastral, nin rexistral, nin histórica.</p>
 <h3>Autoría</h3><ul><li>Idea, historia e personaxes: Oscar.</li><li>Programación e textos de apoio: Oscar con Claude.</li></ul>
-<h3>Imaxes</h3><ul><li>Fotos do taller da Casa Juana: Oscar.</li><li>Mural da estación de Monforte (1954): Cándido Fernández Inchaurbe, delineante de Renfe. Restaurado por Adif a petición de Apatrigal.</li><li>Fondos do andén, do vestíbulo e da praza da estación e primeiro plano do mural: Oscar.</li><li>Folla de personaxe de Xoán Carballeira (sprite e retrato): Oscar.</li><li>Mapa de Monforte: bosquexo provisional, pendente de arte definitiva.</li></ul>
+<h3>Imaxes</h3><ul><li>Fotos do taller da Casa Juana: Oscar.</li><li>Mural da estación de Monforte (1954): Cándido Fernández Inchaurbe, delineante de Renfe. Restaurado por Adif a petición de Apatrigal.</li><li>Fondos do andén, do vestíbulo e das dúas pantallas da praza da estación e primeiro plano do mural: Oscar.</li><li>Follas de personaxe de Xoán Carballeira e Dona Concha (sprites e retratos): Oscar.</li><li>Mapa de Monforte: bosquexo provisional, pendente de arte definitiva.</li></ul>
 <h3>Fontes</h3><ul><li>Datos da Casa Juana (escritura n.º 375, 2 de xuño de 1952): recompilados por Oscar. Pendente de cotexar coa escritura orixinal.</li><li>Sobre o mural: <a href="https://www.elprogreso.es/articulo/ribeira-sacra/mapa-gallego-ferrocarril-cobra-vida/202309051715141689694.html" target="_blank" rel="noopener">El Progreso, «El mapa gallego del ferrocarril cobra vida»</a>.</li></ul>
 <h3>Que é ficción</h3><ul><li>Todos os personaxes (Martín, Xoán Carballeira, Xosé Nogal, Concha, Amparo...) e os feitos do 14 de xaneiro de 1958.</li><li>A vía morta de A Barreira, a restauración secreta da Mikado e o parte escondido.</li><li>O destino real da maquinaria vendida en 1952 non está demostrado: no xogo é só unha hipótese de Martín.</li><li>O mapa de Monforte do xogo é ilustrado e non está a escala.</li></ul>`;

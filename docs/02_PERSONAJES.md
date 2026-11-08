@@ -51,7 +51,8 @@
 - Tiene las llaves de la Casa Juana que le deja Amparo y conoce la historia del carpintero: «Dende o quiosco oíase o serrón».
 - En el Acto 4 consigue **112 firmas** en una hora. En el Acto 5 reconoce el silbato: es como saludaba Xosé al pasar por la casa.
 - **Voz:** «Ti es o rapaz de Vilatán! [...] Na túa casa daban ben de comer.»
-- **Recursos gráficos:** `concha.png` (chibi, 4×2 celdas de 220×385) y `concha-face.png`.
+- **Aspecto (hoja de Oscar, `assets/personajes/dona-concha-hoja.png`):** pelo castaño claro rizado recogido en coleta, pendientes de perla, sudadera morada con capucha, vaqueros y zapatillas blancas; casi siempre con el periódico en la mano.
+- **Recursos gráficos:** `concha-sprite.png` (celdas de 160×280, 8 columnas: 0 frente leyendo, 1 espalda, 2 perfil derecha, 3 perfil izquierda, 4 tres cuartos derecha, 5 tres cuartos de espalda, 6 y 7 hablando de 4 y de 0, 8-13 andar a la derecha) y retrato `concha-face.png`. Se regeneran con `python3 tools/sprite-concha.py`. Las 4 expresiones y los 2 gestos de medio cuerpo de la hoja quedan como referencia.
 
 ## Dona Amparo (la Fraternal)
 - Juega a la brisca en la Fraternal: «Copas! E arrastro!». Gestiona las llaves y el alquiler de la Casa Juana para sus dueños y le firma el contrato a Martín.
