@@ -1,4 +1,4 @@
-# Vía morta · aventura gráfica (paquete inicial)
+# Vía morta · aventura gráfica
 
 Aventura point & click de Martín Pardo en Monforte de Lemos. Este paquete trae el motor, una demo jugable de 4 escenas y los documentos del proyecto.
 
@@ -19,7 +19,15 @@ Aventura point & click de Martín Pardo en Monforte de Lemos. Este paquete trae 
 ## Probar la demo en tu ordenador
 Abre `index.html` con un servidor local; si lo abres con doble clic, algunos navegadores bloquean las imágenes. Por ejemplo: `python3 -m http.server` en esta carpeta, y después http://localhost:8000.
 
-**Solución de la demo:**
+**Tramo M1 (Acto 1, «Nova partida»):**
+1. En el andén, entra en el vestíbulo.
+2. Habla con Iván (opcional): el mural y la Casa Juana.
+3. Sal a la plaza y habla con Concha: pídele las llaves (y, si quieres, ositos y el periódico).
+4. Ve a la Rúa Doutor Casares (derecha) con las llaves: fin del tramo.
+- Con el botón **OLLO** (o Q) se marcan las cosas importantes. En el vestíbulo, el ollo descubre la firma del mural.
+- El plano de la plaza abre el **mapa de Monforte**.
+
+**Solución de la demo técnica (M0, en «Escoller acto»):**
 1. Habla con Concha y pregúntale por la nave.
 2. Dale los ositos y te da la llave del taller.
 3. En la cocina, coge la navaja del cajón.
@@ -31,9 +39,12 @@ Abre `index.html` con un servidor local; si lo abres con doble clic, algunos nav
 
 ## Estructura
 ```
-index.html          interfaz (lienzo, inventario, diálogo, documentos, cinemática, menú)
-js/engine.js        motor: escenas, caminar, hotspots, inventario, diálogos, guardado
-js/data.js          contenido: objetos, escenas, NPC, diálogos y guion de la demo
+index.html          interfaz (lienzo, inventario, diálogo, documentos, cinemática, menú, aviso de girar)
+js/engine.js        motor: escenas, caminos A*, capas, ollo, bocadillos, inventario, diálogos, sonido, menú, guardado
+js/data.js          común: retratos, objetos, demo de la Casa Juana, selector de actos (ACTS) y créditos
+js/acto1.js         Acto 1: andén, vestíbulo, plaza y mapa de Monforte
+tools/fondos.py     genera los fondos provisionales y el sprite de Iván (python3 tools/fondos.py)
+tools/html-unico.py empaqueta todo en un único HTML con las imágenes dentro
 img/                fondos (bg-*), sprites y retratos de Martín, Concha, Iván, mural
 docs/               documentos del proyecto
 ```
@@ -53,6 +64,13 @@ SCENES.quiosco = {
   npcs: [ /* ver Dona Concha en data.js */ ],
 };
 ```
+Novedades del motor (M1):
+- `walk` puede ser un polígono o una lista de polígonos; `holes: [poly, ...]` son obstáculos. El camino se calcula solo.
+- `front: [{ y, r | poly }]`: capas delanteras. Tapan a quien tenga una `y` menor (está detrás).
+- Hotspots y NPC: `key: true` los marca con el ollo; `done: () => bool` los pone en verde; `olloOnly: 'marca'` solo existen con el ollo hasta que se descubren.
+- `bark(texto, quien)`: comentario breve sobre la cabeza, sin panel. `music: 'estacion' | 'casa' | 'mapa'` y `floor: 'pedra' | 'madeira' | 'grava'` por escena. `SFX.whistle()` toca el silbato.
+- Si un hotspot tiene `act` y `exit`, manda `act` (salidas con condición).
+
 Las líneas de Martín se escriben con `MA(texto, emoción)`. Las emociones posibles son: neutro, sonriente, risueno, sorprendido, dudoso, pensativo, esceptico, preocupado, convencido, orgulloso, enfadado, frustrado, aliviado, entusiasmado y avergonzado.
 
 ## Créditos de la demo

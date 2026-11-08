@@ -160,7 +160,7 @@ Hay tres heredados del juego de mundo abierto, todos opcionales o con alternativ
 | Hito | Contenido | Estado |
 |---|---|---|
 | **M0 · Demo técnica** | 4 escenas de la Casa Juana; todas las mecánicas básicas; final con la cinemática del mural | ✅ hecho (paquete inicial) |
-| **M1 · Motor completo** | Pathfinding, capas, mapa de Monforte, ollo, menú con créditos, selector de acto, audio | — |
+| **M1 · Motor completo** | Pathfinding, capas, mapa de Monforte, ollo, menú con créditos, selector de acto, audio | ✅ hecho (noviembre de 2026), con A1–A3 de prueba |
 | **M2 · Acto 1** «O regreso» | Estación, quiosco, Casa Juana, Fraternal, Concello | — |
 | **M3 · Acto 2** «O reencontro» | Farmacia, Club Fluvial, Malecón y castillo; investigación del taller | — |
 | **M4 · Acto 3** «A curiosidade» | Depósito y museo, pistas, vigilancia nocturna | — |
