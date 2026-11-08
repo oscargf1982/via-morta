@@ -626,8 +626,12 @@ SCENES.casares = {
   hotspots: [
     { name: 'Rúa Morín', key: true, r: [0, 440, 120, 100], at: [60, 515], face: 'F', exit: ['morin', [418, 352]],
       look: () => MA('Por ahí vuelvo hacia la calle Morín y la Fraternal.', 'pensativo') },
-    { name: 'Rúa cara ao centro', r: [180, 300, 120, 40], at: [240, 342], face: 'B', exit: ['__rua'],
-      act: () => ruaPechada('La calle sigue hacia el centro. Hoy ya he visto bastante Monforte para un lunes.', 'pensativo') },
+    { name: 'Rúa cara ao centro', key: true, done: () => !flag('sinAgua') || flag('aguaAlta'), r: [180, 300, 120, 40], at: [240, 342], face: 'B', exit: ['__centro'], hint: 'U',
+      act: async () => {
+        if (flag('sinAgua') && !flag('aguaAlta')) { await MA('Hacia el centro, al Concello. A dar de alta el agua, contrato en mano.', 'convencido'); return goScene('mapa'); }
+        if (flag('contratoAsinado')) return goScene('mapa');
+        await ruaPechada('La calle sigue hacia el centro. Hoy ya he visto bastante Monforte para un lunes.', 'pensativo');
+      } },
     { name: 'Porta da Casa Juana', key: true, r: [654, 236, 70, 176], at: [690, 424], face: 'B', exit: ['__casa'], done: () => flag('contratoAsinado'),
       act: async () => {
         if (!hasItem('chavesCasa')) { await bark('Cerrada, claro. Las llaves las tiene Concha, en el quiosco de la plaza.'); return; }
@@ -743,7 +747,7 @@ async function billaSenAuga() {
   await MA('Ni una gota. Ni un gorgoteo. Ni un triste suspiro de tubería.', 'sorprendido');
   await MA('Claro: el contrato está firmado, pero el agua hay que darla de alta en el Concello. Con el contrato en la mano, como todo en esta vida.', 'pensativo');
   await MA('Y la planta del salón tan verde... Esa sabe algo que yo no sé.', 'esceptico');
-  toast('O Concello e a alta da auga chegan no hito M2');
+  toast('Novo obxectivo: o Concello. Na rúa, cara ao centro, e no mapa, zona Centro');
 }
 SCENES.casaCocina = {
   name: 'Casa Juana · Cociña', bg: 'img/bg-casa-cocina.jpg', music: 'casa', floor: 'madeira',
