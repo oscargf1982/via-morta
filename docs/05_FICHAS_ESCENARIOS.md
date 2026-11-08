@@ -50,7 +50,7 @@
 - **Suelo:** la acera y la calzada. Obstáculos y capas delanteras: el banco y la farola.
 - **Salidas:**
   - Abajo a la izquierda: rúa Morín (A4c), confirmado por Oscar.
-  - Calle hacia el fondo: cerrada hasta un hito próximo.
+  - Calle hacia el fondo («Rúa cara ao centro», flecha arriba): con el contrato firmado lleva al mapa. Tras descubrir que no hay agua, Martín dice que va al Concello y el mapa se abre para ir a la zona Centro.
   - Puerta de la Casa Juana (la de la derecha). Sin llaves: Concha las tiene. Con llaves pero sin contrato: primero firmar con Rosario. Con las dos cosas: **fin del tramo** (el interior, la casa sin agua y el Concello llegan en M2).
 - **Hotspots:** puerta de casa (clave), portalón con vado, puerta estrecha, balcón, fachada, muro rojo (clave: detrás está la nave), nave de chapa, banco, farola, supermercado (broma del agua), tapa de alcantarilla y edificios.
 
