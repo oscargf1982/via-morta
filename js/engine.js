@@ -343,7 +343,7 @@ function update(dt) {
       A.stepT += dt; if (A.stepT > 0.3) { A.stepT = 0; SFX.step(E.scene.floor); }
     }
   }
-  for (const n of visibleNpcs()) if (n.patrol) patrolStep(n, dt);
+  for (const n of visibleNpcs()) { if (n._mv) moveStep(n, dt); else if (n.patrol) patrolStep(n, dt); }
   // zonas de proximidade (scene.zones): ao entrar nunha zona do chan execútase z.enter() unha vez,
   // e volve poder executarse cando Martín sae dela. Para comentarios de paso (bark), sen parar o xogo.
   if (E.scene.zones && !E.scene.noActor && !E.busy) for (const z of E.scene.zones) {
@@ -450,6 +450,12 @@ function patrolStep(n, dt) {
     const [a, b] = P.pause || [1, 3]; st.wait = a + Math.random() * (b - a); st.i = (st.i + 1) % P.pts.length;
   } else { n.x += dx / d * sp; n.y += dy / d * sp; st.dir = dir8(dx, dy); st.moving = true; st.t += dt; }
 }
+/* movemento dun NPC guiado por un script (p. ex. saír correndo): await npcMove(n, x, y, { frames, fps, speed, flip }) */
+function npcMove(n, x, y, o = {}) { return new Promise(r => { n._mv = { x, y, speed: o.speed || 120, frames: o.frames, fps: o.fps || 10, flip: !!o.flip, t: 0, done: r }; }); }
+function moveStep(n, dt) {
+  const M = n._mv, dx = M.x - n.x, dy = M.y - n.y, d = Math.hypot(dx, dy), sp = M.speed * npcScale(n) * dt; M.t += dt;
+  if (d <= sp) { n.x = M.x; n.y = M.y; n._mv = null; M.done(); } else { n.x += dx / d * sp; n.y += dy / d * sp; }
+}
 function patrolFrame(n, talking) {
   const P = n.patrol, st = n._p || { dir: n.dir || 'F', moving: false, t: 0 };
   const pick = tbl => tbl && (tbl[st.dir] !== undefined ? [tbl[st.dir], false] : tbl[MIRROR[st.dir]] !== undefined ? [tbl[MIRROR[st.dir]], true] : null);
@@ -479,6 +485,7 @@ function drawNpc(n) {
   const s = npcScale(n), talking = (E.dlg && E.dlg.who === n.name && E.dlg.shown < E.dlg.text.length) || E.barks.some(b => b.who === n.name);
   if (n.shadow !== false) drawShadow(n.x, n.y, 30 * s);
   if (n.draw) { n.draw(E.ctx, E.t, talking, s); return; }
+  if (n._mv && n._mv.frames) { const M = n._mv; drawSprite(n.sheet, M.frames[Math.floor(M.t * M.fps) % M.frames.length], n.x, n.y, n.h * s, M.flip, n.spec); return; }
   if (n.patrol) { const [idx, flip] = patrolFrame(n, talking); drawSprite(n.sheet, idx, n.x, n.y, n.h * s, flip, n.spec); return; }
   const idx = talking && n.talkFrames ? n.talkFrames[Math.floor(E.t * 6) % n.talkFrames.length] : n.idle;
   drawSprite(n.sheet, idx, n.x, n.y, n.h * s, n.flip, n.spec);

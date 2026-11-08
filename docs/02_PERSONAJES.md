@@ -72,6 +72,8 @@
 - Funcionario que «naceu pechando». La ventanilla 1 «agora tamén é a 3».
 - En el Acto 1 cierra a las dos y se va al café. En el Acto 4 exige el modelo T-14 y cien firmas para el permiso. Revela sin querer que «un tal Nogal» ya lo pidió el mes pasado.
 - Al final se ablanda: su padre era guardagujas. «Dígalle a Anxo que me garde sitio.»
+- **Aspecto (hoja de Oscar, `assets/personajes/don-eladio-hoja.png`):** calvo con cuatro pelos grises a los lados, cejas fruncidas, traje marrón, camisa beige con bolígrafos en el bolsillo y corbata granate.
+- **Recursos gráficos:** `eladio-sprite.png` (celdas de 160×280, 8 columnas: 0 sentado en el taburete, 1 sentado hablando, 8-15 corriendo de espaldas) y retrato `eladio-face.png`. Se regeneran con `python3 tools/sprite-eladio.py`. En la ventanilla se dibuja solo la mitad de arriba de la celda sentada.
 
 ## Valerio (farmacia, Rúa do Cardeal 23)
 - Compañero de instituto de Martín. Está detrás del mostrador de su padre, con la bata de su padre y los clientes de su padre.
