@@ -36,7 +36,7 @@
 - **Hotspots:** quiosco (clave), revistas, fuente (Martín comenta que tiene las proporciones justas para una fuente), jardinera, señal, árbol, farol, edificio de la esquina, casa amarilla y edificios de la izquierda.
 - **NPC:** **Dona Concha**, de pie al lado del quiosco, leyendo el periódico mientras no habla. Árbol de diálogo: llaves de la casa, bolsa de ositos, periódico, «qué se cuenta» (el tren fantasma), la Casa Juana (Alfredo, Juana, el serrón), despedida. Si Martín pierde las llaves, Concha tiene otra copia (sin callejones sin salida).
 - **Objetos:** `chavesCasa`, `ositos`, `xornal`.
-- **Desbloquea:** marca `objetivoContrato` (firmar con Amparo en la Fraternal).
+- **Desbloquea:** marca `objetivoContrato` (firmar con Rosario en la Fraternal).
 
 ## A4b · Rúa Concepción Arenal (`arenal`)
 - **Fondo:** `img/bg-concepcion-arenal.jpg`, ilustración de Oscar recortada a 16:9. La Fraternal con su toldo verde, el soportal del «CINE» con la terraza, la pizarra, el coche rojo y la calle que se aleja hacia la izquierda.
@@ -48,7 +48,7 @@
 - **Hotspots:** puerta de la Fraternal (clave), ventanas del bar, toldo, rótulo del cine, pizarra, terraza, coche rojo, balcones y edificios.
 - **NPC:** **tío David**, en la puerta de la Fraternal con los brazos cruzados (sprite de la hoja de Oscar). Árbol de diálogo:
   - saludo («O de Vilatán!»);
-  - «¿Has visto a Amparo?» (solo con el objetivo del contrato): está dentro, en la mesa del fondo, y no hay que interrumpir la mano. Marca `davidAmparo`;
+  - «¿Has visto a Rosario?» (solo con el objetivo del contrato): está dentro, en la mesa del fondo, y no hay que interrumpir la mano. Marca `davidRosario`;
   - el fútbol: el gol al Ourense en Tercera, «un domingo de sol», la corrección de Xoán («un miércoles, y llovía») y la apuesta de cinco euros;
   - la Champions: martes y miércoles a las 20:00, y Martín a dormir a las 23:00;
   - despedida.
@@ -57,9 +57,9 @@
 - **Fondo:** `img/bg-fraternal.jpg`, ilustración de Oscar. Barra con lista de precios, cafetera y botellas; mesas de brisca con tapete verde, columnas, cuadros, tele con el fútbol y tragaperras.
 - **Suelo:** el terrazo. Obstáculos: la barra, la columna y los grupos de mesas. Capas delanteras: la mesa de delante (con La Voz y la baraja), la columna y las mesas laterales.
 - **Salidas:** puertas de cristal del fondo → rúa Concepción Arenal (A4b).
-- **Hotspots:** Dona Amparo (clave, en la mesa del fondo a la derecha), lista de precios, cafetera, botellas, barra, taburetes, tele, tragaperras, periódico y baraja, aviso de la columna, cuadros, pizarra y planta.
-- **NPC:** **Dona Amparo**, jugando a la brisca. Su sprite está pendiente de la hoja de Oscar; de momento habla desde la mesa. Abre con «Copas! E arrastro!» y no suelta las cartas a mitad de mano.
-- **Fin del tramo M1:** después de la primera conversación con Amparo. La firma del contrato (puzzle por decidir con Oscar) y la historia de la casa llegan en M2.
+- **Hotspots:** Rosario Higueras (clave, en la mesa del fondo a la derecha), lista de precios, cafetera, botellas, barra, taburetes, tele, tragaperras, periódico y baraja, aviso de la columna, cuadros, pizarra y planta.
+- **NPC:** **Rosario Higueras**, jugando a la brisca. Su sprite está pendiente de la hoja de Oscar; de momento habla desde la mesa. Abre con «Copas! E arrastro!» y no suelta las cartas a mitad de mano.
+- **Fin del tramo M1:** después de la primera conversación con Rosario. La firma del contrato (puzzle por decidir con Oscar) y la historia de la casa llegan en M2.
 
 ## Portada
 - **Fondo del menú:** `img/portada-rotonda.jpg`, ilustración de Oscar de la rotonda del museo del ferrocarril de Monforte, con un velo oscuro para que se lea el menú.

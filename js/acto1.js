@@ -176,7 +176,7 @@ SCENES.vestibulo = {
       give: {
         ositos: async () => { await XO('Grazas, pero non. Os ositos son de Concha: se che ve dármolos, retíranos a palabra aos dous.'); },
         xornal: async () => { await XO('Xa o lin. A esta hora xa o leu media estación. A outra media é Concha.'); },
-        chavesCasa: async () => { await XO('As chaves da casa roxa. Gárdaas ben. Esa casa... ten moita historia.'); await MA('¿Qué historia?', 'dudoso'); await XO('Pregúntalle a Amparo. Ela cóntao mellor. E máis longo.'); },
+        chavesCasa: async () => { await XO('As chaves da casa roxa. Gárdaas ben. Esa casa... ten moita historia.'); await MA('¿Qué historia?', 'dudoso'); await XO('Pregúntalle a Rosario, a da Fraternal. Ela cóntao mellor. E máis longo.'); },
       } },
   ],
 };
@@ -201,14 +201,14 @@ async function conchaQuiosco() {
     ];
     const k = opts[await choose(opts)].k;
     if (k === 'chaves') {
-      await CO('Aquí as teño. Deixounas Amparo, que leva o aluguer polos donos.');
+      await CO('Aquí as teño. Deixounas Rosario Higueras, que leva o aluguer polos donos.');
       give('chavesCasa'); setFlag('chavesDadas');
       await CO('Pero o contrato asínao ela, eh? Está na Fraternal, xogando á brisca. E non a molestes en metade dunha man, que morde.');
-      await MA('Firmar con Amparo, en la Fraternal, sin interrumpir la brisca. Apuntado. Lo de morder, también.', 'convencido');
+      await MA('Firmar con Rosario, en la Fraternal, sin interrumpir la brisca. Apuntado. Lo de morder, también.', 'convencido');
       setFlag('objetivoContrato');
     }
     if (k === 'chaves2') {
-      await CO('Perdícheslas xa? Ai, Martiño... Menos mal que Amparo me deixou outra copia. Coma se te coñecese.');
+      await CO('Perdícheslas xa? Ai, Martiño... Menos mal que Rosario me deixou outra copia. Coma se te coñecese.');
       give('chavesCasa');
     }
     if (k === 'ositos') {
@@ -229,7 +229,7 @@ async function conchaQuiosco() {
       await CO('A casa do señor Alfredo, o carpinteiro. Juana era a súa muller, e deulle o nome á casa.');
       await CO('Atrás tiña unha carpintaría que daba gusto. Dende o quiosco oíase o serrón.');
       await MA('¿Desde aquí? Pues sí que serraba fuerte el señor Alfredo.', 'sorprendido');
-      await CO('Ou eu tiña bo oído. As dúas cousas. Pregúntalle a Amparo, que lle encanta contalo.');
+      await CO('Ou eu tiña bo oído. As dúas cousas. Pregúntalle a Rosario, que lle encanta contalo.');
     }
     if (k === 'adeus') { await CO('Vai, e come algo, que estás chupado.'); return; }
   }
@@ -328,7 +328,7 @@ SCENES.praza2 = {
 /* ---------- A4b · Rúa Concepción Arenal (exterior da Fraternal) ----------
    Fondo: ilustración de Oscar (img/bg-concepcion-arenal.jpg, recortada a 16:9).
    A rúa afástase cara á esquerda: seguindo recto chégase á rúa Morín (a gasolineira).
-   Fóra da Fraternal está o tío David contando batallitas; se lle preguntas por Amparo, dálle paso á porta. */
+   Fóra da Fraternal está o tío David contando batallitas; se lle preguntas por Rosario, dálle paso á porta. */
 const DA = t => say('Tío David', t);
 async function davidTalk() {
   if (!flag('davidSauda')) {
@@ -339,20 +339,20 @@ async function davidTalk() {
   } else await DA('Outra vez por aquí? Iso é que che falta unha batallita.');
   for (;;) {
     const opts = [
-      ...(flag('objetivoContrato') && !flag('davidAmparo') ? [{ t: '¿Has visto a Amparo?', k: 'amparo' }] : []),
-      ...(flag('davidAmparo') ? [{ t: '¿Amparo sigue dentro?', k: 'amparo2' }] : []),
+      ...(flag('objetivoContrato') && !flag('davidAmparo') ? [{ t: '¿Has visto a Rosario Higueras?', k: 'amparo' }] : []),
+      ...(flag('davidAmparo') ? [{ t: '¿Rosario sigue dentro?', k: 'amparo2' }] : []),
       { t: '¿Qué tal el fútbol?', k: 'gol' },
       { t: '¿Y la Champions?', k: 'champions' },
       { t: 'Hasta luego, David.', k: 'adeus' },
     ];
     const k = opts[await choose(opts)].k;
     if (k === 'amparo') {
-      await DA('Amparo? Dentro, na mesa do fondo, coa brisca. Non levanta a vista das cartas nin para pedir.');
+      await DA('A Rosario? Dentro, na mesa do fondo, coa brisca. Non levanta a vista das cartas nin para pedir.');
       await DA('Entra, entra. Pero non lle fales ata que remate a man, que despois a culpa da derrota é túa.');
       await MA('Entrar, esperar a que acabe la mano, y no tener la culpa de nada. Como en el trabajo.', 'risueno');
       setFlag('davidAmparo');
     }
-    if (k === 'amparo2') await DA('Alí segue. Cando Amparo xoga, o mundo espera. E o mundo son eu, que estou aquí fóra.');
+    if (k === 'amparo2') await DA('Alí segue. Cando Rosario xoga, o mundo espera. E o mundo son eu, que estou aquí fóra.');
     if (k === 'gol') {
       await DA('Contei algunha vez o meu gol ao Ourense, en Terceira?');
       await MA('Alguna vez. Alguna que otra.', 'esceptico');
@@ -391,7 +391,7 @@ SCENES.arenal = {
     { name: 'Porta da Fraternal', key: true, r: [646, 282, 56, 140], at: [672, 438], face: 'B', exit: ['__fraternal'], done: () => flag('davidAmparo'),
       act: async () => {
         if (!flag('objetivoContrato')) { await bark('La Fraternal. Ahora no tengo nada que hacer dentro. Primero, las llaves de casa: las tiene Concha, en el quiosco.'); return; }
-        if (!flag('davidAmparo')) { await bark('¿Estará Amparo dentro? No quiero entrar a ciegas en mitad de una brisca. El tío David está en la puerta: él lo sabrá.'); return; }
+        if (!flag('davidAmparo')) { await bark('¿Estará Rosario dentro? No quiero entrar a ciegas en mitad de una brisca. El tío David está en la puerta: él lo sabrá.'); return; }
         SFX.door(); await goScene('fraternal', [590, 266]);
       },
       look: () => MA('La puerta de la Fraternal. Por aquí han entrado más goles de Champions que en muchos estadios.', 'sonriente') },
@@ -414,23 +414,23 @@ SCENES.arenal = {
       give: {
         ositos: async () => { await DA('Ositos? Eu son de cacahuetes, rapaz. Os ositos son para os nenos e para Concha.'); },
         xornal: async () => { await DA('A páxina de deportes xa a sei de memoria. E aínda non saio eu.'); },
-        chavesCasa: async () => { await DA('As chaves da casa de Alfredo? Gárdaas ben, que Amparo cóntaas.'); },
+        chavesCasa: async () => { await DA('As chaves da casa de Alfredo? Gárdaas ben, que Rosario cóntaas.'); },
       } },
   ],
 };
 /* ---------- B3 · A Fraternal (interior) ----------
    Fondo: ilustración de Oscar (img/bg-fraternal.jpg). Barra á esquerda, mesas de brisca, columna, tele co fútbol,
    tragaperras á dereita. Saída á rúa Concepción Arenal polas portas de cristal do fondo.
-   Dona Amparo xoga á brisca na mesa do fondo, á dereita (sprite pendente: de momento fala dende a mesa). */
-const AM = t => say('Dona Amparo', t);
-async function amparoBrisca() {
+   Rosario Higueras xoga á brisca na mesa do fondo, á dereita (sprite pendente: de momento fala dende a mesa). */
+const RO = t => say('Rosario Higueras', t);
+async function rosarioBrisca() {
   if (!flag('amparoMan')) {
-    await AM('Copas! E arrastro!');
-    await MA('Doña Amparo, perdone. Soy Martín, el del alquiler de la Casa Juana. Concha me ha dado las llaves y...', 'avergonzado');
-    await AM('Shhh! Non ves que estou na metade da man? Ata que non remate, nin o Papa. E ti non es o Papa.');
+    await RO('Copas! E arrastro!');
+    await MA('¿Rosario? Perdona. Soy Martín, el del alquiler de la Casa Juana. Concha me ha dado las llaves y...', 'avergonzado');
+    await RO('Shhh! Non ves que estou na metade da man? Ata que non remate, nin o Papa. E ti non es o Papa.');
     await MA('Concha me lo avisó. David me lo avisó. Y aun así. Soy el único de Monforte que interrumpe una brisca.', 'avergonzado');
     setFlag('amparoMan');
-  } else await AM('Aínda non rematou a man, rapaz. As cartas non se xogan soas. Ben, as miñas case.');
+  } else await RO('Aínda non rematou a man, rapaz. As cartas non se xogan soas. Ben, as miñas case.');
   await fimTramo();
 }
 SCENES.fraternal = {
@@ -453,8 +453,8 @@ SCENES.fraternal = {
   hotspots: [
     { name: 'Rúa Concepción Arenal', key: true, r: [520, 82, 76, 128], at: [590, 262], face: 'B', exit: ['arenal', [672, 446]], door: true,
       look: () => MA('La puerta a la calle. Fuera, el tío David seguirá metiendo el gol al Ourense. Ya va por el décimo.', 'risueno') },
-    { name: 'Dona Amparo', key: true, r: [676, 196, 120, 72], at: [740, 340], face: 'B', act: () => amparoBrisca(), done: () => flag('contratoAsinado'),
-      look: () => MA('Doña Amparo, en la mesa del fondo, con las cartas pegadas al pecho. Juega a la brisca como otros pilotan aviones: sin pestañear.', 'pensativo') },
+    { name: 'Rosario Higueras', key: true, r: [676, 196, 120, 72], at: [740, 340], face: 'B', act: () => rosarioBrisca(), done: () => flag('contratoAsinado'),
+      look: () => MA('Rosario Higueras, en la mesa del fondo, con las cartas pegadas al pecho. Juega a la brisca como otros pilotan aviones: sin pestañear.', 'pensativo') },
     { name: 'Lista de prezos', r: [20, 44, 82, 66], look: () => MA('Café, 1,20. Cerveza, 1,80. Precios de bar de los de antes. Aquí la inflación entra, pero se sienta y pide un café.', 'sonriente') },
     { name: 'Cafeteira', r: [0, 158, 66, 54], look: () => MA('Una cafetera de las de verdad, con su vapor y su ruido. Como una locomotora, pero de las que te despiertan.', 'risueno') },
     { name: 'Botellas', r: [0, 108, 40, 50], look: () => MA('Botellas en fila. Las de abajo, para diario. Las de arriba, para cuando gana el equipo. Están llenas.', 'esceptico') },
@@ -471,7 +471,7 @@ SCENES.fraternal = {
 };
 async function fimTramo() {
   await MA('Pues nada: a esperar a que acabe la mano. Con las llaves en el bolsillo y una brisca por delante.', 'convencido');
-  await showDoc('<h4>FIN DO TRAMO M1</h4><p>Martín xa ten as chaves da Casa Juana e atopou a Amparo na Fraternal, en plena brisca. A firma do contrato, a historia da casa e o resto do Acto 1 chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
+  await showDoc('<h4>FIN DO TRAMO M1</h4><p>Martín xa ten as chaves da Casa Juana e atopou a Rosario na Fraternal, en plena brisca. A firma do contrato, a historia da casa e o resto do Acto 1 chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
 }
 
 /* ---------- Mapa de Monforte (pantalla de viaxe entre zonas) ---------- */
@@ -500,7 +500,7 @@ SCENES.mapa = {
   },
   hotspots: [
     { name: 'Barrio da Estación', key: true, r: [700, 340, 150, 90], exit: ['praza', [600, 420]] },
-    { name: 'Centro · rúa do Cardeal', r: [490, 270, 150, 80], act: () => mapaPechado(flag('objetivoContrato') ? 'La Fraternal está en el centro: allí me espera Amparo para firmar. Pero ese camino aún está en obras.' : 'El centro. La rúa do Cardeal, la Fraternal, el Concello... Primero, las llaves de casa.', 'M2') },
+    { name: 'Centro · rúa do Cardeal', r: [490, 270, 150, 80], act: () => mapaPechado(flag('objetivoContrato') ? 'La Fraternal está en el centro: allí me espera Rosario para firmar. Pero ese camino aún está en obras.' : 'El centro. La rúa do Cardeal, la Fraternal, el Concello... Primero, las llaves de casa.', 'M2') },
     { name: 'Río Cabe · Malecón', r: [230, 300, 150, 80], act: () => mapaPechado('El Malecón, junto al Cabe. Para pasear hace falta tener casa a la que volver. Primero, instalarse.', 'M3') },
     { name: 'Castelo de San Vicente', r: [410, 110, 160, 80], act: () => mapaPechado('Subir al castillo de San Vicente el primer día. Ni en mis tiempos de cross, y eso que los ganaba todos.', 'M3') },
     { name: 'Vilatán', r: [28, 440, 230, 66], act: () => mapaPechado('Vilatán. Mi madre me espera el domingo para el caldo. Si voy hoy, me pregunta por qué no he avisado. Mejor el domingo.', 'M6') },
