@@ -129,7 +129,12 @@
 - **Fondo:** `img/bg-cafe-eladio.jpg`, ilustración de Oscar. Bar cerca del Concello: barra de azulejo blanco y negro con taburetes, pizarra de precios, botellero, cafetera, grifo de cerveza, reloj de pared, cartel «Boa Festa», cuadros, corcho con avisos, planta y puerta de cristal al fondo.
 - **Llegada:** desde el exterior del Concello (B4a), salida derecha «Café de enfrente». La puerta del fondo vuelve al Concello.
 - **Suelo:** el pasillo de baldosa entre la barra y la pared derecha. La barra y los taburetes son obstáculos.
-- **NPC:** **Don Eladio** (ficción), en un taburete con su café. **Pendiente:** hoja de personaje de Oscar (sprite y retrato) y el puzzle para que vuelva a la ventanilla (tarjeta a Oscar con tres propuestas nuevas: reloj de fichar —recomendada—, inspección sorpresa, que no le reabran la ventanilla 2).
+- **NPC:** **Don Eladio** (ficción), sentado en el taburete del fondo con el periódico abierto por las esquelas. **Provisional:** dibujado por código hasta que llegue la hoja de personaje de Oscar.
+- **Puzzle «el reloj de fichar» (elegido por Oscar):**
+  1. Hablando con Eladio, Martín pregunta a qué hora vuelve: «Ás dúas en punto ficho a saída. Nin un minuto antes, nin un despois», y antes de fichar pasa por la ventanilla. Marca `eladioFicha` (pista).
+  2. Martín usa el reloj del bar: se sube a un taburete y lo adelanta diez minutos. Eladio ve «las dos», cree que no ha fichado y sale corriendo sin pagar (broma). Marca `eladioVolveu`.
+  3. En el vestíbulo (B4), Eladio ya está en la ventanilla 1: «Xa que estou aquí... pero rápido, que estou fóra de horario». Sella el alta con el contrato: agua «mañá pola mañá». Marca `aguaAlta`. Broma final: «o reloxo do café adianta dez minutos. Debería denunciarse. Pero hoxe xa fichei».
+  4. Nuevo objetivo: volver a la Casa Juana y descansar (la noche del fin del Acto 1, pendiente del dormitorio).
 - **Hotspots:** pizarra de precios, botellas, cafetera, grifo de cerveza, reloj (pista de la hora para el puzzle), cartel «Boa Festa», cuadros, corcho, taburetes, barra, tacita de café, servilletero, planta, puerta.
 - **Personas reales:** ninguna.
 

@@ -701,6 +701,7 @@ async function vistaSalon() {
 /* ---------- A5b · Casa Juana: cociña ----------
    Desde o balcón vense o supermercado e a Torre da Homenaxe. Na billa descóbrese que non hai auga (gancho do M2). */
 async function billaSenAuga() {
+  if (flag('aguaAlta')) { await MA('Nada todavía. Eladio dijo «mañana por la mañana». En horario de funcionario, eso es una previsión, no una promesa.', 'esceptico'); return; }
   if (flag('sinAgua')) { await MA('Lo vuelvo a intentar, por si acaso... Nada. El grifo sigue en huelga.', 'esceptico'); return; }
   setFlag('sinAgua');
   await MA('Vamos a estrenar el grifo. Abro...', 'sonriente');
@@ -839,6 +840,7 @@ async function ventanilla(n) {
   if (!flag('sinAgua')) { await MA('Las ventanillas. Hoy no tengo nada que pedir... que yo sepa. Ya me enteraré en casa de lo que me falta.', 'pensativo'); return; }
   if (n === 2) { await MA('Ventanilla 2: «Pechada». Sin fecha, sin hora, sin explicación. Muy municipal.', 'esceptico'); return; }
   if (n === 3) { await MA('Ventanilla 3: «Esta ventanilla agora é a 1». Vamos, que la 3 es la 1. Y la 1...', 'dudoso'); return ventanilla(1); }
+  if (flag('eladioVolveu')) return eladioVentanilla();
   if (!flag('eladioAusente')) {
     setFlag('eladioAusente');
     await MA('Ventanilla 1. Un cartel escrito a mano, pegado al cristal: «Volvo nun momento. Eladio». El ordenador encendido y la silla vacía.', 'esceptico');
@@ -859,6 +861,12 @@ SCENES.concelloVest = {
     { y: 600, r: [0, 350, 172, 190] },                    // cadeiras azuis
   ],
   scale: [360, 0.42, 540, 0.9], actorH: 300, start: [330, 400], minSpeed: 0.45,
+  npcs: [
+    { id: 'eladioV', name: 'Don Eladio', key: true, x: 616, y: 300, w: 60, h: 70, fixedScale: 1, at: [624, 390], face: 'B', shadow: false,
+      when: () => flag('eladioVolveu'), done: () => flag('aguaAlta'), draw: (c, t, talking) => debuxaEladio(c, 616, 300, 0.62, talking, true),
+      look: () => MA('Don Eladio, en su ventanilla. Resoplando. Parece que ha corrido. Parece.', 'risueno'),
+      talk: () => eladioVentanilla(), give: { contrato: () => eladioVentanilla() } },
+  ],
   hotspots: [
     { name: 'Saída á praza', key: true, r: [250, 150, 170, 206], at: [330, 372], face: 'B', exit: ['concelloExt', [470, 292]], hint: 'U', door: true },
     { name: 'Ventanilla 1', key: true, done: () => flag('eladioAusente'), r: [578, 168, 74, 132], at: [624, 390], face: 'B', act: () => ventanilla(1),
@@ -880,17 +888,90 @@ SCENES.concelloVest = {
 /* ---------- B5 · O café de Eladio ----------
    Preto do Concello. Eladio (ficción) toma o café aquí mentres a ventanilla 1 di «Volvo nun momento».
    Pendente: folla de personaxe de Eladio e o puzzle para que volva (escolle Oscar). */
+const EL = t => say('Don Eladio', t);
+// Eladio provisional, debuxado por código ata que Oscar pase a súa folla de personaxe
+function debuxaEladio(c, x, y, k, talking, ventanilla) {
+  c.save(); c.translate(x, y); c.scale(k, k);
+  if (!ventanilla) { c.fillStyle = '#3a3f4a'; c.fillRect(-16, -62, 12, 62); c.fillRect(6, -62, 12, 62); c.fillStyle = '#222'; c.fillRect(-18, -4, 16, 6); c.fillRect(4, -4, 16, 6); }   // pernas
+  const by = ventanilla ? 0 : -60;
+  c.fillStyle = '#7d8088'; c.beginPath(); c.moveTo(-30, by); c.lineTo(-24, by - 70); c.lineTo(24, by - 70); c.lineTo(30, by); c.closePath(); c.fill();   // chaqueta gris
+  c.fillStyle = '#e8e2d0'; c.beginPath(); c.moveTo(-8, by - 70); c.lineTo(0, by - 40); c.lineTo(8, by - 70); c.fill();                                       // camisa
+  c.fillStyle = '#7a2a2a'; c.fillRect(-3, by - 66, 6, 24);                                                                                                   // gravata
+  c.fillStyle = '#e2b48c'; c.beginPath(); c.ellipse(0, by - 88, 17, 20, 0, 0, 7); c.fill();                                                                  // cabeza
+  c.fillStyle = '#b9b2a6'; c.beginPath(); c.ellipse(-15, by - 90, 5, 10, 0, 0, 7); c.ellipse(15, by - 90, 5, 10, 0, 0, 7); c.fill();                        // pelo nos lados (calvo arriba)
+  c.strokeStyle = '#222'; c.lineWidth = 2; c.strokeRect(-12, by - 92, 9, 7); c.strokeRect(3, by - 92, 9, 7); c.beginPath(); c.moveTo(-3, by - 89); c.lineTo(3, by - 89); c.stroke();   // lentes
+  c.fillStyle = '#5a3a2a'; c.fillRect(-9, by - 77 + (talking ? Math.abs(Math.sin(E.t * 14)) * 3 : 0), 18, 2);                                              // boca
+  c.restore();
+}
+async function eladioCafe() {
+  if (!flag('eladioCafeFalou')) {
+    setFlag('eladioCafeFalou');
+    await MA('¿Don Eladio? Soy Martín, el nuevo de la Casa Juana. Vengo a dar de alta el agua.', 'sonriente');
+    await EL('Estou no descanso, rapaz. Diso xa lle informa o cartel: «Volvo nun momento».');
+    await MA('¿Y cuánto dura un momento?', 'esceptico');
+    await EL('Un momento. Nin máis, nin menos.');
+  }
+  for (;;) {
+    const opts = [
+      { t: 'Es que sin agua no puedo ni fregar un vaso.', k: 'auga' },
+      { t: '¿A qué hora vuelve, exactamente?', k: 'hora' },
+      { t: '¿Qué tal el periódico?', k: 'xornal' },
+      { t: 'Nada, que aproveche.', k: 'adeus' },
+    ];
+    const k = opts[await choose(opts)].k;
+    if (k === 'auga') { await EL('Pois beba auga embotellada, que é máis sa. Eu levo trinta anos neste concello e nunca bebín da billa.'); }
+    if (k === 'hora') {
+      await EL('Eu son home de horarios. Ás dúas en punto ficho a saída. Nin un minuto antes, nin un despois.');
+      await EL('E antes de fichar, paso pola ventanilla a recoller a chaqueta. Pero agora son as dúas menos dez. Así que... un momento.');
+      await MA('O sea, que en cuanto sean las dos, sale disparado hacia el Concello.', 'pensativo');
+      await EL('Como un tren. Dos de antes, que chegaban á hora.');
+      setFlag('eladioFicha');
+    }
+    if (k === 'xornal') { await EL('Estou coas esquelas. A estas horas é o máis tranquilo: ninguén protesta.'); }
+    if (k === 'adeus') { await EL('Grazas. Aproveita, aproveita.'); return; }
+  }
+}
+async function adiantarReloxo() {
+  if (flag('eladioVolveu')) return MA('Ya está adelantado. Si lo adelanto más, mañana llego al lunes que viene.', 'risueno');
+  if (!flag('eladioFicha')) return MA('¿Tocar el reloj del bar? No sé por qué iba a hacer eso. Todavía.', 'dudoso');
+  await MA('Eladio no levanta la vista de las esquelas. Un taburete, un poco de equilibrio... y diez minutos de adelanto.', 'risueno');
+  await sleep(500);
+  await MA('Las dos en punto. Y yo aquí, silbando, como quien no ha hecho nada.', 'sonriente');
+  await EL('...Ás dúas?! Xa?! E sen fichar!');
+  await EL('Abofé que hoxe o café pasou voando. Paguei? Non paguei. Mañá pago!');
+  setFlag('eladioVolveu');
+  await MA('Primera vez en mi vida que veo correr a un funcionario. Y ha salido sin pagar. Hoy es un día histórico.', 'risueno');
+  toast('Eladio volveu á ventanilla');
+}
+async function eladioVentanilla() {
+  if (flag('aguaAlta')) { await EL('Xa ten a alta. Mañá pola mañá, auga. E agora, se me permite, estou fóra de horario. Desde fai dez minutos.'); return; }
+  await EL('Xa que estou aquí... pero rápido, que estou fóra de horario.');
+  await MA('El alta del agua de la Casa Juana, Doctor Casares, 211. Aquí está el contrato.', 'convencido');
+  await EL('A ver... Rosario Higueras, a dona... asinado... con bolígrafo azul. Ben.');
+  await EL('(selo, selo, selo) Alta feita. Mañá pola mañá ten auga. Se non hai ningunha incidencia. E sempre hai algunha.');
+  setFlag('aguaAlta');
+  await EL('Por certo: o reloxo do café adianta dez minutos. Debería denunciarse. Pero hoxe xa fichei.');
+  await MA('Agua, mañana. Por hoy, bastante he hecho: llaves, contrato, Concello. A casa, a descansar.', 'aliviado');
+  toast('Novo obxectivo: volver á Casa Juana e descansar');
+}
 SCENES.cafeEladio = {
   name: 'Café', bg: 'img/bg-cafe-eladio.jpg', music: 'casa', floor: 'pedra',
   walk: [[668, 292], [790, 292], [960, 424], [960, 540], [640, 540], [668, 420]],
   front: [
-    { y: 540, r: [550, 296, 122, 230] },   // taburetes
+    { y: 540, r: [550, 336, 100, 190] },   // os dous taburetes de diante (no do fondo senta Eladio)
   ],
   scale: [290, 0.33, 540, 1.0], actorH: 300, start: [700, 330], minSpeed: 0.45,
+  npcs: [
+    { id: 'eladioC', name: 'Don Eladio', key: true, x: 640, y: 316, w: 56, h: 80, fixedScale: 1, at: [700, 360], face: 'L', shadow: false,
+      when: () => flag('sinAgua') && !flag('eladioVolveu'), draw: (c, t, talking) => debuxaEladio(c, 640, 316, 0.7, talking, true),
+      look: () => MA('Un señor con chaqueta gris, gafas en la punta de la nariz y el periódico abierto por la esquela. Tiene cara de ventanilla. Es Eladio.', 'esceptico'),
+      talk: () => eladioCafe(), give: { contrato: async () => { await say('Don Eladio', 'Contratos na ventanilla, rapaz. Aquí só se asinan os cafés. E pagando.'); } } },
+  ],
   hotspots: [
     { name: 'Porta', key: true, r: [664, 120, 64, 168], at: [700, 300], face: 'B', exit: ['concelloExt', [900, 400]], hint: 'U', door: true,
       look: () => MA('La puerta de cristal. Por ahí se ve el Concello. Eladio también lo ve. Y aun así, aquí sigue.', 'esceptico') },
-    { name: 'Reloxo', key: true, r: [496, 70, 32, 48], look: () => MA('Un reloj de pared. Cerca de las dos. En el Concello cierran a las dos... y Eladio, aquí, con el café.', 'dudoso') },
+    { name: 'Reloxo', key: true, done: () => flag('eladioVolveu'), r: [496, 70, 32, 48], at: [690, 330], face: 'L', act: () => adiantarReloxo(),
+      look: () => MA(flag('eladioVolveu') ? 'El reloj, diez minutos adelantado. Lo dejo así: en este bar, un poco de prisa no le viene mal a nadie.' : 'Un reloj de pared. Las dos menos diez. Y Eladio, aquí, con el café.', flag('eladioVolveu') ? 'risueno' : 'dudoso') },
     { name: 'Lousa', r: [24, 4, 142, 196], look: () => MA('Café a 1,20, aguardiente a 2. En Monforte el desayuno completo sale por 3,20. El de los funcionarios, por 3,20 y una hora.', 'risueno') },
     { name: 'Botellas', r: [228, 40, 186, 102], look: () => MA('Licores de colores en fila, como vagones de un mercancías. Este va cargado.', 'risueno') },
     { name: 'Cafeteira', r: [312, 140, 98, 100], look: () => MA('Una cafetera de las de verdad, de dos brazos. Silba como una locomotora pequeña. Me cae bien.', 'sonriente') },
