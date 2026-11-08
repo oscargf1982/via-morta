@@ -70,6 +70,18 @@
   - la Champions: martes y miércoles a las 20:00, y Martín a dormir a las 23:00;
   - despedida.
 
+## A5 · Casa Juana, salón comedor (`casaSalon`)
+- **Fondo:** `img/bg-casa-salon.jpg`, ilustración de Oscar. Salón comedor amueblado, de alquiler: sofá rinconera gris con cojines, mesitas, aparador de madera tallada con una planta, dos cuadros de paisaje, mesa de comedor con seis sillas y lámparas colgantes. A la izquierda una ventana; a la derecha, puertas balconeras que dan a la gasolinera, la iglesia de la estación y el colegio ferroviario.
+- **Llegada:** desde la puerta de la Casa Juana (A4) con llaves y contrato. La primera vez Martín abre, entra y comenta la casa; después aparece el aviso de fin de tramo.
+- **Suelo:** la tarima. Obstáculos: el sofá, las mesitas y la mesa con las sillas (Martín pasa por delante).
+- **Salidas:**
+  - Derecha → cocina (próximo escenario; de momento, aviso «en construción»).
+  - Izquierda → dormitorio (próximo escenario; ídem).
+  - Abajo → vuelta a la calle, Doutor Casares (A4). Así nunca hay callejón sin salida.
+- **Hotspots:** ventanas del balcón (la gasolinera, la iglesia de la estación, el colegio ferroviario: Martín ve su barrio desde casa), ventana de la izquierda, sofá, cojines, mesitas, aparador, planta, cuadros, mesa y sillas, lámparas, interruptor, tarima.
+- **Tono:** primera impresión de Martín en su casa. Todo parece en orden… salvo detalles que preparan la casa sin agua del M2 (no se resuelve aquí).
+- **Personas reales:** ninguna.
+
 ## B3 · A Fraternal, interior (`fraternal`)
 - **Fondo:** `img/bg-fraternal.jpg`, ilustración de Oscar. Barra con lista de precios, cafetera y botellas; mesas de brisca con tapete verde, columnas, cuadros, tele con el fútbol y tragaperras.
 - **Suelo:** el terrazo. Obstáculos: la barra, la columna y los grupos de mesas. Capas delanteras: la mesa de delante (con La Voz y la baraja), la columna y las mesas laterales.

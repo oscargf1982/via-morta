@@ -627,7 +627,7 @@ SCENES.casares = {
       act: async () => {
         if (!hasItem('chavesCasa')) { await bark('Cerrada, claro. Las llaves las tiene Concha, en el quiosco de la plaza.'); return; }
         if (!flag('contratoAsinado')) { await bark('Tengo las llaves, pero sin contrato firmado sería entrar como un ladrón con permiso. Primero, Rosario, en la Fraternal.'); return; }
-        await fimTramo();
+        SFX.door(); await goScene('casaSalon', [470, 500]);
       },
       look: () => MA('La puerta de casa. Madera vieja, cristal labrado y una cerradura que pide aceite. Mi puerta, si todo va bien.', 'pensativo') },
     { name: 'Portalón', r: [548, 242, 76, 150], at: [586, 424], face: 'B', act: () => bark(hasItem('chavesCasa') ? 'La llave no entra: este portalón es del taller y lleva años atrancado. La de la casa es la puerta de la derecha, la del arco, junto al muro.' : 'Atrancado. Y sin llaves, ni lo intento.'), look: () => MA('Un portalón de madera de dos hojas, con cartel de vado. Por aquí salían los tablones. Ahora no sale ni el gato.', 'pensativo') },
@@ -644,9 +644,47 @@ SCENES.casares = {
   ],
 };
 async function fimTramo() {
-  await MA('Doctor Casares, 211. Llaves en una mano, contrato en la otra. Para ser lunes, no está mal.', 'convencido');
-  await showDoc('<h4>FIN DO TRAMO</h4><p>Martín chega á Casa Juana con chaves e contrato. Dentro agárdao unha casa sen auga; o Concello, Eladio e o resto do Acto 1 chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
+  await showDoc('<h4>FIN DO TRAMO</h4><p>Martín xa está na Casa Juana, coas chaves e o contrato. A cociña, o dormitorio e unha casa sen auga (co Concello e Eladio) chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
 }
+async function estanciaPechada(linea, mood) { await MA(linea, mood || 'pensativo'); toast('Estancia en construción · chega nun próximo hito'); }
+
+/* ---------- A5 · Casa Juana: salón comedor ----------
+   Primeira estancia da casa. Á dereita, a cociña; á esquerda, o dormitorio; abaixo, volta á rúa. */
+SCENES.casaSalon = {
+  name: 'Casa Juana · Salón', bg: 'img/bg-casa-salon.jpg', music: 'casa', floor: 'madeira',
+  walk: [[120, 540], [120, 462], [170, 444], [300, 430], [495, 414], [502, 362], [600, 372], [700, 382], [780, 394], [822, 372], [880, 368], [936, 392], [936, 540]],
+  scale: [300, 0.55, 540, 0.98], actorH: 300, start: [470, 500], minSpeed: 0.5,
+  async onEnter() {
+    if (flag('salonVisto')) return;
+    setFlag('salonVisto');
+    await MA('Hola, casa. Soy Martín. Vamos a llevarnos bien.', 'sonriente');
+    await MA('Sofá, mesa para seis, cuadros de paisaje... Para ser de alquiler, está mejor que mi piso de Valencia. Y no huele a humedad. De momento.', 'pensativo');
+    await fimTramo();
+  },
+  hotspots: [
+    { name: 'Cociña', key: true, r: [880, 330, 80, 210], at: [900, 470], face: 'R', exit: ['__cocina'], hint: 'R',
+      act: () => estanciaPechada('Por aquí, la cocina. Luego le echo un vistazo; primero, que me dé el aire de casa nueva.', 'sonriente') },
+    { name: 'Dormitorio', key: true, r: [0, 300, 110, 240], at: [140, 490], face: 'L', exit: ['__dormitorio'], hint: 'L',
+      act: () => estanciaPechada('El dormitorio. Ya lo estrenaré esta noche... si el silbato me deja dormir.', 'dudoso') },
+    { name: 'Saír á rúa', r: [300, 516, 340, 24], at: [470, 530], face: 'F', exit: ['casares', [690, 430]], hint: 'D',
+      look: () => MA('La puerta de la calle. Doctor Casares, 211. Todavía me suena raro decir «mi puerta».', 'sonriente') },
+    { name: 'Igrexa da estación', r: [770, 116, 80, 84], look: () => MA('La iglesia del barrio de la estación, asomando por encima de los árboles. Desde aquí la veo mejor que el horario de trenes.', 'sonriente') },
+    { name: 'Gasolinera', r: [784, 196, 176, 62], look: () => MA('La gasolinera de la calle Morín, aquí mismo. Si un día me quedo sin gasolina, llego empujando el coche. Si tuviera coche.', 'risueno') },
+    { name: 'Colexio ferroviario', r: [850, 120, 110, 76], look: () => MA('Y por ahí, el colegio ferroviario. En este barrio hasta los niños aprenden a leer con horarios de tren.', 'sonriente') },
+    { name: 'Balcón', r: [770, 252, 190, 86], look: () => MA('Un balcón de hierro forjado. Para tomar el café viendo pasar coches, trenes y vecinos. Sobre todo vecinos.', 'sonriente') },
+    { name: 'Fiestra da esquerda', r: [128, 60, 136, 150], look: () => MA('Árboles y tejados. Entra luz a raudales. Del resto de suministros ya hablaremos.', 'pensativo') },
+    { name: 'Lámpada', r: [180, 8, 92, 66], look: () => MA('Una lámpara de tela, grande como un tambor de feria. Mientras no la toque, no se mueve.', 'risueno') },
+    { name: 'Lámpadas colgantes', r: [544, 28, 164, 116], look: () => MA('Tres lámparas colgando sobre la mesa. A distinta altura, como las señales de una estación mal calibrada.', 'risueno') },
+    { name: 'Interruptor', r: [274, 190, 22, 22], look: () => MA('Un interruptor. Clic... y luz. Bien: la electricidad funciona. Una cosa menos.', 'convencido') },
+    { name: 'Cadros', r: [386, 128, 98, 74], look: () => MA('Dos cuadros de paisajes: viñas, colinas y caminos. Si es la Ribeira Sacra, el pintor tenía prisa. Si no, también.', 'risueno') },
+    { name: 'Planta', r: [452, 176, 64, 56], look: () => MA('Una planta viva. Alguien la riega. Y si alguien la riega... alguien tiene agua.', 'dudoso') },
+    { name: 'Aparador', r: [384, 232, 128, 76], look: () => MA('Un aparador de madera tallada, de los de antes. En la Casa Juana, de un carpintero, los muebles tienen que estar a la altura.', 'pensativo') },
+    { name: 'Mesa e cadeiras', r: [514, 220, 298, 150], look: () => MA('Mesa para seis. Yo solo soy uno, pero tengo mucha familia en Vilatán. Y todos opinan.', 'risueno') },
+    { name: 'Sofá', r: [100, 232, 396, 196], look: () => MA('Un sofá rinconera, gris y mullido. Peligroso: me siento ahí y no me levanto hasta el Acto 3.', 'risueno') },
+    { name: 'Coxíns', r: [318, 240, 100, 82], look: () => MA('Cojines verdes y crema, colocados con escuadra y cartabón. Aquí ha pasado una casera concienzuda.', 'sonriente') },
+    { name: 'Mesiñas', r: [80, 316, 72, 124], look: () => MA('Dos mesitas nido. Una dentro de la otra, como las muñecas rusas, pero en serio.', 'risueno') },
+  ],
+};
 
 /* ---------- Mapa de Monforte (pantalla de viaxe entre zonas) ---------- */
 const ZONAS = [

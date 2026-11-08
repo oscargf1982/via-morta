@@ -186,7 +186,10 @@ function hitTest(x, y) {
 }
 // caixa de clic ampliada dunha saída: mínimo 140×140, marxe de 30 e, se toca case o bordo, chega ata el
 function exitBox(h) {
-  let [x, y, w, hh] = boxOf(h); const M = 30, MIN = 140;
+  let [x, y, w, hh] = boxOf(h);
+  // saída pintada sobre o chan e lonxe dos bordos laterais (p. ex. o bordo inferior): só un pouco de marxe, para non roubarlle os clics ao camiñar
+  if (E.scene._walk && x > 20 && x + w < W - 20 && walkableIn(E.scene, x + w / 2, y + hh / 2)) { const m = 12; return [Math.max(0, x - m), Math.max(0, y - m), w + 2 * m, hh + 2 * m]; }
+  const M = 30, MIN = 140;
   if (w < MIN) { x -= (MIN - w) / 2; w = MIN; } if (hh < MIN) { y -= (MIN - hh) / 2; hh = MIN; }
   x -= M; y -= M; w += 2 * M; hh += 2 * M;
   if (x < 70) { w += x; x = 0; } if (y < 70) { hh += y; y = 0; } if (x + w > W - 70) w = W - x; if (y + hh > H - 70) hh = H - y;
