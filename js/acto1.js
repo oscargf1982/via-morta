@@ -361,7 +361,7 @@ SCENES.praza2 = {
   ],
   npcs: [
     { id: 'conchaQ', name: 'Dona Concha', key: true, sheet: 'img/concha-sprite.png', spec: { cw: 160, ch: 280, cols: 8 }, get idle() { return E.dlg ? 4 : 0; }, talkFrames: [6, 4],
-      x: 300, y: 342, w: 100, h: 275, at: [334, 350], face: 'L',
+      x: 300, y: 342, w: 150, h: 412, at: [334, 350], face: 'L',
       done: () => hasItem('chavesCasa'),
       look: () => MA('Doña Concha, a la puerta de su quiosco desde que tengo memoria. Lee el periódico antes de venderlo: dice que es para comprobar que no trae erratas.', 'sonriente'),
       talk: () => conchaQuiosco(),
