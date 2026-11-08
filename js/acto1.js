@@ -630,10 +630,10 @@ SCENES.casares = {
         await fimTramo();
       },
       look: () => MA('La puerta de casa. Madera vieja, cristal labrado y una cerradura que pide aceite. Mi puerta, si todo va bien.', 'pensativo') },
-    { name: 'Portalón', r: [548, 242, 76, 150], look: () => MA('Un portalón de madera de dos hojas, con cartel de vado. Por aquí salían los tablones. Ahora no sale ni el gato.', 'pensativo') },
-    { name: 'Porta estreita', r: [494, 252, 34, 120], look: () => MA('Otra puerta, más estrecha. Esta casa tiene más puertas que yo excusas. Y yo tengo muchas.', 'risueno') },
+    { name: 'Portalón', r: [548, 242, 76, 150], at: [586, 424], face: 'B', act: () => bark(hasItem('chavesCasa') ? 'La llave no entra: este portalón es del taller y lleva años atrancado. La de la casa es la puerta de la derecha, la del arco, junto al muro.' : 'Atrancado. Y sin llaves, ni lo intento.'), look: () => MA('Un portalón de madera de dos hojas, con cartel de vado. Por aquí salían los tablones. Ahora no sale ni el gato.', 'pensativo') },
+    { name: 'Porta estreita', r: [494, 252, 34, 120], at: [512, 424], face: 'B', act: () => bark(hasItem('chavesCasa') ? 'Pruebo la llave... nada. Esta no es. La de la casa es la de la derecha del todo.' : 'Cerrada. Sin llaves, todas las puertas son iguales.'), look: () => MA('Otra puerta, más estrecha. Esta casa tiene más puertas que yo excusas. Y yo tengo muchas.', 'risueno') },
     { name: 'Balcón', r: [478, 132, 248, 92], look: () => MA('El balcón de hierro forjado. Dicen que desde ahí arriba se ve el depósito. Para un maquinista, eso son vistas al mar.', 'sonriente') },
-    { name: 'Casa Juana', r: [470, 20, 380, 400], look: () => MA('La casa roja. Doctor Casares, 211. Fachada de las de antes, con molduras y balcón de hierro. La pintura es nueva; las grietas, de siempre.', 'pensativo') },
+    { name: 'Casa Juana', r: [470, 20, 380, 400], act: () => bark('Para entrar, la puerta de la derecha: la del arco, junto al muro rojo.'), look: () => MA('La casa roja. Doctor Casares, 211. Fachada de las de antes, con molduras y balcón de hierro. La pintura es nueva; las grietas, de siempre.', 'pensativo') },
     { name: 'Muro vermello', key: true, r: [770, 160, 190, 290], look: () => MA('Un muro rojo y alto, con la pintura cuarteada. Detrás debe de estar el patio... y la nave de la carpintería del señor Alfredo.', 'dudoso') },
     { name: 'Nave de chapa', r: [340, 130, 132, 210], look: () => MA('Una nave moderna de chapa al lado de la casa. Al lado de la casa roja parece un táper junto a una tarta.', 'risueno') },
     { name: 'Banco', r: [400, 320, 46, 42], look: () => MA('Un banco con jardinera. Ideal para sentarse a esperar a que te abran la puerta de tu propia casa.', 'esceptico') },
