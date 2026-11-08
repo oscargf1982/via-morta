@@ -133,9 +133,10 @@
 - **NPC:** **Don Eladio** (ficción), sentado en el taburete del fondo con el periódico abierto por las esquelas. **Provisional:** dibujado por código hasta que llegue la hoja de personaje de Oscar.
 - **Puzzle «el reloj de fichar» (elegido por Oscar):**
   1. Hablando con Eladio, Martín pregunta a qué hora vuelve: «Ás dúas en punto ficho a saída. Nin un minuto antes, nin un despois», y antes de fichar pasa por la ventanilla. Marca `eladioFicha` (pista).
-  2. Martín usa el reloj del bar: se sube a un taburete y lo adelanta diez minutos. Eladio ve «las dos», cree que no ha fichado y sale corriendo sin pagar (broma). Marca `eladioVolveu`.
-  3. En el vestíbulo (B4), Eladio ya está en la ventanilla 1: «Xa que estou aquí... pero rápido, que estou fóra de horario». Sella el alta con el contrato: agua «mañá pola mañá». Marca `aguaAlta`. Broma final: «o reloxo do café adianta dez minutos. Debería denunciarse. Pero hoxe xa fichei».
-  4. Nuevo objetivo: volver a la Casa Juana y descansar (la noche del fin del Acto 1, pendiente del dormitorio).
+  2. **El reloj está muy alto (pedido por Oscar; elegida la silla del Concello).** Sin nada para subirse, Martín no llega: está encima de la estantería de las botellas, y los taburetes del bar están atornillados al suelo. Martín piensa en las sillas de espera del Concello («a Eladio nadie lo espera sentado»; pista en pantalla). Marca `reloxoAlto`. En el vestíbulo (B4), las sillas azules también están atornilladas al suelo (pedido por Oscar): hace falta un destornillador, y «en todas las cocinas hay uno» (pista: cajones de la cocina de la Casa Juana; marca `cadeiraAparafusada`). En los cajones de la cocina (A5b) está el destornillador (objeto `desaparafusador`, se conserva). Con él, Martín desatornilla la del final de la fila (objeto `cadeira`) y, al devolverla, la vuelve a atornillar.
+  3. Con la silla (tocando el reloj o usando la silla con él), Martín lo adelanta diez minutos y se la lleva de vuelta. Eladio ve «las dos», cree que no ha fichado y sale corriendo sin pagar (broma). Marca `eladioVolveu`.
+  4. En el vestíbulo (B4), Eladio ya está en la ventanilla 1. Si Martín lleva la silla, Eladio no firma: «non asino nada con mobiliario fóra do seu sitio» (broma: diez minutos sin fichar no le importan, una silla sí). Martín la deja con las otras (marca `cadeiraDevolta`). Entonces: «Xa que estou aquí... pero rápido, que estou fóra de horario». Sella el alta con el contrato: agua «mañá pola mañá». Marca `aguaAlta`. Broma final: «o reloxo do café adianta dez minutos. Debería denunciarse. Pero hoxe xa fichei».
+  5. Nuevo objetivo: volver a la Casa Juana y descansar (la noche del fin del Acto 1).
 - **Hotspots:** pizarra de precios, botellas, cafetera, grifo de cerveza, reloj (pista de la hora para el puzzle), cartel «Boa Festa», cuadros, corcho, taburetes, barra, tacita de café, servilletero, planta, puerta.
 - **Personas reales:** ninguna.
 
@@ -152,5 +153,5 @@
 
 ## Mapa de Monforte (`mapa`)
 - **Fondo:** `img/bg-mapa.png`, mapa ilustrado en papel (no a escala, y así lo dice): río Cabe, Ponte Vella, monte de San Vicente, calles en esquema, vías que convergen en la estación y la rotonda del depósito.
-- **Zonas:** Barrio da Estación (abierta → A3), Centro · rúa do Cardeal (M2), Río Cabe · Malecón (M3), Castelo de San Vicente (M3), Vilatán fuera del mapa (M6). Las zonas cerradas dan una frase de Martín y un aviso del hito en el que llegan.
+- **Zonas:** Barrio da Estación (abierta → A3), Casa Roja (con el contrato firmado → A4 Doutor Casares, delante de la casa; pedido por Oscar), Centro · Concello (con el contrato firmado → B4a), Río Cabe · Malecón (M3), Castelo de San Vicente (M3), Vilatán fuera del mapa (M6). Las zonas cerradas dan una frase de Martín y un aviso del hito en el que llegan.
 - **Pendiente:** Oscar debe validar la posición de las zonas con el mapa real.
