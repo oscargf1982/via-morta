@@ -505,7 +505,12 @@ async function asinarContrato() {
   take('boli'); give('contrato'); setFlag('contratoAsinado');
   await RO('O bolígrafo xa llo devolvo eu a Concha, que paso polo quiosco. Senón, mañá sae no xornal: «Desaparece o bolígrafo dos crucigramas».');
   await RO('Sabes de quen era a casa? Do señor Alfredo Fernández, carpinteiro e industrial. Púxolle o nome pola súa segunda muller, Juana.');
-  await RO('Atrás tiña unha carpintaría mecanizada: un motor Siemens de dez cabalos, transmisións con poleas... Daquela era coma unha fábrica.');
+  await RO('Atrás tiña unha carpintaría mecanizada. Daquela era coma unha fábrica.');
+  // recordo: o taller antes da venda de 1952 (imaxe de Oscar)
+  await cine('img/taller-1952.jpg', [
+    'Rosario: «Serra de cinta, serra circular, torno, catro prensas...»',
+    'Rosario: «...e motores Siemens, o grande de dez cabalos, movendo as transmisións con poleas.»',
+  ]);
   await RO('E o dous de xuño do cincuenta e dous vendeuno todo, toda a maquinaria, por trinta mil pesetas. A un enxeñeiro de Camiños e a un contratista.');
   await MA('¿Un ingeniero de Caminos? ¿Para qué quiere un ingeniero de Caminos una carpintería entera?', 'dudoso');
   await RO('Iso pregúntome eu. O meu home, que é de matemáticas, di que a conta non lle sae. Pero el di iso de todo.');
