@@ -717,6 +717,8 @@ SCENES.casaCocina = {
   hotspots: [
     { name: 'Salón', key: true, r: [900, 150, 60, 330], at: [870, 500], face: 'R', exit: ['casaSalon', [880, 470]], hint: 'R',
       look: () => MA('Por ahí se vuelve al salón. La casa no es grande, pero tiene de todo. Casi de todo.', 'pensativo') },
+    { name: 'Patio', key: true, r: [400, 516, 460, 24], at: [620, 530], face: 'F', exit: ['casaPatio', [140, 420]], hint: 'D',
+      look: () => MA('Detrás de mí, la puerta de atrás: da al patio. Y del patio, al taller viejo del señor Alfredo.', 'pensativo') },
     { name: 'Billa', key: true, done: () => flag('sinAgua'), r: [604, 196, 92, 60], at: [650, 404], face: 'B', act: () => billaSenAuga(),
       look: () => MA(flag('sinAgua') ? 'Un grifo precioso, de diseño. Decorativo, de momento. Muy decorativo.' : 'Un grifo moderno, de los que suben y bajan. Seguro que da gusto fregar aquí.', flag('sinAgua') ? 'esceptico' : 'sonriente') },
     { name: 'Torre da Homenaxe', r: [234, 70, 34, 44], look: () => MA('La Torre del Homenaje, allá arriba, en el monte de San Vicente. Monforte te vigila desde la cocina. Y yo sin fregar.', 'sonriente') },
@@ -733,6 +735,53 @@ SCENES.casaCocina = {
     { name: 'Lavalouzas', r: [704, 268, 132, 176], look: () => MA('Un lavavajillas. Sin agua, es el armario más caro de la casa.', 'risueno') },
     { name: 'Azulexos', r: [384, 160, 456, 86], look: () => MA('Azulejos hidráulicos, de dibujos. Si te quedas mirando mucho rato, parecen estrellas de mar. O ruedas de tren, según el día.', 'pensativo') },
     { name: 'Armarios', r: [396, 20, 444, 136], look: () => MA('Armarios hasta el techo. Tengo cosas para llenar uno. Con suerte, uno y medio.', 'risueno') },
+  ],
+};
+
+/* ---------- A5c · Casa Juana: patio trasero ----------
+   Esquerda: volta á cociña. Dereita: o vello taller (pechado neste tramo). Muro branco: a sombra negra outra vez. */
+async function asomarMuro() {
+  if (flag('sombraPatio')) { await MA('Me asomo otra vez... Árboles, una huerta y nadie. Ahora la sombra se hace la tímida.', 'esceptico'); return; }
+  setFlag('sombraPatio');
+  await MA('A ver qué hay al otro lado. Un poco de puntillas... cotillear también es deporte.', 'risueno');
+  await sleep(600);
+  await MA('¡Ahí! Entre los árboles. Una sombra negra, moviéndose rápido... y ya no está.', 'sorprendido');
+  if (flag('sombraVista')) await MA('La misma que vi detrás de la puerta de la casa pistacho, en la calle Morín. O es la misma, o en este barrio las sombras van en pandilla.', 'dudoso');
+  else await MA('Un gato muy grande. O un vecino muy delgado. O algo que no quiero pensar antes de cenar.', 'dudoso');
+  await MA('Mañana pregunto. En Monforte siempre hay alguien que lo ha visto todo... dos veces.', 'pensativo');
+}
+SCENES.casaPatio = {
+  name: 'Casa Juana · Patio', bg: 'img/bg-casa-patio.jpg', floor: 'pedra', music: 'casa',
+  walk: [[0, 372], [100, 362], [200, 346], [410, 318], [790, 318], [796, 398], [800, 470], [870, 500], [884, 540], [0, 540]],
+  holes: [
+    [[276, 322], [516, 312], [516, 354], [276, 348]],   // sofá e mesiña
+    [[464, 306], [548, 306], [548, 326], [464, 326]],   // butaca do medio
+    [[582, 316], [686, 316], [686, 340], [582, 340]],   // butaca da dereita
+    [[116, 332], [204, 332], [204, 360], [116, 360]],   // macetas
+  ],
+  front: [
+    { y: 348, r: [274, 262, 244, 92] },    // sofá e mesiña
+    { y: 326, r: [460, 256, 90, 72] },     // butaca do medio
+    { y: 340, r: [578, 256, 110, 86] },    // butaca da dereita
+    { y: 360, r: [114, 230, 92, 132] },    // macetas
+  ],
+  scale: [318, 0.38, 540, 1.1], actorH: 300, start: [140, 420], minSpeed: 0.45,
+  hotspots: [
+    { name: 'Casa', key: true, r: [0, 90, 92, 270], at: [110, 410], face: 'L', exit: ['casaCocina', [620, 500]], hint: 'L', door: true,
+      look: () => MA('La puerta de atrás, de cristal. Por aquí se vuelve a la cocina... y al grifo que no da agua.', 'esceptico') },
+    { name: 'Porta do taller', key: true, r: [860, 0, 72, 500], at: [836, 500], face: 'R', exit: ['__taller'], hint: 'R',
+      act: async () => { await MA('La puerta verde del taller del señor Alfredo. Cerrada a cal y canto, con un candado que ha visto pasar a tres papas.', 'pensativo'); toast('O vello taller abre nun próximo hito'); },
+      look: () => MA('El viejo taller, detrás de la casa. Ahí dentro estuvo la carpintería: el motor Siemens, las poleas... y setenta años de polvo.', 'pensativo') },
+    { name: 'Muro branco', key: true, done: () => flag('sombraPatio'), r: [470, 156, 316, 150], at: [740, 330], face: 'B', act: () => asomarMuro(),
+      look: () => MA('Un muro blanco, más alto que yo pero no tanto. Lo justo para que te entren ganas de asomarte.', 'risueno') },
+    { name: 'Fiestras', r: [148, 104, 210, 148], look: () => MA('Las ventanas de la casa vistas desde atrás. Desde fuera, mi casa parece de otro. Es que todavía lo es un poco.', 'pensativo') },
+    { name: 'Sofá e butacas', r: [278, 258, 408, 86], look: () => MA('Muebles de exterior, grises y cómodos. Para leer el periódico al sol... sin crucigrama, que con uno he tenido bastante.', 'risueno') },
+    { name: 'Mesiña de cristal', r: [404, 310, 112, 36], look: () => MA('Una mesita de cristal. Sin un solo cerco de vaso. Aquí no se ha tomado ni un café. Todavía.', 'sonriente') },
+    { name: 'Arboriño', r: [388, 118, 82, 192], look: () => MA('Un arbolito en una maceta grande. Alguien lo riega. Otra vez la misma pregunta: ¿con qué agua?', 'dudoso') },
+    { name: 'Árbores de detrás', r: [420, 0, 370, 154], look: () => MA('Árboles al otro lado del muro. Muy verdes. En esta casa todo el mundo tiene agua menos yo.', 'esceptico') },
+    { name: 'Macetas', r: [118, 232, 86, 126], look: () => MA('Dos plantas en maceta, recortadas con tijera. La casera tiene buena mano. Y paciencia.', 'sonriente') },
+    { name: 'Reixas', r: [150, 392, 120, 30], look: () => MA('Rejillas de desagüe. Secas como mi grifo. Por lo menos aquí no se atasca nada.', 'risueno') },
+    { name: 'Baixante', r: [780, 0, 22, 384], look: () => MA('La bajante del tejado. Cuando llueva, por aquí bajará el agua. Lo apunto como plan B.', 'risueno') },
   ],
 };
 

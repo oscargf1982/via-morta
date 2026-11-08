@@ -91,6 +91,17 @@
 - **Hotspots:** grifo (clave: **no sale agua**; Martín deduce que hay que dar de alta el agua en el Concello con el contrato, que llegará en M2; marca `sinAgua`), balcón, Torre del Homenaje, supermercado, nevera, frutero, isla, taburete, placa, horno, microondas, tabla de cortar, lavavajillas, azulejos, armarios.
 - **Personas reales:** ninguna. La Torre del Homenaje solo se nombra y se ve.
 
+## A5c · Casa Juana, patio trasero (`casaPatio`)
+- **Fondo:** `img/bg-casa-patio.jpg`, ilustración de Oscar. Patio de baldosa roja con césped, un sofá y dos butacas de exterior, una mesita de cristal, un arbolito, dos plantas en maceta, rejillas de desagüe, la bajante y un muro blanco con árboles detrás. A la izquierda, la puerta acristalada de la casa; a la derecha, la puerta verde del viejo taller.
+- **Llegada:** desde la cocina (A5b), por la salida de abajo («la puerta de atrás»). Decisión provisional: es la estancia más lógica para una puerta trasera; si Oscar prefiere el dormitorio o el salón, se cambia.
+- **Suelo:** baldosa y césped. Obstáculos: el sofá con la mesita, las butacas y las macetas, con capas delanteras para que Martín pase por detrás.
+- **Salidas:**
+  - Izquierda → puerta acristalada → cocina (A5b).
+  - Derecha → puerta verde → viejo taller, cerrado en este tramo (aviso de próximo hito).
+- **Muro blanco (clave):** Martín se asoma para cotillear y **vuelve a ver la sombra negra misteriosa**. Si ya la vio en la rúa Morín, la relaciona con la casa pistacho. Marca `sombraPatio`.
+- **Hotspots:** muro blanco, puerta del taller, puerta de la casa, ventanas, sofá y butacas, mesita, arbolito, árboles de detrás, macetas, rejillas, bajante, césped.
+- **Personas reales:** ninguna.
+
 ## B3 · A Fraternal, interior (`fraternal`)
 - **Fondo:** `img/bg-fraternal.jpg`, ilustración de Oscar. Barra con lista de precios, cafetera y botellas; mesas de brisca con tapete verde, columnas, cuadros, tele con el fútbol y tragaperras.
 - **Suelo:** el terrazo. Obstáculos: la barra, la columna y los grupos de mesas. Capas delanteras: la mesa de delante (con La Voz y la baraja), la columna y las mesas laterales.
