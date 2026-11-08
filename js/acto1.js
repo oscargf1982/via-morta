@@ -35,6 +35,11 @@ async function introAnden() {
   toast('Toca para camiñar · mantén premido para mirar · OLLO amosa o importante');
 }
 
+async function portasAzuis() {
+  await MA('La última vez que pasé por aquí, detrás de estas puertas había cafetería y un quiosco de revistas, aquí mismo, en la estación. Olía a café y a periódico recién llegado.', 'pensativo');
+  await MA('Ahora, todo cerrado. Queda la máquina de billetes del vestíbulo, que tampoco da conversación.', 'preocupado');
+}
+
 SCENES.anden = {
   name: 'Andén 1', bg: 'img/bg-anden-estacion.jpg', music: 'estacion', floor: 'pedra',
   walk: [[0, 400], [210, 388], [300, 362], [560, 331], [634, 321], [652, 321], [800, 538], [0, 538]],
@@ -50,8 +55,8 @@ SCENES.anden = {
   hotspots: [
     { name: 'Vestíbulo', key: true, r: [190, 216, 48, 145], at: [214, 386], face: 'B', exit: ['vestibulo', [280, 520]], door: true,
       look: () => MA('La puerta del vestíbulo. Por ahí se sale a Monforte. O se entra, según de qué lado tengas la maleta.', 'neutro') },
-    { name: 'Portas azuis', r: [0, 170, 46, 214], look: () => MA('Puertas azules, una detrás de otra. La mitad cerradas desde hace años: almacenes, oficinas... Y una era la cafetería.', 'pensativo') },
-    { name: 'Portas azuis', r: [296, 230, 30, 118], look: () => MA('Otra puerta azul. Antes por aquí entraba y salía gente con prisa. Ahora entra y sale el silencio, y sin billete.', 'pensativo') },
+    { name: 'Portas azuis', r: [0, 170, 46, 214], look: () => portasAzuis() },
+    { name: 'Portas azuis', r: [296, 230, 30, 118], look: () => portasAzuis() },
     { name: 'Tren rexional', r: [650, 190, 230, 216], at: [700, 440], face: 'R',
       look: () => MA('El regional en el que he venido. Tres horas mirando por la ventana y ensayando qué le digo a mi madre el domingo.', 'pensativo'),
       act: () => bark('Ya me he bajado. Volver a subir sería mucho dramatismo para un lunes.') },
@@ -126,11 +131,6 @@ SCENES.vestibulo = {
   holes: [[[646, 384], [726, 384], [726, 412], [646, 412]]],
   front: [{ y: 410, r: [646, 0, 80, 412] }],          // piar de pedra: Martín pasa por detrás
   scale: [330, 0.56, 538, 1.2], actorH: 300, start: [300, 500],
-  onEnter: async () => {
-    if (flag('vestibuloVisto')) return; setFlag('vestibuloVisto');
-    await MA('La última vez que pasé por aquí había cafetería y un quiosco de revistas aquí mismo, en la estación. Olía a café y a periódico recién llegado.', 'pensativo');
-    await MA('Ahora, todo cerrado. Queda la máquina de billetes, que tampoco da conversación.', 'preocupado');
-  },
   hotspots: [
     { name: 'Andén 1', key: true, r: [0, 478, 244, 62], at: [256, 528], face: 'F', exit: ['anden', [214, 392]], door: true,
       look: () => MA('La puerta del andén, a mi espalda. Por ahí he entrado yo hace un momento, con veinte años de retraso.', 'risueno') },
