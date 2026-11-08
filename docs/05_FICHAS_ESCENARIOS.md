@@ -72,13 +72,14 @@
 
 ## A5 · Casa Juana, salón comedor (`casaSalon`)
 - **Fondo:** `img/bg-casa-salon.jpg`, ilustración de Oscar. Salón comedor amueblado, de alquiler: sofá rinconera gris con cojines, mesitas, aparador de madera tallada con una planta, dos cuadros de paisaje, mesa de comedor con seis sillas y lámparas colgantes. A la izquierda una ventana; a la derecha, puertas balconeras que dan a la gasolinera, la iglesia de la estación y el colegio ferroviario.
-- **Llegada:** desde la puerta de la Casa Juana (A4) con llaves y contrato. La primera vez Martín abre, entra y comenta la casa; después aparece el aviso de fin de tramo.
+- **Llegada:** desde la puerta de la Casa Juana (A4) con llaves y contrato. La primera vez Martín abre, entra y comenta la casa; después, una pista: «explora a casa, a cociña está á dereita».
 - **Suelo:** la tarima. Obstáculos: el sofá, las mesitas y la mesa con las sillas (Martín pasa por delante).
 - **Salidas:**
-  - Derecha → cocina (próximo escenario; de momento, aviso «en construción»).
-  - Izquierda → dormitorio (próximo escenario; ídem).
+  - Derecha → cocina (A5b).
+  - Izquierda → dormitorio. Sin fondo propio todavía: antes del alta del agua, Martín dice que aún no es hora de dormir; con el alta, lanza la noche del fin del Acto 1.
   - Abajo → vuelta a la calle, Doutor Casares (A4). Así nunca hay callejón sin salida.
 - **Vista del balcón (decidido por Oscar):** al usar o mirar las ventanas del balcón salta a pantalla completa `img/vista-salon.jpg`, ilustración de Oscar: la gasolinera, la capillita, el supermercado y, al fondo, el museo del ferrocarril con la Mikado. Martín lo comenta y recuerda la pista de Xoán («Bo balcón. Dende el vése o depósito»). Marca `vistaSalon`.
+- **La noche (fin del Acto 1, propuesta provisional):** al volver con el alta del agua (`aguaAlta`), Martín dice que anochece y que el dormitorio está a la izquierda (pista). En el sofá bromea: «mañana tengo la espalda de un señor de ochenta años». Al entrar al dormitorio: fundido a negro, cinemática con `img/noite-salon.jpg` (el salón a oscuras) y el silbato «dos largos y uno corto»; Martín se levanta y va al balcón: `img/noite-vista.jpg` (la vista del balcón de noche, con la Mikado). El silbato vuelve a sonar y Martín se da cuenta de que no pasa por delante de su casa: «llama a mi casa». Hoja «FIN DO ACTO 1». Marca `noiteActo1` y `fimActo1`. Las dos imágenes de noche salen de las de Oscar con `tools/noite.py` (solo oscurecer y azular); se cambian por arte propio si Oscar lo manda, igual que el dormitorio.
 - **Hotspots:** ventanas del balcón (la vista), ventana de la izquierda, sofá, cojines, mesitas, aparador, planta, cuadros, mesa y sillas, lámparas, interruptor, tarima.
 - **Tono:** primera impresión de Martín en su casa. Todo parece en orden… salvo detalles que preparan la casa sin agua del M2 (no se resuelve aquí).
 - **Personas reales:** ninguna.

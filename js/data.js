@@ -147,7 +147,7 @@ async function conchaTalk() {
 /* ---------- presets do selector de acto ----------
    O primeiro é o que usa «Nova partida». Os actos sen facer saen desactivados. */
 const ACTS = [
-  { id: 'acto1', name: 'Acto 1 · O regreso', desc: 'Luns. Martín chega no rexional (tramo M1: estación, praza, a Fraternal e a Casa Juana ata o salón)', scene: 'anden', at: [600, 450], inv: [],
+  { id: 'acto1', name: 'Acto 1 · O regreso', desc: 'Luns. Martín chega no rexional (tramo M1: estación, praza, a Fraternal, a Casa Juana, o Concello e a primeira noite)', scene: 'anden', at: [600, 450], inv: [],
     intro: () => introAnden() },
   { id: 'acto2', name: 'Acto 2 · O reencontro', desc: 'En construción (M3)', disabled: true },
   { id: 'acto3', name: 'Acto 3 · A curiosidade', desc: 'En construción (M4)', disabled: true },

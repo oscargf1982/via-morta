@@ -648,8 +648,29 @@ SCENES.casares = {
     { name: 'Edificios', r: [0, 0, 190, 236], look: () => MA('Pisos con galerías y miradores. En cada ventana, alguien que ya sabe que ha llegado el nuevo de la casa roja.', 'esceptico') },
   ],
 };
-async function fimTramo() {
-  await showDoc('<h4>FIN DO TRAMO</h4><p>Martín xa está na Casa Juana, coas chaves e o contrato. A cociña, o dormitorio e unha casa sen auga (co Concello e Eladio) chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
+/* ---------- A5 · a noite que pecha o Acto 1 ----------
+   Con a alta da auga feita, Martín vai durmir. Soa o asubío (dous longos e un curto), érguese, mira polo balcón
+   cara ao museo... e dáse conta de que o son vén cara á súa casa. Sen fondo do dormitorio aínda: a noite vese no salón. */
+async function noiteActo1() {
+  await MA('Agua mañana, luz hoy y cama ya. Para ser lunes, no ha estado mal.', 'aliviado');
+  E.fadeTo = 1; await sleep(900);
+  setFlag('noiteActo1');
+  setTimeout(() => SFX.whistle(), 1400);
+  await cine('img/noite-salon.jpg', [
+    'Esa noite, na Casa Juana...',
+    'Martín: «(Dos largos y uno corto. Un silbato de vapor. A estas horas no pasa ni un regional.)»',
+    'Martín: «Vale. Me levanto. Si es el tren fantasma de Concha, que por lo menos me vea en pijama digno.»',
+  ]);
+  setTimeout(() => SFX.whistle('LLS', 0.3), 600);
+  await cine('img/noite-vista.jpg', [
+    'Martín: «Desde el balcón: la gasolinera cerrada, la capillita a oscuras, la Mikado quieta en la rotonda.»',
+    'Martín: «Ahí está otra vez. Dos largos, uno corto. No viene de la estación: viene del lado del museo... y viene hacia aquí.»',
+    'Martín: «No pasa por delante de mi casa. Llama a mi casa.»',
+  ]);
+  setFlag('fimActo1');
+  await showDoc('<h4>FIN DO ACTO 1 · «O regreso»</h4><p>Martín xa vive na Casa Juana: chaves, contrato, auga para mañá... e un asubío que, polo visto, ten enderezo.</p><p>O Acto 2, «O reencontro», chegará nun próximo hito.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
+  E.fadeTo = 0; await sleep(400);
+  await MA('Mañana, Xoán. Él sabrá quién silba así. O conocerá a alguien que lo sepa.', 'pensativo');
 }
 async function estanciaPechada(linea, mood) { await MA(linea, mood || 'pensativo'); toast('Estancia en construción · chega nun próximo hito'); }
 
@@ -660,16 +681,27 @@ SCENES.casaSalon = {
   walk: [[120, 540], [120, 462], [170, 444], [300, 430], [495, 414], [502, 362], [600, 372], [700, 382], [780, 394], [822, 372], [880, 368], [936, 392], [936, 540]],
   scale: [300, 0.55, 540, 0.98], actorH: 300, start: [470, 500], minSpeed: 0.5,
   async onEnter() {
+    if (flag('aguaAlta') && !flag('noiteAviso')) {
+      setFlag('noiteAviso');
+      await MA('Ya anochece. Cena de supermercado, maleta sin deshacer y un dormitorio por estrenar. A la izquierda.', 'aliviado');
+      toast('Pista: o dormitorio está á esquerda do salón');
+      return;
+    }
     if (flag('salonVisto')) return;
     setFlag('salonVisto');
     await MA('Hola, casa. Soy Martín. Vamos a llevarnos bien.', 'sonriente');
     await MA('Sofá, mesa para seis, cuadros de paisaje... Para ser de alquiler, está mejor que mi piso de Valencia. Y no huele a humedad. De momento.', 'pensativo');
-    await fimTramo();
+    toast('Pista: explora a casa. A cociña está á dereita');
   },
   hotspots: [
     { name: 'Cociña', key: true, r: [880, 330, 80, 210], at: [900, 470], face: 'R', exit: ['casaCocina', [790, 480]], hint: 'R' },
-    { name: 'Dormitorio', key: true, r: [0, 300, 110, 240], at: [140, 490], face: 'L', exit: ['__dormitorio'], hint: 'L',
-      act: () => estanciaPechada('El dormitorio. Ya lo estrenaré esta noche... si el silbato me deja dormir.', 'dudoso') },
+    { name: 'Dormitorio', key: true, done: () => flag('fimActo1'), r: [0, 300, 110, 240], at: [140, 490], face: 'L', exit: ['__dormitorio'], hint: 'L',
+      act: async () => {
+        if (flag('fimActo1')) return estanciaPechada('El dormitorio. La cama aún está deshecha del susto de anoche.', 'risueno');
+        if (flag('aguaAlta')) return noiteActo1();
+        if (flag('sinAgua')) return MA('Todavía es de día y la casa no tiene agua. Dormir ahora sería rendirse. Primero, el Concello.', 'convencido');
+        return MA('El dormitorio. Ya lo estrenaré esta noche... si el silbato me deja dormir. Antes, a ver qué tal está el resto de la casa.', 'dudoso');
+      } },
     { name: 'Saír á rúa', r: [300, 516, 340, 24], at: [470, 530], face: 'F', exit: ['casares', [690, 430]], hint: 'D',
       look: () => MA('La puerta de la calle. Doctor Casares, 211. Todavía me suena raro decir «mi puerta».', 'sonriente') },
     { name: 'Fiestras do balcón', key: true, done: () => flag('vistaSalon'), r: [766, 60, 194, 280], at: [800, 400], face: 'R', act: () => vistaSalon(), look: () => vistaSalon() },
@@ -681,7 +713,8 @@ SCENES.casaSalon = {
     { name: 'Planta', r: [452, 176, 64, 56], look: () => MA('Una planta viva. Alguien la riega. Y si alguien la riega... alguien tiene agua.', 'dudoso') },
     { name: 'Aparador', r: [384, 232, 128, 76], look: () => MA('Un aparador de madera tallada, de los de antes. En la Casa Juana, de un carpintero, los muebles tienen que estar a la altura.', 'pensativo') },
     { name: 'Mesa e cadeiras', r: [514, 220, 298, 150], look: () => MA('Mesa para seis. Yo solo soy uno, pero tengo mucha familia en Vilatán. Y todos opinan.', 'risueno') },
-    { name: 'Sofá', r: [100, 232, 396, 196], look: () => MA('Un sofá rinconera, gris y mullido. Peligroso: me siento ahí y no me levanto hasta el Acto 3.', 'risueno') },
+    { name: 'Sofá', r: [100, 232, 396, 196], look: () => MA('Un sofá rinconera, gris y mullido. Peligroso: me siento ahí y no me levanto hasta el Acto 3.', 'risueno'),
+      act: () => flag('aguaAlta') && !flag('fimActo1') ? MA('Si me tumbo aquí, mañana tengo la espalda de un señor de ochenta años. Mejor la cama: a la izquierda.', 'risueno') : MA('Un sofá rinconera, gris y mullido. Peligroso: me siento ahí y no me levanto hasta el Acto 3.', 'risueno') },
     { name: 'Coxíns', r: [318, 240, 100, 82], look: () => MA('Cojines verdes y crema, colocados con escuadra y cartabón. Aquí ha pasado una casera concienzuda.', 'sonriente') },
     { name: 'Mesiñas', r: [80, 316, 72, 124], look: () => MA('Dos mesitas nido. Una dentro de la otra, como las muñecas rusas, pero en serio.', 'risueno') },
   ],
