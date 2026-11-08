@@ -1,0 +1,117 @@
+<title>Vía morta · O libro</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400&family=Bree+Serif&display=swap">
+<style>
+/* Layout: un caderno de páxinas A5 en vertical, unha detrás doutra, coma un libro aberto páxina a páxina */
+:root{
+  --bg:#dfe5ea; --paper:#fbfaf6; --ink:#24303a; --blue:#1f5f8b; --red:#b8392b; --muted:#6b7884; --shadow:rgba(20,40,60,.18);
+  --display:"Bree Serif", Georgia, serif; --body:"Andika", "Trebuchet MS", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#141b22;--paper:#1f2830;--ink:#e8ecef;--blue:#7fb6dd;--red:#ee8a7c;--muted:#9aa7b2;--shadow:rgba(0,0,0,.5);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141b22;--paper:#1f2830;--ink:#e8ecef;--blue:#7fb6dd;--red:#ee8a7c;--muted:#9aa7b2;--shadow:rgba(0,0,0,.5);color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px}
+header{max-width:560px;margin:0 auto 24px;text-align:center}
+header h1{font-family:var(--display);font-weight:400;font-size:2.6rem;color:var(--red);margin:0;letter-spacing:.01em}
+header p{margin:.3rem 0 0;color:var(--muted);font-size:1rem}
+.book{display:flex;flex-direction:column;align-items:center;gap:28px}
+.page{box-sizing:border-box;container-type:inline-size;position:relative;width:100%;max-width:560px;aspect-ratio:148/210;background:var(--paper);box-shadow:0 6px 20px var(--shadow);border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+.page .text{padding:9% 10% 12%;font-size:3.2cqw;line-height:1.55;min-width:0}
+.page p{margin:0 0 .75em;text-wrap:pretty}
+.page strong{color:var(--blue)}
+.page h3{font-family:var(--display);font-weight:400;color:var(--red);font-size:1.15em;margin:1.2em 0 .4em}
+.page ul{margin:0;padding-left:1.2em}.page li{margin-bottom:.35em}
+.full{justify-content:center;background:var(--ink)}.full img{width:100%;display:block}
+.mixed figure,.cover figure{margin:0;flex:0 0 42%}
+.mixed figure img,.cover figure img{width:100%;height:100%;object-fit:cover;display:block}
+.mixed .text{padding-top:6%}
+.cover figure{flex:0 0 62%}
+.ctitle{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:0 10%}
+.cnum{font-size:.95rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}
+.ctitle h2{font-family:var(--display);font-weight:400;font-size:7cqw;color:var(--blue);margin:.2em 0 0;text-wrap:balance}
+.ctitle::after{content:"";display:block;width:70%;height:10px;margin-top:18px;background:repeating-linear-gradient(90deg,var(--ink) 0 6px,transparent 6px 22px);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);opacity:.55}
+.pn{position:absolute;bottom:3.5%;left:0;right:0;text-align:center;font-size:2.6cqw;color:var(--muted);font-variant-numeric:tabular-nums}
+.full .pn{color:var(--paper)}
+</style>
+<main class="book">
+<section class="page front bookcover"><figure><img src="img/portada-rotonda.jpg" alt="A Mikado na rotonda do museo do ferrocarril de Monforte"></figure><div class="bt"><h1>Vía morta</h1><p>O misterio do asubío de Monforte</p></div></section>
+<section class="page front"><div class="text"><h2 class="idxh">Índice</h2><ol class="idx" id="idx"></ol></div></section>
+%%PAGES%%
+<section class="page front"><div class="text credits"><h3>Unha nota para quen le</h3><p>Esta historia é de ficción. Martín, Xoán, Concha, Rosario, Demetrio, Eladio, Remedios, Don Anxo, Pepe, Andrés e Xosé Nogal son personaxes inventados, e tamén o son a noite de 1958, o parte escondido e a vía morta da Barreira.</p><p>Pero algúns lugares e datos son reais:</p><ul><li>A Casa Juana existe, en Doutor Casares, 211. Foi do carpinteiro Alfredo Fernández Gutiérrez e leva o nome da súa segunda muller, Juana Rivera Rodríguez. Atrás tiña unha carpintaría con motor Siemens e transmisións con poleas, e en 1952 vendeuse toda a maquinaria por 30.000 pesetas a un enxeñeiro de Camiños e a un contratista. Para que a querían, ninguén o sabe.</li><li>O mural do vestíbulo da estación pintouno en 1954 Cándido Fernández Inchaurbe, delineante de Renfe. Restaurouno Adif a petición de Apatrigal.</li></ul><p>As ilustracións proceden da aventura gráfica «Vía morta». As fotos do taller son de Oscar.</p></div></section>
+
+</main>
+<script>
+// Reparte o texto que non cabe nunha páxina na seguinte, e numera as páxinas.
+function paginate(){
+  document.querySelectorAll('.page.cont').forEach(p=>{const t=p.querySelector('.text');const prev=p.previousElementSibling.querySelector('.text');while(t.firstChild)prev.appendChild(t.firstChild);p.remove();});
+  const fits=p=>p.scrollHeight<=p.clientHeight+1;
+  document.querySelectorAll('.page').forEach(function split(p){
+    const t=p.querySelector('.text'); if(!t||fits(p))return;
+    const n=document.createElement('section');n.className='page cont';n.innerHTML='<div class="text"></div><span class="pn"></span>';p.after(n);
+    const nt=n.querySelector('.text');
+    while(!fits(p)&&t.children.length>1){nt.prepend(t.lastElementChild);}
+    split(n);
+  });
+  let n=0;document.querySelectorAll('.page:not(.front)').forEach(p=>{n++;const s=p.querySelector('.pn');if(s)s.textContent=n;});
+  const idx=document.getElementById('idx');if(idx){idx.innerHTML='';document.querySelectorAll('.page.cover').forEach(c=>{const li=document.createElement('li');li.innerHTML='<span>'+c.querySelector('h2').textContent+'</span><b>'+c.querySelector('.pn').textContent+'</b>';idx.appendChild(li);});}
+}
+(document.fonts?document.fonts.ready:Promise.resolve()).then(paginate);
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(paginate,200)});
+</script>
+<style>
+.acts .text{padding-top:7%}
+.acthead{display:flex;flex-wrap:wrap;align-items:baseline;gap:.2em 1em;border-bottom:3px solid var(--blue);padding-bottom:.3em;margin-bottom:.6em}
+.acthead h2{font-family:var(--display);font-weight:400;color:var(--blue);margin:0;font-size:1.6em;flex:1}
+.acthead .cnum{flex-basis:100%}
+.nome{margin:0!important;font-size:.85em}.nome span{display:inline-block;width:9em;border-bottom:1.5px solid var(--muted)}
+.act{margin-bottom:.9em}
+.act h3{margin:.2em 0 .3em!important}
+.act p{margin:0 0 .25em}
+.line{height:1.55em;border-bottom:1.5px dotted var(--muted);margin-bottom:.15em}
+.une{display:grid;grid-template-columns:auto 1fr;gap:.35em 3.5em;align-items:center}
+.une .w{text-align:right;font-weight:700}
+.une .d{font-size:.92em}
+.drawbox{border:2px dashed var(--muted);border-radius:10px;height:11em;margin-top:.3em}
+</style>
+<style>
+.vf{display:flex;gap:1em;justify-content:space-between;align-items:baseline}
+.vfb{flex:none;font-weight:700;color:var(--blue);letter-spacing:.1em}
+.page.cont:has(.act) .text{display:flex;flex-direction:column;height:100%;box-sizing:border-box}
+.page:has(.act-draw) .act-draw{flex:1;display:flex;flex-direction:column}
+.page:has(.act-draw) .drawbox{flex:1;height:auto;min-height:6em;margin-bottom:.5em}
+.full{background:var(--paper)!important;padding:8%}
+.full img{border-radius:6px;box-shadow:0 3px 10px var(--shadow)}
+.full .pn{color:var(--muted)!important}
+</style>
+<style>.full .cap{font-family:var(--display);color:var(--blue);font-size:4cqw;line-height:1.35;text-align:center;margin:1.2em 4% 0;text-wrap:balance}</style>
+<style>.full img{max-height:72%;width:auto;max-width:100%;margin:0 auto;object-fit:contain}</style>
+<style>
+.draw{padding:9% 9% 12%;gap:3%}
+.draw .dlab{margin:0;font-size:2.6cqw;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);text-align:center}
+.draw .dbox{flex:1;border:2.5px dashed var(--blue);border-radius:14px;opacity:.7}
+.draw .cap{font-family:var(--display);color:var(--blue);font-size:3.8cqw;line-height:1.35;text-align:center;margin:0;text-wrap:balance}
+</style>
+<style>
+.docp{justify-content:center;align-items:center;padding:10%}
+.paper{--pp:#efe3c4;--pi:#3b2f22;background:var(--pp);color:var(--pi);padding:9% 8%;transform:rotate(-1.5deg);box-shadow:0 4px 14px var(--shadow);font-family:"Courier New",Courier,monospace;font-size:3.1cqw;line-height:1.5;border-radius:2px;width:100%;box-sizing:border-box}
+.paper p{margin:0 0 .6em}.paper strong{color:#8a2a1c}
+.paper h3{font-family:inherit;color:var(--pi);text-align:center;letter-spacing:.08em;margin:0 0 .8em}
+</style>
+<style>.ord{display:flex;flex-direction:column;gap:.35em}.ord i{display:inline-block;width:1.4em;height:1.4em;border:2px solid var(--blue);border-radius:4px;margin-right:.6em;vertical-align:middle}</style>
+<style>
+.bookcover figure{margin:0;flex:0 0 58%}.bookcover img{width:100%;height:100%;object-fit:cover;display:block}
+.bookcover .bt{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:0 8%}
+.bookcover h1{font-family:var(--display);font-weight:400;font-size:14cqw;color:var(--red);margin:0;line-height:1}
+.bookcover p{font-size:4cqw;color:var(--blue);margin:.6em 0 0}
+.idxh{font-family:var(--display);font-weight:400;color:var(--blue);font-size:2em;margin:0 0 .6em}
+.idx{margin:0;padding-left:1.6em;display:flex;flex-direction:column;gap:.32em}
+.idx li{display:list-item}.idx li span{display:inline}.idx li b{float:right;font-weight:400;color:var(--muted);font-variant-numeric:tabular-nums}
+.credits{font-size:2.9cqw!important}
+</style><style>.cover figure,.mixed figure,.bookcover figure{min-height:0;overflow:hidden}</style>
+<style>
+@page{size:148mm 210mm;margin:0}
+@media print{
+  body{padding:0!important;background:#fff}
+  .book{gap:0;display:block}
+  .page{width:148mm;height:210mm;max-width:none;aspect-ratio:auto;box-shadow:none;border-radius:0;break-after:page;page-break-after:always}
+}
+</style>
