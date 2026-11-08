@@ -396,7 +396,7 @@ async function davidTalk() {
     ];
     const k = opts[await choose(opts)].k;
     if (k === 'amparo') {
-      await DA('A Rosario? Dentro, na mesa do fondo, coa brisca. Non levanta a vista das cartas nin para pedir.');
+      await DA('A Rosario? Dentro, na primeira mesa, coa brisca. Non levanta a vista das cartas nin para pedir.');
       await DA('Entra, entra. Pero non lle fales ata que remate a man, que despois a culpa da derrota é túa.');
       await MA('Entrar, esperar a que acabe la mano, y no tener la culpa de nada. Como en el trabajo.', 'risueno');
       setFlag('davidAmparo');
@@ -471,7 +471,7 @@ SCENES.arenal = {
 /* ---------- B3 · A Fraternal (interior) ----------
    Fondo: ilustración de Oscar (img/bg-fraternal.jpg). Barra á esquerda, mesas de brisca, columna, tele co fútbol,
    tragaperras á dereita. Saída á rúa Concepción Arenal polas portas de cristal do fondo.
-   Rosario Higueras xoga á brisca na mesa do fondo, á dereita (sentada, co sprite da folla de Oscar). */
+   Rosario Higueras xoga á brisca na primeira mesa, á dereita (sentada, co sprite da folla de Oscar). */
 const RO = t => say('Rosario Higueras', t);
 async function rosarioBrisca() {
   if (flag('contratoAsinado')) {
@@ -521,6 +521,7 @@ SCENES.fraternal = {
     [[214, 256], [378, 256], [378, 308], [214, 308]],                           // mesas da esquerda
     [[654, 262], [812, 262], [812, 330], [654, 330]],                           // mesas da dereita
     [[524, 214], [650, 214], [650, 250], [524, 250]],                           // mesas do medio
+    [[700, 396], [770, 396], [770, 440], [700, 440]],                           // Rosario e a súa cadeira
   ],
   front: [
     { y: 488, r: [428, 296, 276, 200] },                 // mesa da fronte, cadeiras e xornal
@@ -547,12 +548,12 @@ SCENES.fraternal = {
     { name: 'Lousa', r: [108, 158, 34, 46], look: () => MA('Otra pizarra con letra de tiza. Aquí todo se escribe a mano, como debe ser.', 'sonriente') },
     { name: 'Planta', r: [232, 120, 46, 90], look: () => MA('Una planta que ha sobrevivido a cientos de goles cantados a gritos. Es la socia más dura del bar.', 'risueno') },
   ],
-  // Rosario, sentada na mesa da brisca (a da dereita, coas cartas); a cadeira vén no sprite
+  // Rosario, sentada á dereita da primeira mesa (a das cartas); a cadeira vén no sprite
   npcs: [
     { id: 'rosario', name: 'Rosario Higueras', key: true, sheet: 'img/rosario-sprite.png', spec: { cw: 160, ch: 280, cols: 8 }, flip: true,
-      get idle() { return flag('amparoMan') ? 11 : 8; }, talkFrames: [13, 9], x: 796, y: 334, w: 70, h: 320, at: [730, 352], face: 'R',
+      get idle() { return flag('amparoMan') ? 11 : 8; }, talkFrames: [13, 9], x: 735, y: 430, w: 110, h: 330, at: [790, 470], face: 'L',
       done: () => flag('contratoAsinado'),
-      look: () => MA('Rosario Higueras, en la mesa del fondo. Rizos, aros de plata y cara de llevar triunfos. Juega a la brisca como otros pilotan aviones: sin pestañear.', 'pensativo'),
+      look: () => MA('Rosario Higueras, en la primera mesa, la de las cartas. Rizos, aros de plata y cara de llevar triunfos. Juega a la brisca como otros pilotan aviones: sin pestañear.', 'pensativo'),
       talk: () => rosarioBrisca(),
       give: {
         boli: async () => { if (!flag('amparoMan')) return rosarioBrisca(); await asinarContrato(); },

@@ -64,7 +64,7 @@
 - **Hotspots:** puerta de la Fraternal (clave), ventanas del bar, toldo, rótulo del cine, pizarra, terraza, coche rojo, balcones y edificios.
 - **NPC:** **tío David**, en la puerta de la Fraternal con los brazos cruzados (sprite de la hoja de Oscar). Árbol de diálogo:
   - saludo («O de Vilatán!»);
-  - «¿Has visto a Rosario?» (solo con el objetivo del contrato): está dentro, en la mesa del fondo, y no hay que interrumpir la mano. Marca `davidRosario`;
+  - «¿Has visto a Rosario?» (solo con el objetivo del contrato): está dentro, en la primera mesa, y no hay que interrumpir la mano. Marca `davidRosario`;
   - «¿Me ayudas con el crucigrama?» (con el periódico y la pista leída; también dándole el periódico): PICHICHI, él fue el pichichi de la liga pirata de Monforte. Marca `sabePalabra`;
   - el fútbol: el gol al Ourense en Tercera, «un domingo de sol», la corrección de Xoán («un miércoles, y llovía») y la apuesta de cinco euros;
   - la Champions: martes y miércoles a las 20:00, y Martín a dormir a las 23:00;
@@ -74,7 +74,7 @@
 - **Fondo:** `img/bg-fraternal.jpg`, ilustración de Oscar. Barra con lista de precios, cafetera y botellas; mesas de brisca con tapete verde, columnas, cuadros, tele con el fútbol y tragaperras.
 - **Suelo:** el terrazo. Obstáculos: la barra, la columna y los grupos de mesas. Capas delanteras: la mesa de delante (con La Voz y la baraja), la columna y las mesas laterales.
 - **Salidas:** puertas de cristal del fondo → rúa Concepción Arenal (A4b).
-- **Hotspots:** Rosario Higueras (clave, en la mesa del fondo a la derecha), lista de precios, cafetera, botellas, barra, taburetes, tele, tragaperras, periódico y baraja, aviso de la columna, cuadros, pizarra y planta.
+- **Hotspots:** Rosario Higueras (clave, sentada a la derecha de la primera mesa, la de las cartas), lista de precios, cafetera, botellas, barra, taburetes, tele, tragaperras, periódico y baraja, aviso de la columna, cuadros, pizarra y planta.
 - **NPC:** **Rosario Higueras**, jugando a la brisca. Sentada en la silla del lado derecho de la mesa de las cartas (sprite con su propia silla, mirando a la mesa); al interrumpirla se cruza de brazos. Abre con «Copas! E arrastro!» y no suelta las cartas a mitad de mano.
 - **Puzzle de la firma (elegido por Oscar):** Rosario gana la mano y pide bolígrafo; no tiene (pista: Concha tiene el de los crucigramas). Concha no lo presta hasta acabar el crucigrama: le falta el 7 horizontal, de fútbol. Martín consigue un periódico (comprándoselo a Concha o cogiéndolo de la mesa «Xornal e baralla» de la Fraternal), lee la pista «Oito letras: o máximo goleador dunha liga» y se la enseña al tío David (A4b), que responde PICHICHI: el máximo goleador, como él en la liga pirata de Monforte (22 goles, antes eran 18; Xoán dice que 12). Martín le dice PICHICHI a Concha (o le da el periódico) y ella le presta el bolígrafo. Con él, Rosario firma (objeto `contrato`), cuenta la historia de la casa (Alfredo, Juana, el motor Siemens, la venta de 1952) y deja la pregunta del ingeniero de Caminos. Después, objetivo: ir a la Casa Juana (A4).
 
