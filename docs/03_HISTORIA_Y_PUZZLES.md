@@ -69,7 +69,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 1. **A1 → A2.** Martín baja del tren. En el vestíbulo, Xoán le explica el mural (charla opcional, con pistas sembradas: «Bo balcón. Dende el vése o depósito»).
 2. **Quiosco (A3).** Martín compra una **bolsa de ositos** y el **periódico**. Concha lo reconoce («o rapaz de Vilatán!») y le da las **llaves de la casa**, pero el contrato debe firmarlo Rosario Higueras, en la Fraternal.
 3. **Casa Juana (A5).** No hay agua: hay que darla de alta en el Concello con el contrato firmado. Desde la cocina se ven las argollas del techo de la nave.
-4. **Fraternal (B3).** Rosario no suelta las cartas en mitad de una brisca. **(propuesta)** Para firmar le falta un bolígrafo: el de Concha, que Martín consigue al devolverle el periódico con el crucigrama hecho («Oito letras: o que conduce un tren»). Al firmar, Rosario cuenta **la historia real de la casa**: Alfredo, Juana, el motor Siemens y la venta de 1952. Lanza la pregunta: ¿para qué quería una carpintería un ingeniero de Caminos?
+4. **Fraternal (B3).** Rosario no suelta las cartas en mitad de una brisca. **(elegido por Oscar)** Para firmar le falta un bolígrafo (el suyo se lo llevó su marido, el de reserva su hija Eugenia). Concha tiene el de los crucigramas, pero solo lo presta si le resuelves la palabra que le falta, el 7 horizontal, «que é de fútbol». Martín coge un periódico (se lo compra a Concha o lo toma de una mesa de la Fraternal) y lee la pista: «Oito letras: o máximo goleador dunha liga». Se lo enseña al **tío David** (opción de diálogo o darle el periódico), que lo resuelve al momento: **PICHICHI**, como él en la liga pirata de Monforte (y cada vez con más goles). Martín le lleva la palabra a Concha y ella le presta el bolígrafo. Al firmar, Rosario cuenta **la historia real de la casa**: Alfredo, Juana, el motor Siemens y la venta de 1952. Lanza la pregunta: ¿para qué quería una carpintería un ingeniero de Caminos?
 5. **Concello (B4–B5).** Eladio ha puesto «Volvo nun momento» y está en el café. **(propuesta)** Martín consigue que vuelva a la ventanilla: le cambia el sitio del periódico, o le recuerda que cierran a las dos y que él «naceu pechando».
 6. **Noche (A5).** Dormir. Suena el silbato, dos largos y uno corto, y Martín se da cuenta de que apunta a su casa. **Fin del acto.**
 
@@ -151,7 +151,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 | Objeto | Dónde | Para qué |
 |---|---|---|
 | Bolsa de ositos | Quiosco (A3) | Un detalle para Concha, que da la llave de la nave |
-| Periódico y bolígrafo | Quiosco y Concha | Firma del contrato (propuesta) |
+| Periódico y bolígrafo | Quiosco y Concha | Firma del contrato |
 | Llaves de la casa | Concha | Entrar en la Casa Juana |
 | Contrato firmado | Rosario | Alta del agua en el Concello |
 | Crema de agujetas | Valerio | Desbloquea la Volta do Castelo (propuesta) |
@@ -175,6 +175,6 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
   - menú con Continuar, Nueva partida, Escoller acto, Opcións (texto rápido, música, efectos) y Créditos e fontes;
   - sonido sintetizado sin archivos: pasos según el suelo, coger, puertas, papel, música por zona y el silbato «dos largos y uno corto»;
   - móvil: en horizontal el inventario va en columna a la derecha; en vertical sale un aviso para girar y, si se sigue en vertical, la escena va arriba a todo el ancho con diálogo e inventario grandes debajo (elegido por Oscar).
-  - **Acto 1, primer tramo jugable:** A1 andén → A2 vestíbulo (Xoán y el mural) → A3 plaza → A3b segunda pantalla de la plaza (quiosco de Concha: llaves, ositos, periódico) → A4b rúa Concepción Arenal (tío David) → B3 interior de la Fraternal (Rosario en plena brisca), más el mapa de Monforte. Fichas en `05_FICHAS_ESCENARIOS.md`. Termina al hablar con Rosario por primera vez; la firma del contrato queda para M2.
+  - **Acto 1, primer tramo jugable:** A1 andén → A2 vestíbulo (Xoán y el mural) → A3 plaza → A3b segunda pantalla de la plaza (quiosco de Concha: llaves, ositos, periódico) → A4b rúa Concepción Arenal (tío David) → B3 interior de la Fraternal (Rosario en plena brisca), más el mapa de Monforte. Fichas en `05_FICHAS_ESCENARIOS.md`. Con el contrato firmado (puzzle del bolígrafo de Concha) se va por A4c rúa Morín (la sombra en la casa pistacho) a A4 Doutor Casares, 211; el tramo termina en la puerta de la Casa Juana.
 - **Provisional:** el mapa es un boceto por código (`tools/fondos.py`). El sprite y el retrato de Xoán Carballeira (antes Iván Nogal) salen de la hoja de personaje de Oscar con `tools/sprite-xoan.py`.
-- **Siguiente paso:** M2 (resto del Acto 1: A4 exterior de la Casa Juana, casa sin agua, Fraternal y Concello). Antes hay que cerrar con Oscar los dos puzzles marcados como propuesta (bolígrafo de Concha y Eladio en el café).
+- **Siguiente paso:** M2 (resto del Acto 1: A4 exterior de la Casa Juana, casa sin agua, Fraternal y Concello). Falta cerrar con Oscar el puzzle de Eladio en el café (propuesta). El del bolígrafo de Concha ya está elegido y hecho.

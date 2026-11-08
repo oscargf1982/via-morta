@@ -2,6 +2,7 @@
 /* ==========================================================
    VÍA MORTA · Acto 1 «O regreso» (tramo M1)
    A1 Andén 1 → A2 Vestíbulo (Xoán e o mural) → A3 Praza da Estación → A3b segunda pantalla (quiosco de Concha)
+   → A4b Concepción Arenal (tío David) → B3 a Fraternal (Rosario) → A4 Doutor Casares, 211
    + pantalla de mapa de Monforte.
    Fichas dos escenarios: docs/05_FICHAS_ESCENARIOS.md
    Fondos PROVISIONAIS xerados con tools/fondos.py (pendentes de fotos de Oscar).
@@ -11,10 +12,14 @@ const XO = t => say('Xoán Carballeira', t);
 /* ---------- obxectos novos ---------- */
 Object.assign(ico, {
   xornal(c) { c.fillStyle = '#efe8d8'; c.fillRect(8, 10, 32, 28); c.fillStyle = '#2a2a2a'; c.fillRect(11, 13, 26, 5); c.fillStyle = '#8a8478'; for (let i = 0; i < 4; i++) { c.fillRect(11, 21 + i * 4, 12, 2); c.fillRect(26, 21 + i * 4, 11, 2); } },
+  boli(c) { c.save(); c.translate(24, 24); c.rotate(-0.7); c.fillStyle = '#1f4fa8'; c.fillRect(-18, -3, 30, 6); c.fillStyle = '#e8e8ec'; c.fillRect(12, -3, 6, 6); c.fillStyle = '#2a2a2a'; c.beginPath(); c.moveTo(18, -3); c.lineTo(23, 0); c.lineTo(18, 3); c.fill(); c.fillStyle = '#c9c9cf'; c.fillRect(-14, -5, 12, 2); c.restore(); },
+  contrato(c) { c.fillStyle = '#f4efe2'; c.fillRect(11, 6, 26, 36); c.fillStyle = '#8a8478'; for (let i = 0; i < 5; i++) c.fillRect(15, 12 + i * 5, 18 - (i % 2) * 5, 2); c.strokeStyle = '#1f4fa8'; c.lineWidth = 2; c.beginPath(); c.moveTo(15, 38); c.bezierCurveTo(19, 32, 23, 42, 27, 35); c.lineTo(33, 37); c.stroke(); },
   chaves(c) { c.fillStyle = '#9a6a3a'; c.fillRect(6, 16, 14, 18); c.fillStyle = '#f2ead8'; c.font = 'bold 8px sans-serif'; c.fillText('211', 7, 28); c.strokeStyle = '#c9c9cf'; c.lineWidth = 3; c.beginPath(); c.arc(24, 18, 5, 0, 7); c.stroke(); c.fillStyle = '#c9c9cf'; c.fillRect(27, 20, 15, 3); c.fillRect(37, 23, 3, 5); c.fillRect(30, 26, 12, 3); c.fillRect(39, 29, 3, 4); },
 });
 Object.assign(ITEMS, {
-  xornal: { name: 'Xornal', icon: ico.xornal, look: () => MA('El periódico de hoy. En portada, obras. En deportes, el Dépor. Leo deportes primero, como un caballero.', 'sonriente') },
+  xornal: { name: 'Xornal', icon: ico.xornal, look: () => lerXornal() },
+  boli: { name: 'Bolígrafo de Concha', icon: ico.boli, look: () => MA('El bolígrafo de los crucigramas de Concha. Azul, mordisqueado y con la tapa atada con una goma. Una reliquia.', 'sonriente') },
+  contrato: { name: 'Contrato de aluguer', icon: ico.contrato, look: () => MA('El contrato de alquiler de la Casa Juana, firmado por Rosario y por mí. Oficialmente, vuelvo a ser de Monforte. Con papeles.', 'orgulloso') },
   chavesCasa: { name: 'Chaves da casa', icon: ico.chaves, look: () => MA('Las llaves de la Casa Juana, con un llavero de madera y un «211» pintado a mano. Parece cosa de carpintero.', 'pensativo') },
 });
 PORTRAIT_COLORS['Xoán Carballeira'] = '#d8ec2a';
@@ -195,6 +200,8 @@ async function conchaQuiosco() {
       ...(flag('chavesDadas') && !hasItem('chavesCasa') ? [{ t: 'Concha... creo que he perdido las llaves.', k: 'chaves2' }] : []),
       ...(!hasItem('ositos') ? [{ t: 'Una bolsa de ositos, de los de siempre.', k: 'ositos' }] : []),
       ...(!hasItem('xornal') ? [{ t: 'El periódico de hoy, por favor.', k: 'xornal' }] : []),
+      ...(flag('faltaBoli') && !hasItem('boli') && !flag('boliDado') && !flag('contratoAsinado') ? [{ t: '¿Me prestas un bolígrafo?', k: 'boli' }] : []),
+      ...(flag('sabePalabra') && !flag('boliDado') ? [{ t: 'El siete horizontal del crucigrama: PICHICHI.', k: 'palabra' }] : []),
       { t: '¿Qué se cuenta por Monforte?', k: 'conto' },
       { t: '¿Qué sabes de la Casa Juana?', k: 'casa' },
       { t: 'Hasta luego, Concha.', k: 'adeus' },
@@ -220,6 +227,13 @@ async function conchaQuiosco() {
       await CO('O xornal de hoxe. Xa o lin eu, pero vai coma novo. Só lle sei as noticias.');
       give('xornal');
     }
+    if (k === 'boli') {
+      await CO('O meu bolígrafo? É o dos crucigramas. Ata que non remate o de hoxe, non sae do quiosco.');
+      await CO('E lévame atascada toda a mañá no sete horizontal, que é de fútbol. Eu de fútbol só sei que o Dépor fai sufrir.');
+      await CO(hasItem('xornal') ? 'Mira ti no xornal, a ver se che ilumina. E se non, pregúntalle a alguén que saiba de balón.' : 'Colle un xornal e mira ti: véndoche un, ou na Fraternal sempre hai algún enriba das mesas. E pregúntalle a alguén que saiba de balón.');
+      setFlag('sabeCrucigrama');
+    }
+    if (k === 'palabra') await crucigramaResolto();
     if (k === 'conto') {
       await CO('Que se conta? Pois que de noite se oe un tren onde non hai tren. O tren pantasma, chámanlle.');
       await CO('A min non me mires. Eu ás once xa estou deitada. Pero o oín. Dúas veces. Ben, unha e media.');
@@ -276,6 +290,39 @@ SCENES.praza = {
    Esquerda: primeira pantalla da praza. Arriba: rúa Calvo Sotelo (esquerda, pechada no Acto 1),
    rúa Coruña (centro, colexio ferroviario) e rúa Concepción Arenal (dereita, a Fraternal).
    Dereita: rúa das Vacas (Martín non quere manchar os zapatos). */
+/* ---------- puzzle da firma: o bolígrafo de Concha (escollido por Oscar) ----------
+   Rosario non ten con que asinar → Concha só empresta o bolígrafo dos crucigramas se lle resolves
+   a palabra que lle falta → está no xornal (7 horizontal, dez letras: quen conduce un tren). */
+async function lerXornal() {
+  if (flag('sabePalabra')) return MA('Siete horizontal: PICHICHI. Ocho letras. Lo escribiría, pero no tengo bolígrafo. Ese es justo el problema.', 'risueno');
+  if (!flag('sabeCrucigrama')) return MA('El periódico de hoy. En portada, obras. En deportes, el Dépor. Leo deportes primero, como un caballero.', 'sonriente');
+  await MA('Pasatiempos. Siete horizontal: «Oito letras: o máximo goleador dunha liga».', 'pensativo');
+  await MA('De fútbol sé lo justo para no hacer el ridículo en la Champions. Esto es cosa del tío David.', 'dudoso');
+}
+async function xornalFraternal() {
+  if (hasItem('xornal')) return MA('Ya tengo periódico. Dos serían acaparar, y en un bar eso está mal visto.', 'neutro');
+  await MA('El periódico de la casa. Me lo llevo prestado: lo devuelvo leído, que es como se devuelven los periódicos.', 'risueno');
+  give('xornal');
+}
+async function davidPichichi() {
+  await DA('A ver... sete horizontal: «Oito letras: o máximo goleador dunha liga». Pero isto é para nenos! PICHICHI!');
+  await MA('¿Pichichi?', 'dudoso');
+  await DA('Pichichi, home! O que máis goles mete na liga. E aquí o tes, diante de ti: o pichichi da liga pirata de Monforte. Vinte e dous goles nunha tempada.');
+  await MA('¿Veintidós? El otro día eran dieciocho.', 'esceptico');
+  await DA('Daquela non contaba os de cabeza. Que tamén valen, eh!');
+  await MA('Y Xoán dirá que fueron doce y que llovía.', 'risueno');
+  await DA('Xoán contábaos cos dedos dunha man, e tiña frío. Cinco euros a que foron vinte e dous.');
+  await MA('Pichichi. Ocho letras. A Concha le va a encantar. Y a ti, contarlo.', 'sonriente');
+  setFlag('sabePalabra'); toast('Xa tes a palabra que lle falta a Concha');
+}
+async function crucigramaResolto() {
+  await MA('Siete horizontal, Concha: PICHICHI. Ocho letras. Me lo ha chivado el mismísimo pichichi de la liga pirata de Monforte.', 'orgulloso');
+  await CO('Pichichi! P, i, c, h... cabe! E eu poñendo «goleador», que tamén ten oito e non me cadraba con nada.');
+  await CO('E o pichichi ese é David, non? Xa mo contou. Trinta veces. Cada vez con máis goles.');
+  await CO('Toma o bolígrafo. Pero devólvemo, eh? É o da sorte: con el acertei catorce na quiniela. Ben, trece.');
+  give('boli'); setFlag('boliDado');
+  await MA('Un crucigrama a cambio de un bolígrafo. En Monforte, así se firman los contratos.', 'sonriente');
+}
 async function ruaPechada(linea, mood) { await MA(linea, mood || 'pensativo'); toast('Rúa en construción · chega nun próximo hito'); }
 SCENES.praza2 = {
   name: 'Praza da Estación', bg: 'img/bg-praza-estacion-2.jpg', music: 'estacion', floor: 'pedra',
@@ -314,13 +361,14 @@ SCENES.praza2 = {
   ],
   npcs: [
     { id: 'conchaQ', name: 'Dona Concha', key: true, sheet: 'img/concha-sprite.png', spec: { cw: 160, ch: 280, cols: 8 }, get idle() { return E.dlg ? 4 : 0; }, talkFrames: [6, 4],
-      x: 300, y: 342, w: 100, h: 275, at: [334, 350], face: 'L',
+      x: 300, y: 342, w: 150, h: 412, at: [334, 350], face: 'L',
       done: () => hasItem('chavesCasa'),
       look: () => MA('Doña Concha, a la puerta de su quiosco desde que tengo memoria. Lee el periódico antes de venderlo: dice que es para comprobar que no trae erratas.', 'sonriente'),
       talk: () => conchaQuiosco(),
       give: {
         ositos: async () => { await CO('Ositos? Pero se os acabas de mercar aquí! Gárdaos, rapaz, que xa haberá ocasión de ter un detalle.'); },
-        xornal: async () => { await CO('Non, non, quédao. Eu xa o lin. Dúas veces.'); },
+        xornal: async () => { if (flag('sabePalabra') && !flag('boliDado')) return crucigramaResolto(); await CO(flag('sabeCrucigrama') ? 'O xornal xa o teño, rapaz. O que me falta é a palabra. Pregúntalle a alguén que saiba de balón.' : 'Non, non, quédao. Eu xa o lin. Dúas veces.'); },
+        boli: async () => { await CO('Xa mo devolves? Non, non: lévao á Fraternal, que Rosario non ten con que asinar. Despois xa mo traerás.'); },
         chavesCasa: async () => { await CO('Non mas devolvas, home! Que mo vexo: xa te arrepentiches de volver.'); await MA('No, no. Solo quería ver tu cara.', 'risueno'); },
       } },
   ],
@@ -341,13 +389,14 @@ async function davidTalk() {
     const opts = [
       ...(flag('objetivoContrato') && !flag('davidAmparo') ? [{ t: '¿Has visto a Rosario Higueras?', k: 'amparo' }] : []),
       ...(flag('davidAmparo') ? [{ t: '¿Rosario sigue dentro?', k: 'amparo2' }] : []),
+      ...(flag('sabeCrucigrama') && hasItem('xornal') && !flag('sabePalabra') ? [{ t: 'David, tú que sabes de fútbol: ¿me ayudas con el crucigrama?', k: 'pichichi' }] : []),
       { t: '¿Qué tal el fútbol?', k: 'gol' },
       { t: '¿Y la Champions?', k: 'champions' },
       { t: 'Hasta luego, David.', k: 'adeus' },
     ];
     const k = opts[await choose(opts)].k;
     if (k === 'amparo') {
-      await DA('A Rosario? Dentro, na mesa do fondo, coa brisca. Non levanta a vista das cartas nin para pedir.');
+      await DA('A Rosario? Dentro, na primeira mesa, coa brisca. Non levanta a vista das cartas nin para pedir.');
       await DA('Entra, entra. Pero non lle fales ata que remate a man, que despois a culpa da derrota é túa.');
       await MA('Entrar, esperar a que acabe la mano, y no tener la culpa de nada. Como en el trabajo.', 'risueno');
       setFlag('davidAmparo');
@@ -361,6 +410,7 @@ async function davidTalk() {
       await DA('Xoán! Cinco euros a que era domingo. Cinco euros a que había sol. E outros cinco a que Xoán nin estaba.');
       await MA('No apuesto contra un gol de Tercera. Esos goles crecen con los años, como los peces de los pescadores.', 'sonriente');
     }
+    if (k === 'pichichi') await davidPichichi();
     if (k === 'champions') {
       await DA('Martes e mércores, ás oito, aquí dentro. Vés, non? Gárdoche sitio.');
       await MA('Allí estaré. Y a las once, a dormir: ni prórroga ni penaltis.', 'convencido');
@@ -386,8 +436,8 @@ SCENES.arenal = {
   hotspots: [
     { name: 'Praza da Estación', key: true, r: [0, 470, 110, 70], at: [50, 524], face: 'F', exit: ['praza2', [818, 330]],
       look: () => MA('De vuelta a la plaza de la estación. Concha, el quiosco y la fuente de proporciones perfectas.', 'pensativo') },
-    { name: 'Rúa Morín', r: [36, 282, 66, 56], at: [70, 340], face: 'L', exit: ['__rua'],
-      act: () => ruaPechada('Siguiendo recto se llega a la calle Morín, la de la gasolinera. Hoy no necesito gasolina: he venido en tren.', 'risueno') },
+    { name: 'Rúa Morín', r: [36, 282, 66, 56], at: [70, 340], face: 'L', exit: ['morin', [430, 500]],
+      look: () => MA('Siguiendo recto se llega a la calle Morín, la de la gasolinera, y de ahí a Doctor Casares. Hoy no necesito gasolina: he venido en tren.', 'risueno') },
     { name: 'Porta da Fraternal', key: true, r: [646, 282, 56, 140], at: [672, 438], face: 'B', exit: ['__fraternal'], done: () => flag('davidAmparo'),
       act: async () => {
         if (!flag('objetivoContrato')) { await bark('La Fraternal. Ahora no tengo nada que hacer dentro. Primero, las llaves de casa: las tiene Concha, en el quiosco.'); return; }
@@ -413,7 +463,7 @@ SCENES.arenal = {
       talk: () => davidTalk(),
       give: {
         ositos: async () => { await DA('Ositos? Eu son de cacahuetes, rapaz. Os ositos son para os nenos e para Concha.'); },
-        xornal: async () => { await DA('A páxina de deportes xa a sei de memoria. E aínda non saio eu.'); },
+        xornal: async () => { if (flag('sabeCrucigrama') && !flag('sabePalabra')) return davidPichichi(); await DA('A páxina de deportes xa a sei de memoria. E aínda non saio eu.'); },
         chavesCasa: async () => { await DA('As chaves da casa de Alfredo? Gárdaas ben, que Rosario cóntaas.'); },
       } },
   ],
@@ -421,17 +471,46 @@ SCENES.arenal = {
 /* ---------- B3 · A Fraternal (interior) ----------
    Fondo: ilustración de Oscar (img/bg-fraternal.jpg). Barra á esquerda, mesas de brisca, columna, tele co fútbol,
    tragaperras á dereita. Saída á rúa Concepción Arenal polas portas de cristal do fondo.
-   Rosario Higueras xoga á brisca na mesa do fondo, á dereita (sentada, co sprite da folla de Oscar). */
+   Rosario Higueras xoga á brisca na primeira mesa, á dereita (sentada, co sprite da folla de Oscar). */
 const RO = t => say('Rosario Higueras', t);
 async function rosarioBrisca() {
+  if (flag('contratoAsinado')) {
+    await RO('Xa es veciño oficial, Martín. Agora só che falta poñerlle auga á casa. Pero iso xa é cousa do Concello.');
+    return;
+  }
   if (!flag('amparoMan')) {
     await RO('Copas! E arrastro!');
     await MA('¿Rosario? Perdona. Soy Martín, el del alquiler de la Casa Juana. Concha me ha dado las llaves y...', 'avergonzado');
     await RO('Shhh! Non ves que estou na metade da man? Ata que non remate, nin o Papa. E ti non es o Papa.');
     await MA('Concha me lo avisó. David me lo avisó. Y aun así. Soy el único de Monforte que interrumpe una brisca.', 'avergonzado');
     setFlag('amparoMan');
-  } else await RO('Aínda non rematou a man, rapaz. As cartas non se xogan soas. Ben, as miñas case.');
-  await fimTramo();
+    await sleep(700);
+    await RO('...E sete de ouros. Man gañada! Agora si, rapaz: o contrato. Asinamos e listo.');
+  }
+  if (hasItem('boli')) return asinarContrato();
+  if (!flag('faltaBoli')) {
+    await RO('Tes bolígrafo?');
+    await MA('¿Yo? Vengo de un tren, no de una notaría.', 'esceptico');
+    await RO('Eu tampouco. O meu levouno o meu home, que corrixe exames de matemáticas. E o de reserva, Eugenia, para debuxar. Ten nove anos e xa me rouba o material.');
+    await RO('Concha, a do quiosco, ten sempre un, para os crucigramas. Pero non o empresta nin á súa nai.');
+    setFlag('faltaBoli');
+    return;
+  }
+  await RO('Sen bolígrafo non hai firma. Concha ten un, o dos crucigramas. Ponlle boa cara.');
+}
+async function asinarContrato() {
+  await RO('O bolígrafo de Concha! Como o conseguiches? Ese non o solta nin para asinar o testamento.');
+  await MA('Un crucigrama. Ocho letras: pichichi. Me lo resolvió el tío David y me lo va a recordar el resto de mi vida.', 'orgulloso');
+  await RO('Asina aquí... e aquí. Listo. Benvido á Casa Juana, veciño.');
+  take('boli'); give('contrato'); setFlag('contratoAsinado');
+  await RO('O bolígrafo xa llo devolvo eu a Concha, que paso polo quiosco. Senón, mañá sae no xornal: «Desaparece o bolígrafo dos crucigramas».');
+  await RO('Sabes de quen era a casa? Do señor Alfredo Fernández, carpinteiro e industrial. Púxolle o nome pola súa segunda muller, Juana.');
+  await RO('Atrás tiña unha carpintaría mecanizada: un motor Siemens de dez cabalos, transmisións con poleas... Daquela era coma unha fábrica.');
+  await RO('E o dous de xuño do cincuenta e dous vendeuno todo, toda a maquinaria, por trinta mil pesetas. A un enxeñeiro de Camiños e a un contratista.');
+  await MA('¿Un ingeniero de Caminos? ¿Para qué quiere un ingeniero de Caminos una carpintería entera?', 'dudoso');
+  await RO('Iso pregúntome eu. O meu home, que é de matemáticas, di que a conta non lle sae. Pero el di iso de todo.');
+  await MA('Contrato, llaves y una pregunta. Ahora sí: a casa. Doctor Casares, 211, por la calle Morín.', 'convencido');
+  toast('Novo obxectivo: ir á Casa Juana (rúa Doutor Casares)');
 }
 SCENES.fraternal = {
   name: 'A Fraternal', bg: 'img/bg-fraternal.jpg', music: 'casa', floor: 'pedra',
@@ -442,6 +521,7 @@ SCENES.fraternal = {
     [[214, 256], [378, 256], [378, 308], [214, 308]],                           // mesas da esquerda
     [[654, 262], [812, 262], [812, 330], [654, 330]],                           // mesas da dereita
     [[524, 214], [650, 214], [650, 250], [524, 250]],                           // mesas do medio
+    [[700, 396], [770, 396], [770, 440], [700, 440]],                           // Rosario e a súa cadeira
   ],
   front: [
     { y: 488, r: [428, 296, 276, 200] },                 // mesa da fronte, cadeiras e xornal
@@ -460,24 +540,112 @@ SCENES.fraternal = {
     { name: 'Taburetes', r: [80, 262, 140, 210], look: () => MA('Taburetes de barra. Uno está más gastado que los demás: alguien lleva media vida sentándose en el mismo.', 'sonriente') },
     { name: 'Tele', r: [724, 76, 70, 50], look: () => MA('Fútbol en la tele, sin volumen. Aquí no hace falta: los comentarios los pone la clientela, y gratis.', 'risueno') },
     { name: 'Tragaperras', r: [818, 200, 142, 340], look: () => MA('Una tragaperras. Mucha luz, mucho ruido y ninguna prisa por devolver nada.', 'esceptico') },
-    { name: 'Xornal e baralla', r: [506, 300, 130, 58], look: () => MA('Un periódico y una baraja en la misma mesa. El kit completo de la tarde gallega. Solo falta quien se queje del tiempo.', 'sonriente') },
+    { name: 'Xornal e baralla', r: [506, 300, 130, 58], at: [600, 500], face: 'B',
+      act: () => xornalFraternal(),
+      look: () => MA('Un periódico y una baraja en la misma mesa. El kit completo de la tarde gallega. Solo falta quien se queje del tiempo.', 'sonriente') },
     { name: 'Aviso', r: [494, 140, 24, 40], look: () => MA('Un aviso en la columna, en letra pequeña. Desde aquí solo leo «prohibido». Para un bar, me basta.', 'esceptico') },
     { name: 'Cadros', r: [94, 80, 330, 60], look: () => MA('Cuadros de montes y castillos. Uno se parece a Monforte, si lo miras con cariño y sin gafas.', 'pensativo') },
     { name: 'Lousa', r: [108, 158, 34, 46], look: () => MA('Otra pizarra con letra de tiza. Aquí todo se escribe a mano, como debe ser.', 'sonriente') },
     { name: 'Planta', r: [232, 120, 46, 90], look: () => MA('Una planta que ha sobrevivido a cientos de goles cantados a gritos. Es la socia más dura del bar.', 'risueno') },
   ],
-  // Rosario, sentada na mesa da brisca (a da dereita, coas cartas); a cadeira vén no sprite
+  // Rosario, sentada á dereita da primeira mesa (a das cartas); a cadeira vén no sprite
   npcs: [
     { id: 'rosario', name: 'Rosario Higueras', key: true, sheet: 'img/rosario-sprite.png', spec: { cw: 160, ch: 280, cols: 8 }, flip: true,
-      get idle() { return flag('amparoMan') ? 11 : 8; }, talkFrames: [13, 9], x: 796, y: 334, w: 70, h: 320, at: [730, 352], face: 'R',
+      get idle() { return flag('amparoMan') ? 11 : 8; }, talkFrames: [13, 9], x: 735, y: 430, w: 110, h: 330, at: [790, 470], face: 'L',
       done: () => flag('contratoAsinado'),
-      look: () => MA('Rosario Higueras, en la mesa del fondo. Rizos, aros de plata y cara de llevar triunfos. Juega a la brisca como otros pilotan aviones: sin pestañear.', 'pensativo'),
-      talk: () => rosarioBrisca() },
+      look: () => MA('Rosario Higueras, en la primera mesa, la de las cartas. Rizos, aros de plata y cara de llevar triunfos. Juega a la brisca como otros pilotan aviones: sin pestañear.', 'pensativo'),
+      talk: () => rosarioBrisca(),
+      give: {
+        boli: async () => { if (!flag('amparoMan')) return rosarioBrisca(); await asinarContrato(); },
+        chavesCasa: async () => { await RO('As chaves quédaas ti, home. Eu só quero a firma. E que non me interrompas a brisca.'); },
+        xornal: async () => { await RO('Xa o lin. E o crucigrama déixollo a Concha, que se non, non me fala.'); },
+        ositos: async () => { await RO('Ositos? Para Eugenia, que lle encantan. Ben... para Eugenia e para min.'); },
+      } },
+  ],
+};
+/* ---------- A4c · Rúa Morín ----------
+   Fondo: ilustración de Oscar (img/bg-rua-morin.jpg). A rúa sobe cara ao fondo; á esquerda casas baixas de tella,
+   á dereita a casa pistacho con galerías. Arriba → Doutor Casares (a casa vermella); abaixo → volta cara á Fraternal.
+   Ao pasar preto da porta da casa pistacho, Martín ve unha sombra negra moverse dentro (de momento, nada máis). */
+SCENES.morin = {
+  name: 'Rúa Morín', bg: 'img/bg-rua-morin.jpg', music: 'casa', floor: 'pedra',
+  walk: [[0, 452], [150, 420], [330, 376], [396, 344], [440, 344], [560, 386], [700, 420], [790, 450], [960, 500], [960, 540], [0, 540]],
+  holes: [
+    [[492, 402], [580, 402], [580, 426], [492, 426]],          // coche azul
+    [[462, 362], [520, 362], [520, 386], [462, 386]],          // coches do fondo
+    [[322, 384], [338, 384], [338, 392], [322, 392]],          // farola
+  ],
+  front: [
+    { y: 425, r: [488, 360, 94, 68] },                         // coche azul
+    { y: 386, r: [438, 330, 84, 58] },                         // coches do fondo
+    { y: 391, r: [320, 118, 20, 274] },                        // farola
+  ],
+  scale: [340, 0.08, 540, 0.7], actorH: 300, start: [430, 500], minSpeed: 0.3,
+  zones: [
+    { r: [600, 400, 260, 90], enter: () => {
+      if (!flag('sombraVista')) { setFlag('sombraVista'); bark('¿Eh? A través de esa puerta... una sombra negra. Se ha movido dentro. Juraría que se ha movido.', 'Martín', 4500); }
+      else bark('Otra vez esa puerta. No miro. No miro... He mirado.', 'Martín', 3000);
+    } },
+  ],
+  hotspots: [
+    { name: 'Rúa Doutor Casares', key: true, r: [392, 300, 56, 44], at: [418, 350], face: 'B', exit: ['casares', [120, 500]],
+      look: () => MA('Calle arriba se llega a Doctor Casares. A la casa roja. A mi casa, si Rosario firma.', 'pensativo') },
+    { name: 'Cara á Fraternal', key: true, r: [300, 514, 260, 26], at: [430, 530], face: 'F', exit: ['arenal', [70, 342]],
+      look: () => MA('Por ahí abajo vuelvo hacia la Fraternal.', 'pensativo') },
+    { name: 'Porta da casa pistacho', key: true, r: [700, 268, 50, 166], at: [700, 440], face: 'R',
+      act: () => bark(flag('sombraVista') ? 'Llamar no voy a llamar. No después de lo de la sombra.' : 'No tengo nada que hacer en esta casa. Que yo sepa.'),
+      look: () => MA(flag('sombraVista') ? 'Cristal labrado y, detrás, oscuridad. Hace un momento algo negro se movió ahí dentro. Ahora, nada. Y eso es peor.' : 'Una puerta con cristal labrado. Detrás no se ve gran cosa.', flag('sombraVista') ? 'preocupado' : 'pensativo') },
+    { name: 'Casa pistacho', r: [520, 0, 440, 400], look: () => MA('Una casa color pistacho, con galerías y balcones de hierro. Elegante. Y con una puerta que no me quita ojo.', 'dudoso') },
+    { name: 'Coches', r: [438, 330, 144, 98], look: () => MA('Coches aparcados en fila. El azul está tan limpio que deja en evidencia a toda la calle.', 'risueno') },
+    { name: 'Farola', r: [320, 118, 90, 274], look: () => MA('Otra farola de brazo largo. En esta zona todas se asoman a ver quién pasa.', 'sonriente') },
+    { name: 'Portas de madeira', r: [124, 276, 96, 124], look: () => MA('Puertas de madera de las de antes, con la pintura cansada. Detrás de esas, por lo menos, no se mueve nada.', 'esceptico') },
+    { name: 'Casas baixas', r: [0, 150, 330, 300], look: () => MA('Casas bajas, con teja y paredes desconchadas. El Monforte de toda la vida, puerta con puerta con el de ahora.', 'pensativo') },
+  ],
+};
+/* ---------- A4 · Rúa Doutor Casares, 211 (exterior da Casa Juana) ----------
+   Fondo: ilustración de Oscar (img/bg-doutor-casares.jpg). A casa vermella co balcón de ferro e tres portas
+   en arco; á dereita, o muro vermello do patio (detrás, a nave da carpintaría); á esquerda, unha nave de chapa.
+   Ao fondo, a rúa segue cara ao Gadis. Chégase dende a rúa Morín (confirmado por Oscar). */
+SCENES.casares = {
+  name: 'Rúa Doutor Casares', bg: 'img/bg-doutor-casares.jpg', music: 'casa', floor: 'pedra',
+  walk: [[0, 350], [180, 336], [300, 330], [340, 342], [480, 368], [600, 386], [730, 410], [960, 452], [960, 540], [0, 540]],
+  holes: [
+    [[402, 352], [444, 352], [444, 362], [402, 362]],          // banco
+    [[380, 362], [396, 362], [396, 370], [380, 370]],          // farola
+  ],
+  front: [
+    { y: 362, r: [400, 322, 46, 42] },                         // banco e xardineira
+    { y: 369, r: [340, 92, 58, 278] },                         // farola
+  ],
+  scale: [330, 0.15, 540, 0.88], actorH: 300, start: [120, 500], minSpeed: 0.35,
+  hotspots: [
+    { name: 'Rúa Morín', key: true, r: [0, 440, 120, 100], at: [60, 515], face: 'F', exit: ['morin', [418, 352]],
+      look: () => MA('Por ahí vuelvo hacia la calle Morín y la Fraternal.', 'pensativo') },
+    { name: 'Rúa cara ao centro', r: [180, 300, 120, 40], at: [240, 342], face: 'B', exit: ['__rua'],
+      act: () => ruaPechada('La calle sigue hacia el centro. Hoy ya he visto bastante Monforte para un lunes.', 'pensativo') },
+    { name: 'Porta da Casa Juana', key: true, r: [654, 236, 70, 176], at: [690, 424], face: 'B', exit: ['__casa'], done: () => flag('contratoAsinado'),
+      act: async () => {
+        if (!hasItem('chavesCasa')) { await bark('Cerrada, claro. Las llaves las tiene Concha, en el quiosco de la plaza.'); return; }
+        if (!flag('contratoAsinado')) { await bark('Tengo las llaves, pero sin contrato firmado sería entrar como un ladrón con permiso. Primero, Rosario, en la Fraternal.'); return; }
+        await fimTramo();
+      },
+      look: () => MA('La puerta de casa. Madera vieja, cristal labrado y una cerradura que pide aceite. Mi puerta, si todo va bien.', 'pensativo') },
+    { name: 'Portalón', r: [548, 242, 76, 150], look: () => MA('Un portalón de madera de dos hojas, con cartel de vado. Por aquí salían los tablones. Ahora no sale ni el gato.', 'pensativo') },
+    { name: 'Porta estreita', r: [494, 252, 34, 120], look: () => MA('Otra puerta, más estrecha. Esta casa tiene más puertas que yo excusas. Y yo tengo muchas.', 'risueno') },
+    { name: 'Balcón', r: [478, 132, 248, 92], look: () => MA('El balcón de hierro forjado. Dicen que desde ahí arriba se ve el depósito. Para un maquinista, eso son vistas al mar.', 'sonriente') },
+    { name: 'Casa Juana', r: [470, 20, 380, 400], look: () => MA('La casa roja. Doctor Casares, 211. Fachada de las de antes, con molduras y balcón de hierro. La pintura es nueva; las grietas, de siempre.', 'pensativo') },
+    { name: 'Muro vermello', key: true, r: [770, 160, 190, 290], look: () => MA('Un muro rojo y alto, con la pintura cuarteada. Detrás debe de estar el patio... y la nave de la carpintería del señor Alfredo.', 'dudoso') },
+    { name: 'Nave de chapa', r: [340, 130, 132, 210], look: () => MA('Una nave moderna de chapa al lado de la casa. Al lado de la casa roja parece un táper junto a una tarta.', 'risueno') },
+    { name: 'Banco', r: [400, 320, 46, 42], look: () => MA('Un banco con jardinera. Ideal para sentarse a esperar a que te abran la puerta de tu propia casa.', 'esceptico') },
+    { name: 'Farola', r: [340, 92, 58, 276], look: () => MA('Una farola de brazo largo, asomada a la calle como una vecina al balcón.', 'sonriente') },
+    { name: 'Supermercado', r: [0, 236, 160, 110], look: () => MA('Un supermercado al fondo de la calle. Bien: si la casa no tiene agua, al menos sé dónde comprar botellas.', 'risueno') },
+    { name: 'Tapa de sumidoiro', r: [300, 436, 60, 22], look: () => MA('Una tapa de alcantarilla. Mira: agua en Monforte hay. Por debajo, pero hay.', 'risueno') },
+    { name: 'Edificios', r: [0, 0, 190, 236], look: () => MA('Pisos con galerías y miradores. En cada ventana, alguien que ya sabe que ha llegado el nuevo de la casa roja.', 'esceptico') },
   ],
 };
 async function fimTramo() {
-  await MA('Pues nada: a esperar a que acabe la mano. Con las llaves en el bolsillo y una brisca por delante.', 'convencido');
-  await showDoc('<h4>FIN DO TRAMO M1</h4><p>Martín xa ten as chaves da Casa Juana e atopou a Rosario na Fraternal, en plena brisca. A firma do contrato, a historia da casa e o resto do Acto 1 chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
+  await MA('Doctor Casares, 211. Llaves en una mano, contrato en la otra. Para ser lunes, no está mal.', 'convencido');
+  await showDoc('<h4>FIN DO TRAMO</h4><p>Martín chega á Casa Juana con chaves e contrato. Dentro agárdao unha casa sen auga; o Concello, Eladio e o resto do Acto 1 chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
 }
 
 /* ---------- Mapa de Monforte (pantalla de viaxe entre zonas) ---------- */

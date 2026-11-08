@@ -163,7 +163,7 @@ async function run(fn) { if (!fn) return; E.busy++; try { await fn(); } catch (e
 /* ---------- escenas ---------- */
 function enterScene(id, at) {
   const S = SCENES[id]; if (!S) { console.error('Escena descoñecida', id); return; }
-  E.scene = S; E.sceneId = id; prepWalk(S); const A = E.actor;
+  E.scene = S; E.sceneId = id; prepWalk(S); (S.zones || []).forEach(z => { z._in = false; }); const A = E.actor;
   const p = at || S.start || [480, 500]; A.x = A.tx = p[0]; A.y = A.ty = p[1]; A.walking = false; A.path = []; A.visible = !S.noActor; A.pose = null;
   E.barks = []; E.olloT = 0; E.hover = null;
   SFX.music(S.music || null);
@@ -314,6 +314,12 @@ function update(dt) {
     }
   }
   for (const n of visibleNpcs()) if (n.patrol) patrolStep(n, dt);
+  // zonas de proximidade (scene.zones): ao entrar nunha zona do chan execútase z.enter() unha vez,
+  // e volve poder executarse cando Martín sae dela. Para comentarios de paso (bark), sen parar o xogo.
+  if (E.scene.zones && !E.scene.noActor && !E.busy) for (const z of E.scene.zones) {
+    const inside = z.poly ? inPoly(A.x, A.y, z.poly) : inRect(A.x, A.y, z.r);
+    if (inside && !z._in && (!z.when || z.when())) { z._in = true; z.enter(); } else if (!inside) z._in = false;
+  }
   E.fade += (E.fadeTo - E.fade) * Math.min(1, dt * 10);
   if (E.olloT > 0) E.olloT = Math.max(0, E.olloT - dt);
   if (E.dlg && E.dlg.shown < E.dlg.text.length) E.dlg.shown = Math.min(E.dlg.text.length, E.dlg.shown + dt * (E.opts.fast ? 150 : 55));

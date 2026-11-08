@@ -1,7 +1,7 @@
 # «Vía morta» · Fichas de escenarios
 
 > Cada escenario se describe aquí antes de programarlo en `js/acto*.js`. Coordenadas en el lienzo lógico de 960×540.
-> Los fondos de A1, A2, A3, A3b, A4b, B3 y la portada son ilustraciones de Oscar. El mapa sigue siendo un **boceto provisional** generado con `tools/fondos.py`.
+> Los fondos de A1, A2, A3, A3b, A4, A4b, A4c, B3 y la portada son ilustraciones de Oscar. El mapa sigue siendo un **boceto provisional** generado con `tools/fondos.py`.
 
 ## A1 · Andén 1 (`anden`)
 - **Fondo:** `img/bg-anden-estacion.jpg`, ilustración de Oscar. Marquesina con columnas de pie azul, la fachada con puertas azules en arco, el letrero «Monforte de Lemos», bancos, papelera y el regional parado en la vía 1.
@@ -35,8 +35,24 @@
   - Derecha: rúa das Vacas. Martín no quiere mancharse los zapatos.
 - **Hotspots:** quiosco (clave), revistas, fuente (Martín comenta que tiene las proporciones justas para una fuente), jardinera, señal, árbol, farol, edificio de la esquina, casa amarilla y edificios de la izquierda.
 - **NPC:** **Dona Concha**, de pie al lado del quiosco, leyendo el periódico mientras no habla. Árbol de diálogo: llaves de la casa, bolsa de ositos, periódico, «qué se cuenta» (el tren fantasma), la Casa Juana (Alfredo, Juana, el serrón), despedida. Si Martín pierde las llaves, Concha tiene otra copia (sin callejones sin salida).
-- **Objetos:** `chavesCasa`, `ositos`, `xornal`.
+- **Objetos:** `chavesCasa`, `ositos`, `xornal`, `boli` (tras resolver el crucigrama).
 - **Desbloquea:** marca `objetivoContrato` (firmar con Rosario en la Fraternal).
+
+## A4c · Rúa Morín (`morin`)
+- **Fondo:** `img/bg-rua-morin.jpg`, ilustración de Oscar. La calle sube hacia el fondo. A la izquierda, casas bajas de teja con puertas de madera; a la derecha, la casa pistacho con galerías y balcones, y coches aparcados.
+- **Suelo:** las dos aceras y la calzada. Obstáculos y capas delanteras: los coches y la farola.
+- **Salidas:** arriba → Doutor Casares, 211 (A4). Abajo → vuelta a Concepción Arenal (A4b).
+- **Zona de paso:** al pasar junto a la puerta de la casa pistacho, Martín dice que a través de la puerta ha visto una sombra negra moverse dentro. La primera vez marca `sombraVista`; las siguientes, una broma corta. Usa la mecánica general `zones` del motor. De momento no hay nada más.
+- **Hotspots:** puerta de la casa pistacho (clave; mirar y tocar cambian tras ver la sombra), fachada pistacho, coches, farola, puertas de madera y casas bajas.
+
+## A4 · Rúa Doutor Casares, 211 (`casares`)
+- **Fondo:** `img/bg-doutor-casares.jpg`, ilustración de Oscar. La casa roja con balcón de hierro y tres puertas en arco, el muro rojo del patio a la derecha (detrás, la nave de la carpintería), una nave de chapa, un banco con jardinera, la farola y la calle que sigue hacia el supermercado.
+- **Suelo:** la acera y la calzada. Obstáculos y capas delanteras: el banco y la farola.
+- **Salidas:**
+  - Abajo a la izquierda: rúa Morín (A4c), confirmado por Oscar.
+  - Calle hacia el fondo: cerrada hasta un hito próximo.
+  - Puerta de la Casa Juana (la de la derecha). Sin llaves: Concha las tiene. Con llaves pero sin contrato: primero firmar con Rosario. Con las dos cosas: **fin del tramo** (el interior, la casa sin agua y el Concello llegan en M2).
+- **Hotspots:** puerta de casa (clave), portalón con vado, puerta estrecha, balcón, fachada, muro rojo (clave: detrás está la nave), nave de chapa, banco, farola, supermercado (broma del agua), tapa de alcantarilla y edificios.
 
 ## A4b · Rúa Concepción Arenal (`arenal`)
 - **Fondo:** `img/bg-concepcion-arenal.jpg`, ilustración de Oscar recortada a 16:9. La Fraternal con su toldo verde, el soportal del «CINE» con la terraza, la pizarra, el coche rojo y la calle que se aleja hacia la izquierda.
@@ -48,7 +64,8 @@
 - **Hotspots:** puerta de la Fraternal (clave), ventanas del bar, toldo, rótulo del cine, pizarra, terraza, coche rojo, balcones y edificios.
 - **NPC:** **tío David**, en la puerta de la Fraternal con los brazos cruzados (sprite de la hoja de Oscar). Árbol de diálogo:
   - saludo («O de Vilatán!»);
-  - «¿Has visto a Rosario?» (solo con el objetivo del contrato): está dentro, en la mesa del fondo, y no hay que interrumpir la mano. Marca `davidRosario`;
+  - «¿Has visto a Rosario?» (solo con el objetivo del contrato): está dentro, en la primera mesa, y no hay que interrumpir la mano. Marca `davidRosario`;
+  - «¿Me ayudas con el crucigrama?» (con el periódico y la pista leída; también dándole el periódico): PICHICHI, él fue el pichichi de la liga pirata de Monforte. Marca `sabePalabra`;
   - el fútbol: el gol al Ourense en Tercera, «un domingo de sol», la corrección de Xoán («un miércoles, y llovía») y la apuesta de cinco euros;
   - la Champions: martes y miércoles a las 20:00, y Martín a dormir a las 23:00;
   - despedida.
@@ -57,9 +74,9 @@
 - **Fondo:** `img/bg-fraternal.jpg`, ilustración de Oscar. Barra con lista de precios, cafetera y botellas; mesas de brisca con tapete verde, columnas, cuadros, tele con el fútbol y tragaperras.
 - **Suelo:** el terrazo. Obstáculos: la barra, la columna y los grupos de mesas. Capas delanteras: la mesa de delante (con La Voz y la baraja), la columna y las mesas laterales.
 - **Salidas:** puertas de cristal del fondo → rúa Concepción Arenal (A4b).
-- **Hotspots:** Rosario Higueras (clave, en la mesa del fondo a la derecha), lista de precios, cafetera, botellas, barra, taburetes, tele, tragaperras, periódico y baraja, aviso de la columna, cuadros, pizarra y planta.
+- **Hotspots:** Rosario Higueras (clave, sentada a la derecha de la primera mesa, la de las cartas), lista de precios, cafetera, botellas, barra, taburetes, tele, tragaperras, periódico y baraja, aviso de la columna, cuadros, pizarra y planta.
 - **NPC:** **Rosario Higueras**, jugando a la brisca. Sentada en la silla del lado derecho de la mesa de las cartas (sprite con su propia silla, mirando a la mesa); al interrumpirla se cruza de brazos. Abre con «Copas! E arrastro!» y no suelta las cartas a mitad de mano.
-- **Fin del tramo M1:** después de la primera conversación con Rosario. La firma del contrato (puzzle por decidir con Oscar) y la historia de la casa llegan en M2.
+- **Puzzle de la firma (elegido por Oscar):** Rosario gana la mano y pide bolígrafo; no tiene (pista: Concha tiene el de los crucigramas). Concha no lo presta hasta acabar el crucigrama: le falta el 7 horizontal, de fútbol. Martín consigue un periódico (comprándoselo a Concha o cogiéndolo de la mesa «Xornal e baralla» de la Fraternal), lee la pista «Oito letras: o máximo goleador dunha liga» y se la enseña al tío David (A4b), que responde PICHICHI: el máximo goleador, como él en la liga pirata de Monforte (22 goles, antes eran 18; Xoán dice que 12). Martín le dice PICHICHI a Concha (o le da el periódico) y ella le presta el bolígrafo. Con él, Rosario firma (objeto `contrato`), cuenta la historia de la casa (Alfredo, Juana, el motor Siemens, la venta de 1952) y deja la pregunta del ingeniero de Caminos. Después, objetivo: ir a la Casa Juana (A4).
 
 ## Portada
 - **Fondo del menú:** `img/portada-rotonda.jpg`, ilustración de Oscar de la rotonda del museo del ferrocarril de Monforte, con un velo oscuro para que se lea el menú.
