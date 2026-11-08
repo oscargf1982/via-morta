@@ -201,7 +201,7 @@ async function conchaQuiosco() {
       ...(!hasItem('ositos') ? [{ t: 'Una bolsa de ositos, de los de siempre.', k: 'ositos' }] : []),
       ...(!hasItem('xornal') ? [{ t: 'El periódico de hoy, por favor.', k: 'xornal' }] : []),
       ...(flag('faltaBoli') && !hasItem('boli') && !flag('boliDado') && !flag('contratoAsinado') ? [{ t: '¿Me prestas un bolígrafo?', k: 'boli' }] : []),
-      ...(flag('sabePalabra') && !flag('boliDado') ? [{ t: 'El siete horizontal del crucigrama: MAQUINISTA.', k: 'palabra' }] : []),
+      ...(flag('sabePalabra') && !flag('boliDado') ? [{ t: 'El siete horizontal del crucigrama: PICHICHI.', k: 'palabra' }] : []),
       { t: '¿Qué se cuenta por Monforte?', k: 'conto' },
       { t: '¿Qué sabes de la Casa Juana?', k: 'casa' },
       { t: 'Hasta luego, Concha.', k: 'adeus' },
@@ -229,8 +229,8 @@ async function conchaQuiosco() {
     }
     if (k === 'boli') {
       await CO('O meu bolígrafo? É o dos crucigramas. Ata que non remate o de hoxe, non sae do quiosco.');
-      await CO('E lévame atascada toda a mañá nunha palabra. Non che digo cal, que despois vas contándoo por aí.');
-      await CO(hasItem('xornal') ? 'Se tanto che interesa, mira no teu xornal, na páxina dos pasatempos.' : 'Se tanto che interesa, cómprame o xornal e mira na páxina dos pasatempos. Que hai que ler, rapaz.');
+      await CO('E lévame atascada toda a mañá no sete horizontal, que é de fútbol. Eu de fútbol só sei que o Dépor fai sufrir.');
+      await CO(hasItem('xornal') ? 'Mira ti no xornal, a ver se che ilumina. E se non, pregúntalle a alguén que saiba de balón.' : 'Colle un xornal e mira ti: véndoche un, ou na Fraternal sempre hai algún enriba das mesas. E pregúntalle a alguén que saiba de balón.');
       setFlag('sabeCrucigrama');
     }
     if (k === 'palabra') await crucigramaResolto();
@@ -294,14 +294,31 @@ SCENES.praza = {
    Rosario non ten con que asinar → Concha só empresta o bolígrafo dos crucigramas se lle resolves
    a palabra que lle falta → está no xornal (7 horizontal, dez letras: quen conduce un tren). */
 async function lerXornal() {
+  if (flag('sabePalabra')) return MA('Siete horizontal: PICHICHI. Ocho letras. Lo escribiría, pero no tengo bolígrafo. Ese es justo el problema.', 'risueno');
   if (!flag('sabeCrucigrama')) return MA('El periódico de hoy. En portada, obras. En deportes, el Dépor. Leo deportes primero, como un caballero.', 'sonriente');
-  await MA('Pasatiempos. El crucigrama, casi entero... menos el siete horizontal: «Dez letras: quen conduce un tren».', 'pensativo');
-  await MA('¿Diez letras, quien conduce un tren? Concha, Concha. Me lo preguntas a mí, que llevo quince años haciéndolo.', 'risueno');
-  if (!flag('sabePalabra')) { setFlag('sabePalabra'); toast('Martín xa sabe a palabra que lle falta a Concha'); }
+  await MA('Pasatiempos. Siete horizontal: «Oito letras: o máximo goleador dunha liga».', 'pensativo');
+  await MA('De fútbol sé lo justo para no hacer el ridículo en la Champions. Esto es cosa del tío David.', 'dudoso');
+}
+async function xornalFraternal() {
+  if (hasItem('xornal')) return MA('Ya tengo periódico. Dos serían acaparar, y en un bar eso está mal visto.', 'neutro');
+  await MA('El periódico de la casa. Me lo llevo prestado: lo devuelvo leído, que es como se devuelven los periódicos.', 'risueno');
+  give('xornal');
+}
+async function davidPichichi() {
+  await DA('A ver... sete horizontal: «Oito letras: o máximo goleador dunha liga». Pero isto é para nenos! PICHICHI!');
+  await MA('¿Pichichi?', 'dudoso');
+  await DA('Pichichi, home! O que máis goles mete na liga. E aquí o tes, diante de ti: o pichichi da liga pirata de Monforte. Vinte e dous goles nunha tempada.');
+  await MA('¿Veintidós? El otro día eran dieciocho.', 'esceptico');
+  await DA('Daquela non contaba os de cabeza. Que tamén valen, eh!');
+  await MA('Y Xoán dirá que fueron doce y que llovía.', 'risueno');
+  await DA('Xoán contábaos cos dedos dunha man, e tiña frío. Cinco euros a que foron vinte e dous.');
+  await MA('Pichichi. Ocho letras. A Concha le va a encantar. Y a ti, contarlo.', 'sonriente');
+  setFlag('sabePalabra'); toast('Xa tes a palabra que lle falta a Concha');
 }
 async function crucigramaResolto() {
-  await MA('El siete horizontal, Concha: MAQUINISTA. Diez letras. Las he contado dos veces, como los vagones.', 'orgulloso');
-  await CO('Maquinista! M, a, q, u... cabe! E eu dándolle voltas a «ferroviario», que ten once.');
+  await MA('Siete horizontal, Concha: PICHICHI. Ocho letras. Me lo ha chivado el mismísimo pichichi de la liga pirata de Monforte.', 'orgulloso');
+  await CO('Pichichi! P, i, c, h... cabe! E eu poñendo «goleador», que tamén ten oito e non me cadraba con nada.');
+  await CO('E o pichichi ese é David, non? Xa mo contou. Trinta veces. Cada vez con máis goles.');
   await CO('Toma o bolígrafo. Pero devólvemo, eh? É o da sorte: con el acertei catorce na quiniela. Ben, trece.');
   give('boli'); setFlag('boliDado');
   await MA('Un crucigrama a cambio de un bolígrafo. En Monforte, así se firman los contratos.', 'sonriente');
@@ -350,7 +367,7 @@ SCENES.praza2 = {
       talk: () => conchaQuiosco(),
       give: {
         ositos: async () => { await CO('Ositos? Pero se os acabas de mercar aquí! Gárdaos, rapaz, que xa haberá ocasión de ter un detalle.'); },
-        xornal: async () => { if (flag('sabePalabra') && !flag('boliDado')) return crucigramaResolto(); await CO('Non, non, quédao. Eu xa o lin. Dúas veces.'); },
+        xornal: async () => { if (flag('sabePalabra') && !flag('boliDado')) return crucigramaResolto(); await CO(flag('sabeCrucigrama') ? 'O xornal xa o teño, rapaz. O que me falta é a palabra. Pregúntalle a alguén que saiba de balón.' : 'Non, non, quédao. Eu xa o lin. Dúas veces.'); },
         boli: async () => { await CO('Xa mo devolves? Non, non: lévao á Fraternal, que Rosario non ten con que asinar. Despois xa mo traerás.'); },
         chavesCasa: async () => { await CO('Non mas devolvas, home! Que mo vexo: xa te arrepentiches de volver.'); await MA('No, no. Solo quería ver tu cara.', 'risueno'); },
       } },
@@ -372,6 +389,7 @@ async function davidTalk() {
     const opts = [
       ...(flag('objetivoContrato') && !flag('davidAmparo') ? [{ t: '¿Has visto a Rosario Higueras?', k: 'amparo' }] : []),
       ...(flag('davidAmparo') ? [{ t: '¿Rosario sigue dentro?', k: 'amparo2' }] : []),
+      ...(flag('sabeCrucigrama') && hasItem('xornal') && !flag('sabePalabra') ? [{ t: 'David, tú que sabes de fútbol: ¿me ayudas con el crucigrama?', k: 'pichichi' }] : []),
       { t: '¿Qué tal el fútbol?', k: 'gol' },
       { t: '¿Y la Champions?', k: 'champions' },
       { t: 'Hasta luego, David.', k: 'adeus' },
@@ -392,6 +410,7 @@ async function davidTalk() {
       await DA('Xoán! Cinco euros a que era domingo. Cinco euros a que había sol. E outros cinco a que Xoán nin estaba.');
       await MA('No apuesto contra un gol de Tercera. Esos goles crecen con los años, como los peces de los pescadores.', 'sonriente');
     }
+    if (k === 'pichichi') await davidPichichi();
     if (k === 'champions') {
       await DA('Martes e mércores, ás oito, aquí dentro. Vés, non? Gárdoche sitio.');
       await MA('Allí estaré. Y a las once, a dormir: ni prórroga ni penaltis.', 'convencido');
@@ -444,7 +463,7 @@ SCENES.arenal = {
       talk: () => davidTalk(),
       give: {
         ositos: async () => { await DA('Ositos? Eu son de cacahuetes, rapaz. Os ositos son para os nenos e para Concha.'); },
-        xornal: async () => { await DA('A páxina de deportes xa a sei de memoria. E aínda non saio eu.'); },
+        xornal: async () => { if (flag('sabeCrucigrama') && !flag('sabePalabra')) return davidPichichi(); await DA('A páxina de deportes xa a sei de memoria. E aínda non saio eu.'); },
         chavesCasa: async () => { await DA('As chaves da casa de Alfredo? Gárdaas ben, que Rosario cóntaas.'); },
       } },
   ],
@@ -481,7 +500,7 @@ async function rosarioBrisca() {
 }
 async function asinarContrato() {
   await RO('O bolígrafo de Concha! Como o conseguiches? Ese non o solta nin para asinar o testamento.');
-  await MA('Un crucigrama. Diez letras: maquinista. Quince años de oficio para ganarme un bolígrafo.', 'orgulloso');
+  await MA('Un crucigrama. Ocho letras: pichichi. Me lo resolvió el tío David y me lo va a recordar el resto de mi vida.', 'orgulloso');
   await RO('Asina aquí... e aquí. Listo. Benvido á Casa Juana, veciño.');
   take('boli'); give('contrato'); setFlag('contratoAsinado');
   await RO('O bolígrafo xa llo devolvo eu a Concha, que paso polo quiosco. Senón, mañá sae no xornal: «Desaparece o bolígrafo dos crucigramas».');
@@ -520,7 +539,9 @@ SCENES.fraternal = {
     { name: 'Taburetes', r: [80, 262, 140, 210], look: () => MA('Taburetes de barra. Uno está más gastado que los demás: alguien lleva media vida sentándose en el mismo.', 'sonriente') },
     { name: 'Tele', r: [724, 76, 70, 50], look: () => MA('Fútbol en la tele, sin volumen. Aquí no hace falta: los comentarios los pone la clientela, y gratis.', 'risueno') },
     { name: 'Tragaperras', r: [818, 200, 142, 340], look: () => MA('Una tragaperras. Mucha luz, mucho ruido y ninguna prisa por devolver nada.', 'esceptico') },
-    { name: 'Xornal e baralla', r: [506, 300, 130, 58], look: () => MA('Un periódico y una baraja en la misma mesa. El kit completo de la tarde gallega. Solo falta quien se queje del tiempo.', 'sonriente') },
+    { name: 'Xornal e baralla', r: [506, 300, 130, 58], at: [600, 500], face: 'B',
+      act: () => xornalFraternal(),
+      look: () => MA('Un periódico y una baraja en la misma mesa. El kit completo de la tarde gallega. Solo falta quien se queje del tiempo.', 'sonriente') },
     { name: 'Aviso', r: [494, 140, 24, 40], look: () => MA('Un aviso en la columna, en letra pequeña. Desde aquí solo leo «prohibido». Para un bar, me basta.', 'esceptico') },
     { name: 'Cadros', r: [94, 80, 330, 60], look: () => MA('Cuadros de montes y castillos. Uno se parece a Monforte, si lo miras con cariño y sin gafas.', 'pensativo') },
     { name: 'Lousa', r: [108, 158, 34, 46], look: () => MA('Otra pizarra con letra de tiza. Aquí todo se escribe a mano, como debe ser.', 'sonriente') },
