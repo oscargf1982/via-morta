@@ -7,7 +7,7 @@
    A trama completa está en docs/03_HISTORIA_Y_PUZZLES.md.
    Martín fala en castelán; os NPC, en galego; a interface, en galego.
    ========================================================== */
-const PORTRAITS = { 'Martín': 'img/martin-face.png', 'Dona Concha': 'img/concha-face.png', 'Xoán Carballeira': 'img/xoan.png', 'Tío David': 'img/david-face.png' };
+const PORTRAITS = { 'Martín': 'img/martin-face.png', 'Dona Concha': 'img/concha-face.png', 'Xoán Carballeira': 'img/xoan.png', 'Tío David': 'img/david-face.png', 'Rosario Higueras': 'img/rosario-face.png' };
 // cor dos bocadillos de cada personaxe
 const PORTRAIT_COLORS = { 'Dona Concha': '#e6a8ff', 'Tío David': '#ffb36b', 'Rosario Higueras': '#8fd0ff', 'Xoán Carballeira': '#d8ec2a' };
 const MA = (t, mood) => say('Martín', t, mood);
@@ -160,6 +160,6 @@ const ACTS = [
 /* ---------- créditos e fontes (sempre no menú) ---------- */
 const CREDITS = `<p><b>«Vía morta»</b> é unha obra de ficción inspirada en lugares reais de Monforte de Lemos. <b>Non é información oficial</b>, nin catastral, nin rexistral, nin histórica.</p>
 <h3>Autoría</h3><ul><li>Idea, historia e personaxes: Oscar.</li><li>Programación e textos de apoio: Oscar con Claude.</li></ul>
-<h3>Imaxes</h3><ul><li>Fotos do taller da Casa Juana: Oscar.</li><li>Mural da estación de Monforte (1954): Cándido Fernández Inchaurbe, delineante de Renfe. Restaurado por Adif a petición de Apatrigal.</li><li>Fondos do andén, do vestíbulo, das dúas pantallas da praza da estación, da rúa Concepción Arenal e do interior da Fraternal, primeiro plano do mural e portada (a rotonda do museo do ferrocarril): Oscar.</li><li>Follas de personaxe de Xoán Carballeira, Dona Concha e o tío David (sprites e retratos): Oscar.</li><li>Mapa de Monforte: bosquexo provisional, pendente de arte definitiva.</li></ul>
+<h3>Imaxes</h3><ul><li>Fotos do taller da Casa Juana: Oscar.</li><li>Mural da estación de Monforte (1954): Cándido Fernández Inchaurbe, delineante de Renfe. Restaurado por Adif a petición de Apatrigal.</li><li>Fondos do andén, do vestíbulo, das dúas pantallas da praza da estación, da rúa Concepción Arenal e do interior da Fraternal, primeiro plano do mural e portada (a rotonda do museo do ferrocarril): Oscar.</li><li>Follas de personaxe de Xoán Carballeira, Dona Concha, o tío David e Rosario Higueras (sprites e retratos): Oscar.</li><li>Mapa de Monforte: bosquexo provisional, pendente de arte definitiva.</li></ul>
 <h3>Fontes</h3><ul><li>Datos da Casa Juana (escritura n.º 375, 2 de xuño de 1952): recompilados por Oscar. Pendente de cotexar coa escritura orixinal.</li><li>Sobre o mural: <a href="https://www.elprogreso.es/articulo/ribeira-sacra/mapa-gallego-ferrocarril-cobra-vida/202309051715141689694.html" target="_blank" rel="noopener">El Progreso, «El mapa gallego del ferrocarril cobra vida»</a>.</li></ul>
 <h3>Que é ficción</h3><ul><li>Todos os personaxes (Martín, Xoán Carballeira, Xosé Nogal, Concha, Rosario...) e os feitos do 14 de xaneiro de 1958.</li><li>A vía morta de A Barreira, a restauración secreta da Mikado e o parte escondido.</li><li>O destino real da maquinaria vendida en 1952 non está demostrado: no xogo é só unha hipótese de Martín.</li><li>O mapa de Monforte do xogo é ilustrado e non está a escala.</li></ul>`;

@@ -421,7 +421,7 @@ SCENES.arenal = {
 /* ---------- B3 · A Fraternal (interior) ----------
    Fondo: ilustración de Oscar (img/bg-fraternal.jpg). Barra á esquerda, mesas de brisca, columna, tele co fútbol,
    tragaperras á dereita. Saída á rúa Concepción Arenal polas portas de cristal do fondo.
-   Rosario Higueras xoga á brisca na mesa do fondo, á dereita (sprite pendente: de momento fala dende a mesa). */
+   Rosario Higueras xoga á brisca na mesa do fondo, á dereita (sentada, co sprite da folla de Oscar). */
 const RO = t => say('Rosario Higueras', t);
 async function rosarioBrisca() {
   if (!flag('amparoMan')) {
@@ -453,8 +453,6 @@ SCENES.fraternal = {
   hotspots: [
     { name: 'Rúa Concepción Arenal', key: true, r: [520, 82, 76, 128], at: [590, 262], face: 'B', exit: ['arenal', [672, 446]], door: true,
       look: () => MA('La puerta a la calle. Fuera, el tío David seguirá metiendo el gol al Ourense. Ya va por el décimo.', 'risueno') },
-    { name: 'Rosario Higueras', key: true, r: [676, 196, 120, 72], at: [740, 340], face: 'B', act: () => rosarioBrisca(), done: () => flag('contratoAsinado'),
-      look: () => MA('Rosario Higueras, en la mesa del fondo, con las cartas pegadas al pecho. Juega a la brisca como otros pilotan aviones: sin pestañear.', 'pensativo') },
     { name: 'Lista de prezos', r: [20, 44, 82, 66], look: () => MA('Café, 1,20. Cerveza, 1,80. Precios de bar de los de antes. Aquí la inflación entra, pero se sienta y pide un café.', 'sonriente') },
     { name: 'Cafeteira', r: [0, 158, 66, 54], look: () => MA('Una cafetera de las de verdad, con su vapor y su ruido. Como una locomotora, pero de las que te despiertan.', 'risueno') },
     { name: 'Botellas', r: [0, 108, 40, 50], look: () => MA('Botellas en fila. Las de abajo, para diario. Las de arriba, para cuando gana el equipo. Están llenas.', 'esceptico') },
@@ -467,6 +465,14 @@ SCENES.fraternal = {
     { name: 'Cadros', r: [94, 80, 330, 60], look: () => MA('Cuadros de montes y castillos. Uno se parece a Monforte, si lo miras con cariño y sin gafas.', 'pensativo') },
     { name: 'Lousa', r: [108, 158, 34, 46], look: () => MA('Otra pizarra con letra de tiza. Aquí todo se escribe a mano, como debe ser.', 'sonriente') },
     { name: 'Planta', r: [232, 120, 46, 90], look: () => MA('Una planta que ha sobrevivido a cientos de goles cantados a gritos. Es la socia más dura del bar.', 'risueno') },
+  ],
+  // Rosario, sentada na mesa da brisca (a da dereita, coas cartas); a cadeira vén no sprite
+  npcs: [
+    { id: 'rosario', name: 'Rosario Higueras', key: true, sheet: 'img/rosario-sprite.png', spec: { cw: 160, ch: 280, cols: 8 }, flip: true,
+      get idle() { return flag('amparoMan') ? 11 : 8; }, talkFrames: [13, 9], x: 796, y: 334, w: 70, h: 320, at: [730, 352], face: 'R',
+      done: () => flag('contratoAsinado'),
+      look: () => MA('Rosario Higueras, en la mesa del fondo. Rizos, aros de plata y cara de llevar triunfos. Juega a la brisca como otros pilotan aviones: sin pestañear.', 'pensativo'),
+      talk: () => rosarioBrisca() },
   ],
 };
 async function fimTramo() {

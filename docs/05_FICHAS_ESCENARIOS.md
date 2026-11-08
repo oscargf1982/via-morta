@@ -58,7 +58,7 @@
 - **Suelo:** el terrazo. Obstáculos: la barra, la columna y los grupos de mesas. Capas delanteras: la mesa de delante (con La Voz y la baraja), la columna y las mesas laterales.
 - **Salidas:** puertas de cristal del fondo → rúa Concepción Arenal (A4b).
 - **Hotspots:** Rosario Higueras (clave, en la mesa del fondo a la derecha), lista de precios, cafetera, botellas, barra, taburetes, tele, tragaperras, periódico y baraja, aviso de la columna, cuadros, pizarra y planta.
-- **NPC:** **Rosario Higueras**, jugando a la brisca. Su sprite está pendiente de la hoja de Oscar; de momento habla desde la mesa. Abre con «Copas! E arrastro!» y no suelta las cartas a mitad de mano.
+- **NPC:** **Rosario Higueras**, jugando a la brisca. Sentada en la silla del lado derecho de la mesa de las cartas (sprite con su propia silla, mirando a la mesa); al interrumpirla se cruza de brazos. Abre con «Copas! E arrastro!» y no suelta las cartas a mitad de mano.
 - **Fin del tramo M1:** después de la primera conversación con Rosario. La firma del contrato (puzzle por decidir con Oscar) y la historia de la casa llegan en M2.
 
 ## Portada

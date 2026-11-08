@@ -56,6 +56,8 @@
 
 ## Rosario Higueras (la Fraternal)
 > Antes se llamaba Dona Amparo; Oscar la renombró el 8-11-2026.
+- **Aspecto (hoja de Oscar, `assets/personajes/rosario-higueras-hoja.png`):** melena rizada castaña, aros de plata, jersey burdeos de manga larga, vaqueros acampanados y botines marrones.
+- **Recursos gráficos:** `rosario-sprite.png` (celdas de 160×280, 8 columnas: 0 frente, 1 perfil derecha, 2 espalda, 3 mano en el bolsillo, 4-6 andar a la derecha, 8 sentada con las manos en el regazo, 9 sentada gesticulando, 10 piernas cruzadas gesticulando, 11 brazos cruzados, 12 y 13 boca abierta de 8 y de 9; las sentadas llevan su silla; a la izquierda, `flip: true`) y retrato `rosario-face.png`. Se regeneran con `python3 tools/sprite-rosario.py`.
 - **Quién es:** tiene 40 años, está casada con un profesor de matemáticas y tienen una hija de 9 años, **Eugenia**. Martín la tutea: no es «doña» de nadie.
 - Juega a la brisca en la Fraternal: «Copas! E arrastro!». Gestiona las llaves y el alquiler de la Casa Juana para sus dueños y le firma el contrato a Martín.
 - Le encanta contar la historia de la casa: el señor Alfredo, Juana, el motor Siemens, la venta de 1952. Es **prima de Xoán** por parte de padre (los Carballeira), sin sangre Nogal; pendiente de que Oscar lo confirme. Antes era su tía, pero con 40 años y él con 46 no encajaba.
