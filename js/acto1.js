@@ -348,8 +348,8 @@ SCENES.praza2 = {
       look: () => MA('El quiosco de Concha: chuches, cromos, revistas y la mejor red de información de Monforte. La CIA, pero con regaliz.', 'sonriente') },
     { name: 'Rúa Calvo Sotelo', r: [400, 296, 66, 38], at: [450, 338], face: 'B', exit: ['__rua'],
       act: () => bark('La calle Calvo Sotelo. Hoy no se me ha perdido nada por ahí, y bastante tengo con encontrar lo que sí se me ha perdido.') },
-    { name: 'Rúa Coruña', r: [546, 284, 48, 40], at: [572, 324], face: 'B', exit: ['__rua'],
-      act: () => ruaPechada('La calle Coruña, la del colegio ferroviario. Aquí hasta los colegios llevan apellido de tren.', 'sonriente') },
+    { name: 'Rúa da Coruña', key: true, r: [546, 284, 48, 40], at: [572, 324], face: 'B', exit: ['coruna', [70, 505]], hint: 'U',
+      look: () => MA('La calle Coruña, la del colegio. Por ahí también se llega a Doctor Casares: el camino de las mañanas de clase.', 'sonriente') },
     { name: 'Rúa Concepción Arenal', key: true, r: [794, 270, 52, 52], at: [818, 324], face: 'B', exit: ['arenal', [90, 515]],
       look: () => MA('La calle Concepción Arenal. Por ahí está la Fraternal: el bar de la brisca, la Champions y, si todo va bien, mi contrato.', 'pensativo') },
     { name: 'Rúa das Vacas', r: [900, 326, 60, 90], at: [940, 384], face: 'R', exit: ['__rua'],
@@ -611,6 +611,38 @@ SCENES.morin = {
     { name: 'Casas baixas', r: [0, 150, 330, 300], look: () => MA('Casas bajas, con teja y paredes desconchadas. El Monforte de toda la vida, puerta con puerta con el de ahora.', 'pensativo') },
   ],
 };
+/* ---------- A4d · Rúa da Coruña ----------
+   Segundo camiño entre a praza da estación e Doutor Casares (pedido por Oscar). O colexio, a capela e, ao fondo, a gasolineira. */
+SCENES.coruna = {
+  name: 'Rúa da Coruña', bg: 'img/bg-rua-coruna.jpg', music: 'casa', floor: 'pedra',
+  walk: [[0, 470], [195, 452], [340, 440], [575, 413], [746, 390], [840, 366], [900, 362], [960, 432], [960, 540], [0, 540]],
+  scale: [366, 0.12, 540, 0.72], actorH: 300, start: [70, 505], minSpeed: 0.35,
+  hotspots: [
+    { name: 'Cara á praza', key: true, r: [0, 440, 120, 100], at: [60, 515], face: 'F', exit: ['praza2', [572, 330]], hint: 'L',
+      look: () => MA('Por ahí vuelvo a la plaza de la estación, con Concha y su quiosco.', 'pensativo') },
+    { name: 'Cara a Doutor Casares', key: true, r: [820, 320, 110, 60], at: [872, 370], face: 'B', exit: ['casares', [900, 500]], hint: 'U',
+      look: () => MA('La calle sigue en curva hasta la gasolinera. Detrás está Doctor Casares, la Casa Roja.', 'pensativo') },
+    { name: 'Colexio', key: true, done: () => flag('colexioVisto'), r: [160, 0, 440, 280], at: [380, 450], face: 'B',
+      look: () => colexioCoruna(), act: () => colexioCoruna() },
+    { name: 'Verxa do colexio', r: [196, 280, 156, 140], at: [270, 470], face: 'B',
+      look: () => MA('La verja de forja, cerrada. A las nueve menos cinco esto era una estampida. A las nueve y uno, un silencio de misa.', 'risueno') },
+    { name: 'Porche', r: [330, 300, 200, 60], look: () => MA('El porche de madera sobre columnas de piedra. Debajo se refugiaban las madres cuando llovía. O sea, casi siempre.', 'risueno') },
+    { name: 'Capela', r: [656, 140, 150, 236], look: () => MA('La capillita de piedra, con su campana. Es la que veo desde el balcón de casa. De cerca parece más pequeña. O yo más grande.', 'sonriente') },
+    { name: 'Muro amarelo', r: [576, 316, 80, 70], look: () => MA('Un muro amarillo con verja. Aquí se apoyaban las mochilas mientras se esperaba al autobús.', 'pensativo') },
+    { name: 'Gasolineira', r: [848, 300, 52, 50], look: () => MA('La gasolinera, al fondo. Es la misma que veo desde el salón. Monforte es pequeño: todo se ve desde todo.', 'sonriente') },
+    { name: 'Árbore', r: [0, 0, 150, 240], look: () => MA('Un árbol enorme, de los que dan sombra a medio colegio. Seguro que alguna pelota sigue ahí arriba.', 'risueno') },
+    { name: 'Farolas', r: [876, 230, 50, 140], look: () => MA('Farolas de las antiguas, en fila. De noche esta calle debe de parecer un andén.', 'pensativo') },
+    { name: 'Edificios', r: [860, 0, 100, 228], look: () => MA('Pisos con balcones de forja. En cada uno, alguien que me vio pasar con la mochila hace veinte años. Y que se acuerda.', 'esceptico') },
+  ],
+};
+async function colexioCoruna() {
+  const primeira = !flag('colexioVisto'); setFlag('colexioVisto');
+  if (!primeira) return MA('El colegio. Detrás, el pabellón; en el patio, el futbolín. Y en mi memoria, el gol que nunca metí.', 'sonriente');
+  await MA('«Escuela de E. Prácticas». La fachada azul, el porche de madera... Esto no ha cambiado nada.', 'sonriente');
+  await MA('Y lo que no se ve desde la calle: detrás tiene un pabellón polideportivo enorme. Enorme de verdad, no enorme de niño.', 'pensativo');
+  await MA('En los recreos, el futbolín del patio. Había cola para jugar. Los listos ya sabían que el que ganaba seguía... y nunca soltaba los mandos.', 'risueno');
+}
+
 /* ---------- A4 · Rúa Doutor Casares, 211 (exterior da Casa Juana) ----------
    Fondo: ilustración de Oscar (img/bg-doutor-casares.jpg). A casa vermella co balcón de ferro e tres portas
    en arco; á dereita, o muro vermello do patio (detrás, a nave da carpintaría); á esquerda, unha nave de chapa.
@@ -628,6 +660,8 @@ SCENES.casares = {
   ],
   scale: [330, 0.15, 540, 0.88], actorH: 300, start: [120, 500], minSpeed: 0.35,
   hotspots: [
+    { name: 'Rúa da Coruña', key: true, r: [860, 456, 100, 84], at: [910, 500], face: 'R', exit: ['coruna', [870, 374]], hint: 'R',
+      look: () => MA('Por ahí, la calle Coruña, la del colegio. El otro camino a la plaza de la estación.', 'pensativo') },
     { name: 'Rúa Morín', key: true, r: [0, 440, 120, 100], at: [60, 515], face: 'F', exit: ['morin', [418, 352]],
       look: () => MA('Por ahí vuelvo hacia la calle Morín y la Fraternal.', 'pensativo') },
     { name: 'Rúa cara ao centro', key: true, done: () => !flag('sinAgua') || flag('aguaAlta'), r: [180, 300, 120, 40], at: [240, 342], face: 'B', exit: ['__centro'], hint: 'U',
