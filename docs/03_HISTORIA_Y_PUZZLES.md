@@ -166,8 +166,15 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 | Llave de guardagujas | Eladio | Aguja de A Barreira (propuesta) |
 
 ## 5. Estado actual
-- **Paquete inicial** (noviembre de 2026):
-  - motor point & click funcionando;
-  - demo de 4 escenas (salón, cocina, taller y vigas) con todas las mecánicas: caminar, mirar, coger, usar, dar, combinar, árbol de diálogo, documento y cinemática.
-  - La demo **no es canónica**: en ella el parte aparece ya en el Acto 2 para enseñar las mecánicas. En la versión final se encuentra en el Acto 4.
-- **Siguiente paso:** hito M1 (motor completo) y M2 (Acto 1). Ver la hoja de ruta en `01_DOCUMENTO_DE_DISENO.md`.
+- **Paquete inicial (M0):** motor básico y demo de 4 escenas de la Casa Juana (salón, cocina, taller y vigas). La demo **no es canónica**: el parte aparece ya para enseñar las mecánicas; en la versión final se encuentra en el Acto 4. Sigue disponible en «Escoller acto».
+- **M1 · Motor completo (8 de noviembre de 2026):**
+  - caminos con A* sobre varios polígonos de suelo y obstáculos;
+  - capas delanteras (Martín pasa por detrás de columnas, bancos y el quiosco);
+  - ollo de maquinista (botón OLLO o tecla Q) con pistas en amarillo, resueltas en verde, salidas en azul y hotspots que solo existen con el ollo;
+  - comentarios breves sobre la cabeza y animación de hablar y de coger para Martín;
+  - menú con Continuar, Nueva partida, Escoller acto, Opcións (texto rápido, música, efectos) y Créditos e fontes;
+  - sonido sintetizado sin archivos: pasos según el suelo, coger, puertas, papel, música por zona y el silbato «dos largos y uno corto»;
+  - móvil: en horizontal el inventario va en columna a la derecha; en vertical sale un aviso para girar y, si se sigue en vertical, la escena va arriba a todo el ancho con diálogo e inventario grandes debajo (elegido por Oscar).
+  - **Acto 1, primer tramo jugable:** A1 andén → A2 vestíbulo (Iván y el mural) → A3 plaza (quiosco de Concha: llaves, ositos, periódico) → mapa de Monforte. Fichas en `05_FICHAS_ESCENARIOS.md`. Termina al ir a Doutor Casares con las llaves.
+- **Provisional:** los fondos de A1–A3 y el mapa son bocetos por código (`tools/fondos.py`), y el sprite de Iván también. Se sustituyen con fotos de Oscar.
+- **Siguiente paso:** M2 (resto del Acto 1: A4 exterior de la Casa Juana, casa sin agua, Fraternal y Concello). Antes hay que cerrar con Oscar los dos puzzles marcados como propuesta (bolígrafo de Concha y Eladio en el café).

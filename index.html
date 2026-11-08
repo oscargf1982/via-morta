@@ -3,40 +3,91 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0c0e">
 <title>Vía morta</title>
 <style>
-:root{--bg:#0b0c0e;--ink:#f2ead8;--acc:#f2a33a;--panel:rgba(14,16,20,.94)}
+:root{--bg:#0b0c0e;--ink:#f2ead8;--acc:#f2a33a;--panel:rgba(14,16,20,.95);--invW:96px;--invH:80px}
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:"Trebuchet MS",Verdana,sans-serif;overflow:hidden;-webkit-user-select:none;user-select:none}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:"Trebuchet MS",Verdana,sans-serif;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+button{font-family:inherit}
 #wrap{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-#stage{position:relative;width:min(100vw,calc((100vh - 76px) * 16 / 9));aspect-ratio:16/9}
+#stage{position:relative;width:min(100vw,calc((100dvh - var(--invH)) * 16 / 9));aspect-ratio:16/9;flex:0 0 auto}
 #game{width:100%;height:100%;display:block;cursor:crosshair;touch-action:none}
 #sceneName{position:absolute;left:10px;top:8px;font:700 13px "Trebuchet MS",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-shadow:0 1px 3px #000;opacity:.85;pointer-events:none}
-#inv{width:min(100vw,calc((100vh - 76px) * 16 / 9));height:76px;display:flex;gap:6px;padding:6px;background:#15171b;border-top:2px solid #2a2e35;overflow-x:auto}
-#inv .it{flex:0 0 auto;width:86px;height:64px;border:2px solid #2f343c;border-radius:6px;background:#1d2026;color:#d8d2c2;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2px;cursor:pointer;font:11px "Trebuchet MS",sans-serif}
-#inv .it canvas{width:36px;height:36px}#inv .it span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px}
+#hud{position:absolute;right:8px;top:8px;display:flex;gap:8px}
+#hud button{height:44px;min-width:44px;border-radius:8px;border:2px solid #000;font:900 15px "Trebuchet MS",sans-serif;cursor:pointer;box-shadow:0 2px 0 #000}
+#bOllo{background:#ffd23a;color:#111;padding:0 12px;letter-spacing:.06em}
+#bMenu{background:#2a2e35;color:#fff;font-size:20px!important}
+#inv{width:min(100vw,calc((100dvh - var(--invH)) * 16 / 9));height:var(--invH);display:flex;gap:6px;padding:6px;background:#15171b;border-top:2px solid #2a2e35;overflow-x:auto;flex:0 0 auto}
+#inv .it{flex:0 0 auto;width:88px;height:66px;border:2px solid #2f343c;border-radius:8px;background:#1d2026;color:#d8d2c2;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2px;cursor:pointer;font:11px "Trebuchet MS",sans-serif;touch-action:manipulation}
+#inv .it canvas{width:38px;height:38px;pointer-events:none}#inv .it span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:82px;pointer-events:none}
 #inv .it.held{border-color:var(--acc);background:#3a2c14}
-#dlg{position:absolute;left:3%;right:3%;bottom:3%;min-height:24%;background:var(--panel);border-top:3px solid var(--acc);border-radius:6px;display:flex;gap:14px;padding:12px 16px;cursor:pointer}
+#inv .empty{align-self:center;opacity:.35;font-size:13px;padding:0 8px}
+#dlg{position:absolute;left:3%;right:3%;bottom:3%;min-height:24%;max-height:94%;overflow:auto;background:var(--panel);border-top:3px solid var(--acc);border-radius:6px;display:flex;gap:14px;padding:12px 16px;cursor:pointer}
 #dlg[hidden]{display:none}
 #dlgPor{flex:0 0 auto;width:min(18vw,96px);aspect-ratio:1;border:2px solid var(--acc);border-radius:6px;background:#222 center/cover;image-rendering:pixelated}
 #dlgName{font:800 clamp(16px,2.4vw,22px) "Trebuchet MS",sans-serif;color:var(--acc);text-transform:uppercase;letter-spacing:.04em}
-#dlgText{font-size:clamp(14px,1.9vw,19px);line-height:1.4;margin-top:4px}
-#dlgText .opt{display:block;width:100%;text-align:left;background:none;border:0;color:#ffe38a;font:inherit;padding:5px 0;cursor:pointer}#dlgText .opt:hover{color:#fff}
+#dlgText{font-size:clamp(15px,1.9vw,19px);line-height:1.4;margin-top:4px}
+#dlgText .opt{display:block;width:100%;text-align:left;background:none;border:0;color:#ffe38a;font:inherit;padding:7px 0;cursor:pointer}#dlgText .opt:hover{color:#fff}
 #dlgMore{position:absolute;right:14px;bottom:8px;font-size:12px;opacity:.6}
-#doc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.55);cursor:pointer}
+#doc{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.6);cursor:pointer;overflow:auto;padding:12px 0}
 #doc[hidden]{display:none}
-#doc>*{width:min(86%,440px);background:#efe4c8;color:#2a2116;font:15px Georgia,serif;margin:0;padding:6px 20px}
+#doc>*{width:min(92%,460px);background:#efe4c8;color:#2a2116;font:15px Georgia,serif;margin:0;padding:6px 20px}
 #doc h4{margin:0;padding-top:16px;font:700 16px Georgia,serif;letter-spacing:.04em}#doc .sub{font-style:italic;font-size:13px}#doc table{border-collapse:collapse;padding-bottom:4px}#doc td{border-bottom:1px dotted #8a7a5a;padding:2px 0}#doc td+td{text-align:right}#doc .pr{font-weight:700;text-align:right}#doc .doc-x{background:none;color:#fff;font-size:12px;text-align:center;padding-top:10px}
+#doc img{display:block;width:min(94%,760px);max-height:72dvh;object-fit:contain;padding:8px;background:#efe4c8}
 #cine{position:absolute;inset:0;background:#000 center/cover;display:flex;align-items:flex-end;justify-content:center;cursor:pointer;box-shadow:inset 0 70px 0 #000,inset 0 -70px 0 #000}
 #cine[hidden]{display:none}#cine.on{animation:cz 14s linear forwards}@keyframes cz{from{background-size:100%}to{background-size:112%}}
 #cineTxt{margin-bottom:22px;font:italic 20px Georgia,serif;color:#fff;text-shadow:0 2px 6px #000;text-align:center;padding:0 20px}
-#toast{position:absolute;left:50%;top:10px;transform:translate(-50%,-140%);background:var(--panel);border:1px solid var(--acc);padding:6px 14px;border-radius:4px;font-size:14px;transition:transform .3s;pointer-events:none}#toast.on{transform:translate(-50%,0)}
-#menu{position:absolute;inset:0;background:linear-gradient(#0b0c0edd,#0b0c0ef0),url(img/cine-mural.jpg) center/cover;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+#toast{position:absolute;left:50%;top:10px;transform:translate(-50%,-160%);background:var(--panel);border:1px solid var(--acc);padding:6px 14px;border-radius:4px;font-size:14px;transition:transform .3s;pointer-events:none;white-space:nowrap}#toast.on{transform:translate(-50%,0)}
+/* menú: ocupa sempre toda a pantalla */
+#menu{position:fixed;inset:0;z-index:30;background:linear-gradient(#0b0c0ee0,#0b0c0ef4),url(img/cine-mural.jpg) center/cover;overflow:auto;display:flex}
 #menu[hidden]{display:none}
-#menu h1{margin:0;font:900 clamp(36px,7vw,72px) Georgia,serif;letter-spacing:.06em;color:var(--acc)}#menu p{margin:0;opacity:.8;max-width:540px;padding:0 16px}
-#menu button{font:700 18px "Trebuchet MS",sans-serif;padding:12px 28px;border-radius:6px;border:0;background:var(--acc);color:#111;cursor:pointer;min-width:220px}#menu button.sec{background:#2a2e35;color:#fff}
-#menu .cred{max-width:560px;font-size:13px;opacity:.8;padding:0 16px}#menu .cred summary{cursor:pointer;color:var(--acc)}#menu .cred p{margin-top:6px}
-#menu .help{font-size:13px;opacity:.65}
+#menu .pane{margin:auto;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding:20px 16px;width:100%;max-width:620px}
+#menu .pane[hidden]{display:none}
+#menu h1{margin:0;font:900 clamp(38px,8vw,76px) Georgia,serif;letter-spacing:.06em;color:var(--acc)}
+#menu h2{margin:0;font:800 26px Georgia,serif;color:var(--acc)}
+#menu p{margin:0;opacity:.85}
+#menu .pane>button,#menu .back{font:700 18px "Trebuchet MS",sans-serif;padding:12px 28px;border-radius:8px;border:0;background:#2a2e35;color:#fff;cursor:pointer;min-width:240px;min-height:48px}
+#menu .pane>button.pri{background:var(--acc);color:#111}
+#menu .help{font-size:13px;opacity:.65;line-height:1.5}
+#actList{display:flex;flex-direction:column;gap:8px;width:100%}
+#actList .act{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:2px;padding:12px 16px;border-radius:8px;border:2px solid #3a3f48;background:#1b1e24;color:#fff;cursor:pointer;min-height:56px}
+#actList .act small{opacity:.7;font-size:13px}#actList .act:hover:not(:disabled){border-color:var(--acc)}#actList .act.off{opacity:.45;cursor:default}
+#mOpts label{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;max-width:360px;font-size:16px;min-height:44px}
+#mOpts input[type=range]{width:160px}#mOpts input[type=checkbox]{width:24px;height:24px}
+#credText{text-align:left;font-size:14px;line-height:1.5;background:#14161add;padding:12px 16px;border-radius:8px}
+#credText h3{margin:12px 0 4px;color:var(--acc);font-size:15px}#credText a{color:#9fe0ff}#credText ul{margin:4px 0;padding-left:18px}
+/* aviso de xirar o móbil */
+#rotate{display:none}
+/* móbil en horizontal (pouca altura): inventario en columna á dereita */
+@media (orientation:landscape) and (max-height:600px){
+  #wrap{flex-direction:row}
+  #stage{width:min(calc(100vw - var(--invW)),calc(100dvh * 16 / 9))}
+  #inv{width:var(--invW);height:min(100dvh,calc((100vw - var(--invW)) * 9 / 16));flex-direction:column;overflow-x:hidden;overflow-y:auto;border-top:0;border-left:2px solid #2a2e35}
+  #inv .it{width:82px;height:64px}
+  #dlg{min-height:30%;padding:8px 12px}#dlgPor{width:64px}#dlgText{font-size:16px}
+  #hud button{height:40px;min-width:40px}
+}
+/* móbil en vertical: escena arriba a todo o ancho; diálogo e inventario debaixo, grandes */
+@media (orientation:portrait){
+  #wrap{justify-content:flex-start;padding-top:env(safe-area-inset-top)}
+  #stage{width:100vw}
+  #inv{position:fixed;left:0;right:0;bottom:0;width:100vw;height:96px;padding-bottom:calc(6px + env(safe-area-inset-bottom))}
+  #inv .it{width:92px;height:78px}#inv .it canvas{width:44px;height:44px}#inv .it span{font-size:12px}
+  #dlg{top:calc(100% + 8px);bottom:auto;left:8px;right:8px;min-height:0;height:calc(100dvh - 100vw * 9 / 16 - 120px - env(safe-area-inset-top));max-height:380px;overflow:auto;flex-direction:column;gap:8px}
+  #dlgPor{width:72px}#dlgText{font-size:18px}
+  #hud{top:auto;bottom:6px;right:6px}#hud button{height:38px;min-width:38px;font-size:13px}
+  #sceneName{font-size:11px}
+  #toast{top:auto;bottom:-46px;transform:translate(-50%,40px);opacity:0;transition:opacity .3s}#toast.on{transform:translate(-50%,0);opacity:1}
+  #portraitHint{display:block}
+  body:not(.vertOk) #rotate{display:flex}
+}
+#portraitHint{display:none;position:fixed;left:0;right:0;bottom:110px;text-align:center;font-size:13px;opacity:.4;pointer-events:none}
+#rotate{position:fixed;inset:0;z-index:40;background:#0b0c0ef5;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:24px}
+#rotate .ph{width:70px;height:116px;border:5px solid var(--acc);border-radius:12px;animation:rot 2.4s ease-in-out infinite}
+@keyframes rot{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
+#rotate p{margin:0;font-size:18px;max-width:320px}
+#rotate button{font:700 16px "Trebuchet MS",sans-serif;padding:12px 22px;border-radius:8px;border:0;background:#2a2e35;color:#fff;min-height:48px}
 </style>
 </head>
 <body>
@@ -44,22 +95,53 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family
   <div id="stage">
     <canvas id="game" width="960" height="540"></canvas>
     <div id="sceneName"></div>
+    <div id="hud"><button id="bOllo" type="button" title="Ollo de maquinista (Q)">OLLO</button><button id="bMenu" type="button" title="Menú (Esc)" aria-label="Menú">☰</button></div>
     <div id="toast"></div>
-    <div id="doc" hidden></div>
     <div id="cine" hidden><div id="cineTxt"></div></div>
     <div id="dlg" hidden><div id="dlgPor"></div><div style="flex:1"><div id="dlgName"></div><div id="dlgText"></div></div><div id="dlgMore">▸</div></div>
-    <div id="menu">
-      <h1>VÍA MORTA</h1>
-      <p>Unha aventura de Martín Pardo en Monforte de Lemos · demo técnica</p>
-      <button id="btnCont" type="button" hidden>Continuar</button>
-      <button id="btnNew" class="sec" type="button">Nova partida</button>
-      <details class="cred"><summary>Créditos e fontes</summary><p>Xogo de ficción inspirado en lugares reais de Monforte de Lemos. Non é información oficial, catastral nin histórica.<br>Fotos do taller da Casa Juana: Oscar. Datos da Casa Juana (escritura n.º 375, 1952): recompilados por Oscar.<br>Mural da estación (1954): Cándido Fernández Inchaurbe; restaurado por Adif a petición de Apatrigal (El Progreso).<br>Personaxes e feitos de 1958: ficción.</p></details>
-      <p class="help">Clic / toque: actuar · Clic dereito / manter premido: mirar<br>Toca un obxecto do inventario e despois algo do escenario para usalo</p>
-    </div>
   </div>
   <div id="inv"></div>
 </div>
+<div id="portraitHint">Toca para actuar · mantén premido para mirar</div>
+<div id="doc" hidden></div>
+<div id="menu" hidden>
+  <div class="pane" id="mMain">
+    <h1>VÍA MORTA</h1>
+    <p>Unha aventura de Martín Pardo en Monforte de Lemos</p>
+    <button id="btnCont" class="pri" type="button" hidden>Continuar</button>
+    <button id="btnNew" type="button">Nova partida</button>
+    <button id="btnActs" type="button">Escoller acto</button>
+    <button id="btnOpts" type="button">Opcións</button>
+    <button id="btnCred" type="button">Créditos e fontes</button>
+    <button id="btnFull" type="button" hidden>Pantalla completa</button>
+    <p class="help">Clic / toque: actuar · Clic dereito / manter premido: mirar<br>Toca un obxecto do inventario e despois algo do escenario para usalo<br>Botón OLLO ou tecla Q: ollo de maquinista</p>
+  </div>
+  <div class="pane" id="mActs" hidden>
+    <h2>Escoller acto</h2>
+    <div id="actList"></div>
+    <button class="back" type="button">Volver</button>
+  </div>
+  <div class="pane" id="mOpts" hidden>
+    <h2>Opcións</h2>
+    <label>Texto rápido <input id="optFast" type="checkbox"></label>
+    <label>Música <input id="optMus" type="range" min="0" max="1" step="0.05"></label>
+    <label>Efectos <input id="optSfx" type="range" min="0" max="1" step="0.05"></label>
+    <button id="optTest" type="button" class="back">Probar o asubío</button>
+    <button class="back" type="button">Volver</button>
+  </div>
+  <div class="pane" id="mCred" hidden>
+    <h2>Créditos e fontes</h2>
+    <div id="credText"></div>
+    <button class="back" type="button">Volver</button>
+  </div>
+</div>
+<div id="rotate">
+  <div class="ph"></div>
+  <p>Xira o teléfono para ver Monforte en grande.</p>
+  <button id="btnVert" type="button">Xogar en vertical</button>
+</div>
 <script src="js/engine.js"></script>
 <script src="js/data.js"></script>
+<script src="js/acto1.js"></script>
 </body>
 </html>

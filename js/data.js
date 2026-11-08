@@ -8,6 +8,8 @@
    Martín fala en castelán; os NPC, en galego; a interface, en galego.
    ========================================================== */
 const PORTRAITS = { 'Martín': 'img/martin-face.png', 'Dona Concha': 'img/concha-face.png', 'Iván Nogal': 'img/ivan.png' };
+// cor dos bocadillos de cada personaxe
+const PORTRAIT_COLORS = { 'Dona Concha': '#e6a8ff', 'Iván Nogal': '#d8ec2a' };
 const MA = (t, mood) => say('Martín', t, mood);
 const CO = t => say('Dona Concha', t);
 
@@ -38,17 +40,17 @@ const DOC_PARTE = `<h4>PARTE DE INCIDENCIA · 14 de xaneiro de 1958</h4><p class
 /* ---------- escenas ---------- */
 const SCENES = {
   salon: {
-    name: 'Casa Juana · salón', bg: 'img/bg-salon.jpg',
+    name: 'Casa Juana · salón', bg: 'img/bg-salon.jpg', music: 'casa', floor: 'madeira',
     walk: [[540, 388], [935, 372], [955, 538], [100, 538], [110, 458], [520, 458]],
     scale: [372, 0.62, 540, 1], actorH: 300, start: [300, 500],
     hotspots: [
-      { name: 'Balcón', r: [769, 52, 184, 292], at: [860, 400], face: 'R',
+      { name: 'Balcón', key: true, r: [769, 52, 184, 292], at: [860, 400], face: 'R',
         look: async () => { await MA('Desde el balcón se ve el depósito, la estación y medio Monforte.', 'pensativo'); await MA('Quien eligió esta casa sabía lo que hacía. O lo que miraba.', 'dudoso'); } },
       { name: 'Fiestra', r: [141, 49, 135, 186], look: () => MA('La torre del castillo de San Vicente asomando por encima de los tejados. Postal gratis.', 'sonriente') },
       { name: 'Cadros', r: [385, 118, 115, 78], look: () => MA('Paisajes de la Ribeira Sacra. Decoración de piso turístico: bonita, neutra y sin ninguna historia. Lo contrario que esta casa.', 'esceptico') },
       { name: 'Mesa', r: [530, 240, 260, 140], look: () => MA('Una mesa para seis. Yo como de pie en la cocina. Pero queda elegante.', 'risueno') },
       { name: 'Cociña', r: [0, 60, 80, 480], at: [120, 500], exit: ['cocina', [800, 500]] },
-      { name: 'Porta do patio', r: [900, 380, 60, 160], at: [915, 470], face: 'R',
+      { name: 'Porta do patio', key: true, done: () => flag('patioAberto'), r: [900, 380, 60, 160], at: [915, 470], face: 'R',
         act: async () => { if (flag('patioAberto')) return goScene('taller', [120, 505]); await MA('La puerta del patio de atrás. Cerrada con llave. Al otro lado está la nave vieja: la carpintería del señor Alfredo.', 'pensativo'); },
         use: { chave: async () => { setFlag('patioAberto'); await MA('Gira dura, pero gira. Setenta años de óxido diciendo que no... y luego que sí.', 'aliviado'); await goScene('taller', [120, 505]); } } },
     ],
@@ -70,11 +72,11 @@ const SCENES = {
     onEnter: null,
   },
   cocina: {
-    name: 'Casa Juana · cociña', bg: 'img/bg-cocina.jpg',
+    name: 'Casa Juana · cociña', bg: 'img/bg-cocina.jpg', music: 'casa', floor: 'pedra',
     walk: [[360, 388], [690, 388], [820, 430], [840, 538], [330, 538]],
     scale: [388, 0.7, 540, 1], actorH: 300, start: [800, 500],
     hotspots: [
-      { name: 'Caixón', r: [479, 255, 80, 66], at: [520, 410], face: 'B',
+      { name: 'Caixón', key: true, done: () => flag('navallaCollida'), r: [479, 255, 80, 66], at: [520, 410], face: 'B',
         act: async () => { if (hasItem('navalla') || flag('navallaCollida')) return MA('Cubiertos, un abrebotellas del Dépor y propaganda de una pizzería cerrada.', 'neutro'); setFlag('navallaCollida'); give('navalla'); await MA('Una navaja vieja. Me la quedo: en esta casa todo parece tener una cerradura.', 'sonriente'); },
         look: () => MA('Un cajón. En los cajones de cocina vive el caos ordenado de cada casa.', 'pensativo') },
       { name: 'Fiestra', r: [190, 35, 160, 330], at: [380, 420], face: 'L',
@@ -85,7 +87,7 @@ const SCENES = {
     ],
   },
   taller: {
-    name: 'O taller vello', bg: 'img/bg-taller.jpg', crop: [0, 420, 1186, 667],
+    name: 'O taller vello', bg: 'img/bg-taller.jpg', crop: [0, 420, 1186, 667], floor: 'grava',
     walk: [[60, 470], [930, 470], [950, 538], [40, 538]],
     scale: [470, 0.5, 540, 0.62], actorH: 300, start: [120, 505],
     onEnter: async () => { if (flag('tallerVisto')) return; setFlag('tallerVisto'); await MA('La nave de atrás. Huele a serrín de hace setenta años y a humedad. Si el silbato apunta a esta casa, la respuesta está aquí dentro.', 'pensativo'); },
@@ -96,16 +98,16 @@ const SCENES = {
       for (let i = 0; i < 8; i++) { c.fillStyle = 'rgba(25,20,16,.55)'; c.beginPath(); c.ellipse(276 + i * 23, 524 - i * 6 - (i % 2) * 8, 5, 9, 0.9, 0, 7); c.fill(); }
     },
     hotspots: [
-      { name: 'Viga da transmisión', r: [10, 4, 940, 128], at: [600, 490], face: 'B', exit: ['vigas'],
+      { name: 'Viga da transmisión', key: true, r: [10, 4, 940, 128], at: [600, 490], face: 'B', exit: ['vigas'],
         look: () => MA('La viga de la transmisión. Diez metros, siete soportes para siete poleas. Desde aquí abajo no se ve bien el último.', 'pensativo') },
-      { name: 'Foto vella', r: [484, 192, 82, 76], at: [525, 480], face: 'B',
+      { name: 'Foto vella', key: true, r: [484, 192, 82, 76], at: [525, 480], face: 'B',
         look: async () => { await MA('Una foto clavada al pilar, comida por la humedad. Un señor con bigote y tres chavales con mono delante de una sierra enorme.', 'pensativo'); await MA('Detrás, a lápiz: «O señor Alfredo cos aprendices, 1949. Pepe, Manolo, Xosé N.». Xosé N.... ¿N. de qué?', 'dudoso'); } },
-      { name: 'Caixón de madeira', r: [70, 436, 144, 86], at: [230, 500], face: 'L',
+      { name: 'Caixón de madeira', key: true, done: () => hasItem('escritura'), r: [70, 436, 144, 86], at: [230, 500], face: 'L',
         act: async () => { if (!hasItem('escritura')) { give('escritura'); await MA('Entre clavos oxidados, una copia amarillenta de una escritura. 1952.', 'sorprendido'); } await ITEMS.escritura.look(); await MA('Todo, por treinta mil pesetas. A un ingeniero de Caminos y a un contratista. ¿Para qué quiere un ingeniero de Caminos una carpintería entera?', 'dudoso'); },
         look: () => MA('Un cajón de madera con herrajes. Parece de la época de las máquinas.', 'neutro') },
-      { name: 'Pegadas no po', r: [262, 456, 190, 74],
+      { name: 'Pegadas no po', key: true, r: [262, 456, 190, 74],
         look: () => MA('Huellas recientes en el polvo. Alguien ha estado aquí hace poco, y ha mirado hacia arriba. Hacia la viga.', 'sorprendido') },
-      { name: 'Marcas no chan', r: [640, 452, 260, 78],
+      { name: 'Marcas no chan', key: true, r: [640, 452, 260, 78],
         look: () => MA('Agujeros de pernos en grupos de cuatro. Aquí estuvieron atornilladas las máquinas. Sierra, cepilladora, torno...', 'pensativo') },
       { name: 'Casa', r: [0, 150, 48, 320], at: [70, 505], exit: ['salon', [880, 470]] },
     ],
@@ -114,7 +116,7 @@ const SCENES = {
     name: 'O taller vello · as vigas', bg: 'img/bg-taller-vigas.jpg', crop: [0, 120, 1186, 667], noActor: true,
     draw(c) { if (flag('lataCollida')) return; c.fillStyle = '#3d3d42'; c.fillRect(708, 168, 40, 52); c.fillStyle = '#25252a'; c.beginPath(); c.arc(728, 228, 16, 0, 7); c.fill(); c.fillStyle = '#a08850'; c.fillRect(704, 192, 48, 4); },
     hotspots: [
-      { name: 'Sétimo soporte', r: [660, 140, 160, 110],
+      { name: 'Sétimo soporte', key: true, done: () => flag('lataCollida'), r: [660, 140, 160, 110],
         look: () => flag('lataCollida') ? MA('El soporte, abierto. Ya no guarda nada.', 'neutro') : MA('El séptimo soporte, encima del pilar. Los otros seis se abren con la mano. Este tiene la tapa soldada. ¿Quién suelda la tapa de una polea?', 'dudoso'),
         act: () => flag('lataCollida') ? MA('Ya está abierto.', 'neutro') : MA('Con las manos no puedo. Necesito algo para hacer palanca en la soldadura.', 'frustrado'),
         use: { navalla: async () => { if (flag('lataCollida')) return MA('Ya está abierto.'); setFlag('lataCollida'); await MA('Meto la navaja por la soldadura, hago palanca... cede. Dentro, una lata de tabaco.', 'sorprendido'); give('lata'); } } },
@@ -142,8 +144,22 @@ async function conchaTalk() {
   }
 }
 
-/* ---------- comezo ---------- */
-const START = {
-  scene: 'salon', at: [300, 500], inv: ['ositos'],
-  intro: async () => { await MA('Casa Juana. Doctor Casares, 211. Más de cien años, varios dueños y un taller atrás que nadie abre desde hace décadas.', 'pensativo'); await MA('Y anoche, un silbato de vapor. Dos largos y uno corto. Hacia esta casa.', 'dudoso'); },
-};
+/* ---------- presets do selector de acto ----------
+   O primeiro é o que usa «Nova partida». Os actos sen facer saen desactivados. */
+const ACTS = [
+  { id: 'acto1', name: 'Acto 1 · O regreso', desc: 'Luns. Martín chega no rexional (tramo M1: andén, vestíbulo e praza)', scene: 'anden', at: [250, 470], inv: [],
+    intro: () => introAnden() },
+  { id: 'acto2', name: 'Acto 2 · O reencontro', desc: 'En construción (M3)', disabled: true },
+  { id: 'acto3', name: 'Acto 3 · A curiosidade', desc: 'En construción (M4)', disabled: true },
+  { id: 'acto4', name: 'Acto 4 · A implicación', desc: 'En construción (M5)', disabled: true },
+  { id: 'acto5', name: 'Acto 5 · O descubrimento', desc: 'En construción (M6)', disabled: true },
+  { id: 'demo', name: 'Demo técnica (M0) · Casa Juana', desc: 'As catro escenas da casa e o taller. Non canónica: o parte aparece antes de tempo', scene: 'salon', at: [300, 500], inv: ['ositos'],
+    intro: async () => { await MA('Casa Juana. Doctor Casares, 211. Más de cien años, varios dueños y un taller atrás que nadie abre desde hace décadas.', 'pensativo'); await MA('Y anoche, un silbato de vapor. Dos largos y uno corto. Hacia esta casa.', 'dudoso'); } },
+];
+
+/* ---------- créditos e fontes (sempre no menú) ---------- */
+const CREDITS = `<p><b>«Vía morta»</b> é unha obra de ficción inspirada en lugares reais de Monforte de Lemos. <b>Non é información oficial</b>, nin catastral, nin rexistral, nin histórica.</p>
+<h3>Autoría</h3><ul><li>Idea, historia e personaxes: Oscar.</li><li>Programación e textos de apoio: Oscar con Claude.</li></ul>
+<h3>Imaxes</h3><ul><li>Fotos do taller da Casa Juana: Oscar.</li><li>Mural da estación de Monforte (1954): Cándido Fernández Inchaurbe, delineante de Renfe. Restaurado por Adif a petición de Apatrigal.</li><li>Fondo da praza da estación: Oscar.</li><li>Fondos do andén, vestíbulo e mapa: bosquexos provisionais, pendentes de substituír por arte feita a partir de fotos.</li></ul>
+<h3>Fontes</h3><ul><li>Datos da Casa Juana (escritura n.º 375, 2 de xuño de 1952): recompilados por Oscar. Pendente de cotexar coa escritura orixinal.</li><li>Sobre o mural: <a href="https://www.elprogreso.es/articulo/ribeira-sacra/mapa-gallego-ferrocarril-cobra-vida/202309051715141689694.html" target="_blank" rel="noopener">El Progreso, «El mapa gallego del ferrocarril cobra vida»</a>.</li></ul>
+<h3>Que é ficción</h3><ul><li>Todos os personaxes (Martín, Iván, Xosé Nogal, Concha, Amparo...) e os feitos do 14 de xaneiro de 1958.</li><li>A vía morta de A Barreira, a restauración secreta da Mikado e o parte escondido.</li><li>O destino real da maquinaria vendida en 1952 non está demostrado: no xogo é só unha hipótese de Martín.</li><li>O mapa de Monforte do xogo é ilustrado e non está a escala.</li></ul>`;
