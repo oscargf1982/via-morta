@@ -1,12 +1,12 @@
 'use strict';
 /* ==========================================================
    VÍA MORTA · Acto 1 «O regreso» (tramo M1)
-   A1 Andén 1 → A2 Vestíbulo (Iván e o mural) → A3 Praza da Estación (quiosco de Concha)
+   A1 Andén 1 → A2 Vestíbulo (Xoán e o mural) → A3 Praza da Estación (quiosco de Concha)
    + pantalla de mapa de Monforte.
    Fichas dos escenarios: docs/05_FICHAS_ESCENARIOS.md
    Fondos PROVISIONAIS xerados con tools/fondos.py (pendentes de fotos de Oscar).
    ========================================================== */
-const IV = t => say('Iván Nogal', t);
+const XO = t => say('Xoán Carballeira', t);
 
 /* ---------- obxectos novos ---------- */
 Object.assign(ico, {
@@ -17,7 +17,7 @@ Object.assign(ITEMS, {
   xornal: { name: 'Xornal', icon: ico.xornal, look: () => MA('El periódico de hoy. En portada, obras. En deportes, el Dépor. Leo deportes primero, como un caballero.', 'sonriente') },
   chavesCasa: { name: 'Chaves da casa', icon: ico.chaves, look: () => MA('Las llaves de la Casa Juana, con un llavero de madera y un «211» pintado a mano. Parece cosa de carpintero.', 'pensativo') },
 });
-PORTRAIT_COLORS['Iván Nogal'] = '#d8ec2a';
+PORTRAIT_COLORS['Xoán Carballeira'] = '#d8ec2a';
 
 /* utilidades de debuxo para letreiros (o texto vai no xogo, non no PNG) */
 function signText(c, t, x, y, size, col = '#f2ead8', font = 'Georgia, serif') { c.font = `700 ${size}px ${font}`; c.textAlign = 'center'; c.fillStyle = col; c.fillText(t, x, y); c.textAlign = 'left'; }
@@ -71,14 +71,14 @@ SCENES.anden = {
 };
 
 /* ---------- A2 · Vestíbulo da estación ---------- */
-async function ivanTalk() {
-  if (!flag('ivanCoñece')) {
-    await IV('Benvido ao nó ferroviario de Galicia! Ben, ao que queda del.');
+async function xoanTalk() {
+  if (!flag('xoanCoñece')) {
+    await XO('Benvido ao nó ferroviario de Galicia! Ben, ao que queda del.');
     await MA('Martín Pardo. Maquinista. Me han dado destino en el depósito.', 'sonriente');
-    await IV('Iván. De apoio de Renfe, aquí na estación. Ti es o novo do depósito. Xa me falaran de ti.');
+    await XO('Xoán. De apoio de Renfe, aquí na estación. Ti es o novo do depósito. Xa me falaran de ti.');
     await MA('¿Ya te habían hablado de mí? En Monforte las noticias llegan antes que los trenes.', 'dudoso');
-    setFlag('ivanCoñece');
-  } else await IV('Volves? Iso é que o mural engancha. Pásalle a todo o mundo. Ben, a min.');
+    setFlag('xoanCoñece');
+  } else await XO('Volves? Iso é que o mural engancha. Pásalle a todo o mundo. Ben, a min.');
   for (;;) {
     const opts = [
       { t: '¿Qué cuenta ese mural?', k: 'mural' },
@@ -88,35 +88,35 @@ async function ivanTalk() {
     ];
     const k = opts[await choose(opts)].k;
     if (k === 'mural') {
-      if (flag('muralExplicado')) { await IV('Resumo: 1954, Inchaurbe, Monforte no medio. E o emigrante de Vigo, aínda esperando. Queres que cho conte outra vez dende o principio? Non? Mellor.'); continue; }
-      await IV('Pintouno en 1954 Cándido Fernández Inchaurbe, delineante de Renfe na zona Noroeste. A sede estaba en León.');
-      await IV('Mira: Monforte no medio, coma nó ferroviario. E sen a liña Ourense–Zamora, que daquela aínda non existía.');
-      await IV('Hai un peregrino, un autocar en Curtis, un tren TAF... e un emigrante a piques de embarcar en Vigo.');
-      await IV('Ese emigrante leva setenta anos esperando. Hai xente que espera máis.');
+      if (flag('muralExplicado')) { await XO('Resumo: 1954, Inchaurbe, Monforte no medio. E o emigrante de Vigo, aínda esperando. Queres que cho conte outra vez dende o principio? Non? Mellor.'); continue; }
+      await XO('Pintouno en 1954 Cándido Fernández Inchaurbe, delineante de Renfe na zona Noroeste. A sede estaba en León.');
+      await XO('Mira: Monforte no medio, coma nó ferroviario. E sen a liña Ourense–Zamora, que daquela aínda non existía.');
+      await XO('Hai un peregrino, un autocar en Curtis, un tren TAF... e un emigrante a piques de embarcar en Vigo.');
+      await XO('Ese emigrante leva setenta anos esperando. Hai xente que espera máis.');
       await MA('¿Te lo sabes de memoria?', 'sorprendido');
-      await IV('Restaurouno Adif a petición de Apatrigal. Eu só vin ver como quedaba. Todos os días.');
+      await XO('Restaurouno Adif a petición de Apatrigal. Eu só vin ver como quedaba. Todos os días.');
       setFlag('muralExplicado');
     }
     if (k === 'casa') {
-      await IV('A casa roxa. Saes á praza e colles á dereita, á beira da gasolineira.');
-      await IV('Bo balcón. Dende el vese o depósito.');
+      await XO('A casa roxa. Saes á praza e colles á dereita, á beira da gasolineira.');
+      await XO('Bo balcón. Dende el vese o depósito.');
       await MA('¿Y tú cómo sabes lo que se ve desde mi balcón?', 'esceptico');
-      await IV('Monforte é pequeno e eu son curioso. As chaves teñas no quiosco da praza: Dona Concha.');
+      await XO('Monforte é pequeno e eu son curioso. As chaves teñas no quiosco da praza: Dona Concha.');
       setFlag('sabeCasa');
     }
     if (k === 'traballo') {
-      await IV('Axudo na estación. Información, incidencias, xente perdida. Ti, por exemplo, tes cara de perdido con dirección.');
-      await IV('E conto cousas. Sabías que este vestíbulo ten corenta e dúas baldosas de ancho? Conteinas un domingo. Non me xulgues.');
+      await XO('Axudo na estación. Información, incidencias, xente perdida. Ti, por exemplo, tes cara de perdido con dirección.');
+      await XO('E conto cousas. Sabías que este vestíbulo ten corenta e dúas baldosas de ancho? Conteinas un domingo. Non me xulgues.');
       await MA('No te juzgo. Yo me sé de memoria los pitidos de todas las agujas de Valencia Nord. Cada uno con su trauma.', 'risueno');
     }
     if (k === 'adeus') {
-      await IV('Vai, vai. E se de noite oes algo raro... será o vento. En Monforte hai moito vento.');
+      await XO('Vai, vai. E se de noite oes algo raro... será o vento. En Monforte hai moito vento.');
       await MA('(¿Por qué me lo ha dicho como si no hubiera viento?)', 'dudoso');
       return;
     }
   }
 }
-const DOC_MURAL = `<img src="img/mural-primer-plano.jpg" alt="Martín e Iván diante do mural da estación"><p class="sub">Mural do vestíbulo da estación de Monforte (Cándido Fernández Inchaurbe, 1954; restaurado por Adif a petición de Apatrigal). Ilustración do xogo baseada no mural real.</p>`;
+const DOC_MURAL = `<img src="img/mural-primer-plano.jpg" alt="Martín e Xoán diante do mural da estación"><p class="sub">Mural do vestíbulo da estación de Monforte (Cándido Fernández Inchaurbe, 1954; restaurado por Adif a petición de Apatrigal). Ilustración do xogo baseada no mural real.</p>`;
 
 /* Fondo: ilustración do vestíbulo enviada por Oscar (img/bg-vestibulo-estacion.jpg, 3:2 recortada a 16:9).
    Dereita: porta azul á praza. Esquerda, á beira do radiador: porta ao andén 1, cara á cámara. */
@@ -163,14 +163,14 @@ SCENES.vestibulo = {
     { name: 'Teito', r: [90, 0, 550, 60], look: () => MA('Vigas de madera y fluorescentes. Lo antiguo sujetando lo moderno. Como en mi familia.', 'risueno') },
   ],
   npcs: [
-    { id: 'ivan', name: 'Iván Nogal', key: true, sheet: 'img/ivan-sprite.png', spec: { cw: 150, ch: 240, cols: 2 }, idle: 0, talkFrames: [1, 0], x: 590, y: 352, w: 70, h: 296, at: [528, 368], face: 'R',
+    { id: 'xoan', name: 'Xoán Carballeira', key: true, sheet: 'img/xoan-sprite.png', spec: { cw: 112, ch: 280, cols: 8 }, idle: 4, talkFrames: [6, 4], x: 590, y: 352, w: 70, h: 296, at: [528, 368], face: 'R',
       done: () => flag('sabeCasa'),
-      look: () => MA('Chaleco reflectante, pelo de cepillo y cara de saberse los horarios de memoria. Los de 1950, probablemente.', 'sonriente'),
-      talk: () => ivanTalk(),
+      look: () => MA('Chaleco de Renfe, gafas de leer letra pequeña y reloj de los que no se atrasan. Tiene cara de saberse los horarios de memoria. Los de 1950, probablemente.', 'sonriente'),
+      talk: () => xoanTalk(),
       give: {
-        ositos: async () => { await IV('Grazas, pero non. Os ositos son de Concha: se che ve dármolos, retíranos a palabra aos dous.'); },
-        xornal: async () => { await IV('Xa o lin. A esta hora xa o leu media estación. A outra media é Concha.'); },
-        chavesCasa: async () => { await IV('As chaves da casa roxa. Gárdaas ben. Esa casa... ten moita historia.'); await MA('¿Qué historia?', 'dudoso'); await IV('Pregúntalle a Amparo. Ela cóntao mellor. E máis longo.'); },
+        ositos: async () => { await XO('Grazas, pero non. Os ositos son de Concha: se che ve dármolos, retíranos a palabra aos dous.'); },
+        xornal: async () => { await XO('Xa o lin. A esta hora xa o leu media estación. A outra media é Concha.'); },
+        chavesCasa: async () => { await XO('As chaves da casa roxa. Gárdaas ben. Esa casa... ten moita historia.'); await MA('¿Qué historia?', 'dudoso'); await XO('Pregúntalle a Amparo. Ela cóntao mellor. E máis longo.'); },
       } },
   ],
 };

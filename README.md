@@ -21,7 +21,7 @@ Abre `index.html` con un servidor local; si lo abres con doble clic, algunos nav
 
 **Tramo M1 (Acto 1, «Nova partida»):**
 1. En el andén, entra en el vestíbulo.
-2. Habla con Iván (opcional): el mural y la Casa Juana.
+2. Habla con Xoán (opcional): el mural y la Casa Juana.
 3. Sal a la plaza y habla con Concha: pídele las llaves (y, si quieres, ositos y el periódico).
 4. Ve a la Rúa Doutor Casares (derecha) con las llaves: fin del tramo.
 - Con el botón **OLLO** (o Q) se marcan las cosas importantes. En el vestíbulo, el ollo descubre la firma del mural.
@@ -43,9 +43,11 @@ index.html          interfaz (lienzo, inventario, diálogo, documentos, cinemát
 js/engine.js        motor: escenas, caminos A*, capas, ollo, bocadillos, inventario, diálogos, sonido, menú, guardado
 js/data.js          común: retratos, objetos, demo de la Casa Juana, selector de actos (ACTS) y créditos
 js/acto1.js         Acto 1: andén, vestíbulo, plaza y mapa de Monforte
-tools/fondos.py     genera los fondos provisionales y el sprite de Iván (python3 tools/fondos.py)
+tools/fondos.py     genera el mapa provisional (python3 tools/fondos.py)
+tools/sprite-xoan.py genera el sprite y el retrato de Xoán desde assets/personajes/
 tools/html-unico.py empaqueta todo en un único HTML con las imágenes dentro
-img/                fondos (bg-*), sprites y retratos de Martín, Concha, Iván, mural
+img/                fondos (bg-*), sprites y retratos de Martín, Concha, Xoán, mural
+assets/personajes/  hojas de personaje originales (referencia)
 docs/               documentos del proyecto
 ```
 

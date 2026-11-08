@@ -20,11 +20,12 @@
   - «Grasa, silbatos y un candado nuevo. O es un fantasma muy mañoso, o aquí hay alguien trabajando a escondidas.»
 - **Recursos gráficos:** `martin-sprite.png` (celdas de 150×203, 8 columnas), `martin-face.png` y `mf-{neutro, sonriente, risueno, sorprendido, dudoso, pensativo, esceptico, preocupado, convencido, orgulloso, enfadado, frustrado, aliviado, entusiasmado, avergonzado}.png`.
 
-## Iván Nogal (el personaje clave)
+## Xoán Carballeira (el personaje clave)
+> Antes se llamaba Iván Nogal; Oscar lo renombró el 8-11-2026. Carballeira es el apellido de su padre: el jugador no puede relacionarlo con Nogal por el nombre.
 - **Lo que ve el jugador:** el de apoyo de Renfe en la estación. Es simpático y friki de la historia del tren, y se sabe el mural del vestíbulo (1954) de memoria.
 - **Lo que es en realidad:**
   - Tiene 46 años y nació en Ginebra.
-  - Es nieto de **Xosé Nogal** (personaje de ficción), el maquinista al que culparon de la noche del 14 de enero de 1958.
+  - Es nieto, por parte de madre, de **Xosé Nogal** (personaje de ficción), el maquinista al que culparon de la noche del 14 de enero de 1958.
   - Lleva un año preparando en secreto, con los jubilados, la última salida de la locomotora **Mikado**. El «tren fantasma» es él.
 - **Su importancia no está en lo que sabe, sino en lo que ha hecho con ello:**
   - veinte años de archivos;
@@ -35,14 +36,15 @@
 - **Voz:** gallego, humor seco, datos y fechas a todas horas. Cuando algo le importa, habla con frases cortas. Es suizo para la puntualidad y gallego para los rodeos: nunca pide ayuda de frente.
   - «Benvido ao nó ferroviario de Galicia! Ben, ao que queda del.»
   - «Dous longos e un curto. Iso non é ningunha sinal do regulamento. Será algún graciosiño. Por certo, sabías que en 1958 o rexional das 21:30 saía dez minutos tarde todos os días?»
-  - En la vía muerta deja de hablar como «el de Renfe»: «Chámome Iván Nogal. Son neto de Xosé Nogal...»
+  - En la vía muerta deja de hablar como «el de Renfe»: «Chámome Xoán Carballeira Nogal. Son neto de Xosé Nogal...»
 - **Relación con Martín:**
   1. bromas;
   2. utilidad;
   3. sospecha suave;
   4. convergencia (el parte);
   5. complicidad: en la cabina le pide que sea él quien toque el silbato.
-- **Recursos gráficos:** retrato `ivan.png`. Falta su sprite de cuerpo entero.
+- **Aspecto (hoja de Oscar, `assets/personajes/xoan-carballeira-hoja.png`):** pelo castaño oscuro, gafas de pasta negras, polo azul marino de manga corta, chaleco amarillo reflectante de Renfe, pantalón cargo azul marino, botas negras y reloj en la muñeca izquierda.
+- **Recursos gráficos:** `xoan-sprite.png` (celdas de 112×280, 8 columnas: 0 frente, 1 espalda, 2 perfil derecha, 3 perfil izquierda, 4 tres cuartos mirando a la izquierda, 5 tres cuartos de espalda, 6 y 7 hablando de 4 y de 0) y retrato `xoan.png`. Se regeneran con `python3 tools/sprite-xoan.py`.
 
 ## Dona Concha (quiosco de la plaza de la Estación)
 - Chismosa entrañable. Se acuerda de Martín de cuando venía cada lunes a por sobres de cromos del Dépor «e nunca lle saía o Djalminha».
@@ -53,11 +55,11 @@
 
 ## Dona Amparo (la Fraternal)
 - Juega a la brisca en la Fraternal: «Copas! E arrastro!». Gestiona las llaves y el alquiler de la Casa Juana para sus dueños y le firma el contrato a Martín.
-- Le encanta contar la historia de la casa: el señor Alfredo, Juana, el motor Siemens, la venta de 1952. Es **tía de Iván** («o meu sobriño, o que estivo en Suíza»).
+- Le encanta contar la historia de la casa: el señor Alfredo, Juana, el motor Siemens, la venta de 1952. Es **tía de Xoán** («o meu sobriño, o que estivo en Suíza»).
 
 ## Tío David (la Fraternal)
 - Compañero de Champions de Martín. Cuenta mil veces su gol al Ourense en Tercera, «un domingo de sol».
-- Iván le corrige: «Foi en mércores, David. E chovía». Le apuesta cinco euros a todo.
+- Xoán le corrige: «Foi en mércores, David. E chovía». Le apuesta cinco euros a todo.
 
 ## Don Eladio (ventanilla del Concello)
 - Funcionario que «naceu pechando». La ventanilla 1 «agora tamén é a 3».
@@ -73,7 +75,8 @@
 - Guarda sacos de carbón para el churrasco, que en el Acto 4 hacen falta para la Mikado. Reta a Martín a nadar al estilo *Track & Field*.
 - **Recursos gráficos:** `andres.png` y `andres-face.png` en el juego anterior; cópialos de allí si hacen falta.
 
-## Xoán «o Galgo» (Malecón)
+## Brais «o Galgo» (Malecón)
+> Antes se llamaba Xoán; cambia de nombre para no coincidir con Xoán Carballeira.
 - Rival de Martín en los cross escolares: «Iso foi un empuxón!». Ahora es fisio y entrena a los del club.
 - Tiene el récord de la **Volta do Castelo**: Malecón, praza da Compañía, castillo y vuelta.
 

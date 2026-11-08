@@ -78,7 +78,7 @@ El esquema es el de Broken Sword: un cursor inteligente en lugar de la lista de 
 ### 4.4 Minijuegos
 Hay tres heredados del juego de mundo abierto, todos opcionales o con alternativa para quien no quiera jugarlos:
 - **Natación con Mega Andrés**, estilo *Track & Field*: alternar dos teclas o botones.
-- **A Volta do Castelo con Xoán.** Pasa a ser una secuencia de ritmo o de rutas por el mapa de Monforte: Malecón → praza Doutor Goyanes → praza de España → castillo → vuelta.
+- **A Volta do Castelo con Brais.** Pasa a ser una secuencia de ritmo o de rutas por el mapa de Monforte: Malecón → praza Doutor Goyanes → praza de España → castillo → vuelta.
 - **La cabina de la Mikado** (Acto 5). Es un puzzle de procedimiento: regulador, inyector, presión de 9 kg (dato de la pizarra), freno y silbato. El orden importa y el juego explica con humor qué falla.
 
 ### 4.5 Guardado
@@ -112,10 +112,10 @@ Hay tres heredados del juego de mundo abierto, todos opcionales o con alternativ
 | Martín: retrato y 15 emociones | ✅ existe |
 | Fondos de la Casa Juana: salón, cocina | ✅ existe |
 | Taller de la Casa Juana: 2 fotos reales | ✅ existe |
-| Mural de la estación (foto real) y escena Iván + Martín ante el mural | ✅ existe |
-| Iván: retrato | ✅ existe; ❌ falta su sprite de cuerpo entero |
+| Mural de la estación (foto real) y escena Xoán + Martín ante el mural | ✅ existe |
+| Xoán Carballeira: retrato y sprite (6 vistas, sin animación de andar) | ✅ existe (hoja de Oscar) |
 | Concha, David, Andrés: sprites chibi | ⚠️ existen, pero hay que adaptar el estilo |
-| Resto de NPC (Amparo, Eladio, Valerio, Xoán, Anxo, Remedios, Pepe, Nai) | ❌ faltan sprites y retratos dibujados (en el juego anterior eran caras generadas por código) |
+| Resto de NPC (Amparo, Eladio, Valerio, Brais, Anxo, Remedios, Pepe, Nai) | ❌ faltan sprites y retratos dibujados (en el juego anterior eran caras generadas por código) |
 | Resto de fondos | ❌ faltan (ver lista de escenarios en `03_HISTORIA_Y_PUZZLES.md`) |
 
 ## 6. Sonido

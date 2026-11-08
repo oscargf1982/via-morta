@@ -16,7 +16,7 @@
 - **Salidas:** puerta azul de la derecha → Praza da Estación (A3). Andén 1 por la izquierda, junto al radiador, con la puerta «hacia la cámara».
 - **Al entrar por primera vez:** Martín recuerda que antes había cafetería y quiosco de revistas en la estación y que ahora todo está cerrado.
 - **Hotspots:** mural de 1954 (clave; al tocarlo se abre el primer plano de Oscar, `img/mural-primer-plano.jpg`), firma del mural (solo con el ollo), taquilla, máquina de billetes, extintor, tres avisos, bancos, papelera, dos radiadores, pilar, ventana, bandas táctiles amarillas y techo.
-- **NPC:** **Iván Nogal**, entre la máquina de billetes y el pilar, junto al mural (sprite provisional). El árbol de diálogo no cambia: el mural con hechos reales, la Casa Juana con la pista del balcón, las 42 baldosas y la despedida con el «vento».
+- **NPC:** **Xoán Carballeira** (antes Iván Nogal), entre la máquina de billetes y el pilar, junto al mural, en vista de tres cuartos mirando hacia Martín. El árbol de diálogo no cambia: el mural con hechos reales, la Casa Juana con la pista del balcón, las 42 baldosas y la despedida con el «vento».
 - **Desbloquea:** la marca `sabeCasa`.
 
 ## A3 · Praza da Estación (`praza`)

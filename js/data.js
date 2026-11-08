@@ -7,9 +7,9 @@
    A trama completa está en docs/03_HISTORIA_Y_PUZZLES.md.
    Martín fala en castelán; os NPC, en galego; a interface, en galego.
    ========================================================== */
-const PORTRAITS = { 'Martín': 'img/martin-face.png', 'Dona Concha': 'img/concha-face.png', 'Iván Nogal': 'img/ivan.png' };
+const PORTRAITS = { 'Martín': 'img/martin-face.png', 'Dona Concha': 'img/concha-face.png', 'Xoán Carballeira': 'img/xoan.png' };
 // cor dos bocadillos de cada personaxe
-const PORTRAIT_COLORS = { 'Dona Concha': '#e6a8ff', 'Iván Nogal': '#d8ec2a' };
+const PORTRAIT_COLORS = { 'Dona Concha': '#e6a8ff', 'Xoán Carballeira': '#d8ec2a' };
 const MA = (t, mood) => say('Martín', t, mood);
 const CO = t => say('Dona Concha', t);
 
@@ -64,8 +64,8 @@ const SCENES = {
           parte: async () => {
             await CO('A ver... (pon as lentes) Catorce de xaneiro do cincuenta e oito. X. N....'); await CO('Xosé Nogal. O rapaz que aprendeu o oficio con Alfredo. Cando xa era maquinista, asubiaba ao pasar por diante desta casa: dous longos e un curto. Para saudar o taller.');
             await MA('Dos largos y uno corto. Eso es lo que oigo cada noche, Concha.', 'sorprendido');
-            await CO('... Entón alguén se lembra aínda. Leva isto a Iván, o da estación. Faime caso.');
-            setFlag('fin'); await cine('img/cine-mural.jpg', ['Á mañá seguinte, no vestíbulo da estación...', 'Iván Nogal mirou o papel moito tempo sen dicir nada.', '— Esa letra... — dixo por fin.', 'FIN DA DEMO · «Vía morta», aventura gráfica']);
+            await CO('... Entón alguén se lembra aínda. Leva isto a Xoán, o da estación. Faime caso.');
+            setFlag('fin'); await cine('img/cine-mural.jpg', ['Á mañá seguinte, no vestíbulo da estación...', 'Xoán Carballeira mirou o papel moito tempo sen dicir nada.', '— Esa letra... — dixo por fin.', 'FIN DA DEMO · «Vía morta», aventura gráfica']);
           },
         } },
     ],
@@ -160,6 +160,6 @@ const ACTS = [
 /* ---------- créditos e fontes (sempre no menú) ---------- */
 const CREDITS = `<p><b>«Vía morta»</b> é unha obra de ficción inspirada en lugares reais de Monforte de Lemos. <b>Non é información oficial</b>, nin catastral, nin rexistral, nin histórica.</p>
 <h3>Autoría</h3><ul><li>Idea, historia e personaxes: Oscar.</li><li>Programación e textos de apoio: Oscar con Claude.</li></ul>
-<h3>Imaxes</h3><ul><li>Fotos do taller da Casa Juana: Oscar.</li><li>Mural da estación de Monforte (1954): Cándido Fernández Inchaurbe, delineante de Renfe. Restaurado por Adif a petición de Apatrigal.</li><li>Fondos do andén, do vestíbulo e da praza da estación e primeiro plano do mural: Oscar.</li><li>Mapa de Monforte e sprite de Iván: bosquexos provisionais, pendentes de arte definitiva.</li></ul>
+<h3>Imaxes</h3><ul><li>Fotos do taller da Casa Juana: Oscar.</li><li>Mural da estación de Monforte (1954): Cándido Fernández Inchaurbe, delineante de Renfe. Restaurado por Adif a petición de Apatrigal.</li><li>Fondos do andén, do vestíbulo e da praza da estación e primeiro plano do mural: Oscar.</li><li>Folla de personaxe de Xoán Carballeira (sprite e retrato): Oscar.</li><li>Mapa de Monforte: bosquexo provisional, pendente de arte definitiva.</li></ul>
 <h3>Fontes</h3><ul><li>Datos da Casa Juana (escritura n.º 375, 2 de xuño de 1952): recompilados por Oscar. Pendente de cotexar coa escritura orixinal.</li><li>Sobre o mural: <a href="https://www.elprogreso.es/articulo/ribeira-sacra/mapa-gallego-ferrocarril-cobra-vida/202309051715141689694.html" target="_blank" rel="noopener">El Progreso, «El mapa gallego del ferrocarril cobra vida»</a>.</li></ul>
-<h3>Que é ficción</h3><ul><li>Todos os personaxes (Martín, Iván, Xosé Nogal, Concha, Amparo...) e os feitos do 14 de xaneiro de 1958.</li><li>A vía morta de A Barreira, a restauración secreta da Mikado e o parte escondido.</li><li>O destino real da maquinaria vendida en 1952 non está demostrado: no xogo é só unha hipótese de Martín.</li><li>O mapa de Monforte do xogo é ilustrado e non está a escala.</li></ul>`;
+<h3>Que é ficción</h3><ul><li>Todos os personaxes (Martín, Xoán Carballeira, Xosé Nogal, Concha, Amparo...) e os feitos do 14 de xaneiro de 1958.</li><li>A vía morta de A Barreira, a restauración secreta da Mikado e o parte escondido.</li><li>O destino real da maquinaria vendida en 1952 non está demostrado: no xogo é só unha hipótese de Martín.</li><li>O mapa de Monforte do xogo é ilustrado e non está a escala.</li></ul>`;

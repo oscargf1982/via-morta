@@ -24,10 +24,10 @@
   - **Adif** lo restauró a petición de **Apatrigal**.
   - Fuente: [El Progreso, «El mapa gallego del ferrocarril cobra vida»](https://www.elprogreso.es/articulo/ribeira-sacra/mapa-gallego-ferrocarril-cobra-vida/202309051715141689694.html).
   - La noticia de La Voz de Galicia que envió Oscar no se pudo abrir: no se cita ni se intenta sortear su bloqueo.
-- **Ficción:** que Iván se lo sepa de memoria; el «emigrante que leva setenta anos esperando» como espejo de la familia Nogal; la placa final a Xosé Nogal.
+- **Ficción:** que Xoán se lo sepa de memoria; el «emigrante que leva setenta anos esperando» como espejo de la familia Nogal; la placa final a Xosé Nogal.
 
 ## 3. Íntegramente ficción
-- **Personajes:** Martín Pardo, Iván Nogal, Xosé Nogal, Don Anxo Corredoira, Remedios, Pepe do Taller, Dona Concha, Dona Amparo, Tío David, Don Eladio, Valerio, Mega Andrés, Xoán «o Galgo» y la madre de Martín. Cualquier parecido con vecinos reales debe tratarse con cariño y sin datos privados.
+- **Personajes:** Martín Pardo, Xoán Carballeira, Xosé Nogal, Don Anxo Corredoira, Remedios, Pepe do Taller, Dona Concha, Dona Amparo, Tío David, Don Eladio, Valerio, Mega Andrés, Brais «o Galgo» y la madre de Martín. Cualquier parecido con vecinos reales debe tratarse con cariño y sin datos privados.
 - **Hechos:** la noche del 14 de enero de 1958, el mercancías sin frenos, el tren de emigrantes, el informe falso y el despido de Xosé.
 - **Lugares y objetos:** la vía muerta de A Barreira (inventada; se puede cambiar por un lugar real si Oscar lo prefiere), la restauración secreta de la Mikado y su salida, y el parte de incidencia y su escondite.
 

@@ -7,7 +7,8 @@ substitúense por fondos pintados a partir desas referencias.
 Os textos dos letreiros non van aquí: píntanse no xogo (draw() de cada escena).
 
 Uso:  python3 tools/fondos.py        (escribe img/bg-anden.png, bg-vestibulo.png,
-                                       bg-praza.png, bg-mapa.png e ivan-sprite.png)
+                                       bg-praza.png e bg-mapa.png; o sprite de Xoán
+                                       sae de tools/sprite-xoan.py)
 """
 import math, random, os
 from PIL import Image, ImageDraw
@@ -261,61 +262,7 @@ def mapa():
     save(im, 'bg-mapa.png')
 
 
-# ----------------------------------------------- Iván: sprite PROVISIONAL de corpo enteiro
-def ivan():
-    """2 celas de 75×120 px (parado, falando con xesto) amplíanse ×2 → 150×240; pés na fila 117.
-    Proporción de Martín (unhas 6,5 cabezas). Provisional ata ter arte definitiva."""
-    cw, ch = 75, 120
-    im = Image.new('RGBA', (cw * 2, ch), (0, 0, 0, 0))
-    OL = hexc('#1a1410')
-    SK, SKs, HA, HAl = hexc('#e2ac88'), hexc('#c08866'), hexc('#3a2a22'), hexc('#5a4434')
-    VE, VEs, RF, PO, POl = hexc('#d4ea2c'), hexc('#a8bc1c'), hexc('#cfd3d0'), hexc('#1f2329'), hexc('#2e343c')
-    TR, TRs, SH, PU, TI = hexc('#2b303c'), hexc('#20242e'), hexc('#121212'), hexc('#7a2a8a'), hexc('#5a2a7a')
-    for f in range(2):
-        d = ImageDraw.Draw(im); o = f * cw; cx = o + 37
-        def R(x0, y0, x1, y1, c, ol=True):
-            if ol: d.rectangle([cx + x0 - 1, y0 - 1, cx + x1 + 1, y1 + 1], fill=OL)
-            d.rectangle([cx + x0, y0, cx + x1, y1], fill=c)
-        # pernas (pantalón) e zapatos
-        R(-9, 70, -1, 113, TR); R(1, 70, 9, 113, TR)
-        d.rectangle([cx - 3, 74, cx - 2, 112], fill=TRs); d.rectangle([cx + 7, 74, cx + 8, 112], fill=TRs)
-        R(-11, 113, -1, 117, SH); R(1, 113, 11, 117, SH)
-        # brazo esquerdo (do espectador), sempre baixado
-        R(-17, 33, -12, 62, VE); d.rectangle([cx - 13, 36, cx - 12, 62], fill=VEs)
-        R(-17, 63, -12, 69, SK); d.rectangle([cx - 17, 67, cx - 12, 69], fill=SKs)
-        # torso: polo escuro e chaleco reflector
-        R(-12, 30, 12, 72, PO)
-        d.rectangle([cx - 12, 31, cx - 4, 72], fill=VE); d.rectangle([cx + 4, 31, cx + 12, 72], fill=VE)
-        d.rectangle([cx - 3, 31, cx + 3, 72], fill=PO); d.polygon([(cx - 3, 31), (cx, 37), (cx + 3, 31)], fill=SK)
-        d.rectangle([cx - 1, 37, cx + 1, 50], fill=TI)                               # gravata
-        d.rectangle([cx - 12, 54, cx + 12, 56], fill=RF); d.rectangle([cx - 12, 63, cx + 12, 65], fill=RF)
-        d.rectangle([cx - 3, 54, cx + 3, 56], fill=POl); d.rectangle([cx - 3, 63, cx + 3, 65], fill=POl)
-        d.rectangle([cx + 5, 42, cx + 10, 44], fill=PU)                              # «renfe»
-        d.rectangle([cx - 12, 68, cx + 12, 72], fill=VEs)
-        d.rectangle([cx - 12, 31, cx - 11, 72], fill=VEs)
-        # brazo dereito: baixado (parado) ou levantado explicando (falando)
-        if f == 0:
-            R(12, 33, 17, 62, VE); R(12, 63, 17, 69, SK); d.rectangle([cx + 12, 67, cx + 17, 69], fill=SKs)
-        else:
-            R(12, 33, 17, 46, VE); R(15, 24, 21, 40, VE); R(16, 17, 21, 24, SK); d.rectangle([cx + 19, 13, cx + 20, 17], fill=SK)
-        # pescozo e cabeza
-        R(-3, 25, 3, 31, SKs, ol=False)
-        d.ellipse([cx - 9, 6, cx + 9, 28], fill=OL); d.ellipse([cx - 8, 7, cx + 8, 27], fill=SK)
-        d.ellipse([cx - 11, 14, cx - 7, 20], fill=SK); d.ellipse([cx + 7, 14, cx + 11, 20], fill=SK)   # orellas
-        d.rectangle([cx - 8, 22, cx + 8, 27], fill=SK); d.rectangle([cx - 6, 25, cx + 6, 27], fill=SKs)
-        # pelo de cepillo
-        d.ellipse([cx - 9, 3, cx + 9, 15], fill=HA); d.rectangle([cx - 9, 9, cx - 7, 16], fill=HA); d.rectangle([cx + 7, 9, cx + 9, 16], fill=HA)
-        for k in range(-7, 8, 3): d.line([(cx + k, 2), (cx + k + 1, 5)], fill=HAl)
-        # cara
-        d.rectangle([cx - 5, 15, cx - 2, 15], fill=HA); d.rectangle([cx + 2, 15, cx + 5, 15], fill=HA)   # cellas
-        d.rectangle([cx - 4, 17, cx - 3, 18], fill=OL); d.rectangle([cx + 3, 17, cx + 4, 18], fill=OL)   # ollos
-        d.rectangle([cx, 18, cx + 1, 21], fill=SKs)                                                     # nariz
-        if f == 0: d.rectangle([cx - 2, 23, cx + 3, 23], fill=hexc('#9a5a4a'))
-        else: d.rectangle([cx - 2, 23, cx + 3, 24], fill=hexc('#5a1e1e'))
-        d.rectangle([cx - 6, 21, cx - 5, 26], fill=SKs); d.rectangle([cx + 6, 21, cx + 7, 26], fill=SKs)     # barba de dous días
-    im = im.resize((cw * 2 * 2, ch * 2), Image.NEAREST)
-    im.save(os.path.join(OUT, 'ivan-sprite.png'), optimize=True); print('escrito ivan-sprite.png')
 
 
 if __name__ == '__main__':
-    mapa(); ivan()   # anden(), vestibulo() e praza(): substituídas polos fondos de Oscar
+    mapa()   # anden(), vestibulo() e praza(): substituídas polos fondos de Oscar
