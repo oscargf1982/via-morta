@@ -12,14 +12,14 @@ const XO = t => say('Xoán Carballeira', t);
 /* ---------- obxectos novos ---------- */
 Object.assign(ico, {
   xornal(c) { c.fillStyle = '#efe8d8'; c.fillRect(8, 10, 32, 28); c.fillStyle = '#2a2a2a'; c.fillRect(11, 13, 26, 5); c.fillStyle = '#8a8478'; for (let i = 0; i < 4; i++) { c.fillRect(11, 21 + i * 4, 12, 2); c.fillRect(26, 21 + i * 4, 11, 2); } },
-  taburete(c) { c.fillStyle = '#b07a44'; c.beginPath(); c.ellipse(24, 12, 15, 5, 0, 0, 7); c.fill(); c.fillStyle = '#8a5a2e'; c.fillRect(9, 12, 30, 4); c.strokeStyle = '#d8d8dc'; c.lineWidth = 3; c.beginPath(); c.moveTo(13, 16); c.lineTo(9, 44); c.moveTo(35, 16); c.lineTo(39, 44); c.moveTo(22, 17); c.lineTo(21, 42); c.moveTo(11, 33); c.lineTo(37, 33); c.stroke(); },
+  cadeira(c) { c.fillStyle = '#2f4fa8'; c.fillRect(12, 6, 22, 20); c.fillRect(10, 24, 28, 7); c.strokeStyle = '#9aa0aa'; c.lineWidth = 3; c.beginPath(); c.moveTo(14, 31); c.lineTo(12, 44); c.moveTo(34, 31); c.lineTo(36, 44); c.moveTo(34, 18); c.lineTo(40, 18); c.lineTo(40, 26); c.stroke(); },
   boli(c) { c.save(); c.translate(24, 24); c.rotate(-0.7); c.fillStyle = '#1f4fa8'; c.fillRect(-18, -3, 30, 6); c.fillStyle = '#e8e8ec'; c.fillRect(12, -3, 6, 6); c.fillStyle = '#2a2a2a'; c.beginPath(); c.moveTo(18, -3); c.lineTo(23, 0); c.lineTo(18, 3); c.fill(); c.fillStyle = '#c9c9cf'; c.fillRect(-14, -5, 12, 2); c.restore(); },
   contrato(c) { c.fillStyle = '#f4efe2'; c.fillRect(11, 6, 26, 36); c.fillStyle = '#8a8478'; for (let i = 0; i < 5; i++) c.fillRect(15, 12 + i * 5, 18 - (i % 2) * 5, 2); c.strokeStyle = '#1f4fa8'; c.lineWidth = 2; c.beginPath(); c.moveTo(15, 38); c.bezierCurveTo(19, 32, 23, 42, 27, 35); c.lineTo(33, 37); c.stroke(); },
   chaves(c) { c.fillStyle = '#9a6a3a'; c.fillRect(6, 16, 14, 18); c.fillStyle = '#f2ead8'; c.font = 'bold 8px sans-serif'; c.fillText('211', 7, 28); c.strokeStyle = '#c9c9cf'; c.lineWidth = 3; c.beginPath(); c.arc(24, 18, 5, 0, 7); c.stroke(); c.fillStyle = '#c9c9cf'; c.fillRect(27, 20, 15, 3); c.fillRect(37, 23, 3, 5); c.fillRect(30, 26, 12, 3); c.fillRect(39, 29, 3, 4); },
 });
 Object.assign(ITEMS, {
   xornal: { name: 'Xornal', icon: ico.xornal, look: () => lerXornal() },
-  taburete: { name: 'Taburete da cociña', icon: ico.taburete, look: () => MA('El taburete de mi cocina. Madera y patas de metal. Pesa poco, pero cruzar Monforte con él en brazos no ayuda a pasar desapercibido.', 'risueno') },
+  cadeira: { name: 'Cadeira de espera', icon: ico.cadeira, look: () => MA('Una silla azul de la sala de espera del Concello. Mobiliario público: técnicamente, un trocito es mío. Pienso devolverla entera.', 'risueno') },
   boli: { name: 'Bolígrafo de Concha', icon: ico.boli, look: () => MA('El bolígrafo de los crucigramas de Concha. Azul, mordisqueado y con la tapa atada con una goma. Una reliquia.', 'sonriente') },
   contrato: { name: 'Contrato de aluguer', icon: ico.contrato, look: () => MA('El contrato de alquiler de la Casa Juana, firmado por Rosario y por mí. Oficialmente, vuelvo a ser de Monforte. Con papeles.', 'orgulloso') },
   chavesCasa: { name: 'Chaves da casa', icon: ico.chaves, look: () => MA('Las llaves de la Casa Juana, con un llavero de madera y un «211» pintado a mano. Parece cosa de carpintero.', 'pensativo') },
@@ -772,15 +772,7 @@ SCENES.casaCocina = {
     { name: 'Neveira', r: [0, 60, 40, 300], look: () => MA('La nevera. La abro con fe... vacía, salvo una botella de agua. Ah, mira: agua. La guardo para una emergencia.', 'risueno') },
     { name: 'Froiteiro', r: [52, 264, 70, 50], look: () => MA('Un frutero con naranjas y manzanas de verdad. La casera piensa en todo. Hasta en mi colesterol.', 'sonriente') },
     { name: 'Illa', r: [40, 284, 356, 116], look: () => MA('Una isla de cocina con encimera de madera. Para desayunar de pie, como un maquinista con prisa.', 'risueno') },
-    { name: 'Taburete', key: true, done: () => !flag('reloxoAlto') || hasItem('taburete') || flag('eladioVolveu'), r: [274, 402, 74, 138], at: [380, 470], face: 'L',
-      look: () => MA('Un taburete. Bueno, dos: el otro se esconde debajo de la isla. Para alguien que vive solo, esta cocina espera mucha visita.', 'pensativo'),
-      act: async () => {
-        if (hasItem('taburete')) return MA('Ya llevo uno. Si cojo los dos, monto un bar.', 'risueno');
-        if (flag('eladioVolveu')) return MA(flag('tabureteNoCafe') ? 'El otro taburete sigue en el café, junto al Concello. Este se queda: alguien tiene que guardar la cocina.' : 'Un taburete. Para sentarse, que para eso es.', 'risueno');
-        if (!flag('reloxoAlto')) return MA('Un taburete. Ahora mismo no necesito subirme a nada. Ni bajarme de ningún sitio.', 'neutro');
-        give('taburete');
-        await MA('Saco el de debajo de la isla y me lo llevo. Taburete a cuestas. Si alguien me pregunta por la calle, voy a arreglar un reloj. Es verdad, aunque suene a excusa.', 'risueno');
-      } },
+    { name: 'Taburete', r: [274, 402, 74, 138], look: () => MA('Un taburete. Uno solo. Esta cocina ya sabe que vivo solo.', 'pensativo') },
     { name: 'Placa', r: [440, 240, 100, 18], look: () => MA('Placa de inducción. Sin fuego, sin gas, sin humo. Nada que ver con una locomotora de vapor.', 'risueno') },
     { name: 'Forno', r: [430, 262, 78, 114], look: () => MA('Un horno limpísimo. Nadie ha hecho una empanada aquí. Todavía.', 'neutro') },
     { name: 'Microondas', r: [512, 88, 84, 64], look: () => MA('Un microondas. La cena de los maquinistas de guardia desde que se inventó.', 'risueno') },
@@ -927,7 +919,9 @@ SCENES.concelloVest = {
     { name: 'Escaleira', r: [0, 100, 200, 280], look: () => MA('La escalera noble, con barandilla de forja. Arriba estará el Salón de Plenos. Yo, con llegar a la ventanilla, me conformo.', 'pensativo') },
     { name: 'Farol', r: [336, 0, 80, 104], look: () => MA('Un farol de bronce colgando del techo. Ilumina mucho más que algunas resoluciones.', 'risueno') },
     { name: 'Expositor', r: [852, 214, 104, 226], look: () => MA('Folletos turísticos de Monforte: el castillo, el Cabe, la Ribeira Sacra... Ni uno sobre cómo dar de alta el agua. Ese sería el más leído.', 'risueno') },
-    { name: 'Cadeiras', r: [0, 350, 170, 190], look: () => MA('Sillas azules para esperar. Desgastadas justo donde se apoyan los codos. Aquí se espera con oficio.', 'esceptico') },
+    { name: 'Cadeiras', key: true, done: () => !flag('reloxoAlto') || hasItem('cadeira') || flag('cadeiraDevolta'), r: [0, 350, 170, 190], at: [200, 470], face: 'L',
+      look: () => MA('Sillas azules para esperar. Desgastadas justo donde se apoyan los codos. Aquí se espera con oficio.', 'esceptico'),
+      act: () => cadeirasEspera(), use: { cadeira: () => cadeirasEspera() } },
     { name: 'Plantas', r: [204, 258, 66, 122], look: () => MA('Plantas en maceta, bien regadas. Hasta ellas tienen el agua dada de alta.', 'esceptico') },
   ],
 };
@@ -981,28 +975,49 @@ async function eladioCafe() {
 async function adiantarReloxo() {
   if (flag('eladioVolveu')) return MA('Ya está adelantado. Si lo adelanto más, mañana llego al lunes que viene.', 'risueno');
   if (!flag('eladioFicha')) return MA('¿Tocar el reloj del bar? No sé por qué iba a hacer eso. Todavía.', 'dudoso');
-  if (!hasItem('taburete')) {
+  if (!hasItem('cadeira')) {
     if (!flag('reloxoAlto')) {
       setFlag('reloxoAlto');
       await MA('Me estiro, me pongo de puntillas... Nada. El reloj está encima de la estantería de las botellas. Quien lo colgó ahí no quería que nadie llegara tarde. Ni pronto.', 'frustrado');
       await MA('Y los taburetes del bar están atornillados al suelo. Necesito algo para subirme.', 'pensativo');
-      await MA('En la cocina de casa hay un taburete. Del Concello a Doctor Casares y vuelta... En Monforte todo está cerca. Menos el reloj.', 'convencido');
-      toast('Pista: na cociña da Casa Juana hai un taburete');
-    } else await MA('Sigue igual de alto. Sin el taburete de casa, solo llego a la máquina del café. Y eso no adelanta nada.', 'esceptico');
+      await MA('En el vestíbulo del Concello hay sillas de espera de sobra. Total, a Eladio nadie lo espera sentado: ya saben que no viene.', 'convencido');
+      toast('Pista: no vestíbulo do Concello hai cadeiras de espera');
+    } else await MA('Sigue igual de alto. Sin algo para subirme, solo llego a la máquina del café. Y eso no adelanta nada.', 'esceptico');
     return;
   }
-  await MA('Eladio no levanta la vista de las esquelas. Taburete de casa, un poco de equilibrio... y diez minutos de adelanto.', 'risueno');
+  await MA('Eladio no levanta la vista de las esquelas. Silla del Concello, un poco de equilibrio... y diez minutos de adelanto.', 'risueno');
   await sleep(500);
   await MA('Las dos en punto. Y yo aquí, silbando, como quien no ha hecho nada.', 'sonriente');
   await EL('...Ás dúas?! Xa?! E sen fichar!');
   await EL('Abofé que hoxe o café pasou voando. Paguei? Non paguei. Mañá pago!');
   setFlag('eladioVolveu');
-  take('taburete'); setFlag('tabureteNoCafe');
   await MA('Primera vez en mi vida que veo correr a un funcionario. Y ha salido sin pagar. Hoy es un día histórico.', 'risueno');
-  await MA('El taburete lo dejo aquí, junto a la barra. Ya vendré a por él. O lo adopta el bar: aquí sobran sitios donde sentarse a esperar.', 'risueno');
+  await MA('Y la silla, de vuelta al Concello conmigo. Que la he cogido prestada, no expropiada.', 'convencido');
   toast('Eladio volveu á ventanilla');
 }
+// a cadeira de espera: préstase para subir ao reloxo do café e hai que devolvela antes de que Eladio asine nada
+async function cadeirasEspera() {
+  if (hasItem('cadeira')) {
+    take('cadeira'); setFlag('cadeiraDevolta');
+    await MA('Silla en su sitio. Ni un rasguño. Si alguien pregunta, solo la he sacado a pasear.', 'aliviado');
+    if (flag('eladioVolveu') && !flag('aguaAlta')) toast('Pista: agora, a ventanilla 1');
+    return;
+  }
+  if (flag('reloxoAlto') && !flag('eladioVolveu')) {
+    give('cadeira');
+    await MA('La del final de la fila no está atornillada. Mobiliario público: la pago con mis impuestos. Me la llevo prestada... y la devuelvo, que conste.', 'risueno');
+    return;
+  }
+  await MA('Me siento un momento... No. Si me siento aquí, me convierto en uno más de la cola. Y no hay cola.', 'esceptico');
+}
 async function eladioVentanilla() {
+  if (hasItem('cadeira') && !flag('aguaAlta')) {
+    await EL('Un momento. Esa cadeira... é da sala de espera! Mobiliario municipal, inventariado.');
+    await EL('Eu non asino nada con mobiliario fóra do seu sitio. Despois veñen as auditorías e quen dá a cara? Eu.');
+    await MA('Diez minutos sin fichar no le importan, pero una silla fuera de sitio... Vale, vale. La dejo donde estaba.', 'esceptico');
+    toast('Pista: deixa a cadeira coas outras, á esquerda');
+    return;
+  }
   if (flag('aguaAlta')) { await EL('Xa ten a alta. Mañá pola mañá, auga. E agora, se me permite, estou fóra de horario. Desde fai dez minutos.'); return; }
   await EL('Xa que estou aquí... pero rápido, que estou fóra de horario.');
   await MA('El alta del agua de la Casa Juana, Doctor Casares, 211. Aquí está el contrato.', 'convencido');
@@ -1029,7 +1044,7 @@ SCENES.cafeEladio = {
   hotspots: [
     { name: 'Porta', key: true, r: [664, 120, 64, 168], at: [700, 300], face: 'B', exit: ['concelloExt', [900, 400]], hint: 'U', door: true,
       look: () => MA('La puerta de cristal. Por ahí se ve el Concello. Eladio también lo ve. Y aun así, aquí sigue.', 'esceptico') },
-    { name: 'Reloxo', key: true, done: () => flag('eladioVolveu'), r: [496, 70, 32, 48], at: [690, 330], face: 'L', act: () => adiantarReloxo(), use: { taburete: () => adiantarReloxo() },
+    { name: 'Reloxo', key: true, done: () => flag('eladioVolveu'), r: [496, 70, 32, 48], at: [690, 330], face: 'L', act: () => adiantarReloxo(), use: { cadeira: () => adiantarReloxo() },
       look: () => MA(flag('eladioVolveu') ? 'El reloj, diez minutos adelantado. Lo dejo así: en este bar, un poco de prisa no le viene mal a nadie.' : 'Un reloj de pared. Las dos menos diez. Y Eladio, aquí, con el café.', flag('eladioVolveu') ? 'risueno' : 'dudoso') },
     { name: 'Lousa', r: [24, 4, 142, 196], look: () => MA('Café a 1,20, aguardiente a 2. En Monforte el desayuno completo sale por 3,20. El de los funcionarios, por 3,20 y una hora.', 'risueno') },
     { name: 'Botellas', r: [228, 40, 186, 102], look: () => MA('Licores de colores en fila, como vagones de un mercancías. Este va cargado.', 'risueno') },
@@ -1039,7 +1054,7 @@ SCENES.cafeEladio = {
     { name: 'Cadros', r: [786, 10, 166, 208], look: () => MA('Cuadros de Monforte: un pazo, un parque... Pintados con más paciencia que la que yo tengo hoy.', 'sonriente') },
     { name: 'Corcho de avisos', r: [742, 134, 46, 100], look: () => MA('Un corcho con avisos: «Véndese bicicleta», «Clases de gaita», «Perdeuse gato». Monforte en estado puro.', 'sonriente') },
     { name: 'Taburetes', r: [552, 296, 120, 230], look: () => MA('Taburetes altos con asiento negro. Uno está calentito: alguien acaba de levantarse... o va y viene.', 'dudoso'),
-      act: () => MA('Atornillados al suelo. Normal: en este bar alguien ya intentó llevarse uno a casa. Yo, al revés: traigo el mío.', 'risueno') },
+      act: () => MA('Atornillados al suelo. Normal: en este bar alguien ya intentó llevarse uno a casa. Yo, al revés: lo que necesito es traer uno.', 'risueno') },
     { name: 'Cunca de café', r: [274, 290, 62, 36], look: () => MA('Una tacita de café, a medias. Con el sobre de azúcar sin abrir. Alguien que lo toma amargo, como las colas del Concello.', 'esceptico') },
     { name: 'Barra', r: [0, 280, 620, 260], look: () => MA('Una barra larga de azulejo blanco y negro. En estas barras se han arreglado más asuntos que en muchas ventanillas.', 'pensativo') },
     { name: 'Planta', r: [756, 220, 46, 76], look: () => MA('Una planta en la esquina. Bien regada. En Monforte, todo el mundo tiene agua menos yo. Y ya empieza a ser personal.', 'esceptico') },
