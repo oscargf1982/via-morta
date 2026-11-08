@@ -1,7 +1,7 @@
 # «Vía morta» · Fichas de escenarios
 
 > Cada escenario se describe aquí antes de programarlo en `js/acto*.js`. Coordenadas en el lienzo lógico de 960×540.
-> Los fondos de A1, A2, A3, A3b, A4b, B3 y la portada son ilustraciones de Oscar. El mapa sigue siendo un **boceto provisional** generado con `tools/fondos.py`.
+> Los fondos de A1, A2, A3, A3b, A4, A4b, B3 y la portada son ilustraciones de Oscar. El mapa sigue siendo un **boceto provisional** generado con `tools/fondos.py`.
 
 ## A1 · Andén 1 (`anden`)
 - **Fondo:** `img/bg-anden-estacion.jpg`, ilustración de Oscar. Marquesina con columnas de pie azul, la fachada con puertas azules en arco, el letrero «Monforte de Lemos», bancos, papelera y el regional parado en la vía 1.
@@ -38,6 +38,15 @@
 - **Objetos:** `chavesCasa`, `ositos`, `xornal`, `boli` (tras resolver el crucigrama).
 - **Desbloquea:** marca `objetivoContrato` (firmar con Rosario en la Fraternal).
 
+## A4 · Rúa Doutor Casares, 211 (`casares`)
+- **Fondo:** `img/bg-doutor-casares.jpg`, ilustración de Oscar. La casa roja con balcón de hierro y tres puertas en arco, el muro rojo del patio a la derecha (detrás, la nave de la carpintería), una nave de chapa, un banco con jardinera, la farola y la calle que sigue hacia el supermercado.
+- **Suelo:** la acera y la calzada. Obstáculos y capas delanteras: el banco y la farola.
+- **Salidas:**
+  - Abajo a la izquierda: rúa Morín, de vuelta a Concepción Arenal (A4b). **Provisional:** se llega desde la rúa Morín, a falta de que Oscar lo confirme.
+  - Calle hacia el fondo: cerrada hasta un hito próximo.
+  - Puerta de la Casa Juana (la de la derecha). Sin llaves: Concha las tiene. Con llaves pero sin contrato: primero firmar con Rosario. Con las dos cosas: **fin del tramo** (el interior, la casa sin agua y el Concello llegan en M2).
+- **Hotspots:** puerta de casa (clave), portalón con vado, puerta estrecha, balcón, fachada, muro rojo (clave: detrás está la nave), nave de chapa, banco, farola, supermercado (broma del agua), tapa de alcantarilla y edificios.
+
 ## A4b · Rúa Concepción Arenal (`arenal`)
 - **Fondo:** `img/bg-concepcion-arenal.jpg`, ilustración de Oscar recortada a 16:9. La Fraternal con su toldo verde, el soportal del «CINE» con la terraza, la pizarra, el coche rojo y la calle que se aleja hacia la izquierda.
 - **Suelo:** la acera, el soportal y la calzada. Obstáculos: el coche, las mesas de la terraza y la pizarra. Capas delanteras: las tres.
@@ -59,7 +68,7 @@
 - **Salidas:** puertas de cristal del fondo → rúa Concepción Arenal (A4b).
 - **Hotspots:** Rosario Higueras (clave, en la mesa del fondo a la derecha), lista de precios, cafetera, botellas, barra, taburetes, tele, tragaperras, periódico y baraja, aviso de la columna, cuadros, pizarra y planta.
 - **NPC:** **Rosario Higueras**, jugando a la brisca. Sentada en la silla del lado derecho de la mesa de las cartas (sprite con su propia silla, mirando a la mesa); al interrumpirla se cruza de brazos. Abre con «Copas! E arrastro!» y no suelta las cartas a mitad de mano.
-- **Puzzle de la firma (elegido por Oscar):** Rosario gana la mano y pide bolígrafo; no tiene (pista: Concha tiene el de los crucigramas). Concha no lo presta hasta acabar el crucigrama y manda a Martín a mirar su periódico. En el periódico, 7 horizontal: «Dez letras: quen conduce un tren». Martín le dice MAQUINISTA (o le da el periódico) y Concha le presta el bolígrafo. Con él, Rosario firma (objeto `contrato`), cuenta la historia de la casa (Alfredo, Juana, el motor Siemens, la venta de 1952) y deja la pregunta del ingeniero de Caminos. Ahí termina el tramo.
+- **Puzzle de la firma (elegido por Oscar):** Rosario gana la mano y pide bolígrafo; no tiene (pista: Concha tiene el de los crucigramas). Concha no lo presta hasta acabar el crucigrama y manda a Martín a mirar su periódico. En el periódico, 7 horizontal: «Dez letras: quen conduce un tren». Martín le dice MAQUINISTA (o le da el periódico) y Concha le presta el bolígrafo. Con él, Rosario firma (objeto `contrato`), cuenta la historia de la casa (Alfredo, Juana, el motor Siemens, la venta de 1952) y deja la pregunta del ingeniero de Caminos. Después, objetivo: ir a la Casa Juana (A4).
 
 ## Portada
 - **Fondo del menú:** `img/portada-rotonda.jpg`, ilustración de Oscar de la rotonda del museo del ferrocarril de Monforte, con un velo oscuro para que se lea el menú.

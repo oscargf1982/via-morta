@@ -2,6 +2,7 @@
 /* ==========================================================
    VÍA MORTA · Acto 1 «O regreso» (tramo M1)
    A1 Andén 1 → A2 Vestíbulo (Xoán e o mural) → A3 Praza da Estación → A3b segunda pantalla (quiosco de Concha)
+   → A4b Concepción Arenal (tío David) → B3 a Fraternal (Rosario) → A4 Doutor Casares, 211
    + pantalla de mapa de Monforte.
    Fichas dos escenarios: docs/05_FICHAS_ESCENARIOS.md
    Fondos PROVISIONAIS xerados con tools/fondos.py (pendentes de fotos de Oscar).
@@ -416,8 +417,8 @@ SCENES.arenal = {
   hotspots: [
     { name: 'Praza da Estación', key: true, r: [0, 470, 110, 70], at: [50, 524], face: 'F', exit: ['praza2', [818, 330]],
       look: () => MA('De vuelta a la plaza de la estación. Concha, el quiosco y la fuente de proporciones perfectas.', 'pensativo') },
-    { name: 'Rúa Morín', r: [36, 282, 66, 56], at: [70, 340], face: 'L', exit: ['__rua'],
-      act: () => ruaPechada('Siguiendo recto se llega a la calle Morín, la de la gasolinera. Hoy no necesito gasolina: he venido en tren.', 'risueno') },
+    { name: 'Rúa Morín', r: [36, 282, 66, 56], at: [70, 340], face: 'L', exit: ['casares', [120, 500]],
+      look: () => MA('Siguiendo recto se llega a la calle Morín, la de la gasolinera, y de ahí a Doctor Casares. Hoy no necesito gasolina: he venido en tren.', 'risueno') },
     { name: 'Porta da Fraternal', key: true, r: [646, 282, 56, 140], at: [672, 438], face: 'B', exit: ['__fraternal'], done: () => flag('davidAmparo'),
       act: async () => {
         if (!flag('objetivoContrato')) { await bark('La Fraternal. Ahora no tengo nada que hacer dentro. Primero, las llaves de casa: las tiene Concha, en el quiosco.'); return; }
@@ -489,7 +490,8 @@ async function asinarContrato() {
   await RO('E o dous de xuño do cincuenta e dous vendeuno todo, toda a maquinaria, por trinta mil pesetas. A un enxeñeiro de Camiños e a un contratista.');
   await MA('¿Un ingeniero de Caminos? ¿Para qué quiere un ingeniero de Caminos una carpintería entera?', 'dudoso');
   await RO('Iso pregúntome eu. O meu home, que é de matemáticas, di que a conta non lle sae. Pero el di iso de todo.');
-  await fimTramo();
+  await MA('Contrato, llaves y una pregunta. Ahora sí: a casa. Doctor Casares, 211, por la calle Morín.', 'convencido');
+  toast('Novo obxectivo: ir á Casa Juana (rúa Doutor Casares)');
 }
 SCENES.fraternal = {
   name: 'A Fraternal', bg: 'img/bg-fraternal.jpg', music: 'casa', floor: 'pedra',
@@ -539,9 +541,50 @@ SCENES.fraternal = {
       } },
   ],
 };
+/* ---------- A4 · Rúa Doutor Casares, 211 (exterior da Casa Juana) ----------
+   Fondo: ilustración de Oscar (img/bg-doutor-casares.jpg). A casa vermella co balcón de ferro e tres portas
+   en arco; á dereita, o muro vermello do patio (detrás, a nave da carpintaría); á esquerda, unha nave de chapa.
+   Ao fondo, a rúa segue cara ao Gadis. Chégase dende a rúa Morín (provisional: pendente de que Oscar o confirme). */
+SCENES.casares = {
+  name: 'Rúa Doutor Casares', bg: 'img/bg-doutor-casares.jpg', music: 'casa', floor: 'pedra',
+  walk: [[0, 350], [180, 336], [300, 330], [340, 342], [480, 368], [600, 386], [730, 410], [960, 452], [960, 540], [0, 540]],
+  holes: [
+    [[402, 352], [444, 352], [444, 362], [402, 362]],          // banco
+    [[380, 362], [396, 362], [396, 370], [380, 370]],          // farola
+  ],
+  front: [
+    { y: 362, r: [400, 322, 46, 42] },                         // banco e xardineira
+    { y: 369, r: [340, 92, 58, 278] },                         // farola
+  ],
+  scale: [330, 0.15, 540, 0.88], actorH: 300, start: [120, 500], minSpeed: 0.35,
+  hotspots: [
+    { name: 'Rúa Morín', key: true, r: [0, 440, 120, 100], at: [60, 515], face: 'F', exit: ['arenal', [70, 342]],
+      look: () => MA('Por ahí vuelvo hacia la calle Morín y la Fraternal.', 'pensativo') },
+    { name: 'Rúa cara ao centro', r: [180, 300, 120, 40], at: [240, 342], face: 'B', exit: ['__rua'],
+      act: () => ruaPechada('La calle sigue hacia el centro. Hoy ya he visto bastante Monforte para un lunes.', 'pensativo') },
+    { name: 'Porta da Casa Juana', key: true, r: [654, 236, 70, 176], at: [690, 424], face: 'B', exit: ['__casa'], done: () => flag('contratoAsinado'),
+      act: async () => {
+        if (!hasItem('chavesCasa')) { await bark('Cerrada, claro. Las llaves las tiene Concha, en el quiosco de la plaza.'); return; }
+        if (!flag('contratoAsinado')) { await bark('Tengo las llaves, pero sin contrato firmado sería entrar como un ladrón con permiso. Primero, Rosario, en la Fraternal.'); return; }
+        await fimTramo();
+      },
+      look: () => MA('La puerta de casa. Madera vieja, cristal labrado y una cerradura que pide aceite. Mi puerta, si todo va bien.', 'pensativo') },
+    { name: 'Portalón', r: [548, 242, 76, 150], look: () => MA('Un portalón de madera de dos hojas, con cartel de vado. Por aquí salían los tablones. Ahora no sale ni el gato.', 'pensativo') },
+    { name: 'Porta estreita', r: [494, 252, 34, 120], look: () => MA('Otra puerta, más estrecha. Esta casa tiene más puertas que yo excusas. Y yo tengo muchas.', 'risueno') },
+    { name: 'Balcón', r: [478, 132, 248, 92], look: () => MA('El balcón de hierro forjado. Dicen que desde ahí arriba se ve el depósito. Para un maquinista, eso son vistas al mar.', 'sonriente') },
+    { name: 'Casa Juana', r: [470, 20, 380, 400], look: () => MA('La casa roja. Doctor Casares, 211. Fachada de las de antes, con molduras y balcón de hierro. La pintura es nueva; las grietas, de siempre.', 'pensativo') },
+    { name: 'Muro vermello', key: true, r: [770, 160, 190, 290], look: () => MA('Un muro rojo y alto, con la pintura cuarteada. Detrás debe de estar el patio... y la nave de la carpintería del señor Alfredo.', 'dudoso') },
+    { name: 'Nave de chapa', r: [340, 130, 132, 210], look: () => MA('Una nave moderna de chapa al lado de la casa. Al lado de la casa roja parece un táper junto a una tarta.', 'risueno') },
+    { name: 'Banco', r: [400, 320, 46, 42], look: () => MA('Un banco con jardinera. Ideal para sentarse a esperar a que te abran la puerta de tu propia casa.', 'esceptico') },
+    { name: 'Farola', r: [340, 92, 58, 276], look: () => MA('Una farola de brazo largo, asomada a la calle como una vecina al balcón.', 'sonriente') },
+    { name: 'Supermercado', r: [0, 236, 160, 110], look: () => MA('Un supermercado al fondo de la calle. Bien: si la casa no tiene agua, al menos sé dónde comprar botellas.', 'risueno') },
+    { name: 'Tapa de sumidoiro', r: [300, 436, 60, 22], look: () => MA('Una tapa de alcantarilla. Mira: agua en Monforte hay. Por debajo, pero hay.', 'risueno') },
+    { name: 'Edificios', r: [0, 0, 190, 236], look: () => MA('Pisos con galerías y miradores. En cada ventana, alguien que ya sabe que ha llegado el nuevo de la casa roja.', 'esceptico') },
+  ],
+};
 async function fimTramo() {
-  await MA('Contrato firmado. Tengo casa, tengo llaves y tengo una pregunta. Para ser lunes, no está mal.', 'convencido');
-  await showDoc('<h4>FIN DO TRAMO</h4><p>Martín xa asinou o contrato da Casa Juana. A casa sen auga, o Concello e o resto do Acto 1 chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
+  await MA('Doctor Casares, 211. Llaves en una mano, contrato en la otra. Para ser lunes, no está mal.', 'convencido');
+  await showDoc('<h4>FIN DO TRAMO</h4><p>Martín chega á Casa Juana con chaves e contrato. Dentro agárdao unha casa sen auga; o Concello, Eladio e o resto do Acto 1 chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
 }
 
 /* ---------- Mapa de Monforte (pantalla de viaxe entre zonas) ---------- */
