@@ -2,7 +2,7 @@
 /* ==========================================================
    VÍA MORTA · Acto 1 «O regreso» (tramo M1)
    A1 Andén 1 → A2 Vestíbulo (Xoán e o mural) → A3 Praza da Estación → A3b segunda pantalla (quiosco de Concha)
-   → A4b Concepción Arenal (tío David) → B3 a Fraternal (Rosario) → A4 Doutor Casares, 211
+   → A4b Concepción Arenal (tío Demetrio) → B3 a Fraternal (Rosario) → A4 Doutor Casares, 211
    + pantalla de mapa de Monforte.
    Fichas dos escenarios: docs/05_FICHAS_ESCENARIOS.md
    Fondos PROVISIONAIS xerados con tools/fondos.py (pendentes de fotos de Oscar).
@@ -297,7 +297,7 @@ async function lerXornal() {
   if (flag('sabePalabra')) return MA('Siete horizontal: PICHICHI. Ocho letras. Lo escribiría, pero no tengo bolígrafo. Ese es justo el problema.', 'risueno');
   if (!flag('sabeCrucigrama')) return MA('El periódico de hoy. En portada, obras. En deportes, el Dépor. Leo deportes primero, como un caballero.', 'sonriente');
   await MA('Pasatiempos. Siete horizontal: «Oito letras: o máximo goleador dunha liga».', 'pensativo');
-  await MA('De fútbol sé lo justo para no hacer el ridículo en la Champions. Esto es cosa del tío David.', 'dudoso');
+  await MA('De fútbol sé lo justo para no hacer el ridículo en la Champions. Esto es cosa del tío Demetrio.', 'dudoso');
 }
 async function xornalFraternal() {
   if (hasItem('xornal')) return MA('Ya tengo periódico. Dos serían acaparar, y en un bar eso está mal visto.', 'neutro');
@@ -318,7 +318,7 @@ async function davidPichichi() {
 async function crucigramaResolto() {
   await MA('Siete horizontal, Concha: PICHICHI. Ocho letras. Me lo ha chivado el mismísimo pichichi de la liga pirata de Monforte.', 'orgulloso');
   await CO('Pichichi! P, i, c, h... cabe! E eu poñendo «goleador», que tamén ten oito e non me cadraba con nada.');
-  await CO('E o pichichi ese é David, non? Xa mo contou. Trinta veces. Cada vez con máis goles.');
+  await CO('E o pichichi ese é Demetrio, non? Xa mo contou. Trinta veces. Cada vez con máis goles.');
   await CO('Toma o bolígrafo. Pero devólvemo, eh? É o da sorte: con el acertei catorce na quiniela. Ben, trece.');
   give('boli'); setFlag('boliDado');
   await MA('Un crucigrama a cambio de un bolígrafo. En Monforte, así se firman los contratos.', 'sonriente');
@@ -376,12 +376,12 @@ SCENES.praza2 = {
 /* ---------- A4b · Rúa Concepción Arenal (exterior da Fraternal) ----------
    Fondo: ilustración de Oscar (img/bg-concepcion-arenal.jpg, recortada a 16:9).
    A rúa afástase cara á esquerda: seguindo recto chégase á rúa Morín (a gasolineira).
-   Fóra da Fraternal está o tío David contando batallitas; se lle preguntas por Rosario, dálle paso á porta. */
-const DA = t => say('Tío David', t);
+   Fóra da Fraternal está o tío Demetrio contando batallitas; se lle preguntas por Rosario, dálle paso á porta. */
+const DA = t => say('Tío Demetrio', t);
 async function davidTalk() {
   if (!flag('davidSauda')) {
     await DA('...e entón collo o balón no medio do campo, e... Martín?! O de Vilatán! Volviches, rapaz!');
-    await MA('He vuelto, David. Y veo que el gol sigue entrando.', 'sonriente');
+    await MA('He vuelto, Demetrio. Y veo que el gol sigue entrando.', 'sonriente');
     await DA('Cada día un pouco mellor. Coma o viño.');
     setFlag('davidSauda');
   } else await DA('Outra vez por aquí? Iso é que che falta unha batallita.');
@@ -389,10 +389,10 @@ async function davidTalk() {
     const opts = [
       ...(flag('objetivoContrato') && !flag('davidAmparo') ? [{ t: '¿Has visto a Rosario Higueras?', k: 'amparo' }] : []),
       ...(flag('davidAmparo') ? [{ t: '¿Rosario sigue dentro?', k: 'amparo2' }] : []),
-      ...(flag('sabeCrucigrama') && hasItem('xornal') && !flag('sabePalabra') ? [{ t: 'David, tú que sabes de fútbol: ¿me ayudas con el crucigrama?', k: 'pichichi' }] : []),
+      ...(flag('sabeCrucigrama') && hasItem('xornal') && !flag('sabePalabra') ? [{ t: 'Demetrio, tú que sabes de fútbol: ¿me ayudas con el crucigrama?', k: 'pichichi' }] : []),
       { t: '¿Qué tal el fútbol?', k: 'gol' },
       { t: '¿Y la Champions?', k: 'champions' },
-      { t: 'Hasta luego, David.', k: 'adeus' },
+      { t: 'Hasta luego, Demetrio.', k: 'adeus' },
     ];
     const k = opts[await choose(opts)].k;
     if (k === 'amparo') {
@@ -441,7 +441,7 @@ SCENES.arenal = {
     { name: 'Porta da Fraternal', key: true, r: [646, 282, 56, 140], at: [672, 438], face: 'B', exit: ['__fraternal'], done: () => flag('davidAmparo'),
       act: async () => {
         if (!flag('objetivoContrato')) { await bark('La Fraternal. Ahora no tengo nada que hacer dentro. Primero, las llaves de casa: las tiene Concha, en el quiosco.'); return; }
-        if (!flag('davidAmparo')) { await bark('¿Estará Rosario dentro? No quiero entrar a ciegas en mitad de una brisca. El tío David está en la puerta: él lo sabrá.'); return; }
+        if (!flag('davidAmparo')) { await bark('¿Estará Rosario dentro? No quiero entrar a ciegas en mitad de una brisca. El tío Demetrio está en la puerta: él lo sabrá.'); return; }
         SFX.door(); await goScene('fraternal', [590, 266]);
       },
       look: () => MA('La puerta de la Fraternal. Por aquí han entrado más goles de Champions que en muchos estadios.', 'sonriente') },
@@ -455,11 +455,11 @@ SCENES.arenal = {
     { name: 'Edificios', r: [70, 40, 200, 290], look: () => MA('Casas de colores calle abajo, una detrás de otra. Monforte, en fila y bien peinada.', 'sonriente') },
   ],
   npcs: [
-    { id: 'david', name: 'Tío David', key: true, sheet: 'img/david-sprite.png', spec: { cw: 160, ch: 280, cols: 8 },
+    { id: 'david', name: 'Tío Demetrio', key: true, sheet: 'img/david-sprite.png', spec: { cw: 160, ch: 280, cols: 8 },
       get idle() { return E.dlg ? 3 : 5; }, talkFrames: [4, 9, 3, 7],
       x: 556, y: 468, w: 90, h: 290, at: [480, 470], face: 'R',
       done: () => flag('davidAmparo') || !flag('objetivoContrato') && flag('davidSauda'),
-      look: () => MA('El tío David, en la puerta de la Fraternal. Si pasas cerca, te cuenta su gol al Ourense. Si pasas lejos, también, pero más alto.', 'risueno'),
+      look: () => MA('El tío Demetrio, en la puerta de la Fraternal. Si pasas cerca, te cuenta su gol al Ourense. Si pasas lejos, también, pero más alto.', 'risueno'),
       talk: () => davidTalk(),
       give: {
         ositos: async () => { await DA('Ositos? Eu son de cacahuetes, rapaz. Os ositos son para os nenos e para Concha.'); },
@@ -482,7 +482,7 @@ async function rosarioBrisca() {
     await RO('Copas! E arrastro!');
     await MA('¿Rosario? Perdona. Soy Martín, el del alquiler de la Casa Juana. Concha me ha dado las llaves y...', 'avergonzado');
     await RO('Shhh! Non ves que estou na metade da man? Ata que non remate, nin o Papa. E ti non es o Papa.');
-    await MA('Concha me lo avisó. David me lo avisó. Y aun así. Soy el único de Monforte que interrumpe una brisca.', 'avergonzado');
+    await MA('Concha me lo avisó. Demetrio me lo avisó. Y aun así. Soy el único de Monforte que interrumpe una brisca.', 'avergonzado');
     setFlag('amparoMan');
     await sleep(700);
     await RO('...E sete de ouros. Man gañada! Agora si, rapaz: o contrato. Asinamos e listo.');
@@ -500,12 +500,17 @@ async function rosarioBrisca() {
 }
 async function asinarContrato() {
   await RO('O bolígrafo de Concha! Como o conseguiches? Ese non o solta nin para asinar o testamento.');
-  await MA('Un crucigrama. Ocho letras: pichichi. Me lo resolvió el tío David y me lo va a recordar el resto de mi vida.', 'orgulloso');
+  await MA('Un crucigrama. Ocho letras: pichichi. Me lo resolvió el tío Demetrio y me lo va a recordar el resto de mi vida.', 'orgulloso');
   await RO('Asina aquí... e aquí. Listo. Benvido á Casa Juana, veciño.');
   take('boli'); give('contrato'); setFlag('contratoAsinado');
   await RO('O bolígrafo xa llo devolvo eu a Concha, que paso polo quiosco. Senón, mañá sae no xornal: «Desaparece o bolígrafo dos crucigramas».');
   await RO('Sabes de quen era a casa? Do señor Alfredo Fernández, carpinteiro e industrial. Púxolle o nome pola súa segunda muller, Juana.');
-  await RO('Atrás tiña unha carpintaría mecanizada: un motor Siemens de dez cabalos, transmisións con poleas... Daquela era coma unha fábrica.');
+  await RO('Atrás tiña unha carpintaría mecanizada. Daquela era coma unha fábrica.');
+  // recordo: o taller antes da venda de 1952 (imaxe de Oscar)
+  await cine('img/taller-1952.jpg', [
+    'Rosario: «Serra de cinta, serra circular, torno, catro prensas...»',
+    'Rosario: «...e motores Siemens, o grande de dez cabalos, movendo as transmisións con poleas.»',
+  ]);
   await RO('E o dous de xuño do cincuenta e dous vendeuno todo, toda a maquinaria, por trinta mil pesetas. A un enxeñeiro de Camiños e a un contratista.');
   await MA('¿Un ingeniero de Caminos? ¿Para qué quiere un ingeniero de Caminos una carpintería entera?', 'dudoso');
   await RO('Iso pregúntome eu. O meu home, que é de matemáticas, di que a conta non lle sae. Pero el di iso de todo.');
@@ -532,7 +537,7 @@ SCENES.fraternal = {
   scale: [212, 0.18, 540, 0.85], actorH: 300, start: [590, 266], minSpeed: 0.4,
   hotspots: [
     { name: 'Rúa Concepción Arenal', key: true, r: [520, 82, 76, 128], at: [590, 262], face: 'B', exit: ['arenal', [672, 446]], door: true,
-      look: () => MA('La puerta a la calle. Fuera, el tío David seguirá metiendo el gol al Ourense. Ya va por el décimo.', 'risueno') },
+      look: () => MA('La puerta a la calle. Fuera, el tío Demetrio seguirá metiendo el gol al Ourense. Ya va por el décimo.', 'risueno') },
     { name: 'Lista de prezos', r: [20, 44, 82, 66], look: () => MA('Café, 1,20. Cerveza, 1,80. Precios de bar de los de antes. Aquí la inflación entra, pero se sienta y pide un café.', 'sonriente') },
     { name: 'Cafeteira', r: [0, 158, 66, 54], look: () => MA('Una cafetera de las de verdad, con su vapor y su ruido. Como una locomotora, pero de las que te despiertan.', 'risueno') },
     { name: 'Botellas', r: [0, 108, 40, 50], look: () => MA('Botellas en fila. Las de abajo, para diario. Las de arriba, para cuando gana el equipo. Están llenas.', 'esceptico') },
@@ -643,8 +648,29 @@ SCENES.casares = {
     { name: 'Edificios', r: [0, 0, 190, 236], look: () => MA('Pisos con galerías y miradores. En cada ventana, alguien que ya sabe que ha llegado el nuevo de la casa roja.', 'esceptico') },
   ],
 };
-async function fimTramo() {
-  await showDoc('<h4>FIN DO TRAMO</h4><p>Martín xa está na Casa Juana, coas chaves e o contrato. A cociña, o dormitorio e unha casa sen auga (co Concello e Eladio) chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
+/* ---------- A5 · a noite que pecha o Acto 1 ----------
+   Con a alta da auga feita, Martín vai durmir. Soa o asubío (dous longos e un curto), érguese, mira polo balcón
+   cara ao museo... e dáse conta de que o son vén cara á súa casa. Sen fondo do dormitorio aínda: a noite vese no salón. */
+async function noiteActo1() {
+  await MA('Agua mañana, luz hoy y cama ya. Para ser lunes, no ha estado mal.', 'aliviado');
+  E.fadeTo = 1; await sleep(900);
+  setFlag('noiteActo1');
+  setTimeout(() => SFX.whistle(), 1400);
+  await cine('img/noite-salon.jpg', [
+    'Esa noite, na Casa Juana...',
+    'Martín: «(Dos largos y uno corto. Un silbato de vapor. A estas horas no pasa ni un regional.)»',
+    'Martín: «Vale. Me levanto. Si es el tren fantasma de Concha, que por lo menos me vea en pijama digno.»',
+  ]);
+  setTimeout(() => SFX.whistle('LLS', 0.3), 600);
+  await cine('img/noite-vista.jpg', [
+    'Martín: «Desde el balcón: la gasolinera cerrada, la capillita a oscuras, la Mikado quieta en la rotonda.»',
+    'Martín: «Ahí está otra vez. Dos largos, uno corto. No viene de la estación: viene del lado del museo... y viene hacia aquí.»',
+    'Martín: «No pasa por delante de mi casa. Llama a mi casa.»',
+  ]);
+  setFlag('fimActo1');
+  await showDoc('<h4>FIN DO ACTO 1 · «O regreso»</h4><p>Martín xa vive na Casa Juana: chaves, contrato, auga para mañá... e un asubío que, polo visto, ten enderezo.</p><p>O Acto 2, «O reencontro», chegará nun próximo hito.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
+  E.fadeTo = 0; await sleep(400);
+  await MA('Mañana, Xoán. Él sabrá quién silba así. O conocerá a alguien que lo sepa.', 'pensativo');
 }
 async function estanciaPechada(linea, mood) { await MA(linea, mood || 'pensativo'); toast('Estancia en construción · chega nun próximo hito'); }
 
@@ -655,16 +681,27 @@ SCENES.casaSalon = {
   walk: [[120, 540], [120, 462], [170, 444], [300, 430], [495, 414], [502, 362], [600, 372], [700, 382], [780, 394], [822, 372], [880, 368], [936, 392], [936, 540]],
   scale: [300, 0.55, 540, 0.98], actorH: 300, start: [470, 500], minSpeed: 0.5,
   async onEnter() {
+    if (flag('aguaAlta') && !flag('noiteAviso')) {
+      setFlag('noiteAviso');
+      await MA('Ya anochece. Cena de supermercado, maleta sin deshacer y un dormitorio por estrenar. A la izquierda.', 'aliviado');
+      toast('Pista: o dormitorio está á esquerda do salón');
+      return;
+    }
     if (flag('salonVisto')) return;
     setFlag('salonVisto');
     await MA('Hola, casa. Soy Martín. Vamos a llevarnos bien.', 'sonriente');
     await MA('Sofá, mesa para seis, cuadros de paisaje... Para ser de alquiler, está mejor que mi piso de Valencia. Y no huele a humedad. De momento.', 'pensativo');
-    await fimTramo();
+    toast('Pista: explora a casa. A cociña está á dereita');
   },
   hotspots: [
     { name: 'Cociña', key: true, r: [880, 330, 80, 210], at: [900, 470], face: 'R', exit: ['casaCocina', [790, 480]], hint: 'R' },
-    { name: 'Dormitorio', key: true, r: [0, 300, 110, 240], at: [140, 490], face: 'L', exit: ['__dormitorio'], hint: 'L',
-      act: () => estanciaPechada('El dormitorio. Ya lo estrenaré esta noche... si el silbato me deja dormir.', 'dudoso') },
+    { name: 'Dormitorio', key: true, done: () => flag('fimActo1'), r: [0, 300, 110, 240], at: [140, 490], face: 'L', exit: ['__dormitorio'], hint: 'L',
+      act: async () => {
+        if (flag('fimActo1')) return estanciaPechada('El dormitorio. La cama aún está deshecha del susto de anoche.', 'risueno');
+        if (flag('aguaAlta')) return noiteActo1();
+        if (flag('sinAgua')) return MA('Todavía es de día y la casa no tiene agua. Dormir ahora sería rendirse. Primero, el Concello.', 'convencido');
+        return MA('El dormitorio. Ya lo estrenaré esta noche... si el silbato me deja dormir. Antes, a ver qué tal está el resto de la casa.', 'dudoso');
+      } },
     { name: 'Saír á rúa', r: [300, 516, 340, 24], at: [470, 530], face: 'F', exit: ['casares', [690, 430]], hint: 'D',
       look: () => MA('La puerta de la calle. Doctor Casares, 211. Todavía me suena raro decir «mi puerta».', 'sonriente') },
     { name: 'Fiestras do balcón', key: true, done: () => flag('vistaSalon'), r: [766, 60, 194, 280], at: [800, 400], face: 'R', act: () => vistaSalon(), look: () => vistaSalon() },
@@ -676,7 +713,8 @@ SCENES.casaSalon = {
     { name: 'Planta', r: [452, 176, 64, 56], look: () => MA('Una planta viva. Alguien la riega. Y si alguien la riega... alguien tiene agua.', 'dudoso') },
     { name: 'Aparador', r: [384, 232, 128, 76], look: () => MA('Un aparador de madera tallada, de los de antes. En la Casa Juana, de un carpintero, los muebles tienen que estar a la altura.', 'pensativo') },
     { name: 'Mesa e cadeiras', r: [514, 220, 298, 150], look: () => MA('Mesa para seis. Yo solo soy uno, pero tengo mucha familia en Vilatán. Y todos opinan.', 'risueno') },
-    { name: 'Sofá', r: [100, 232, 396, 196], look: () => MA('Un sofá rinconera, gris y mullido. Peligroso: me siento ahí y no me levanto hasta el Acto 3.', 'risueno') },
+    { name: 'Sofá', r: [100, 232, 396, 196], look: () => MA('Un sofá rinconera, gris y mullido. Peligroso: me siento ahí y no me levanto hasta el Acto 3.', 'risueno'),
+      act: () => flag('aguaAlta') && !flag('fimActo1') ? MA('Si me tumbo aquí, mañana tengo la espalda de un señor de ochenta años. Mejor la cama: a la izquierda.', 'risueno') : MA('Un sofá rinconera, gris y mullido. Peligroso: me siento ahí y no me levanto hasta el Acto 3.', 'risueno') },
     { name: 'Coxíns', r: [318, 240, 100, 82], look: () => MA('Cojines verdes y crema, colocados con escuadra y cartabón. Aquí ha pasado una casera concienzuda.', 'sonriente') },
     { name: 'Mesiñas', r: [80, 316, 72, 124], look: () => MA('Dos mesitas nido. Una dentro de la otra, como las muñecas rusas, pero en serio.', 'risueno') },
   ],
@@ -696,6 +734,7 @@ async function vistaSalon() {
 /* ---------- A5b · Casa Juana: cociña ----------
    Desde o balcón vense o supermercado e a Torre da Homenaxe. Na billa descóbrese que non hai auga (gancho do M2). */
 async function billaSenAuga() {
+  if (flag('aguaAlta')) { await MA('Nada todavía. Eladio dijo «mañana por la mañana». En horario de funcionario, eso es una previsión, no una promesa.', 'esceptico'); return; }
   if (flag('sinAgua')) { await MA('Lo vuelvo a intentar, por si acaso... Nada. El grifo sigue en huelga.', 'esceptico'); return; }
   setFlag('sinAgua');
   await MA('Vamos a estrenar el grifo. Abro...', 'sonriente');
@@ -717,6 +756,8 @@ SCENES.casaCocina = {
   hotspots: [
     { name: 'Salón', key: true, r: [900, 150, 60, 330], at: [870, 500], face: 'R', exit: ['casaSalon', [880, 470]], hint: 'R',
       look: () => MA('Por ahí se vuelve al salón. La casa no es grande, pero tiene de todo. Casi de todo.', 'pensativo') },
+    { name: 'Patio', key: true, r: [400, 516, 460, 24], at: [620, 530], face: 'F', exit: ['casaPatio', [140, 420]], hint: 'D',
+      look: () => MA('Detrás de mí, la puerta de atrás: da al patio. Y del patio, al taller viejo del señor Alfredo.', 'pensativo') },
     { name: 'Billa', key: true, done: () => flag('sinAgua'), r: [604, 196, 92, 60], at: [650, 404], face: 'B', act: () => billaSenAuga(),
       look: () => MA(flag('sinAgua') ? 'Un grifo precioso, de diseño. Decorativo, de momento. Muy decorativo.' : 'Un grifo moderno, de los que suben y bajan. Seguro que da gusto fregar aquí.', flag('sinAgua') ? 'esceptico' : 'sonriente') },
     { name: 'Torre da Homenaxe', r: [234, 70, 34, 44], look: () => MA('La Torre del Homenaje, allá arriba, en el monte de San Vicente. Monforte te vigila desde la cocina. Y yo sin fregar.', 'sonriente') },
@@ -736,10 +777,252 @@ SCENES.casaCocina = {
   ],
 };
 
+/* ---------- A5c · Casa Juana: patio trasero ----------
+   Esquerda: volta á cociña. Dereita: o vello taller (pechado neste tramo). Muro branco: a sombra negra outra vez. */
+async function asomarMuro() {
+  if (flag('sombraPatio')) { await MA('Me asomo otra vez... Árboles, una huerta y nadie. Ahora la sombra se hace la tímida.', 'esceptico'); return; }
+  setFlag('sombraPatio');
+  await MA('A ver qué hay al otro lado. Un poco de puntillas... cotillear también es deporte.', 'risueno');
+  await sleep(600);
+  await MA('¡Ahí! Entre los árboles. Una sombra negra, moviéndose rápido... y ya no está.', 'sorprendido');
+  if (flag('sombraVista')) await MA('La misma que vi detrás de la puerta de la casa pistacho, en la calle Morín. O es la misma, o en este barrio las sombras van en pandilla.', 'dudoso');
+  else await MA('Un gato muy grande. O un vecino muy delgado. O algo que no quiero pensar antes de cenar.', 'dudoso');
+  await MA('Mañana pregunto. En Monforte siempre hay alguien que lo ha visto todo... dos veces.', 'pensativo');
+}
+// a porta do taller segue co candado (a chave dáa Concha no Acto 2): Martín mira pola regaña e vese a foto real do taller baleiro
+async function espiarTaller() {
+  if (!flag('tallerEspiado')) await MA('La puerta verde del taller del señor Alfredo. Cerrada a cal y canto, con un candado que ha visto pasar a tres papas. Pero tiene una rendija...', 'pensativo');
+  await cine('img/bg-taller.jpg', flag('tallerEspiado') ? ['Martín: «Polvo, vigas y silencio. Sigue igual. Los talleres vacíos no tienen prisa.»'] : [
+    'Martín: «Vacío. Ni una máquina. Una columna de ladrillo, ventanas con hiedra y setenta años de polvo.»',
+    'Martín: «Por arriba asoman las vigas de la transmisión, todavía en su sitio. Abajo, nada que mover.»',
+    'Martín: «Rosario decía que aquí sonaba como una fábrica...»',
+  ]);
+  // evocación: o taller tal como era antes da venda de 1952 (imaxe de Oscar)
+  if (!flag('tallerEspiado')) await cine('img/taller-1952.jpg', [
+    '...o serrón da cinta, o golpe das prensas, as correas zoando nas poleas...',
+    'Martín: «Casi lo oigo. Como si las máquinas siguieran ahí, esperando turno.»',
+  ]);
+  if (!flag('tallerEspiado')) { setFlag('tallerEspiado'); toast('A chave do taller chegará máis adiante'); }
+}
+SCENES.casaPatio = {
+  name: 'Casa Juana · Patio', bg: 'img/bg-casa-patio.jpg', floor: 'pedra', music: 'casa',
+  walk: [[0, 372], [100, 362], [200, 346], [410, 318], [790, 318], [796, 398], [800, 470], [870, 500], [884, 540], [0, 540]],
+  holes: [
+    [[276, 322], [516, 312], [516, 354], [276, 348]],   // sofá e mesiña
+    [[464, 306], [548, 306], [548, 326], [464, 326]],   // butaca do medio
+    [[582, 316], [686, 316], [686, 340], [582, 340]],   // butaca da dereita
+    [[116, 332], [204, 332], [204, 360], [116, 360]],   // macetas
+  ],
+  front: [
+    { y: 348, r: [274, 262, 244, 92] },    // sofá e mesiña
+    { y: 326, r: [460, 256, 90, 72] },     // butaca do medio
+    { y: 340, r: [578, 256, 110, 86] },    // butaca da dereita
+    { y: 360, r: [114, 230, 92, 132] },    // macetas
+  ],
+  scale: [318, 0.38, 540, 1.1], actorH: 300, start: [140, 420], minSpeed: 0.45,
+  hotspots: [
+    { name: 'Casa', key: true, r: [0, 90, 92, 270], at: [110, 410], face: 'L', exit: ['casaCocina', [620, 500]], hint: 'L', door: true,
+      look: () => MA('La puerta de atrás, de cristal. Por aquí se vuelve a la cocina... y al grifo que no da agua.', 'esceptico') },
+    { name: 'Porta do taller', key: true, r: [860, 0, 72, 500], at: [836, 500], face: 'R', exit: ['__taller'], hint: 'R',
+      act: () => espiarTaller(),
+      look: () => MA('El viejo taller, detrás de la casa. Ahí dentro estuvo la carpintería: el motor Siemens, las poleas... y setenta años de polvo.', 'pensativo') },
+    { name: 'Muro branco', key: true, done: () => flag('sombraPatio'), r: [470, 156, 316, 150], at: [740, 330], face: 'B', act: () => asomarMuro(),
+      look: () => MA('Un muro blanco, más alto que yo pero no tanto. Lo justo para que te entren ganas de asomarte.', 'risueno') },
+    { name: 'Fiestras', r: [148, 104, 210, 148], look: () => MA('Las ventanas de la casa vistas desde atrás. Desde fuera, mi casa parece de otro. Es que todavía lo es un poco.', 'pensativo') },
+    { name: 'Sofá e butacas', r: [278, 258, 408, 86], look: () => MA('Muebles de exterior, grises y cómodos. Para leer el periódico al sol... sin crucigrama, que con uno he tenido bastante.', 'risueno') },
+    { name: 'Mesiña de cristal', r: [404, 310, 112, 36], look: () => MA('Una mesita de cristal. Sin un solo cerco de vaso. Aquí no se ha tomado ni un café. Todavía.', 'sonriente') },
+    { name: 'Arboriño', r: [388, 118, 82, 192], look: () => MA('Un arbolito en una maceta grande. Alguien lo riega. Otra vez la misma pregunta: ¿con qué agua?', 'dudoso') },
+    { name: 'Árbores de detrás', r: [420, 0, 370, 154], look: () => MA('Árboles al otro lado del muro. Muy verdes. En esta casa todo el mundo tiene agua menos yo.', 'esceptico') },
+    { name: 'Macetas', r: [118, 232, 86, 126], look: () => MA('Dos plantas en maceta, recortadas con tijera. La casera tiene buena mano. Y paciencia.', 'sonriente') },
+    { name: 'Reixas', r: [150, 392, 120, 30], look: () => MA('Rejillas de desagüe. Secas como mi grifo. Por lo menos aquí no se atasca nada.', 'risueno') },
+    { name: 'Baixante', r: [780, 0, 22, 384], look: () => MA('La bajante del tejado. Cuando llueva, por aquí bajará el agua. Lo apunto como plan B.', 'risueno') },
+  ],
+};
+
+/* ---------- B4a · Concello, exterior ----------
+   Chégase dende o mapa (zona Centro) co contrato asinado. A porta leva ao vestíbulo das ventanillas de Eladio (pendente). */
+SCENES.concelloExt = {
+  name: 'Concello de Monforte', bg: 'img/bg-concello-exterior.jpg', music: 'estacion', floor: 'pedra',
+  walk: [[40, 352], [160, 302], [300, 284], [440, 292], [530, 296], [940, 360], [940, 428], [860, 406], [700, 362], [520, 350], [330, 350], [170, 370], [40, 412]],
+  scale: [290, 0.17, 430, 0.36], actorH: 300, start: [90, 360], minSpeed: 0.4,
+  hotspots: [
+    { name: 'Mapa de Monforte', key: true, r: [0, 300, 44, 120], at: [50, 370], face: 'L', exit: ['mapa'], hint: 'L' },
+    { name: 'Porta do Concello', key: true, r: [496, 178, 96, 82], at: [470, 292], face: 'B', exit: ['__concello'],
+      act: async () => {
+        if (!flag('sinAgua')) { await MA('El Concello. Seguro que tengo algún papel pendiente, siempre se tiene alguno. Pero antes miraré qué le falta a la casa, para venir una sola vez.', 'pensativo'); return; }
+        SFX.door(); await goScene('concelloVest', [330, 400]);
+      },
+      look: () => MA('La puerta principal, entre columnas. Por aquí se entra a las ventanillas. Y a las colas.', 'esceptico') },
+    { name: 'Café de enfrente', key: true, r: [904, 356, 56, 80], at: [916, 404], face: 'R', exit: ['cafeEladio', [700, 330]], hint: 'R',
+      look: () => MA('Al otro lado, un café. A cien pasos de las ventanillas: la distancia justa para un «volvo nun momento».', 'esceptico') },
+    { name: 'Escalinata', r: [436, 250, 84, 42], look: () => MA('Una escalinata con barandilla. Seis escalones: los justos para llegar a la ventanilla sin aliento.', 'risueno') },
+    { name: 'Bandeiras', r: [424, 84, 132, 76], look: () => MA('Tres banderas en el balcón: Galicia, España y Europa. Ondean de lado, como los papeles que se mueven de mesa en mesa.', 'risueno') },
+    { name: 'Balcón', r: [484, 120, 110, 40], look: () => MA('El balcón de las banderas. Desde ahí se saluda en las fiestas. Desde abajo se aplaude, o no.', 'sonriente') },
+    { name: 'Estanque', r: [40, 344, 900, 196], look: () => MA('Un estanque con agua de sobra. Si el grifo de casa no se arregla, ya sé dónde lavarme. Es broma, señor alcalde.', 'risueno') },
+    { name: 'Rocha', r: [354, 308, 136, 106], look: () => MA('Una roca enorme en medio del estanque. O es arte moderno o un meteorito con licencia municipal.', 'dudoso') },
+    { name: 'Xardineira', r: [522, 226, 418, 132], look: () => MA('Una jardinera de ladrillo con arbustos recortados. Más ordenada que mis papeles. Bastante más.', 'pensativo') },
+    { name: 'Fiestras en arco', r: [656, 0, 300, 76], look: () => MA('Ventanas en arco, con ladrillo rojo. Elegantes. Detrás, seguro, alguien sellando algo.', 'sonriente') },
+    { name: 'Edificio', r: [100, 40, 556, 236], look: () => MA('El Concello. Paredes claras, ladrillo rojo y muchas ventanas. Cada ventana, una ventanilla. Cada ventanilla, un «volva mañá».', 'esceptico') },
+    { name: 'Árbores', r: [0, 130, 100, 150], look: () => MA('Árboles detrás del edificio. Ellos no necesitan alta del agua: les llueve gratis.', 'risueno') },
+  ],
+};
+
+/* ---------- B4 · Concello: vestíbulo e ventanillas ----------
+   Don Eladio (ficción) marchou ao café: «Volvo nun momento». O puzzle para que volva está pendente de Oscar. */
+async function ventanilla(n) {
+  if (!flag('sinAgua')) { await MA('Las ventanillas. Hoy no tengo nada que pedir... que yo sepa. Ya me enteraré en casa de lo que me falta.', 'pensativo'); return; }
+  if (n === 2) { await MA('Ventanilla 2: «Pechada». Sin fecha, sin hora, sin explicación. Muy municipal.', 'esceptico'); return; }
+  if (n === 3) { await MA('Ventanilla 3: «Esta ventanilla agora é a 1». Vamos, que la 3 es la 1. Y la 1...', 'dudoso'); return ventanilla(1); }
+  if (flag('eladioVolveu')) return eladioVentanilla();
+  if (!flag('eladioAusente')) {
+    setFlag('eladioAusente');
+    await MA('Ventanilla 1. Un cartel escrito a mano, pegado al cristal: «Volvo nun momento. Eladio». El ordenador encendido y la silla vacía.', 'esceptico');
+    await MA('Eladio. Ya nos conocemos. Es como un jefe final de videojuego, pero con sello.', 'risueno');
+    await MA('El café de enfrente, seguro. Un «momento» de funcionario dura lo que dura un café con churros.', 'pensativo');
+  } else await MA('«Volvo nun momento». El momento sigue siendo largo.', 'esceptico');
+  toast('Pista: o café está á dereita da praza do Concello');
+}
+SCENES.concelloVest = {
+  name: 'Concello · Vestíbulo', bg: 'img/bg-concello-vestibulo.jpg', music: 'casa', floor: 'pedra',
+  walk: [[200, 372], [270, 362], [460, 356], [540, 366], [700, 386], [840, 416], [866, 470], [876, 540], [170, 540], [160, 472], [196, 424]],
+  holes: [
+    [[200, 352], [272, 352], [272, 384], [200, 384]],   // maceta da esquerda
+    [[434, 342], [504, 342], [504, 370], [434, 370]],   // maceta da dereita
+  ],
+  front: [
+    { y: 600, r: [816, 420, 144, 120] },                  // planta de primeiro plano
+    { y: 600, r: [0, 350, 172, 190] },                    // cadeiras azuis
+  ],
+  scale: [360, 0.42, 540, 0.9], actorH: 300, start: [330, 400], minSpeed: 0.45,
+  npcs: [
+    { id: 'eladioV', name: 'Don Eladio', key: true, x: 616, y: 300, w: 60, h: 70, fixedScale: 1, at: [624, 390], face: 'B', shadow: false,
+      when: () => flag('eladioVolveu'), done: () => flag('aguaAlta'), draw: (c, t, talking) => debuxaEladio(c, 616, 300, 0.62, talking, true),
+      look: () => MA('Don Eladio, en su ventanilla. Resoplando. Parece que ha corrido. Parece.', 'risueno'),
+      talk: () => eladioVentanilla(), give: { contrato: () => eladioVentanilla() } },
+  ],
+  hotspots: [
+    { name: 'Saída á praza', key: true, r: [250, 150, 170, 206], at: [330, 372], face: 'B', exit: ['concelloExt', [470, 292]], hint: 'U', door: true },
+    { name: 'Ventanilla 1', key: true, done: () => flag('eladioAusente'), r: [578, 168, 74, 132], at: [624, 390], face: 'B', act: () => ventanilla(1),
+      look: () => MA('La ventanilla 1, la de Eladio. Cristal, mostrador, un ordenador y nadie detrás. Volverá. Algún día.', 'esceptico') },
+    { name: 'Ventanilla 2', r: [664, 150, 88, 146], at: [716, 400], face: 'B', act: () => ventanilla(2),
+      look: () => MA('La ventanilla 2. Ordenador apagado y archivadores azules. Silencio administrativo, en directo.', 'esceptico') },
+    { name: 'Ventanilla 3', r: [774, 128, 112, 172], at: [806, 420], face: 'B', act: () => ventanilla(3),
+      look: () => MA('La ventanilla 3. Una planta y nadie. La planta, por lo menos, atiende con buena cara.', 'risueno') },
+    { name: 'Panel de servizos', r: [462, 136, 72, 146], look: () => MA('Rexistro, Atención Cidadá, Servizos Sociais, Urbanismo, Salón de Plenos. Todas las flechas apuntan a la derecha. Y a la derecha, las ventanillas vacías.', 'risueno') },
+    { name: 'Escudo', r: [82, 52, 76, 86], look: () => MA('El escudo de Monforte, enmarcado. Más serio que cualquier funcionario. Y eso es mucho decir.', 'sonriente') },
+    { name: 'Escaleira', r: [0, 100, 200, 280], look: () => MA('La escalera noble, con barandilla de forja. Arriba estará el Salón de Plenos. Yo, con llegar a la ventanilla, me conformo.', 'pensativo') },
+    { name: 'Farol', r: [336, 0, 80, 104], look: () => MA('Un farol de bronce colgando del techo. Ilumina mucho más que algunas resoluciones.', 'risueno') },
+    { name: 'Expositor', r: [852, 214, 104, 226], look: () => MA('Folletos turísticos de Monforte: el castillo, el Cabe, la Ribeira Sacra... Ni uno sobre cómo dar de alta el agua. Ese sería el más leído.', 'risueno') },
+    { name: 'Cadeiras', r: [0, 350, 170, 190], look: () => MA('Sillas azules para esperar. Desgastadas justo donde se apoyan los codos. Aquí se espera con oficio.', 'esceptico') },
+    { name: 'Plantas', r: [204, 258, 66, 122], look: () => MA('Plantas en maceta, bien regadas. Hasta ellas tienen el agua dada de alta.', 'esceptico') },
+  ],
+};
+
+/* ---------- B5 · O café de Eladio ----------
+   Preto do Concello. Eladio (ficción) toma o café aquí mentres a ventanilla 1 di «Volvo nun momento».
+   Pendente: folla de personaxe de Eladio e o puzzle para que volva (escolle Oscar). */
+const EL = t => say('Don Eladio', t);
+// Eladio provisional, debuxado por código ata que Oscar pase a súa folla de personaxe
+function debuxaEladio(c, x, y, k, talking, ventanilla) {
+  c.save(); c.translate(x, y); c.scale(k, k);
+  if (!ventanilla) { c.fillStyle = '#3a3f4a'; c.fillRect(-16, -62, 12, 62); c.fillRect(6, -62, 12, 62); c.fillStyle = '#222'; c.fillRect(-18, -4, 16, 6); c.fillRect(4, -4, 16, 6); }   // pernas
+  const by = ventanilla ? 0 : -60;
+  c.fillStyle = '#7d8088'; c.beginPath(); c.moveTo(-30, by); c.lineTo(-24, by - 70); c.lineTo(24, by - 70); c.lineTo(30, by); c.closePath(); c.fill();   // chaqueta gris
+  c.fillStyle = '#e8e2d0'; c.beginPath(); c.moveTo(-8, by - 70); c.lineTo(0, by - 40); c.lineTo(8, by - 70); c.fill();                                       // camisa
+  c.fillStyle = '#7a2a2a'; c.fillRect(-3, by - 66, 6, 24);                                                                                                   // gravata
+  c.fillStyle = '#e2b48c'; c.beginPath(); c.ellipse(0, by - 88, 17, 20, 0, 0, 7); c.fill();                                                                  // cabeza
+  c.fillStyle = '#b9b2a6'; c.beginPath(); c.ellipse(-15, by - 90, 5, 10, 0, 0, 7); c.ellipse(15, by - 90, 5, 10, 0, 0, 7); c.fill();                        // pelo nos lados (calvo arriba)
+  c.strokeStyle = '#222'; c.lineWidth = 2; c.strokeRect(-12, by - 92, 9, 7); c.strokeRect(3, by - 92, 9, 7); c.beginPath(); c.moveTo(-3, by - 89); c.lineTo(3, by - 89); c.stroke();   // lentes
+  c.fillStyle = '#5a3a2a'; c.fillRect(-9, by - 77 + (talking ? Math.abs(Math.sin(E.t * 14)) * 3 : 0), 18, 2);                                              // boca
+  c.restore();
+}
+async function eladioCafe() {
+  if (!flag('eladioCafeFalou')) {
+    setFlag('eladioCafeFalou');
+    await MA('¿Don Eladio? Soy Martín, el nuevo de la Casa Juana. Vengo a dar de alta el agua.', 'sonriente');
+    await EL('Estou no descanso, rapaz. Diso xa lle informa o cartel: «Volvo nun momento».');
+    await MA('¿Y cuánto dura un momento?', 'esceptico');
+    await EL('Un momento. Nin máis, nin menos.');
+  }
+  for (;;) {
+    const opts = [
+      { t: 'Es que sin agua no puedo ni fregar un vaso.', k: 'auga' },
+      { t: '¿A qué hora vuelve, exactamente?', k: 'hora' },
+      { t: '¿Qué tal el periódico?', k: 'xornal' },
+      { t: 'Nada, que aproveche.', k: 'adeus' },
+    ];
+    const k = opts[await choose(opts)].k;
+    if (k === 'auga') { await EL('Pois beba auga embotellada, que é máis sa. Eu levo trinta anos neste concello e nunca bebín da billa.'); }
+    if (k === 'hora') {
+      await EL('Eu son home de horarios. Ás dúas en punto ficho a saída. Nin un minuto antes, nin un despois.');
+      await EL('E antes de fichar, paso pola ventanilla a recoller a chaqueta. Pero agora son as dúas menos dez. Así que... un momento.');
+      await MA('O sea, que en cuanto sean las dos, sale disparado hacia el Concello.', 'pensativo');
+      await EL('Como un tren. Dos de antes, que chegaban á hora.');
+      setFlag('eladioFicha');
+    }
+    if (k === 'xornal') { await EL('Estou coas esquelas. A estas horas é o máis tranquilo: ninguén protesta.'); }
+    if (k === 'adeus') { await EL('Grazas. Aproveita, aproveita.'); return; }
+  }
+}
+async function adiantarReloxo() {
+  if (flag('eladioVolveu')) return MA('Ya está adelantado. Si lo adelanto más, mañana llego al lunes que viene.', 'risueno');
+  if (!flag('eladioFicha')) return MA('¿Tocar el reloj del bar? No sé por qué iba a hacer eso. Todavía.', 'dudoso');
+  await MA('Eladio no levanta la vista de las esquelas. Un taburete, un poco de equilibrio... y diez minutos de adelanto.', 'risueno');
+  await sleep(500);
+  await MA('Las dos en punto. Y yo aquí, silbando, como quien no ha hecho nada.', 'sonriente');
+  await EL('...Ás dúas?! Xa?! E sen fichar!');
+  await EL('Abofé que hoxe o café pasou voando. Paguei? Non paguei. Mañá pago!');
+  setFlag('eladioVolveu');
+  await MA('Primera vez en mi vida que veo correr a un funcionario. Y ha salido sin pagar. Hoy es un día histórico.', 'risueno');
+  toast('Eladio volveu á ventanilla');
+}
+async function eladioVentanilla() {
+  if (flag('aguaAlta')) { await EL('Xa ten a alta. Mañá pola mañá, auga. E agora, se me permite, estou fóra de horario. Desde fai dez minutos.'); return; }
+  await EL('Xa que estou aquí... pero rápido, que estou fóra de horario.');
+  await MA('El alta del agua de la Casa Juana, Doctor Casares, 211. Aquí está el contrato.', 'convencido');
+  await EL('A ver... Rosario Higueras, a dona... asinado... con bolígrafo azul. Ben.');
+  await EL('(selo, selo, selo) Alta feita. Mañá pola mañá ten auga. Se non hai ningunha incidencia. E sempre hai algunha.');
+  setFlag('aguaAlta');
+  await EL('Por certo: o reloxo do café adianta dez minutos. Debería denunciarse. Pero hoxe xa fichei.');
+  await MA('Agua, mañana. Por hoy, bastante he hecho: llaves, contrato, Concello. A casa, a descansar.', 'aliviado');
+  toast('Novo obxectivo: volver á Casa Juana e descansar');
+}
+SCENES.cafeEladio = {
+  name: 'Café', bg: 'img/bg-cafe-eladio.jpg', music: 'casa', floor: 'pedra',
+  walk: [[668, 292], [790, 292], [960, 424], [960, 540], [640, 540], [668, 420]],
+  front: [
+    { y: 540, r: [550, 336, 100, 190] },   // os dous taburetes de diante (no do fondo senta Eladio)
+  ],
+  scale: [290, 0.33, 540, 1.0], actorH: 300, start: [700, 330], minSpeed: 0.45,
+  npcs: [
+    { id: 'eladioC', name: 'Don Eladio', key: true, x: 640, y: 316, w: 56, h: 80, fixedScale: 1, at: [700, 360], face: 'L', shadow: false,
+      when: () => flag('sinAgua') && !flag('eladioVolveu'), draw: (c, t, talking) => debuxaEladio(c, 640, 316, 0.7, talking, true),
+      look: () => MA('Un señor con chaqueta gris, gafas en la punta de la nariz y el periódico abierto por la esquela. Tiene cara de ventanilla. Es Eladio.', 'esceptico'),
+      talk: () => eladioCafe(), give: { contrato: async () => { await say('Don Eladio', 'Contratos na ventanilla, rapaz. Aquí só se asinan os cafés. E pagando.'); } } },
+  ],
+  hotspots: [
+    { name: 'Porta', key: true, r: [664, 120, 64, 168], at: [700, 300], face: 'B', exit: ['concelloExt', [900, 400]], hint: 'U', door: true,
+      look: () => MA('La puerta de cristal. Por ahí se ve el Concello. Eladio también lo ve. Y aun así, aquí sigue.', 'esceptico') },
+    { name: 'Reloxo', key: true, done: () => flag('eladioVolveu'), r: [496, 70, 32, 48], at: [690, 330], face: 'L', act: () => adiantarReloxo(),
+      look: () => MA(flag('eladioVolveu') ? 'El reloj, diez minutos adelantado. Lo dejo así: en este bar, un poco de prisa no le viene mal a nadie.' : 'Un reloj de pared. Las dos menos diez. Y Eladio, aquí, con el café.', flag('eladioVolveu') ? 'risueno' : 'dudoso') },
+    { name: 'Lousa', r: [24, 4, 142, 196], look: () => MA('Café a 1,20, aguardiente a 2. En Monforte el desayuno completo sale por 3,20. El de los funcionarios, por 3,20 y una hora.', 'risueno') },
+    { name: 'Botellas', r: [228, 40, 186, 102], look: () => MA('Licores de colores en fila, como vagones de un mercancías. Este va cargado.', 'risueno') },
+    { name: 'Cafeteira', r: [312, 140, 98, 100], look: () => MA('Una cafetera de las de verdad, de dos brazos. Silba como una locomotora pequeña. Me cae bien.', 'sonriente') },
+    { name: 'Billa da cervexa', r: [460, 166, 46, 102], look: () => MA('El grifo de cerveza, dorado y reluciente. A las dos de la tarde, en día laborable, mejor no mirarlo mucho.', 'esceptico') },
+    { name: 'Cartel', r: [494, 122, 32, 84], look: () => MA('«Boa Festa». Un cartel de fiestas. En este bar, por lo que veo, la fiesta empieza al salir de la ventanilla.', 'risueno') },
+    { name: 'Cadros', r: [786, 10, 166, 208], look: () => MA('Cuadros de Monforte: un pazo, un parque... Pintados con más paciencia que la que yo tengo hoy.', 'sonriente') },
+    { name: 'Corcho de avisos', r: [742, 134, 46, 100], look: () => MA('Un corcho con avisos: «Véndese bicicleta», «Clases de gaita», «Perdeuse gato». Monforte en estado puro.', 'sonriente') },
+    { name: 'Taburetes', r: [552, 296, 120, 230], look: () => MA('Taburetes altos con asiento negro. Uno está calentito: alguien acaba de levantarse... o va y viene.', 'dudoso') },
+    { name: 'Cunca de café', r: [274, 290, 62, 36], look: () => MA('Una tacita de café, a medias. Con el sobre de azúcar sin abrir. Alguien que lo toma amargo, como las colas del Concello.', 'esceptico') },
+    { name: 'Barra', r: [0, 280, 620, 260], look: () => MA('Una barra larga de azulejo blanco y negro. En estas barras se han arreglado más asuntos que en muchas ventanillas.', 'pensativo') },
+    { name: 'Planta', r: [756, 220, 46, 76], look: () => MA('Una planta en la esquina. Bien regada. En Monforte, todo el mundo tiene agua menos yo. Y ya empieza a ser personal.', 'esceptico') },
+  ],
+};
+
 /* ---------- Mapa de Monforte (pantalla de viaxe entre zonas) ---------- */
 const ZONAS = [
   { id: 'estacion', name: 'Barrio da Estación', x: 760, y: 380, open: () => true },
-  { id: 'centro', name: 'Centro · rúa do Cardeal', x: 560, y: 300, open: () => false },
+  { id: 'centro', name: 'Centro · Concello', x: 560, y: 300, open: () => flag('contratoAsinado') },
   { id: 'rio', name: 'Río Cabe · Malecón', x: 300, y: 330, open: () => false },
   { id: 'castelo', name: 'Castelo de San Vicente', x: 486, y: 160, open: () => false },
 ];
@@ -762,7 +1045,8 @@ SCENES.mapa = {
   },
   hotspots: [
     { name: 'Barrio da Estación', key: true, r: [700, 340, 150, 90], exit: ['praza', [600, 420]] },
-    { name: 'Centro · rúa do Cardeal', r: [490, 270, 150, 80], act: () => mapaPechado(flag('objetivoContrato') ? 'La Fraternal está en el centro: allí me espera Rosario para firmar. Pero ese camino aún está en obras.' : 'El centro. La rúa do Cardeal, la Fraternal, el Concello... Primero, las llaves de casa.', 'M2') },
+    { name: 'Centro · Concello', r: [490, 270, 150, 80], exit: ['__centro'],
+      act: async () => { if (flag('contratoAsinado')) return goScene('concelloExt', [90, 360]); await mapaPechado('El centro, con el Concello. Sin casa ni contrato, ¿a qué voy? ¿A empadronarme en un banco del parque? Primero, las llaves y la firma.', 'M2'); } },
     { name: 'Río Cabe · Malecón', r: [230, 300, 150, 80], act: () => mapaPechado('El Malecón, junto al Cabe. Para pasear hace falta tener casa a la que volver. Primero, instalarse.', 'M3') },
     { name: 'Castelo de San Vicente', r: [410, 110, 160, 80], act: () => mapaPechado('Subir al castillo de San Vicente el primer día. Ni en mis tiempos de cross, y eso que los ganaba todos.', 'M3') },
     { name: 'Vilatán', r: [28, 440, 230, 66], act: () => mapaPechado('Vilatán. Mi madre me espera el domingo para el caldo. Si voy hoy, me pregunta por qué no he avisado. Mejor el domingo.', 'M6') },

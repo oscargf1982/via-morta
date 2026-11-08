@@ -65,7 +65,7 @@ El esquema es el de Broken Sword: un cursor inteligente en lugar de la lista de 
 ### 4.2 Tiempo e historia
 - En vez del reloj del juego de mundo abierto, la historia avanza por **marcas de estado** (*flags*) dentro de cada acto.
 - Los ritmos de Martín se mantienen como **escenas fijas**:
-  - Champions martes y miércoles a las 20:00 en la Fraternal con el Tío David, que termina a las 23:00, hora de dormir;
+  - Champions martes y miércoles a las 20:00 en la Fraternal con el Tío Demetrio, que termina a las 23:00, hora de dormir;
   - turno de madrugada;
   - caldo del domingo en Vilatán.
 - Dormir en la Casa Juana cierra el día y suele abrir el siguiente tramo: el silbato se oye por la noche.
@@ -92,7 +92,7 @@ Hay tres heredados del juego de mundo abierto, todos opcionales o con alternativ
 - Las **fotos reales**, como el taller de la Casa Juana, pueden usarse como fondo con un tratamiento (sepia, viñeta) para marcar «lugares con memoria». Es una decisión de estilo que hay que cerrar: o se pasan a ilustración, o se dejan como foto con tratamiento.
 - **Personajes:**
   - Proporción realista, unas 6,5 cabezas, como el sprite actual de Martín (celdas de 150×203).
-  - **Hay que unificar estilos.** Los sprites de Concha, David y Andrés son *chibi* del juego anterior y quedan grandes de cabeza al lado de Martín. Para este proyecto hay que rehacerlos con la proporción de Martín, o rehacer a Martín en chibi. Recomendación: proporción de Martín.
+  - **Hay que unificar estilos.** Los sprites de Concha, Demetrio y Andrés son *chibi* del juego anterior y quedan grandes de cabeza al lado de Martín. Para este proyecto hay que rehacerlos con la proporción de Martín, o rehacer a Martín en chibi. Recomendación: proporción de Martín.
 - **Hoja de sprites mínima por personaje:**
   - parado frente, espalda, izquierda y derecha;
   - andar lateral (6 a 8 fotogramas; el izquierdo puede ser el derecho volteado);
@@ -114,7 +114,7 @@ Hay tres heredados del juego de mundo abierto, todos opcionales o con alternativ
 | Taller de la Casa Juana: 2 fotos reales | ✅ existe |
 | Mural de la estación (foto real) y escena Xoán + Martín ante el mural | ✅ existe |
 | Xoán Carballeira: retrato y sprite (6 vistas, sin animación de andar) | ✅ existe (hoja de Oscar) |
-| Concha, David, Andrés: sprites chibi | ⚠️ existen, pero hay que adaptar el estilo |
+| Concha, Demetrio, Andrés: sprites chibi | ⚠️ existen, pero hay que adaptar el estilo |
 | Resto de NPC (Rosario, Eladio, Valerio, Brais, Anxo, Remedios, Pepe, Nai) | ❌ faltan sprites y retratos dibujados (en el juego anterior eran caras generadas por código) |
 | Resto de fondos | ❌ faltan (ver lista de escenarios en `03_HISTORIA_Y_PUZZLES.md`) |
 

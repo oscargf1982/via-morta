@@ -27,7 +27,7 @@
 - **Ficción:** que Xoán se lo sepa de memoria; el «emigrante que leva setenta anos esperando» como espejo de la familia Nogal; la placa final a Xosé Nogal.
 
 ## 3. Íntegramente ficción
-- **Personajes:** Martín Pardo, Xoán Carballeira, Xosé Nogal, Don Anxo Corredoira, Remedios, Pepe do Taller, Dona Concha, Rosario Higueras, Tío David, Don Eladio, Valerio, Mega Andrés, Brais «o Galgo» y la madre de Martín. Cualquier parecido con vecinos reales debe tratarse con cariño y sin datos privados.
+- **Personajes:** Martín Pardo, Xoán Carballeira, Xosé Nogal, Don Anxo Corredoira, Remedios, Pepe do Taller, Dona Concha, Rosario Higueras, Tío Demetrio, Don Eladio, Valerio, Mega Andrés, Brais «o Galgo» y la madre de Martín. Cualquier parecido con vecinos reales debe tratarse con cariño y sin datos privados.
 - **Hechos:** la noche del 14 de enero de 1958, el mercancías sin frenos, el tren de emigrantes, el informe falso y el despido de Xosé.
 - **Lugares y objetos:** la vía muerta de A Barreira (inventada; se puede cambiar por un lugar real si Oscar lo prefiere), la restauración secreta de la Mikado y su salida, y el parte de incidencia y su escondite.
 
