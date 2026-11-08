@@ -153,5 +153,5 @@
 
 ## Mapa de Monforte (`mapa`)
 - **Fondo:** `img/bg-mapa.png`, mapa ilustrado en papel (no a escala, y así lo dice): río Cabe, Ponte Vella, monte de San Vicente, calles en esquema, vías que convergen en la estación y la rotonda del depósito.
-- **Zonas:** Barrio da Estación (abierta → A3), Centro · rúa do Cardeal (M2), Río Cabe · Malecón (M3), Castelo de San Vicente (M3), Vilatán fuera del mapa (M6). Las zonas cerradas dan una frase de Martín y un aviso del hito en el que llegan.
+- **Zonas:** Barrio da Estación (abierta → A3), Casa Roja (con el contrato firmado → A4 Doutor Casares, delante de la casa; pedido por Oscar), Centro · Concello (con el contrato firmado → B4a), Río Cabe · Malecón (M3), Castelo de San Vicente (M3), Vilatán fuera del mapa (M6). Las zonas cerradas dan una frase de Martín y un aviso del hito en el que llegan.
 - **Pendiente:** Oscar debe validar la posición de las zonas con el mapa real.

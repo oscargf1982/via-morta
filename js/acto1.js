@@ -1064,6 +1064,7 @@ SCENES.cafeEladio = {
 /* ---------- Mapa de Monforte (pantalla de viaxe entre zonas) ---------- */
 const ZONAS = [
   { id: 'estacion', name: 'Barrio da Estación', x: 760, y: 380, open: () => true },
+  { id: 'casa', name: 'Casa Roja', x: 660, y: 456, open: () => flag('contratoAsinado') },
   { id: 'centro', name: 'Centro · Concello', x: 560, y: 300, open: () => flag('contratoAsinado') },
   { id: 'rio', name: 'Río Cabe · Malecón', x: 300, y: 330, open: () => false },
   { id: 'castelo', name: 'Castelo de San Vicente', x: 486, y: 160, open: () => false },
@@ -1073,6 +1074,8 @@ SCENES.mapa = {
   draw(c, t) {
     c.fillStyle = '#5a3d1e'; c.font = '700 26px Georgia, serif'; c.fillText('MONFORTE DE LEMOS', 34, 52);
     c.font = 'italic 14px Georgia, serif'; c.fillText('mapa ilustrado · non está a escala', 36, 72);
+    // rúa da estación á Casa Roja (Doutor Casares)
+    c.strokeStyle = '#efe2bf'; c.lineWidth = 4; c.beginPath(); c.moveTo(752, 396); c.lineTo(700, 430); c.lineTo(660, 456); c.stroke();
     for (const z of ZONAS) {
       const on = z.open(), pulse = on ? 3 * Math.sin(t * 4) : 0;
       c.fillStyle = on ? '#c0221c' : '#8a7a5a'; c.beginPath(); c.arc(z.x, z.y, 12 + pulse, 0, 7); c.fill();
@@ -1087,6 +1090,8 @@ SCENES.mapa = {
   },
   hotspots: [
     { name: 'Barrio da Estación', key: true, r: [700, 340, 150, 90], exit: ['praza', [600, 420]] },
+    { name: 'Casa Roja', key: true, r: [596, 428, 130, 84], exit: ['__casa'],
+      act: async () => { if (flag('contratoAsinado')) return goScene('casares', [690, 430]); await mapaPechado('La Casa Roja, en Doctor Casares. Sin contrato firmado no es mi casa: es la casa de otro con mis llaves. Primero, Rosario.', 'M1'); } },
     { name: 'Centro · Concello', r: [490, 270, 150, 80], exit: ['__centro'],
       act: async () => { if (flag('contratoAsinado')) return goScene('concelloExt', [90, 360]); await mapaPechado('El centro, con el Concello. Sin casa ni contrato, ¿a qué voy? ¿A empadronarme en un banco del parque? Primero, las llaves y la firma.', 'M2'); } },
     { name: 'Río Cabe · Malecón', r: [230, 300, 150, 80], act: () => mapaPechado('El Malecón, junto al Cabe. Para pasear hace falta tener casa a la que volver. Primero, instalarse.', 'M3') },
