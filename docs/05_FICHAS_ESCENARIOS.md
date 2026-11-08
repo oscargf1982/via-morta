@@ -30,13 +30,24 @@
 - **Salidas:**
   - Izquierda: primera pantalla de la plaza (A3).
   - Arriba a la izquierda: rúa Calvo Sotelo. En el Acto 1 no se entra: no hay nada relevante y Martín lo dice.
-  - Arriba al centro: rúa Coruña, la del colegio ferroviario. Cerrada hasta un hito próximo.
+  - Arriba al centro: rúa da Coruña (A4d), la del colegio. Segundo camino a Doutor Casares (abierta por Oscar).
   - Arriba a la derecha: rúa Concepción Arenal, donde está la Fraternal. Lleva a A4b.
   - Derecha: rúa das Vacas. Martín no quiere mancharse los zapatos.
 - **Hotspots:** quiosco (clave), revistas, fuente (Martín comenta que tiene las proporciones justas para una fuente), jardinera, señal, árbol, farol, edificio de la esquina, casa amarilla y edificios de la izquierda.
 - **NPC:** **Dona Concha**, de pie al lado del quiosco, leyendo el periódico mientras no habla. Árbol de diálogo: llaves de la casa, bolsa de ositos, periódico, «qué se cuenta» (el tren fantasma), la Casa Juana (Alfredo, Juana, el serrón), despedida. Si Martín pierde las llaves, Concha tiene otra copia (sin callejones sin salida).
 - **Objetos:** `chavesCasa`, `ositos`, `xornal`, `boli` (tras resolver el crucigrama).
 - **Desbloquea:** marca `objetivoContrato` (firmar con Rosario en la Fraternal).
+
+## A4d · Rúa da Coruña (`coruna`)
+- **Fondo:** `img/bg-rua-coruna.jpg`, ilustración de Oscar. Calle empedrada en curva: a la izquierda, el colegio «Escuela de E. Prácticas» (fachada azul y piedra, porche de madera sobre columnas, verja de forja); después, un muro amarillo con verja y la capilla de piedra con espadaña; al fondo, la gasolinera. A la derecha, edificios con balcones y farolas.
+- **Para qué sirve:** segundo camino entre la plaza de la estación (A3b) y Doutor Casares, 211 (A4), además del de Concepción Arenal y Morín (pedido por Oscar). Abierta desde el principio, como la otra ruta.
+- **Suelo:** la acera y la calzada empedrada, desde abajo hasta la curva del fondo.
+- **Salidas:**
+  - Abajo a la izquierda → plaza de la estación (A3b), junto a la entrada de la rúa da Coruña.
+  - Al fondo, por la curva, hacia la gasolinera → Doutor Casares (A4). En Doutor Casares, la salida de vuelta está a la derecha, abajo.
+- **Hotspots:** colegio (clave, comentario de Oscar: detrás tiene un pabellón polideportivo enorme, y en los recreos se jugaba al futbolín en el patio), verja del colegio, capilla, muro amarillo, gasolinera del fondo, árbol, farolas, edificios de la derecha.
+- **Tono:** paseo de recuerdos; Martín vuelve a su barrio.
+- **Personas reales:** ninguna.
 
 ## A4c · Rúa Morín (`morin`)
 - **Fondo:** `img/bg-rua-morin.jpg`, ilustración de Oscar. La calle sube hacia el fondo. A la izquierda, casas bajas de teja con puertas de madera; a la derecha, la casa pistacho con galerías y balcones, y coches aparcados.
@@ -50,6 +61,7 @@
 - **Suelo:** la acera y la calzada. Obstáculos y capas delanteras: el banco y la farola.
 - **Salidas:**
   - Abajo a la izquierda: rúa Morín (A4c), confirmado por Oscar.
+  - Abajo a la derecha: rúa da Coruña (A4d), segundo camino a la plaza de la estación.
   - Calle hacia el fondo («Rúa cara ao centro», flecha arriba): con el contrato firmado lleva al mapa. Tras descubrir que no hay agua, Martín dice que va al Concello y el mapa se abre para ir a la zona Centro.
   - Puerta de la Casa Juana (la de la derecha). Sin llaves: Concha las tiene. Con llaves pero sin contrato: primero firmar con Rosario. Con las dos cosas: **fin del tramo** (el interior, la casa sin agua y el Concello llegan en M2).
 - **Hotspots:** puerta de casa (clave), portalón con vado, puerta estrecha, balcón, fachada, muro rojo (clave: detrás está la nave), nave de chapa, banco, farola, supermercado (broma del agua), tapa de alcantarilla y edificios.
