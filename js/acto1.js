@@ -1,7 +1,7 @@
 'use strict';
 /* ==========================================================
    VÍA MORTA · Acto 1 «O regreso» (tramo M1)
-   A1 Andén 1 → A2 Vestíbulo (Iván e o mural) → A3 Praza da Estación (quiosco de Concha)
+   A1 Andén 1 → A2 Vestíbulo (Iván e o mural) → A3 Praza da Estación → A3b segunda pantalla (quiosco de Concha)
    + pantalla de mapa de Monforte.
    Fichas dos escenarios: docs/05_FICHAS_ESCENARIOS.md
    Fondos PROVISIONAIS xerados con tools/fondos.py (pendentes de fotos de Oscar).
@@ -134,7 +134,7 @@ SCENES.vestibulo = {
   hotspots: [
     { name: 'Andén 1', key: true, r: [0, 478, 244, 62], at: [256, 528], face: 'F', exit: ['anden', [214, 392]], door: true,
       look: () => MA('La puerta del andén, a mi espalda. Por ahí he entrado yo hace un momento, con veinte años de retraso.', 'risueno') },
-    { name: 'Praza da Estación', key: true, r: [900, 126, 60, 228], at: [930, 380], face: 'R', exit: ['praza', [812, 380]], door: true,
+    { name: 'Praza da Estación', key: true, r: [900, 126, 60, 228], at: [930, 380], face: 'R', exit: ['praza', [790, 400]], door: true,
       look: () => MA('La puerta azul que da a la plaza. Azul Renfe, para que nadie se olvide de quién es la casa.', 'sonriente') },
     { name: 'Mural de 1954', key: true, r: [494, 113, 128, 110], at: [560, 350], face: 'B', done: () => flag('muralExplicado'),
       look: async () => { await MA('El mural del vestíbulo: Galicia entera, con las vías en azul y Monforte en el centro, como un ombligo con estación.', 'pensativo'); await MA('Un tren, un peregrino, gente que se va... Cuando era crío pensaba que el mapa era de verdad y que el tren salía de la pared.', 'sonriente'); },
@@ -175,7 +175,7 @@ SCENES.vestibulo = {
   ],
 };
 
-/* ---------- A3 · Praza da Estación (quiosco de Dona Concha) ---------- */
+/* ---------- Dona Concha (quiosco, en A3b) ---------- */
 async function conchaQuiosco() {
   if (!flag('conchaRecoñece')) {
     await CO('Ai! Ti es o rapaz de Vilatán! O dos cromos do Dépor!');
@@ -229,47 +229,91 @@ async function conchaQuiosco() {
   }
 }
 
-/* Fondo: ilustración da praza enviada por Oscar (img/bg-praza-estacion.jpg).
-   Dereita: estación (→ vestíbulo). Abaixo á esquerda: quiosco de Dona Concha.
-   Esquerda ao medio: saída á segunda pantalla da praza (pendente de ficha, M2). */
+/* Fondo: ilustración da praza enviada por Oscar (img/bg-praza-estacion.jpg), recortada para deixar
+   fóra o quiosco (o quiosco real está na segunda pantalla).
+   Dereita: estación (→ vestíbulo). Esquerda ao medio: segunda pantalla da praza (praza2). */
 SCENES.praza = {
-  name: 'Praza da Estación', bg: 'img/bg-praza-estacion.jpg', music: 'estacion', floor: 'pedra',
-  walk: [[190, 392], [260, 372], [470, 352], [600, 340], [700, 336], [790, 364], [960, 412], [960, 538], [0, 538], [0, 480], [186, 480]],
-  holes: [[[566, 392], [628, 392], [628, 416], [566, 416]], [[486, 350], [554, 350], [554, 370], [486, 370]]],
+  name: 'Praza da Estación', bg: 'img/bg-praza-estacion.jpg', crop: [300, 120, 1300, 731], music: 'estacion', floor: 'pedra',
+  walk: [[0, 320], [96, 314], [380, 300], [480, 298], [600, 330], [780, 362], [960, 404], [960, 538], [0, 538], [0, 400], [70, 392], [30, 352], [0, 352]],
+  holes: [
+    [[90, 322], [150, 310], [330, 308], [384, 326], [340, 344], [110, 344]],   // fonte da rotonda
+    [[386, 346], [454, 346], [454, 358], [386, 358]],                         // alcorque da árbore
+    [[484, 398], [544, 398], [544, 418], [484, 418]],                         // base da farola
+  ],
   front: [
-    { y: 414, r: [574, 66, 52, 348] },                 // farola
-    { y: 368, r: [500, 250, 34, 118] },                // tronco da árbore
+    { y: 417, r: [484, 0, 62, 417] },                  // farola
+    { y: 356, r: [396, 240, 40, 116] },                // tronco da árbore
   ],
   // perspectiva forte: o fondo da praza queda lonxe
-  scale: [350, 0.16, 540, 0.97], actorH: 300, start: [800, 420], minSpeed: 0.45,
+  scale: [342, 0.2, 540, 1.04], actorH: 300, start: [780, 420], minSpeed: 0.45,
   hotspots: [
-    { name: 'Estación', key: true, r: [786, 266, 56, 100], at: [812, 380], face: 'R', exit: ['vestibulo', [910, 400]], door: true,
+    { name: 'Estación', key: true, r: [758, 246, 46, 116], at: [780, 378], face: 'R', exit: ['vestibulo', [910, 400]], door: true,
       look: () => MA('La puerta de la estación. Azul Renfe de toda la vida. Por ahí he salido yo con veinte años y una mochila.', 'pensativo') },
-    { name: 'Estación', r: [900, 420, 60, 118], at: [930, 470], exit: ['vestibulo', [910, 400]], door: true },
-    { name: 'Rótulo da estación', r: [712, 188, 248, 72], look: () => MA('«Monforte de Lemos», en letras bien grandes. Por si alguien se baja del tren creyendo que esto es Ourense.', 'risueno') },
-    { name: 'Placa', r: [852, 288, 36, 32], look: () => MA('Una placa en la fachada. Desde aquí no la leo, y de cerca el bronce se ha comido la mitad de las letras.', 'esceptico') },
-    { name: 'Quiosco', key: true, r: [0, 196, 182, 276], at: [262, 486], face: 'L', act: () => conchaQuiosco(),
+    { name: 'Estación', r: [900, 226, 60, 134], at: [924, 412], face: 'R', exit: ['vestibulo', [910, 400]], door: true },
+    { name: 'Placa', r: [832, 266, 38, 36], look: () => MA('Una placa en la fachada. Desde aquí no la leo, y de cerca el bronce se ha comido la mitad de las letras.', 'esceptico') },
+    { name: 'Rótulo da estación', r: [655, 168, 300, 72], look: () => MA('«Monforte de Lemos», en letras bien grandes. Por si alguien se baja del tren creyendo que esto es Ourense.', 'risueno') },
+    { name: 'Outra parte da praza', key: true, r: [0, 286, 40, 64], at: [14, 336], face: 'L', exit: ['praza2', [40, 346]],
+      look: () => MA('Por ahí sigue la plaza. Si no han movido el quiosco en veinte años, Concha está a la vuelta.', 'pensativo') },
+    { name: 'Rúa cara ao centro', key: true, r: [454, 272, 90, 34], at: [500, 314], face: 'B', exit: ['mapa'],
+      look: () => MA('La calle que sube hacia el centro. Desde aquí se va a toda Monforte. Bueno, a la parte llana.', 'pensativo') },
+    { name: 'Fonte', r: [86, 236, 300, 108], look: () => MA('Una fuente con su rotonda de setos. Los coches dan vueltas alrededor, el agua también. Nadie llega a ningún sitio, pero queda bonito.', 'risueno') },
+    { name: 'Hotel', r: [100, 90, 226, 200], look: () => MA('Un hotel frente a la estación. Para quien llega en el último tren y no tiene una Concha que le guarde las llaves.', 'neutro') },
+    { name: 'Hostal', r: [0, 60, 32, 92], look: () => MA('El hostal de la esquina. Si lo del contrato se tuerce, ya sé dónde dormir esta noche.', 'esceptico') },
+    { name: 'Coches', r: [520, 298, 120, 42], look: () => MA('Coches aparcados delante de la estación. Ninguno es mío: el mío tiene veinte vagones y no cabe en batería.', 'risueno') },
+    { name: 'Farola', r: [440, 0, 140, 398], look: () => MA('Una farola de dos brazos, de hierro, de las que ya no se hacen. De noche esta plaza debe parecer una foto antigua.', 'pensativo') },
+    { name: 'Árbore', r: [330, 80, 166, 250], look: () => MA('Un árbol de plaza de estación. Ha visto llegar más gente que nadie y no se ha quejado nunca. Ni de las palomas.', 'sonriente') },
+  ],
+};
+
+/* ---------- A3b · Praza da Estación, segunda pantalla (quiosco de Dona Concha) ----------
+   Fondo: ilustración de Oscar (img/bg-praza-estacion-2.jpg, recortada a 16:9 sen a barra de interface).
+   Esquerda: primeira pantalla da praza. Arriba: rúa Calvo Sotelo (esquerda, pechada no Acto 1),
+   rúa Coruña (centro, colexio ferroviario) e rúa Concepción Arenal (dereita, a Fraternal).
+   Dereita: rúa das Vacas (Martín non quere manchar os zapatos). */
+async function ruaPechada(linea, mood) { await MA(linea, mood || 'pensativo'); toast('Rúa en construción · chega nun próximo hito'); }
+SCENES.praza2 = {
+  name: 'Praza da Estación', bg: 'img/bg-praza-estacion-2.jpg', music: 'estacion', floor: 'pedra',
+  walk: [[0, 340], [300, 340], [400, 336], [468, 322], [548, 322], [560, 312], [588, 316], [600, 330], [796, 330], [808, 312], [842, 318], [960, 340],
+         [960, 538], [150, 538], [604, 466], [604, 428], [462, 366], [0, 352]],
+  holes: [
+    [[505, 364], [720, 368], [720, 426], [580, 432], [505, 420]],            // xardineira e sinal
+  ],
+  front: [
+    { y: 366, poly: [[505, 330], [540, 288], [640, 280], [720, 350], [720, 430], [505, 424]] },   // xardineira
+    { y: 422, r: [558, 248, 40, 176] },                                                          // sinal
+  ],
+  scale: [336, 0.24, 540, 0.82], actorH: 300, start: [60, 346], minSpeed: 0.45,
+  hotspots: [
+    { name: 'Primeira parte da praza', key: true, r: [0, 236, 36, 104], at: [12, 345], face: 'L', exit: ['praza', [36, 338]],
+      look: () => MA('Por ahí vuelvo a la estación. Vengo de ella, pero así de cerca uno siempre se plantea volver a subirse al tren.', 'pensativo') },
+    { name: 'Revistas', r: [116, 256, 120, 80], at: [320, 348], face: 'L', look: () => MA('Revistas de corazón, de motor y una de ganchillo. Concha las lee todas antes de venderlas. Control de calidad, lo llama.', 'risueno') },
+    { name: 'Quiosco', key: true, r: [40, 206, 262, 132], at: [320, 348], face: 'L', act: () => conchaQuiosco(), done: () => hasItem('chavesCasa'),
       look: () => MA('El quiosco de Concha: chuches, cromos, revistas y la mejor red de información de Monforte. La CIA, pero con regaliz.', 'sonriente') },
-    { name: 'Revistas', r: [34, 344, 140, 124], at: [262, 486], face: 'L', look: () => MA('Revistas de corazón, de motor y una de ganchillo. Concha las lee todas antes de venderlas. Control de calidad, lo llama.', 'risueno') },
-    { name: 'Outra parte da praza', key: true, r: [150, 276, 112, 84], at: [236, 392], face: 'L', exit: ['__praza2'], done: () => hasItem('chavesCasa'),
+    { name: 'Rúa Calvo Sotelo', r: [400, 296, 66, 38], at: [450, 338], face: 'B', exit: ['__rua'],
+      act: () => bark('La calle Calvo Sotelo. Hoy no se me ha perdido nada por ahí, y bastante tengo con encontrar lo que sí se me ha perdido.') },
+    { name: 'Rúa Coruña', r: [546, 284, 48, 40], at: [572, 324], face: 'B', exit: ['__rua'],
+      act: () => ruaPechada('La calle Coruña, la del colegio ferroviario. Aquí hasta los colegios llevan apellido de tren.', 'sonriente') },
+    { name: 'Rúa Concepción Arenal', key: true, r: [794, 270, 52, 52], at: [818, 324], face: 'B', exit: ['__rua'], done: () => hasItem('chavesCasa'),
       act: async () => {
-        if (!hasItem('chavesCasa')) { await bark(flag('sabeCasa') ? 'Por ahí se va hacia Doctor Casares. Pero sin llaves tengo una dirección, no una casa. Concha las tiene.' : 'Por ahí sigue la plaza. Antes de irme, las llaves: Concha las tiene.'); return; }
+        if (!flag('objetivoContrato')) { await bark('La calle Concepción Arenal. Por ahí está la Fraternal. Pero lo primero son las llaves, y las llaves las tiene Concha.'); return; }
         await fimTramo();
       } },
-    { name: 'Rúa cara ao centro', key: true, r: [556, 294, 64, 34], at: [640, 350], face: 'B', exit: ['mapa'],
-      look: () => MA('La calle que sube hacia el centro. Desde aquí se va a toda Monforte. Bueno, a la parte llana.', 'pensativo') },
-    { name: 'Fonte', r: [250, 322, 236, 28], look: () => MA('Una fuente con su rotonda de setos. Los coches dan vueltas alrededor, el agua también. Nadie llega a ningún sitio, pero queda bonito.', 'risueno') },
-    { name: 'Hotel', r: [262, 146, 186, 174], look: () => MA('Un hotel frente a la estación. Para quien llega en el último tren y no tiene una Concha que le guarde las llaves.', 'neutro') },
-    { name: 'Hostal', r: [140, 112, 68, 76], look: () => MA('El hostal de la esquina. Si lo del contrato se tuerce, ya sé dónde dormir esta noche.', 'esceptico') },
-    { name: 'Farola', r: [540, 66, 110, 344], look: () => MA('Una farola de dos brazos, de hierro, de las que ya no se hacen. De noche esta plaza debe parecer una foto antigua.', 'pensativo') },
-    { name: 'Árbore', r: [452, 136, 136, 196], look: () => MA('Un árbol de plaza de estación. Ha visto llegar más gente que nadie y no se ha quejado nunca. Ni de las palomas.', 'sonriente') },
-    { name: 'Coches', r: [604, 314, 96, 36], look: () => MA('Coches aparcados delante de la estación. Ninguno es mío: el mío tiene veinte vagones y no cabe en batería.', 'risueno') },
+    { name: 'Rúa das Vacas', r: [900, 326, 60, 90], at: [940, 384], face: 'R', exit: ['__rua'],
+      act: () => bark('¿La calle de las Vacas? Con estos zapatos, no. Con ese nombre, prefiero no averiguar si es por historia o por costumbre.') },
+    { name: 'Sinal', r: [558, 250, 40, 64], look: () => MA('Prohibido aparcar, en los dos sentidos. Por si alguien pensaba aparcar en diagonal, que también lo he visto.', 'esceptico') },
+    { name: 'Xardineira', r: [505, 280, 215, 152], look: () => MA('Una jardinera con arbustos y una señal clavada en medio. Aquí hasta las plantas tienen prohibido aparcar.', 'risueno') },
+    { name: 'Fonte', r: [0, 340, 604, 190], look: () => MA('Una fuente. Larga, baja, con sus chorros en fila y su agua dentro. Tiene exactamente las proporciones que tiene que tener una fuente. No se le puede pedir más.', 'convencido') },
+    { name: 'Árbore', r: [316, 232, 84, 100], look: () => MA('Un árbol podado en bola, como un chupachups gigante. Muy apropiado al lado de un quiosco.', 'sonriente') },
+    { name: 'Farol', r: [0, 206, 32, 136], look: () => MA('Un farol de hierro junto al quiosco. Lo justo para que Concha vea quién se acerca antes de que diga nada.', 'risueno') },
+    { name: 'Edificio da esquina', r: [580, 100, 220, 230], look: () => MA('La casa de la esquina, verde clarito, con sus balcones de hierro. Una esquina con más curvas que la carretera de Ourense.', 'pensativo') },
+    { name: 'Casa amarela', r: [418, 160, 132, 160], look: () => MA('La casa amarilla de los tejados rojos. Parece recién pintada para la foto, y yo sin cámara.', 'sonriente') },
+    { name: 'Edificios', r: [0, 0, 412, 204], look: () => MA('Pisos con galerías y ventanas grandes. Desde ahí arriba alguien ya habrá visto que ha vuelto el de Vilatán. Mañana lo sabe medio Monforte.', 'esceptico') },
   ],
   npcs: [
     { id: 'conchaQ', name: 'Dona Concha', key: true, sheet: 'img/concha.png', spec: { cw: 220, ch: 385, cols: 4 }, get idle() { return E.dlg ? 4 : 6; }, talkFrames: [5, 4],
-      x: 214, y: 486, w: 100, h: 250, at: [300, 492], face: 'L',
+      x: 300, y: 342, w: 100, h: 250, at: [334, 350], face: 'L',
       done: () => hasItem('chavesCasa'),
-      look: () => MA('Doña Concha, en la puerta de su quiosco desde que tengo memoria. Lee el periódico antes de venderlo: dice que es para comprobar que no trae erratas.', 'sonriente'),
+      look: () => MA('Doña Concha, a la puerta de su quiosco desde que tengo memoria. Lee el periódico antes de venderlo: dice que es para comprobar que no trae erratas.', 'sonriente'),
       talk: () => conchaQuiosco(),
       give: {
         ositos: async () => { await CO('Ositos? Pero se os acabas de mercar aquí! Gárdaos, rapaz, que xa haberá ocasión de ter un detalle.'); },
@@ -279,9 +323,9 @@ SCENES.praza = {
   ],
 };
 async function fimTramo() {
-  await MA('Las llaves en el bolsillo. Ahora, a Doctor Casares, 211. La casa roja. Allá vamos, Martín.', 'convencido');
-  await showDoc('<h4>FIN DO TRAMO M1</h4><p>Martín xa ten as chaves da Casa Juana. A segunda pantalla da praza, o camiño a Doutor Casares e o resto do Acto 1 (a casa sen auga, a firma de Amparo na Fraternal e o Concello) chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
-  face('R');
+  await MA('Las llaves en el bolsillo. Ahora, a la Fraternal, a firmar con Amparo. Y sin interrumpir la brisca.', 'convencido');
+  await showDoc('<h4>FIN DO TRAMO M1</h4><p>Martín xa ten as chaves da Casa Juana. A Fraternal (Amparo e a brisca), a Casa Juana sen auga e o resto do Acto 1 chegarán no hito M2.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
+  face('L');
 }
 
 /* ---------- Mapa de Monforte (pantalla de viaxe entre zonas) ---------- */
@@ -309,7 +353,7 @@ SCENES.mapa = {
     c.fillStyle = '#5a3d1e'; c.font = 'italic 14px Georgia, serif'; c.fillText('Fóra do mapa:', 42, 464); c.font = '700 18px Georgia, serif'; c.fillText('Vilatán (casa da nai)', 42, 490);
   },
   hotspots: [
-    { name: 'Barrio da Estación', key: true, r: [700, 340, 150, 90], exit: ['praza', [640, 360]] },
+    { name: 'Barrio da Estación', key: true, r: [700, 340, 150, 90], exit: ['praza', [600, 420]] },
     { name: 'Centro · rúa do Cardeal', r: [490, 270, 150, 80], act: () => mapaPechado(flag('objetivoContrato') ? 'La Fraternal está en el centro: allí me espera Amparo para firmar. Pero ese camino aún está en obras.' : 'El centro. La rúa do Cardeal, la Fraternal, el Concello... Primero, las llaves de casa.', 'M2') },
     { name: 'Río Cabe · Malecón', r: [230, 300, 150, 80], act: () => mapaPechado('El Malecón, junto al Cabe. Para pasear hace falta tener casa a la que volver. Primero, instalarse.', 'M3') },
     { name: 'Castelo de San Vicente', r: [410, 110, 160, 80], act: () => mapaPechado('Subir al castillo de San Vicente el primer día. Ni en mis tiempos de cross, y eso que los ganaba todos.', 'M3') },
