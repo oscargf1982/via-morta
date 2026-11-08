@@ -39,7 +39,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 |---|---|---|
 | B1 Rúa do Cardeal | B2, B3, B4, mapa | Calle de bares |
 | B2 Farmacia (Cardeal, 23) | B1 | Toldo de rayas rojas y blancas, cruz verde de neón. Valerio |
-| B3 A Fraternal | B1 | Amparo (brisca), Tío David, la Champions |
+| B3 A Fraternal | B1 | Rosario Higueras (brisca), Tío David, la Champions |
 | B4 Concello: vestíbulo y ventanilla | B1, B5 | Don Eladio |
 | B5 Café cercano | B4 | Donde se esconde Eladio a las dos |
 
@@ -67,9 +67,9 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 **Objetivo:** instalarse en la Casa Juana.
 
 1. **A1 → A2.** Martín baja del tren. En el vestíbulo, Xoán le explica el mural (charla opcional, con pistas sembradas: «Bo balcón. Dende el vése o depósito»).
-2. **Quiosco (A3).** Martín compra una **bolsa de ositos** y el **periódico**. Concha lo reconoce («o rapaz de Vilatán!») y le da las **llaves de la casa**, pero el contrato debe firmarlo Amparo, en la Fraternal.
+2. **Quiosco (A3).** Martín compra una **bolsa de ositos** y el **periódico**. Concha lo reconoce («o rapaz de Vilatán!») y le da las **llaves de la casa**, pero el contrato debe firmarlo Rosario Higueras, en la Fraternal.
 3. **Casa Juana (A5).** No hay agua: hay que darla de alta en el Concello con el contrato firmado. Desde la cocina se ven las argollas del techo de la nave.
-4. **Fraternal (B3).** Amparo no suelta las cartas en mitad de una brisca. **(propuesta)** Para firmar le falta un bolígrafo: el de Concha, que Martín consigue al devolverle el periódico con el crucigrama hecho («Oito letras: o que conduce un tren»). Al firmar, Amparo cuenta **la historia real de la casa**: Alfredo, Juana, el motor Siemens y la venta de 1952. Lanza la pregunta: ¿para qué quería una carpintería un ingeniero de Caminos?
+4. **Fraternal (B3).** Rosario no suelta las cartas en mitad de una brisca. **(propuesta)** Para firmar le falta un bolígrafo: el de Concha, que Martín consigue al devolverle el periódico con el crucigrama hecho («Oito letras: o que conduce un tren»). Al firmar, Rosario cuenta **la historia real de la casa**: Alfredo, Juana, el motor Siemens y la venta de 1952. Lanza la pregunta: ¿para qué quería una carpintería un ingeniero de Caminos?
 5. **Concello (B4–B5).** Eladio ha puesto «Volvo nun momento» y está en el café. **(propuesta)** Martín consigue que vuelva a la ventanilla: le cambia el sitio del periódico, o le recuerda que cierran a las dos y que él «naceu pechando».
 6. **Noche (A5).** Dormir. Suena el silbato, dos largos y uno corto, y Martín se da cuenta de que apunta a su casa. **Fin del acto.**
 
@@ -78,7 +78,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 
 1. Cinemática del primer turno: hay un **candado nuevo** en las cocheras del museo.
 2. Tres reencuentros, en cualquier orden:
-   - **Valerio** (B2). Xoán está recogiendo «las pastillas de su tía» (pista: es sobrino de Amparo). Valerio le regala la **crema de agujetas**.
+   - **Valerio** (B2). Xoán está recogiendo «el jarabe de Eugenia, la niña de su prima» (pista: es primo de Rosario). Valerio le regala la **crema de agujetas**.
    - **Mega Andrés** (C2). Reto de natación, con minijuego o alternativa. Premio: mojito o tarde de tumbona.
    - **Brais** (C1–D2). Reto de la Volta do Castelo. **(propuesta)** Sin la crema de Valerio, Martín se niega a subir la cuesta de San Vicente («tengo los gemelos de un señor de ochenta años»). Usar la crema sobre Martín desbloquea la carrera.
 3. **Noche de Champions** (B3, martes a las 20:00). Xoán corrige el gol de David («Foi en mércores, e chovía»). A las 23:00, a dormir.
@@ -153,7 +153,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 | Bolsa de ositos | Quiosco (A3) | Un detalle para Concha, que da la llave de la nave |
 | Periódico y bolígrafo | Quiosco y Concha | Firma del contrato (propuesta) |
 | Llaves de la casa | Concha | Entrar en la Casa Juana |
-| Contrato firmado | Amparo | Alta del agua en el Concello |
+| Contrato firmado | Rosario | Alta del agua en el Concello |
 | Crema de agujetas | Valerio | Desbloquea la Volta do Castelo (propuesta) |
 | Llave del taller | Concha | Patio y nave de atrás |
 | Copia de la escritura n.º 375 | Taller | Pista: venta de 1952 |
@@ -175,6 +175,6 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
   - menú con Continuar, Nueva partida, Escoller acto, Opcións (texto rápido, música, efectos) y Créditos e fontes;
   - sonido sintetizado sin archivos: pasos según el suelo, coger, puertas, papel, música por zona y el silbato «dos largos y uno corto»;
   - móvil: en horizontal el inventario va en columna a la derecha; en vertical sale un aviso para girar y, si se sigue en vertical, la escena va arriba a todo el ancho con diálogo e inventario grandes debajo (elegido por Oscar).
-  - **Acto 1, primer tramo jugable:** A1 andén → A2 vestíbulo (Xoán y el mural) → A3 plaza → A3b segunda pantalla de la plaza (quiosco de Concha: llaves, ositos, periódico) → A4b rúa Concepción Arenal (tío David) → B3 interior de la Fraternal (Amparo en plena brisca), más el mapa de Monforte. Fichas en `05_FICHAS_ESCENARIOS.md`. Termina al hablar con Amparo por primera vez; la firma del contrato queda para M2.
+  - **Acto 1, primer tramo jugable:** A1 andén → A2 vestíbulo (Xoán y el mural) → A3 plaza → A3b segunda pantalla de la plaza (quiosco de Concha: llaves, ositos, periódico) → A4b rúa Concepción Arenal (tío David) → B3 interior de la Fraternal (Rosario en plena brisca), más el mapa de Monforte. Fichas en `05_FICHAS_ESCENARIOS.md`. Termina al hablar con Rosario por primera vez; la firma del contrato queda para M2.
 - **Provisional:** el mapa es un boceto por código (`tools/fondos.py`). El sprite y el retrato de Xoán Carballeira (antes Iván Nogal) salen de la hoja de personaje de Oscar con `tools/sprite-xoan.py`.
 - **Siguiente paso:** M2 (resto del Acto 1: A4 exterior de la Casa Juana, casa sin agua, Fraternal y Concello). Antes hay que cerrar con Oscar los dos puzzles marcados como propuesta (bolígrafo de Concha y Eladio en el café).
