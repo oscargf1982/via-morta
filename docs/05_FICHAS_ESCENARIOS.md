@@ -4,27 +4,20 @@
 > Los fondos de A1, A2, A3 y el mapa son **bocetos provisionales** generados con `tools/fondos.py`. Se sustituyen cuando Oscar envíe fotos o Street View.
 
 ## A1 · Andén 1 (`anden`)
-- **Fondo:** `img/bg-anden.png`. Vista desde el andén hacia las vías: marquesina verde con lambrequín arriba, dos columnas de hierro, vía 1 con el regional, playa de vías, cocheras de ladrillo del depósito a la derecha y la torre del castillo de San Vicente al fondo. A la izquierda, la pared de la estación con la puerta del vestíbulo.
-- **Suelo:** el andén (y 412–535). Obstáculos: banco, bases de las columnas y papelera. Capas delanteras: columnas, banco y papelera (Martín pasa por detrás).
-- **Salidas:** Vestíbulo (A2).
-- **Hotspots:** Vestíbulo (clave), tren regional (solo en la intro), reloj, letrero «MONFORTE DE LEMOS», torre del castillo, cocheras del depósito, vías, banco, papelera, línea amarilla, columnas.
-- **NPC:** ninguno.
-- **Objetos:** ninguno.
-- **Guion:** intro del Acto 1. Martín baja del regional, el tren se va (bocina, no el silbato de vapor, que se reserva para el leitmotiv) y aparece un aviso con los controles.
-- **Desbloquea:** nada; es la entrada.
+- **Fondo:** `img/bg-anden-estacion.jpg`, ilustración de Oscar. Marquesina con columnas de pie azul, la fachada con puertas azules en arco, el letrero «Monforte de Lemos», bancos, papelera y el regional parado en la vía 1.
+- **Suelo:** el andén, desde la fachada hasta la línea amarilla. Perspectiva fuerte (Martín se hace pequeño al fondo). Obstáculos y capas delanteras: las tres primeras columnas y la papelera.
+- **Salidas:** Vestíbulo (A2), por la puerta azul junto al banco.
+- **Hotspots:** vestíbulo (clave), otras puertas azules (la antigua cafetería), tren regional, letrero, dos bancos, papelera, columnas, marquesina, farol, vías, línea amarilla y andén de enfrente.
+- **Guion:** intro del Acto 1. Martín baja del regional, suena la bocina (el silbato de vapor queda reservado al leitmotiv) y sale el aviso de controles. El tren está pintado en el fondo y se queda parado.
 
 ## A2 · Vestíbulo de la estación (`vestibulo`)
-- **Fondo:** `img/bg-vestibulo.png`. Pared clara con viga de madera, pilares de piedra, **el mural de 1954 (foto real `mural-estacion.jpg` pixelada dentro del fondo)**, taquillas a la izquierda, puertas a la plaza a la derecha, panel de salidas, máquina de café, extintor y carteles. Suelo de terrazo a cuadros.
-- **Suelo:** y 346–535. Obstáculo y capa delantera: el banco central.
-- **Salidas:** Andén 1 (A1), Praza da Estación (A3).
-- **Hotspots:** mural de 1954 (clave; acción = verlo de cerca a pantalla completa), **firma del mural** (solo con el ollo: «Inchaurbe, 1954»), taquillas, panel de salidas, máquina de café, extintor, carteles, banco.
-- **NPC:** **Iván Nogal** (sprite provisional `ivan-sprite.png`). Árbol de diálogo:
-  - el mural (hechos reales de `04_HECHOS`: Inchaurbe, 1954, delineante de Renfe en León, sin la Ourense–Zamora, peregrino, autocar en Curtis, TAF, emigrante en Vigo, restaurado por Adif a petición de Apatrigal);
-  - la Casa Juana → pista sembrada «Bo balcón. Dende el vese o depósito» y le manda a Concha;
-  - tras el mural: qué hace él (dato inventado de las 42 baldosas);
-  - despedida con la pista del «vento».
-  - También reacciona a los objetos (ositos, periódico, llaves).
-- **Desbloquea:** marca `sabeCasa` (cambia frases de Martín en la plaza).
+- **Fondo:** `img/bg-vestibulo-estacion.jpg`, ilustración de Oscar (3:2, recortada a 16:9). Taquilla «Venta de billetes», máquina de billetes, extintor, mural al fondo, pilar de piedra, bancos metálicos, papelera, radiadores, ventana y puerta azul a la plaza.
+- **Suelo:** el terrazo. Obstáculo y capa delantera: el pilar (Martín pasa por detrás).
+- **Salidas:** puerta azul de la derecha → Praza da Estación (A3). Andén 1 por la izquierda, junto al radiador, con la puerta «hacia la cámara».
+- **Al entrar por primera vez:** Martín recuerda que antes había cafetería y quiosco de revistas en la estación y que ahora todo está cerrado.
+- **Hotspots:** mural de 1954 (clave; al tocarlo se abre el primer plano de Oscar, `img/mural-primer-plano.jpg`), firma del mural (solo con el ollo), taquilla, máquina de billetes, extintor, tres avisos, bancos, papelera, dos radiadores, pilar, ventana, bandas táctiles amarillas y techo.
+- **NPC:** **Iván Nogal**, entre la máquina de billetes y el pilar, junto al mural (sprite provisional). El árbol de diálogo no cambia: el mural con hechos reales, la Casa Juana con la pista del balcón, las 42 baldosas y la despedida con el «vento».
+- **Desbloquea:** la marca `sabeCasa`.
 
 ## A3 · Praza da Estación (`praza`)
 - **Fondo:** `img/bg-praza.png`. Fachada de la estación con reloj y rótulo, la calle Doutor Casares hacia la derecha con la casa roja y la gasolinera al fondo, árboles, farola, plano de Monforte y el **quiosco verde de Dona Concha**.
