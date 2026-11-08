@@ -755,6 +755,21 @@ async function asomarMuro() {
   else await MA('Un gato muy grande. O un vecino muy delgado. O algo que no quiero pensar antes de cenar.', 'dudoso');
   await MA('Mañana pregunto. En Monforte siempre hay alguien que lo ha visto todo... dos veces.', 'pensativo');
 }
+// a porta do taller segue co candado (a chave dáa Concha no Acto 2): Martín mira pola regaña e vese a foto real do taller baleiro
+async function espiarTaller() {
+  if (!flag('tallerEspiado')) await MA('La puerta verde del taller del señor Alfredo. Cerrada a cal y canto, con un candado que ha visto pasar a tres papas. Pero tiene una rendija...', 'pensativo');
+  await cine('img/bg-taller.jpg', flag('tallerEspiado') ? ['Martín: «Polvo, vigas y silencio. Sigue igual. Los talleres vacíos no tienen prisa.»'] : [
+    'Martín: «Vacío. Ni una máquina. Una columna de ladrillo, ventanas con hiedra y setenta años de polvo.»',
+    'Martín: «Por arriba asoman las vigas de la transmisión, todavía en su sitio. Abajo, nada que mover.»',
+    'Martín: «Rosario decía que aquí sonaba como una fábrica...»',
+  ]);
+  // evocación: o taller tal como era antes da venda de 1952 (imaxe de Oscar)
+  if (!flag('tallerEspiado')) await cine('img/taller-1952.jpg', [
+    '...o serrón da cinta, o golpe das prensas, as correas zoando nas poleas...',
+    'Martín: «Casi lo oigo. Como si las máquinas siguieran ahí, esperando turno.»',
+  ]);
+  if (!flag('tallerEspiado')) { setFlag('tallerEspiado'); toast('A chave do taller chegará máis adiante'); }
+}
 SCENES.casaPatio = {
   name: 'Casa Juana · Patio', bg: 'img/bg-casa-patio.jpg', floor: 'pedra', music: 'casa',
   walk: [[0, 372], [100, 362], [200, 346], [410, 318], [790, 318], [796, 398], [800, 470], [870, 500], [884, 540], [0, 540]],
@@ -775,7 +790,7 @@ SCENES.casaPatio = {
     { name: 'Casa', key: true, r: [0, 90, 92, 270], at: [110, 410], face: 'L', exit: ['casaCocina', [620, 500]], hint: 'L', door: true,
       look: () => MA('La puerta de atrás, de cristal. Por aquí se vuelve a la cocina... y al grifo que no da agua.', 'esceptico') },
     { name: 'Porta do taller', key: true, r: [860, 0, 72, 500], at: [836, 500], face: 'R', exit: ['__taller'], hint: 'R',
-      act: async () => { await MA('La puerta verde del taller del señor Alfredo. Cerrada a cal y canto, con un candado que ha visto pasar a tres papas.', 'pensativo'); toast('O vello taller abre nun próximo hito'); },
+      act: () => espiarTaller(),
       look: () => MA('El viejo taller, detrás de la casa. Ahí dentro estuvo la carpintería: el motor Siemens, las poleas... y setenta años de polvo.', 'pensativo') },
     { name: 'Muro branco', key: true, done: () => flag('sombraPatio'), r: [470, 156, 316, 150], at: [740, 330], face: 'B', act: () => asomarMuro(),
       look: () => MA('Un muro blanco, más alto que yo pero no tanto. Lo justo para que te entren ganas de asomarte.', 'risueno') },

@@ -97,7 +97,7 @@
 - **Suelo:** baldosa y césped. Obstáculos: el sofá con la mesita, las butacas y las macetas, con capas delanteras para que Martín pase por detrás.
 - **Salidas:**
   - Izquierda → puerta acristalada → cocina (A5b).
-  - Derecha → puerta verde → viejo taller, cerrado en este tramo (aviso de próximo hito).
+  - Derecha → puerta verde → viejo taller. **Decidido por Oscar:** en el Acto 1 sigue con candado; Martín mira por una rendija y sale a pantalla completa la foto real del taller vacío (`img/bg-taller.jpg`), y al verlo le llegan evocaciones de cómo era: la ilustración del taller lleno (`img/taller-1952.jpg`). Marca `tallerEspiado`; las siguientes veces, solo una frase. Se entra en el Acto 2 con la llave de Concha.
 - **Muro blanco (clave):** Martín se asoma para cotillear y **vuelve a ver la sombra negra misteriosa**. Si ya la vio en la rúa Morín, la relaciona con la casa pistacho. Marca `sombraPatio`.
 - **Hotspots:** muro blanco, puerta del taller, puerta de la casa, ventanas, sofá y butacas, mesita, arbolito, árboles de detrás, macetas, rejillas, bajante, césped.
 - **Personas reales:** ninguna.
