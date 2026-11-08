@@ -171,6 +171,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
   - caminos con A* sobre varios polígonos de suelo y obstáculos;
   - capas delanteras (Martín pasa por detrás de columnas, bancos y el quiosco);
   - ollo de maquinista (botón OLLO o tecla Q) con pistas en amarillo, resueltas en verde, salidas en azul y hotspots que solo existen con el ollo;
+  - doble clic o doble toque en una flecha de salida: Martín llega al instante y cambia de escenario, sin el paseo (pedido por Oscar);
   - comentarios breves sobre la cabeza y animación de hablar y de coger para Martín;
   - menú con Continuar, Nueva partida, Escoller acto, Opcións (texto rápido, música, efectos) y Créditos e fontes;
   - sonido sintetizado sin archivos: pasos según el suelo, coger, puertas, papel, música por zona y el silbato «dos largos y uno corto»;

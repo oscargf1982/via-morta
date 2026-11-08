@@ -236,7 +236,8 @@ async function interact0(hit, look) {
     return;
   }
   await run(async () => {
-    await goNear();
+    if (o.exit) E.rushExit = o;            // segundo clic/toque na mesma saída mentres camiña: chega ao instante
+    try { await goNear(); } finally { E.rushExit = null; }
     if (hit.kind === 'npc' && o.talk) { await o.talk(); return; }
     if (o.act) { await o.act(); return; }
     if (o.exit) { if (o.door) SFX.door(); await goScene(o.exit[0], o.exit[1]); return; }
@@ -251,8 +252,16 @@ function ollo() {
 
 /* ---------- entrada ---------- */
 function toLogic(e) { const r = E.cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * W, (e.clientY - r.top) / r.height * H]; }
+/* dobre clic nunha saída: Martín salta o paseo e chega xa ao punto de saída */
+function skipWalk() {
+  const A = E.actor; if (!A.walking) return;
+  const end = A.path.length ? A.path[A.path.length - 1] : [A.tx, A.ty];
+  A.x = A.tx = end[0]; A.y = A.ty = end[1]; A.path = []; A.walking = false;
+  if (A.arrive) { const r = A.arrive; A.arrive = null; r(); }
+}
 function onPointer(e, look) {
   if (E.dlg) { advanceDlg(); return; }
+  if (E.rushExit && !look && !E.paused) { const [x, y] = toLogic(e), h = hitTest(x, y); if (h && h.o === E.rushExit) { skipWalk(); return; } }
   if (E.busy || E.paused) return;
   const [x, y] = toLogic(e), hit = hitTest(x, y);
   if (e.pointerType === 'touch') { E.mouse.x = x; E.mouse.y = y; E.hover = hit; E.hoverUntil = E.t + 1.3; }
