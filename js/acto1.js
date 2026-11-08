@@ -900,7 +900,7 @@ SCENES.concelloVest = {
   scale: [360, 0.42, 540, 0.9], actorH: 300, start: [330, 400], minSpeed: 0.45,
   npcs: [
     { id: 'eladioV', name: 'Don Eladio', key: true, x: 616, y: 300, w: 60, h: 70, fixedScale: 1, at: [624, 390], face: 'B', shadow: false,
-      when: () => flag('eladioVolveu'), done: () => flag('aguaAlta'), draw: (c, t, talking) => debuxaEladio(c, 616, 300, 0.62, talking, true),
+      when: () => flag('eladioVolveu'), done: () => flag('aguaAlta'), draw: (c, t, talking) => eladioNaVentanilla(c, 616, 300, talking),
       look: () => MA('Don Eladio, en su ventanilla. Resoplando. Parece que ha corrido. Parece.', 'risueno'),
       talk: () => eladioVentanilla(), give: { contrato: () => eladioVentanilla() } },
   ],
@@ -924,21 +924,15 @@ SCENES.concelloVest = {
 
 /* ---------- B5 · O café de Eladio ----------
    Preto do Concello. Eladio (ficción) toma o café aquí mentres a ventanilla 1 di «Volvo nun momento».
-   Pendente: folla de personaxe de Eladio e o puzzle para que volva (escolle Oscar). */
+   Sprite de Eladio: folla de Oscar (sentado no taburete e correndo de costas cando sae). */
 const EL = t => say('Don Eladio', t);
-// Eladio provisional, debuxado por código ata que Oscar pase a súa folla de personaxe
-function debuxaEladio(c, x, y, k, talking, ventanilla) {
-  c.save(); c.translate(x, y); c.scale(k, k);
-  if (!ventanilla) { c.fillStyle = '#3a3f4a'; c.fillRect(-16, -62, 12, 62); c.fillRect(6, -62, 12, 62); c.fillStyle = '#222'; c.fillRect(-18, -4, 16, 6); c.fillRect(4, -4, 16, 6); }   // pernas
-  const by = ventanilla ? 0 : -60;
-  c.fillStyle = '#7d8088'; c.beginPath(); c.moveTo(-30, by); c.lineTo(-24, by - 70); c.lineTo(24, by - 70); c.lineTo(30, by); c.closePath(); c.fill();   // chaqueta gris
-  c.fillStyle = '#e8e2d0'; c.beginPath(); c.moveTo(-8, by - 70); c.lineTo(0, by - 40); c.lineTo(8, by - 70); c.fill();                                       // camisa
-  c.fillStyle = '#7a2a2a'; c.fillRect(-3, by - 66, 6, 24);                                                                                                   // gravata
-  c.fillStyle = '#e2b48c'; c.beginPath(); c.ellipse(0, by - 88, 17, 20, 0, 0, 7); c.fill();                                                                  // cabeza
-  c.fillStyle = '#b9b2a6'; c.beginPath(); c.ellipse(-15, by - 90, 5, 10, 0, 0, 7); c.ellipse(15, by - 90, 5, 10, 0, 0, 7); c.fill();                        // pelo nos lados (calvo arriba)
-  c.strokeStyle = '#222'; c.lineWidth = 2; c.strokeRect(-12, by - 92, 9, 7); c.strokeRect(3, by - 92, 9, 7); c.beginPath(); c.moveTo(-3, by - 89); c.lineTo(3, by - 89); c.stroke();   // lentes
-  c.fillStyle = '#5a3a2a'; c.fillRect(-9, by - 77 + (talking ? Math.abs(Math.sin(E.t * 14)) * 3 : 0), 18, 2);                                              // boca
-  c.restore();
+// Eladio, da folla de Oscar (img/eladio-sprite.png, tools/sprite-eladio.py): 0 sentado, 1 sentado falando, 8-15 correndo de costas
+const ELADIO_CORRE = [8, 9, 10, 11, 12, 13, 14, 15];
+// na ventanilla só se ve de cintura para arriba: debúxase a parte de arriba da cela sentada, co mostrador tapando o resto
+function eladioNaVentanilla(c, x, y, talking) {
+  const im = img('img/eladio-sprite.png'); if (!im) return;
+  const idx = talking && Math.floor(E.t * 6) % 2 ? 1 : 0, top = 69, rows = 100, h = 74, w = 160 * h / rows;
+  c.drawImage(im, idx * 160, top, 160, rows, x - w / 2, y - h, w, h);
 }
 async function eladioCafe() {
   if (!flag('eladioCafeFalou')) {
@@ -976,7 +970,13 @@ async function adiantarReloxo() {
   await MA('Las dos en punto. Y yo aquí, silbando, como quien no ha hecho nada.', 'sonriente');
   await EL('...Ás dúas?! Xa?! E sen fichar!');
   await EL('Abofé que hoxe o café pasou voando. Paguei? Non paguei. Mañá pago!');
+  // sae correndo cara á porta, de costas
+  const n = SCENES.cafeEladio.npcs.find(n => n.id === 'eladioC');
+  Object.assign(n, { fixedScale: 0, h: 305, shadow: true });
+  await npcMove(n, 696, 290, { frames: ELADIO_CORRE, fps: 12, speed: 230 });
+  SFX.door();
   setFlag('eladioVolveu');
+  Object.assign(n, { x: 640, y: 355, fixedScale: 1, h: 168, shadow: false });   // por se se volve xogar dende o principio
   await MA('Primera vez en mi vida que veo correr a un funcionario. Y ha salido sin pagar. Hoy es un día histórico.', 'risueno');
   toast('Eladio volveu á ventanilla');
 }
@@ -999,9 +999,11 @@ SCENES.cafeEladio = {
   ],
   scale: [290, 0.33, 540, 1.0], actorH: 300, start: [700, 330], minSpeed: 0.45,
   npcs: [
-    { id: 'eladioC', name: 'Don Eladio', key: true, x: 640, y: 316, w: 56, h: 80, fixedScale: 1, at: [700, 360], face: 'L', shadow: false,
-      when: () => flag('sinAgua') && !flag('eladioVolveu'), draw: (c, t, talking) => debuxaEladio(c, 640, 316, 0.7, talking, true),
-      look: () => MA('Un señor con chaqueta gris, gafas en la punta de la nariz y el periódico abierto por la esquela. Tiene cara de ventanilla. Es Eladio.', 'esceptico'),
+    // sentado no taburete do fondo (o taburete vén no sprite); os de diante tápano en parte (capa front)
+    { id: 'eladioC', name: 'Don Eladio', key: true, sheet: 'img/eladio-sprite.png', spec: { cw: 160, ch: 280, cols: 8 }, idle: 0, talkFrames: [1, 0],
+      x: 640, y: 355, w: 70, h: 168, fixedScale: 1, at: [700, 360], face: 'L', shadow: false,
+      when: () => flag('sinAgua') && !flag('eladioVolveu'),
+      look: () => MA('Un señor con traje marrón, corbata granate y cuatro pelos grises peinados a la desesperada. Mira el periódico abierto por la esquela con cara de lunes. Tiene cara de ventanilla. Es Eladio.', 'esceptico'),
       talk: () => eladioCafe(), give: { contrato: async () => { await say('Don Eladio', 'Contratos na ventanilla, rapaz. Aquí só se asinan os cafés. E pagando.'); } } },
   ],
   hotspots: [
