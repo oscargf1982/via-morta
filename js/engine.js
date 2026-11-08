@@ -176,8 +176,35 @@ function visibleNpcs() { return (E.scene.npcs || []).filter(n => !n.when || n.wh
 function npcBox(n) { const s = npcScale(n), w = n.w * s, h = n.h * s; return [n.x - w / 2, n.y - h, w, h]; }
 function hitTest(x, y) {
   for (const n of visibleNpcs()) if (inRect(x, y, npcBox(n))) return { kind: 'npc', o: n };
-  for (const h of visibleHots()) { if (h.poly ? inPoly(x, y, h.poly) : inRect(x, y, h.r)) return { kind: 'hot', o: h }; }
-  return null;
+  const hots = visibleHots(), exact = hots.filter(h => h.poly ? inPoly(x, y, h.poly) : inRect(x, y, h.r));
+  // prioridade: saída ou obxecto clave tocados de cheo > zona ampliada dunha saída real > decorado > zona ampliada dunha rúa pechada
+  const strong = exact.find(h => h.exit || h.key); if (strong) return { kind: 'hot', o: strong };
+  const near = (list) => { let best = null, bd = Infinity; for (const h of list) { const b = exitBox(h); if (inRect(x, y, b)) { const d = Math.hypot(x - (b[0] + b[2] / 2), y - (b[1] + b[3] / 2)); if (d < bd) { bd = d; best = h; } } } return best; };
+  const realExits = hots.filter(h => h.exit && h.exit[0] !== '__rua'), closed = hots.filter(h => h.exit && h.exit[0] === '__rua');
+  const e = near(realExits) || exact[0] || near(closed);
+  return e ? { kind: 'hot', o: e } : null;
+}
+// caixa de clic ampliada dunha saída: mínimo 140×140, marxe de 30 e, se toca case o bordo, chega ata el
+function exitBox(h) {
+  let [x, y, w, hh] = boxOf(h); const M = 30, MIN = 140;
+  if (w < MIN) { x -= (MIN - w) / 2; w = MIN; } if (hh < MIN) { y -= (MIN - hh) / 2; hh = MIN; }
+  x -= M; y -= M; w += 2 * M; hh += 2 * M;
+  if (x < 70) { w += x; x = 0; } if (y < 70) { hh += y; y = 0; } if (x + w > W - 70) w = W - x; if (y + hh > H - 70) hh = H - y;
+  x = Math.max(0, x); y = Math.max(0, y); return [x, y, Math.min(w, W - x), Math.min(hh, H - y)];
+}
+// frecha suave en cada saída real (as rúas pechadas, exit '__rua', non a levan), para saber sempre por onde se marcha
+function drawExitHints() {
+  const c = E.ctx, a = 0.75 + 0.25 * Math.sin(E.t * 3);
+  for (const h of visibleHots()) {
+    if (!h.exit || h.exit[0] === '__rua' || h.noHint) continue;
+    const [x, y, w, hh] = boxOf(h), cx = x + w / 2, cy = y + hh / 2;
+    const dir = h.hint || (cx < W * 0.12 ? 'L' : cx > W * 0.88 ? 'R' : cy > H * 0.82 ? 'D' : 'U');
+    const ang = { R: 0, D: Math.PI / 2, L: Math.PI, U: -Math.PI / 2 }[dir];
+    const px = Math.max(26, Math.min(W - 26, cx)), py = Math.max(26, Math.min(H - 26, cy));
+    c.save(); c.translate(px, py); c.rotate(ang); c.globalAlpha = a; c.lineJoin = 'round'; c.lineCap = 'round';
+    c.beginPath(); c.moveTo(-11, -19); c.lineTo(11, 0); c.lineTo(-11, 19);
+    c.lineWidth = 13; c.strokeStyle = '#0b0c0e'; c.stroke(); c.lineWidth = 6; c.strokeStyle = '#9fe0ff'; c.stroke(); c.restore();
+  }
 }
 function scaleAt(y) { const s = E.scene.scale || [300, 0.6, 540, 1]; const k = Math.max(0, Math.min(1, (y - s[0]) / (s[2] - s[0]))); return s[1] + (s[3] - s[1]) * k; }
 function npcScale(n) { return n.fixedScale || scaleAt(n.y); }
@@ -352,7 +379,7 @@ function render() {
   if (E.actor.visible) list.push({ y: E.actor.y + 0.01, f: drawActor });
   list.sort((a, b) => a.y - b.y).forEach(o => o.f());
   if (S.drawFront) S.drawFront(c, E.t);
-  if (E.olloT > 0) drawOllo();
+  if (E.olloT > 0) drawOllo(); else if (!E.dlg && !E.busy && !S.noActor) drawExitHints();
   drawBarks();
   // etiqueta do cursor
   const hv = E.hover; let label = '';
