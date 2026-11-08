@@ -22,71 +22,51 @@ PORTRAIT_COLORS['Iván Nogal'] = '#d8ec2a';
 /* utilidades de debuxo para letreiros (o texto vai no xogo, non no PNG) */
 function signText(c, t, x, y, size, col = '#f2ead8', font = 'Georgia, serif') { c.font = `700 ${size}px ${font}`; c.textAlign = 'center'; c.fillStyle = col; c.fillText(t, x, y); c.textAlign = 'left'; }
 
-/* ---------- A1 · Andén 1 ---------- */
-const TREN = { x: 0, gone: false };
-function drawTren(c) {
-  if (flag('trenSaiu') && TREN.gone) return;
-  const x0 = TREN.x;
-  for (let k = 0; k < 3; k++) {
-    const x = x0 + 160 + k * 330;
-    if (x > W || x + 320 < 0) continue;
-    c.fillStyle = '#e9ecef'; c.fillRect(x, 196, 320, 170); c.fillStyle = '#9aa1a8'; c.fillRect(x + 4, 186, 312, 12);
-    c.fillStyle = '#7a1f5c'; c.fillRect(x, 330, 320, 12); c.fillStyle = '#c2185b'; c.fillRect(x, 342, 320, 5);
-    c.fillStyle = '#26323c'; for (let i = 0; i < 5; i++) if (i !== 2) c.fillRect(x + 18 + i * 60, 226, 46, 56);
-    c.fillStyle = '#b8bec4'; c.fillRect(x + 138, 218, 44, 128); c.fillStyle = '#26323c'; c.fillRect(x + 144, 226, 14, 56); c.fillRect(x + 162, 226, 14, 56);
-    c.fillStyle = '#2a2a2e'; c.fillRect(x + 20, 366, 70, 8); c.fillRect(x + 230, 366, 70, 8);
-    if (k === 0) { c.fillStyle = '#e9ecef'; c.beginPath(); c.moveTo(x, 196); c.lineTo(x - 30, 236); c.lineTo(x - 30, 366); c.lineTo(x, 366); c.fill(); c.fillStyle = '#26323c'; c.beginPath(); c.moveTo(x - 4, 210); c.lineTo(x - 26, 240); c.lineTo(x - 26, 280); c.lineTo(x - 4, 280); c.fill(); c.fillStyle = '#ffe9a0'; c.fillRect(x - 28, 340, 8, 6); }
-  }
-}
+/* ---------- A1 · Andén 1 ----------
+   Fondo: ilustración do andén enviada por Oscar (img/bg-anden-estacion.jpg).
+   O rexional está pintado no fondo: na intro queda parado na vía 1. */
 function horn() { SFX.tone(294, 0.55, 'square', 0.05); SFX.tone(370, 0.55, 'square', 0.05); SFX.tone(294, 0.7, 'square', 0.05, 0.75); SFX.tone(370, 0.7, 'square', 0.05, 0.75); }
 async function introAnden() {
-  TREN.x = 0; TREN.gone = false; face('F');
+  face('L');
   await MA('Monforte de Lemos. Andén 1. Veinte años diciendo «algún día vuelvo»... y ha sido un lunes. Un lunes, encima.', 'pensativo');
-  horn(); await sleep(400);
-  const t0 = E.t; while (E.t - t0 < 3.6) { const k = (E.t - t0) / 3.6; TREN.x = -k * k * 1500; await sleep(16); }
-  TREN.gone = true; setFlag('trenSaiu');
-  face('R');
-  await MA('Ahí se va el regional. Ha llegado a su hora. Que conste en acta, que no pasa todos los días.', 'risueno');
+  horn(); await sleep(600);
+  await MA('El regional se queda ahí, resoplando. Ha llegado a su hora. Que conste en acta, que no pasa todos los días.', 'risueno');
+  setFlag('trenSaiu');
   toast('Toca para camiñar · mantén premido para mirar · OLLO amosa o importante');
 }
 
 SCENES.anden = {
-  name: 'Andén 1', bg: 'img/bg-anden.png', music: 'estacion', floor: 'pedra',
-  walk: [[110, 412], [955, 412], [955, 535], [30, 535], [110, 450]],
-  holes: [[[512, 444], [650, 444], [650, 466], [512, 466]], [[288, 452], [330, 452], [330, 474], [288, 474]], [[708, 452], [750, 452], [750, 474], [708, 474]], [[840, 446], [876, 446], [876, 468], [840, 468]]],
+  name: 'Andén 1', bg: 'img/bg-anden-estacion.jpg', music: 'estacion', floor: 'pedra',
+  walk: [[0, 400], [210, 388], [300, 362], [560, 331], [634, 321], [652, 321], [800, 538], [0, 538]],
+  holes: [[[448, 418], [502, 418], [502, 442], [448, 442]], [[538, 366], [572, 366], [572, 382], [538, 382]], [[490, 380], [528, 380], [528, 398], [490, 398]]],
   front: [
-    { y: 474, r: [286, 40, 46, 432] }, { y: 474, r: [706, 40, 46, 432] },     // columnas da marquesiña
-    { y: 466, r: [510, 400, 144, 64] },                                       // banco
-    { y: 468, r: [842, 420, 32, 46] },                                        // papeleira
+    { y: 440, r: [448, 104, 54, 336] },     // columna 1
+    { y: 380, r: [538, 188, 34, 192] },     // columna 2
+    { y: 354, r: [578, 224, 22, 130] },     // columna 3
+    { y: 396, r: [490, 336, 38, 60] },      // papeleira
   ],
-  scale: [412, 0.52, 535, 0.72], actorH: 300, start: [250, 470],
-  draw(c) {
-    drawTren(c);
-    // reloxo e letreiro colgados da marquesiña
-    c.fillStyle = '#1e2a24'; c.fillRect(858, 40, 4, 22); c.fillRect(420, 40, 4, 22); c.fillRect(616, 40, 4, 22);
-    c.fillStyle = '#f4f0e4'; c.beginPath(); c.arc(860, 84, 22, 0, 7); c.fill(); c.strokeStyle = '#1e2a24'; c.lineWidth = 4; c.stroke();
-    const m = (E.t / 60) % 1; c.lineWidth = 2; c.beginPath(); c.moveTo(860, 84); c.lineTo(860 + Math.sin(m * 6.28) * 16, 84 - Math.cos(m * 6.28) * 16); c.moveTo(860, 84); c.lineTo(864, 72); c.stroke();
-    c.fillStyle = '#1f3a5a'; c.fillRect(396, 60, 244, 34); c.strokeStyle = '#e8e2d0'; c.lineWidth = 2; c.strokeRect(399, 63, 238, 28);
-    signText(c, 'MONFORTE DE LEMOS', 518, 85, 20, '#f2ead8', '"Trebuchet MS", sans-serif');
-    c.fillStyle = '#e8e2d0'; c.fillRect(40, 214, 30, 22); signText(c, '1', 55, 232, 18, '#1f3a5a', '"Trebuchet MS", sans-serif');
-  },
+  // perspectiva da imaxe: a altura medra en liña recta co y (horizonte arredor de y 305)
+  scale: [350, 0.22, 540, 1.13], actorH: 300, start: [600, 450], minSpeed: 0.4,
   hotspots: [
-    { name: 'Vestíbulo', key: true, poly: [[12, 184], [82, 204], [82, 430], [12, 474]], at: [118, 470], face: 'L', exit: ['vestibulo', [70, 470]], door: true,
+    { name: 'Vestíbulo', key: true, r: [190, 216, 48, 145], at: [214, 386], face: 'B', exit: ['vestibulo', [280, 520]], door: true,
       look: () => MA('La puerta del vestíbulo. Por ahí se sale a Monforte. O se entra, según de qué lado tengas la maleta.', 'neutro') },
-    { name: 'Tren rexional', r: [100, 186, 860, 188], when: () => !TREN.gone,
+    { name: 'Portas azuis', r: [0, 170, 46, 214], look: () => MA('Puertas azules, una detrás de otra. La mitad cerradas desde hace años: almacenes, oficinas... Y una era la cafetería.', 'pensativo') },
+    { name: 'Portas azuis', r: [296, 230, 30, 118], look: () => MA('Otra puerta azul. Antes por aquí entraba y salía gente con prisa. Ahora entra y sale el silencio, y sin billete.', 'pensativo') },
+    { name: 'Tren rexional', r: [650, 190, 230, 216], at: [700, 440], face: 'R',
       look: () => MA('El regional en el que he venido. Tres horas mirando por la ventana y ensayando qué le digo a mi madre el domingo.', 'pensativo'),
       act: () => bark('Ya me he bajado. Volver a subir sería mucho dramatismo para un lunes.') },
-    { name: 'Reloxo do andén', r: [834, 58, 52, 52], look: () => MA('El reloj del andén. En una estación, el reloj no da la hora: da órdenes.', 'risueno') },
-    { name: 'Letreiro', r: [394, 58, 248, 38], look: () => MA('«Monforte de Lemos». Lo he leído mil veces desde la cabina, a sesenta por hora. Parado se lee mejor. Y pesa más.', 'pensativo') },
-    { name: 'Torre do castelo', r: [356, 96, 160, 54], look: () => MA('La torre del castillo de San Vicente vigilando la estación. Desde allí arriba se ve todo Monforte. Desde aquí abajo se ve, sobre todo, la cuesta.', 'sonriente') },
-    { name: 'Cocheras do depósito', r: [576, 150, 370, 132], look: async () => { await MA('Las cocheras del depósito. Dicen que ahí dentro duerme la Mikado, la vieja locomotora de vapor.', 'pensativo'); await MA('Mi destino es la nave de al lado: la de las máquinas que todavía se mueven.', 'sonriente'); } },
-    { name: 'Vías', r: [100, 268, 860, 100], look: () => MA('Vías y más vías. Monforte fue el gran nudo ferroviario de Galicia. Hoy sigue siendo nudo, aunque con menos cuerda.', 'pensativo') },
-    { name: 'Banco', r: [512, 402, 140, 62], look: () => MA('Un banco de andén. Aquí se han despedido más gallegos que en el puerto de Vigo. Y se han reencontrado bastantes menos.', 'pensativo'),
+    { name: 'Letreiro', r: [214, 0, 150, 136], look: () => MA('«Monforte de Lemos». Lo he leído mil veces desde la cabina, a sesenta por hora. Parado se lee mejor. Y pesa más.', 'pensativo') },
+    { name: 'Banco', r: [80, 320, 122, 64], look: () => MA('Un banco de andén. Aquí se han despedido más gallegos que en el puerto de Vigo. Y se han reencontrado bastantes menos.', 'pensativo'),
       act: () => bark('Si me siento ahora, no me levanto hasta el regional de vuelta.') },
-    { name: 'Papeleira', r: [842, 420, 32, 46], look: () => MA('Una papelera. Dentro, un billete usado a Ourense y media empanada. La empanada me mira. No.', 'esceptico') },
-    { name: 'Liña amarela', r: [100, 386, 860, 16], look: () => MA('La línea amarilla. Años respetándola desde la cabina. No voy a empezar a pisarla ahora que voy a pie.', 'convencido') },
-    { name: 'Columna', r: [290, 40, 38, 410], look: () => MA('Columnas de hierro fundido. Han aguantado más inviernos que yo, y están mejor pintadas.', 'risueno') },
-    { name: 'Columna', r: [710, 40, 38, 410], look: () => MA('Otra columna. Si la marquesina fuese un tren, estas serían las ruedas. Y nunca descarrilan.', 'neutro') },
+    { name: 'Banco', r: [336, 315, 60, 34], look: () => MA('Otro banco, más al fondo. Para los que prefieren despedirse sin público.', 'neutro') },
+    { name: 'Papeleira', r: [492, 338, 34, 58], look: () => MA('Una papelera. Dentro, un billete usado a Ourense y media empanada. La empanada me mira. No.', 'esceptico') },
+    { name: 'Columna', r: [452, 104, 46, 312], look: () => MA('Columnas de hierro fundido con el pie azul. Han aguantado más inviernos que yo, y están mejor pintadas.', 'risueno') },
+    { name: 'Columnas', r: [540, 190, 70, 170], look: () => MA('Una fila de columnas que se pierde al fondo. Si la marquesina fuese un tren, estas serían las ruedas. Y nunca descarrilan.', 'neutro') },
+    { name: 'Marquesiña', r: [380, 0, 500, 110], look: () => MA('La marquesina del andén. Tablas, hierro y años. Debajo de ella ha esperado medio Monforte.', 'pensativo') },
+    { name: 'Farol', r: [256, 186, 24, 32], look: () => MA('Un farol en la pared. De noche alumbra el andén para que nadie se pierda. A mí me ha costado veinte años, pero he llegado.', 'sonriente') },
+    { name: 'Vías', r: [740, 400, 220, 140], look: () => MA('Vías y más vías. Monforte fue el gran nudo ferroviario de Galicia. Hoy sigue siendo nudo, aunque con menos cuerda.', 'pensativo') },
+    { name: 'Liña amarela', poly: [[652, 320], [668, 320], [818, 540], [792, 540]], look: () => MA('La línea amarilla. Años respetándola desde la cabina. No voy a empezar a pisarla ahora que voy a pie.', 'convencido'), act: () => bark('Detrás de la línea amarilla. Que uno tiene una reputación.') },
+    { name: 'Andén de enfronte', r: [880, 240, 80, 120], look: () => MA('El andén de enfrente, con sus farolas y el monte detrás. Desde aquí parece otro pueblo. Es el mismo, pero al otro lado de las vías.', 'pensativo') },
   ],
 };
 
@@ -136,44 +116,54 @@ async function ivanTalk() {
     }
   }
 }
-const DOC_MURAL = `<img src="img/mural-estacion.jpg" alt="Mural da estación de Monforte"><p class="sub">Mural do vestíbulo da estación de Monforte. Cándido Fernández Inchaurbe, 1954. Restaurado por Adif a petición de Apatrigal.</p>`;
+const DOC_MURAL = `<img src="img/mural-primer-plano.jpg" alt="Martín e Iván diante do mural da estación"><p class="sub">Mural do vestíbulo da estación de Monforte (Cándido Fernández Inchaurbe, 1954; restaurado por Adif a petición de Apatrigal). Ilustración do xogo baseada no mural real.</p>`;
 
+/* Fondo: ilustración do vestíbulo enviada por Oscar (img/bg-vestibulo-estacion.jpg, 3:2 recortada a 16:9).
+   Dereita: porta azul á praza. Esquerda, á beira do radiador: porta ao andén 1, cara á cámara. */
 SCENES.vestibulo = {
-  name: 'Vestíbulo da estación', bg: 'img/bg-vestibulo.png', music: 'estacion', floor: 'pedra',
-  walk: [[20, 346], [940, 346], [955, 535], [10, 535]],
-  holes: [[[396, 404], [566, 404], [566, 434], [396, 434]]],
-  front: [{ y: 432, r: [396, 366, 172, 66] }],
-  scale: [346, 0.62, 535, 0.85], actorH: 300, start: [480, 470],
-  onEnter: async () => { if (flag('vestibuloVisto')) return; setFlag('vestibuloVisto'); await bark('El vestíbulo. Huele a café de máquina y a despedida. Como siempre.'); },
-  draw(c) {
-    c.fillStyle = '#ffb000'; c.font = '700 10px monospace';
-    ['SAÍDAS', 'OURENSE', 'LUGO', 'A CORUÑA', 'LEÓN'].forEach((t, i) => { c.fillStyle = i ? '#ffb000' : '#f2ead8'; c.fillText(t, 678, 92 + i * 7.5); });
-    if (Math.floor(E.t * 2) % 2) { c.fillStyle = '#ffb000'; c.fillRect(732, 97, 4, 4); }
-    c.fillStyle = '#f2ead8'; c.font = '700 13px "Trebuchet MS", sans-serif'; c.fillText('BILLETES', 64, 113);
-    c.fillStyle = '#f2ead8'; c.font = '700 13px "Trebuchet MS", sans-serif'; c.fillText('SAÍDA · PRAZA', 788, 80);
-    c.fillStyle = '#2a2a2e'; c.fillRect(122, 248, 0, 0);
+  name: 'Vestíbulo da estación', bg: 'img/bg-vestibulo-estacion.jpg', crop: [0, 110, 1536, 864], music: 'estacion', floor: 'pedra',
+  walk: [[232, 384], [420, 358], [625, 330], [740, 334], [960, 370], [960, 538], [246, 538], [238, 470]],
+  holes: [[[646, 384], [726, 384], [726, 412], [646, 412]]],
+  front: [{ y: 410, r: [646, 0, 80, 412] }],          // piar de pedra: Martín pasa por detrás
+  scale: [330, 0.56, 538, 1.2], actorH: 300, start: [300, 500],
+  onEnter: async () => {
+    if (flag('vestibuloVisto')) return; setFlag('vestibuloVisto');
+    await MA('La última vez que pasé por aquí había cafetería y un quiosco de revistas aquí mismo, en la estación. Olía a café y a periódico recién llegado.', 'pensativo');
+    await MA('Ahora, todo cerrado. Queda la máquina de billetes, que tampoco da conversación.', 'preocupado');
   },
   hotspots: [
-    { name: 'Mural de 1954', key: true, r: [296, 50, 372, 212], at: [480, 370], face: 'B', done: () => flag('muralExplicado'),
+    { name: 'Andén 1', key: true, r: [0, 478, 244, 62], at: [256, 528], face: 'F', exit: ['anden', [214, 392]], door: true,
+      look: () => MA('La puerta del andén, a mi espalda. Por ahí he entrado yo hace un momento, con veinte años de retraso.', 'risueno') },
+    { name: 'Praza da Estación', key: true, r: [900, 126, 60, 228], at: [930, 380], face: 'R', exit: ['praza', [812, 380]], door: true,
+      look: () => MA('La puerta azul que da a la plaza. Azul Renfe, para que nadie se olvide de quién es la casa.', 'sonriente') },
+    { name: 'Mural de 1954', key: true, r: [494, 113, 128, 110], at: [560, 350], face: 'B', done: () => flag('muralExplicado'),
       look: async () => { await MA('El mural del vestíbulo: Galicia entera, con las vías en azul y Monforte en el centro, como un ombligo con estación.', 'pensativo'); await MA('Un tren, un peregrino, gente que se va... Cuando era crío pensaba que el mapa era de verdad y que el tren salía de la pared.', 'sonriente'); },
       act: async () => { await showDoc(DOC_MURAL); await MA('De cerca se ven los años. Y los retoques. Como en todos nosotros.', 'pensativo'); } },
-    { name: 'Sinatura do mural', olloOnly: 'sinaturaVista', key: true, r: [346, 226, 70, 26], at: [400, 360], face: 'B',
+    { name: 'Sinatura do mural', olloOnly: 'sinaturaVista', key: true, r: [494, 200, 40, 24], at: [540, 350], face: 'B',
       look: () => MA('Abajo, en una esquina, una firma: «Inchaurbe, 1954». El ojo de maquinista también sirve para leer letra pequeña. Sobre todo la de los contratos.', 'orgulloso') },
-    { name: 'Taquillas', r: [16, 96, 192, 146], at: [140, 380], face: 'L',
-      look: () => MA('Las taquillas. Una abierta y otra cerrada. La proporción de siempre.', 'esceptico'),
-      act: () => bark('Billete ya tengo. Lo que no tengo es casa.') },
-    { name: 'Panel de saídas', r: [672, 80, 74, 48], look: () => MA('El panel de salidas. Ourense, Lugo, A Coruña, León... De aquí sale uno hacia casi todas partes. Volver ya es otra cosa.', 'pensativo') },
-    { name: 'Máquina de café', r: [672, 192, 52, 108], at: [690, 370], face: 'B',
-      look: () => MA('Una máquina de café que promete «capuchino». Yo prometí volver pronto a Galicia y tardé veinte años. No soy quién para juzgarla.', 'avergonzado'),
-      act: () => bark('Le doy un golpe cariñoso. Ni café ni cambio. Un clásico.') },
-    { name: 'Extintor', r: [260, 230, 20, 48], look: () => MA('Un extintor, revisado este año. Esta estación tiene más al día los extintores que yo las revisiones del coche.', 'risueno') },
-    { name: 'Carteis', r: [298, 270, 360, 30], look: () => MA('Carteles de obras, avisos y una excursión a la Ribeira Sacra con un señor sonriendo a un racimo de uvas. Muy convencido, el señor.', 'risueno') },
-    { name: 'Banco', r: [398, 368, 168, 64], look: () => MA('Un banco de madera. Desgastado justo donde se sienta la gente a mirar el mural. O sea, por todas partes.', 'neutro') },
-    { name: 'Praza da Estación', key: true, r: [762, 60, 182, 280], at: [850, 400], face: 'B', exit: ['praza', [812, 380]], door: true },
-    { name: 'Andén 1', r: [0, 250, 44, 230], at: [36, 470], face: 'L', exit: ['anden', [130, 470]], door: true },
+    { name: 'Venta de billetes', r: [110, 141, 322, 165], at: [300, 392], face: 'B',
+      look: () => MA('La taquilla. Detrás del cristal, dos ordenadores y una silla vacía. Hasta la silla está de descanso.', 'esceptico'),
+      act: () => bark('Billete ya tengo. Lo que me falta es casa.') },
+    { name: 'Máquina de billetes', r: [440, 226, 34, 125], at: [456, 368], face: 'B',
+      look: () => MA('Una máquina de billetes de Renfe. Pantalla táctil que no reconoce mi dedo. Ni mi DNI. Ni mi existencia.', 'frustrado'),
+      act: () => bark('Me pide «seleccione destino». Ojalá fuera tan fácil.') },
+    { name: 'Extintor', r: [478, 236, 20, 42], look: () => MA('Un extintor, revisado este año. Esta estación tiene más al día los extintores que yo las revisiones del coche.', 'risueno') },
+    { name: 'Avisos', r: [494, 249, 28, 28], look: () => MA('Avisos de horarios, obras y objetos perdidos. Si alguien encuentra mis veinte años fuera, que llame.', 'pensativo') },
+    { name: 'Avisos', r: [598, 249, 24, 24], look: () => MA('Otro aviso. Letra pequeña, sello grande. Burocracia ferroviaria en estado puro.', 'esceptico') },
+    { name: 'Avisos', r: [795, 226, 46, 32], look: () => MA('Un plano de evacuación. «Vostede está aquí». Por lo menos alguien lo tiene claro.', 'risueno') },
+    { name: 'Bancos', r: [48, 400, 180, 76], look: () => MA('Bancos de metal, fríos hasta en agosto. Desde aquí se espera mirando el mural, aunque no quieras.', 'neutro'),
+      act: () => bark('Si me siento, me quedo. Y tengo unas llaves que recoger.') },
+    { name: 'Papeleira', r: [92, 314, 74, 82], look: () => MA('Una papelera de acero. Dentro, un billete a Ourense y el envoltorio de un bocadillo. La arqueología de una tarde cualquiera.', 'esceptico') },
+    { name: 'Radiador', r: [0, 406, 80, 70], look: () => MA('Un radiador de hierro fundido. Calienta poco, pero con convicción.', 'risueno') },
+    { name: 'Radiador', r: [782, 281, 74, 60], look: () => MA('Otro radiador, este junto a la puerta. Calienta a los que se van, que son los que más frío pasan.', 'pensativo') },
+    { name: 'Piar', r: [650, 6, 72, 372], look: () => MA('Un pilar de piedra sujetando las vigas desde antes de que yo naciera. Sin quejarse. Ya me gustaría a mí.', 'sonriente') },
+    { name: 'Fiestra', r: [714, 156, 46, 126], look: () => MA('Por la ventana se ve la plaza y los coches aparcados. Monforte, a través de un cristal limpio.', 'neutro') },
+    { name: 'Bandas amarelas', r: [418, 386, 88, 30], look: () => MA('Bandas táctiles en el suelo, para quien no ve: te llevan a la taquilla sin perderte. Ojalá hubiera unas así para volver a casa.', 'pensativo'), act: () => walkTo(462, 400) },
+    { name: 'Bandas amarelas', r: [598, 451, 104, 60], look: () => MA('Más bandas táctiles. Un camino que no se pierde nunca. Envidia sana.', 'pensativo'), act: () => walkTo(650, 480) },
+    { name: 'Teito', r: [90, 0, 550, 60], look: () => MA('Vigas de madera y fluorescentes. Lo antiguo sujetando lo moderno. Como en mi familia.', 'risueno') },
   ],
   npcs: [
-    { id: 'ivan', name: 'Iván Nogal', key: true, sheet: 'img/ivan-sprite.png', spec: { cw: 150, ch: 240, cols: 2 }, idle: 0, talkFrames: [1, 0], x: 720, y: 404, w: 70, h: 296, at: [630, 420], face: 'R',
+    { id: 'ivan', name: 'Iván Nogal', key: true, sheet: 'img/ivan-sprite.png', spec: { cw: 150, ch: 240, cols: 2 }, idle: 0, talkFrames: [1, 0], x: 590, y: 352, w: 70, h: 296, at: [528, 368], face: 'R',
       done: () => flag('sabeCasa'),
       look: () => MA('Chaleco reflectante, pelo de cepillo y cara de saberse los horarios de memoria. Los de 1950, probablemente.', 'sonriente'),
       talk: () => ivanTalk(),
@@ -253,9 +243,9 @@ SCENES.praza = {
   // perspectiva forte: o fondo da praza queda lonxe
   scale: [350, 0.16, 540, 0.97], actorH: 300, start: [800, 420], minSpeed: 0.45,
   hotspots: [
-    { name: 'Estación', key: true, r: [786, 266, 56, 100], at: [812, 380], face: 'R', exit: ['vestibulo', [850, 420]], door: true,
+    { name: 'Estación', key: true, r: [786, 266, 56, 100], at: [812, 380], face: 'R', exit: ['vestibulo', [910, 400]], door: true,
       look: () => MA('La puerta de la estación. Azul Renfe de toda la vida. Por ahí he salido yo con veinte años y una mochila.', 'pensativo') },
-    { name: 'Estación', r: [900, 420, 60, 118], at: [930, 470], exit: ['vestibulo', [850, 420]], door: true },
+    { name: 'Estación', r: [900, 420, 60, 118], at: [930, 470], exit: ['vestibulo', [910, 400]], door: true },
     { name: 'Rótulo da estación', r: [712, 188, 248, 72], look: () => MA('«Monforte de Lemos», en letras bien grandes. Por si alguien se baja del tren creyendo que esto es Ourense.', 'risueno') },
     { name: 'Placa', r: [852, 288, 36, 32], look: () => MA('Una placa en la fachada. Desde aquí no la leo, y de cerca el bronce se ha comido la mitad de las letras.', 'esceptico') },
     { name: 'Quiosco', key: true, r: [0, 196, 182, 276], at: [262, 486], face: 'L', act: () => conchaQuiosco(),

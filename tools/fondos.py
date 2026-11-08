@@ -318,4 +318,4 @@ def ivan():
 
 
 if __name__ == '__main__':
-    anden(); vestibulo(); mapa(); ivan()   # praza(): substituída polo fondo de Oscar (bg-praza-estacion.jpg)
+    mapa(); ivan()   # anden(), vestibulo() e praza(): substituídas polos fondos de Oscar
