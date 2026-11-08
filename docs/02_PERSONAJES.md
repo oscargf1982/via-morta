@@ -8,7 +8,7 @@
 - **Aficiones:**
   - corredor de fondo; de chaval ganaba todos los cross escolares;
   - del **Dépor** hasta la médula;
-  - respeta la **Champions**: martes y miércoles a las 20:00 en la Fraternal con el Tío David, y a las 23:00, a dormir.
+  - respeta la **Champions**: martes y miércoles a las 20:00 en la Fraternal con el Tío Demetrio, y a las 23:00, a dormir.
 - **Carácter:** retranca, humor LucasArts y observador, no detective. Se ríe de sí mismo antes que de nadie. Tiene «ojo de maquinista»: años mirando señales le hacen fijarse en lo que otros no ven.
 - **Su arco:**
   - Llega pensando que Monforte está viejo y medio vacío.
@@ -62,9 +62,9 @@
 - Juega a la brisca en la Fraternal: «Copas! E arrastro!». Gestiona las llaves y el alquiler de la Casa Juana para sus dueños y le firma el contrato a Martín.
 - Le encanta contar la historia de la casa: el señor Alfredo, Juana, el motor Siemens, la venta de 1952. Es **prima de Xoán** por parte de padre (los Carballeira), sin sangre Nogal; pendiente de que Oscar lo confirme. Antes era su tía, pero con 40 años y él con 46 no encajaba.
 
-## Tío David (la Fraternal)
+## Tío Demetrio (la Fraternal)
 - Compañero de Champions de Martín. Cuenta mil veces su gol al Ourense en Tercera, «un domingo de sol».
-- Xoán le corrige: «Foi en mércores, David. E chovía». Le apuesta cinco euros a todo.
+- Xoán le corrige: «Foi en mércores, Demetrio. E chovía». Le apuesta cinco euros a todo.
 - **Aspecto (hoja de Oscar, `assets/personajes/tio-david-hoja.png`):** pelo cano alborotado, bigote blanco, gafas de pasta negras, polo azul claro con un escudo verde en el pecho, vaqueros oscuros con cinturón marrón y zapatos marrones.
 - **Recursos gráficos:** `david-sprite.png` (celdas de 160×280, 8 columnas: 0 frente, 1 perfil derecha, 2 espalda, 3 tres cuartos derecha, 4 habla señalando, 5 brazos cruzados, 6 pensativo, 7 sonriendo, 8 neutro, 9 boca abierta de 3; mirando a la izquierda = las mismas celdas con `flip: true`) y retrato `david-face.png`. Se regeneran con `python3 tools/sprite-david.py`. No hay ciclo de andar.
 

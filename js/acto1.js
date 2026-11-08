@@ -2,7 +2,7 @@
 /* ==========================================================
    VÍA MORTA · Acto 1 «O regreso» (tramo M1)
    A1 Andén 1 → A2 Vestíbulo (Xoán e o mural) → A3 Praza da Estación → A3b segunda pantalla (quiosco de Concha)
-   → A4b Concepción Arenal (tío David) → B3 a Fraternal (Rosario) → A4 Doutor Casares, 211
+   → A4b Concepción Arenal (tío Demetrio) → B3 a Fraternal (Rosario) → A4 Doutor Casares, 211
    + pantalla de mapa de Monforte.
    Fichas dos escenarios: docs/05_FICHAS_ESCENARIOS.md
    Fondos PROVISIONAIS xerados con tools/fondos.py (pendentes de fotos de Oscar).
@@ -297,7 +297,7 @@ async function lerXornal() {
   if (flag('sabePalabra')) return MA('Siete horizontal: PICHICHI. Ocho letras. Lo escribiría, pero no tengo bolígrafo. Ese es justo el problema.', 'risueno');
   if (!flag('sabeCrucigrama')) return MA('El periódico de hoy. En portada, obras. En deportes, el Dépor. Leo deportes primero, como un caballero.', 'sonriente');
   await MA('Pasatiempos. Siete horizontal: «Oito letras: o máximo goleador dunha liga».', 'pensativo');
-  await MA('De fútbol sé lo justo para no hacer el ridículo en la Champions. Esto es cosa del tío David.', 'dudoso');
+  await MA('De fútbol sé lo justo para no hacer el ridículo en la Champions. Esto es cosa del tío Demetrio.', 'dudoso');
 }
 async function xornalFraternal() {
   if (hasItem('xornal')) return MA('Ya tengo periódico. Dos serían acaparar, y en un bar eso está mal visto.', 'neutro');
@@ -318,7 +318,7 @@ async function davidPichichi() {
 async function crucigramaResolto() {
   await MA('Siete horizontal, Concha: PICHICHI. Ocho letras. Me lo ha chivado el mismísimo pichichi de la liga pirata de Monforte.', 'orgulloso');
   await CO('Pichichi! P, i, c, h... cabe! E eu poñendo «goleador», que tamén ten oito e non me cadraba con nada.');
-  await CO('E o pichichi ese é David, non? Xa mo contou. Trinta veces. Cada vez con máis goles.');
+  await CO('E o pichichi ese é Demetrio, non? Xa mo contou. Trinta veces. Cada vez con máis goles.');
   await CO('Toma o bolígrafo. Pero devólvemo, eh? É o da sorte: con el acertei catorce na quiniela. Ben, trece.');
   give('boli'); setFlag('boliDado');
   await MA('Un crucigrama a cambio de un bolígrafo. En Monforte, así se firman los contratos.', 'sonriente');
@@ -376,12 +376,12 @@ SCENES.praza2 = {
 /* ---------- A4b · Rúa Concepción Arenal (exterior da Fraternal) ----------
    Fondo: ilustración de Oscar (img/bg-concepcion-arenal.jpg, recortada a 16:9).
    A rúa afástase cara á esquerda: seguindo recto chégase á rúa Morín (a gasolineira).
-   Fóra da Fraternal está o tío David contando batallitas; se lle preguntas por Rosario, dálle paso á porta. */
-const DA = t => say('Tío David', t);
+   Fóra da Fraternal está o tío Demetrio contando batallitas; se lle preguntas por Rosario, dálle paso á porta. */
+const DA = t => say('Tío Demetrio', t);
 async function davidTalk() {
   if (!flag('davidSauda')) {
     await DA('...e entón collo o balón no medio do campo, e... Martín?! O de Vilatán! Volviches, rapaz!');
-    await MA('He vuelto, David. Y veo que el gol sigue entrando.', 'sonriente');
+    await MA('He vuelto, Demetrio. Y veo que el gol sigue entrando.', 'sonriente');
     await DA('Cada día un pouco mellor. Coma o viño.');
     setFlag('davidSauda');
   } else await DA('Outra vez por aquí? Iso é que che falta unha batallita.');
@@ -389,10 +389,10 @@ async function davidTalk() {
     const opts = [
       ...(flag('objetivoContrato') && !flag('davidAmparo') ? [{ t: '¿Has visto a Rosario Higueras?', k: 'amparo' }] : []),
       ...(flag('davidAmparo') ? [{ t: '¿Rosario sigue dentro?', k: 'amparo2' }] : []),
-      ...(flag('sabeCrucigrama') && hasItem('xornal') && !flag('sabePalabra') ? [{ t: 'David, tú que sabes de fútbol: ¿me ayudas con el crucigrama?', k: 'pichichi' }] : []),
+      ...(flag('sabeCrucigrama') && hasItem('xornal') && !flag('sabePalabra') ? [{ t: 'Demetrio, tú que sabes de fútbol: ¿me ayudas con el crucigrama?', k: 'pichichi' }] : []),
       { t: '¿Qué tal el fútbol?', k: 'gol' },
       { t: '¿Y la Champions?', k: 'champions' },
-      { t: 'Hasta luego, David.', k: 'adeus' },
+      { t: 'Hasta luego, Demetrio.', k: 'adeus' },
     ];
     const k = opts[await choose(opts)].k;
     if (k === 'amparo') {
@@ -441,7 +441,7 @@ SCENES.arenal = {
     { name: 'Porta da Fraternal', key: true, r: [646, 282, 56, 140], at: [672, 438], face: 'B', exit: ['__fraternal'], done: () => flag('davidAmparo'),
       act: async () => {
         if (!flag('objetivoContrato')) { await bark('La Fraternal. Ahora no tengo nada que hacer dentro. Primero, las llaves de casa: las tiene Concha, en el quiosco.'); return; }
-        if (!flag('davidAmparo')) { await bark('¿Estará Rosario dentro? No quiero entrar a ciegas en mitad de una brisca. El tío David está en la puerta: él lo sabrá.'); return; }
+        if (!flag('davidAmparo')) { await bark('¿Estará Rosario dentro? No quiero entrar a ciegas en mitad de una brisca. El tío Demetrio está en la puerta: él lo sabrá.'); return; }
         SFX.door(); await goScene('fraternal', [590, 266]);
       },
       look: () => MA('La puerta de la Fraternal. Por aquí han entrado más goles de Champions que en muchos estadios.', 'sonriente') },
@@ -455,11 +455,11 @@ SCENES.arenal = {
     { name: 'Edificios', r: [70, 40, 200, 290], look: () => MA('Casas de colores calle abajo, una detrás de otra. Monforte, en fila y bien peinada.', 'sonriente') },
   ],
   npcs: [
-    { id: 'david', name: 'Tío David', key: true, sheet: 'img/david-sprite.png', spec: { cw: 160, ch: 280, cols: 8 },
+    { id: 'david', name: 'Tío Demetrio', key: true, sheet: 'img/david-sprite.png', spec: { cw: 160, ch: 280, cols: 8 },
       get idle() { return E.dlg ? 3 : 5; }, talkFrames: [4, 9, 3, 7],
       x: 556, y: 468, w: 90, h: 290, at: [480, 470], face: 'R',
       done: () => flag('davidAmparo') || !flag('objetivoContrato') && flag('davidSauda'),
-      look: () => MA('El tío David, en la puerta de la Fraternal. Si pasas cerca, te cuenta su gol al Ourense. Si pasas lejos, también, pero más alto.', 'risueno'),
+      look: () => MA('El tío Demetrio, en la puerta de la Fraternal. Si pasas cerca, te cuenta su gol al Ourense. Si pasas lejos, también, pero más alto.', 'risueno'),
       talk: () => davidTalk(),
       give: {
         ositos: async () => { await DA('Ositos? Eu son de cacahuetes, rapaz. Os ositos son para os nenos e para Concha.'); },
@@ -482,7 +482,7 @@ async function rosarioBrisca() {
     await RO('Copas! E arrastro!');
     await MA('¿Rosario? Perdona. Soy Martín, el del alquiler de la Casa Juana. Concha me ha dado las llaves y...', 'avergonzado');
     await RO('Shhh! Non ves que estou na metade da man? Ata que non remate, nin o Papa. E ti non es o Papa.');
-    await MA('Concha me lo avisó. David me lo avisó. Y aun así. Soy el único de Monforte que interrumpe una brisca.', 'avergonzado');
+    await MA('Concha me lo avisó. Demetrio me lo avisó. Y aun así. Soy el único de Monforte que interrumpe una brisca.', 'avergonzado');
     setFlag('amparoMan');
     await sleep(700);
     await RO('...E sete de ouros. Man gañada! Agora si, rapaz: o contrato. Asinamos e listo.');
@@ -500,7 +500,7 @@ async function rosarioBrisca() {
 }
 async function asinarContrato() {
   await RO('O bolígrafo de Concha! Como o conseguiches? Ese non o solta nin para asinar o testamento.');
-  await MA('Un crucigrama. Ocho letras: pichichi. Me lo resolvió el tío David y me lo va a recordar el resto de mi vida.', 'orgulloso');
+  await MA('Un crucigrama. Ocho letras: pichichi. Me lo resolvió el tío Demetrio y me lo va a recordar el resto de mi vida.', 'orgulloso');
   await RO('Asina aquí... e aquí. Listo. Benvido á Casa Juana, veciño.');
   take('boli'); give('contrato'); setFlag('contratoAsinado');
   await RO('O bolígrafo xa llo devolvo eu a Concha, que paso polo quiosco. Senón, mañá sae no xornal: «Desaparece o bolígrafo dos crucigramas».');
@@ -537,7 +537,7 @@ SCENES.fraternal = {
   scale: [212, 0.18, 540, 0.85], actorH: 300, start: [590, 266], minSpeed: 0.4,
   hotspots: [
     { name: 'Rúa Concepción Arenal', key: true, r: [520, 82, 76, 128], at: [590, 262], face: 'B', exit: ['arenal', [672, 446]], door: true,
-      look: () => MA('La puerta a la calle. Fuera, el tío David seguirá metiendo el gol al Ourense. Ya va por el décimo.', 'risueno') },
+      look: () => MA('La puerta a la calle. Fuera, el tío Demetrio seguirá metiendo el gol al Ourense. Ya va por el décimo.', 'risueno') },
     { name: 'Lista de prezos', r: [20, 44, 82, 66], look: () => MA('Café, 1,20. Cerveza, 1,80. Precios de bar de los de antes. Aquí la inflación entra, pero se sienta y pide un café.', 'sonriente') },
     { name: 'Cafeteira', r: [0, 158, 66, 54], look: () => MA('Una cafetera de las de verdad, con su vapor y su ruido. Como una locomotora, pero de las que te despiertan.', 'risueno') },
     { name: 'Botellas', r: [0, 108, 40, 50], look: () => MA('Botellas en fila. Las de abajo, para diario. Las de arriba, para cuando gana el equipo. Están llenas.', 'esceptico') },

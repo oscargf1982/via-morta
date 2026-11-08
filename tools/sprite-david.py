@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Xera o sprite e o retrato do Tío David a partir da folla de Oscar.
+"""Xera o sprite e o retrato do Tío Demetrio a partir da folla de Oscar.
 
 Entrada:  assets/personajes/tio-david-hoja.png
           (fila 1: fronte, perfil dereita, costas, tres cuartos dereita;
