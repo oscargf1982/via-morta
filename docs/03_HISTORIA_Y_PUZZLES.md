@@ -10,11 +10,11 @@ Martín Pardo, maquinista de Vilatán, vuelve a la comarca con destino en el dep
 Tirando del hilo descubre tres cosas:
 - un grupo de jubilados está restaurando en secreto la Mikado para una última salida antes de que Adif se la lleve;
 - su casa fue la carpintería mecanizada del señor Alfredo, cuya maquinaria se vendió entera en 1952 a un ingeniero de Caminos y a un contratista;
-- **Iván Nogal**, el amable friki de Renfe de la estación, es el nieto de **Xosé Nogal**, el maquinista al que culparon de lo que pasó la noche del **14 de enero de 1958**.
+- **Xoán Carballeira**, el amable friki de Renfe de la estación, es el nieto (por parte de madre) de **Xosé Nogal**, el maquinista al que culparon de lo que pasó la noche del **14 de enero de 1958**.
 
 Esa noche, Xosé desvió un mercancías sin frenos a la vía muerta de A Barreira y lo frenó con su Mikado, salvando el tren de emigrantes del andén 1. Le echaron la culpa. Había avisado durante semanas de que los frenos fallaban y escondió el parte que lo demostraba **en el séptimo soporte de la transmisión de la carpintería donde aprendió el oficio**: la casa de Martín.
 
-En el último acto, la Mikado sale con media ciudad mirando y termina en la vía muerta a las 21:40. Allí Martín toca el silbato, Iván cuenta quién es y Don Anxo, el fogonero de 1958, rompe 68 años de silencio. Después, Martín elige: Valencia o Monforte.
+En el último acto, la Mikado sale con media ciudad mirando y termina en la vía muerta a las 21:40. Allí Martín toca el silbato, Xoán cuenta quién es y Don Anxo, el fogonero de 1958, rompe 68 años de silencio. Después, Martín elige: Valencia o Monforte.
 
 ## 2. Mapa de escenarios (Monforte real)
 
@@ -24,7 +24,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 | Escenario | Salidas | Notas |
 |---|---|---|
 | A1 Andén 1 | A2 | Llegada en el regional. Escena del Acto 5 (la salida de la Mikado) |
-| A2 Vestíbulo de la estación | A1, A3 | **El mural de 1954** (foto real), taquillas, Iván |
+| A2 Vestíbulo de la estación | A1, A3 | **El mural de 1954** (foto real), taquillas, Xoán |
 | A3 Praza da Estación | A2, A4, A7, mapa | **Quiosco de Dona Concha** |
 | A4 Rúa Doutor Casares (exterior de la Casa Juana, gasolinera) | A3, A5 | La casa roja, el n.º 211 |
 | A5 Casa Juana: salón, cocina, dormitorio | A4, A6 | Interiores (fondos de la demo). El balcón mira al depósito |
@@ -46,7 +46,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 ### Zona C · Río Cabe
 | Escenario | Salidas | Notas |
 |---|---|---|
-| C1 Malecón | C2, C3, mapa | Xoán «o Galgo», salida de la Volta do Castelo |
+| C1 Malecón | C2, C3, mapa | Brais «o Galgo», salida de la Volta do Castelo |
 | C2 Club Fluvial: piscina y chiringuito «Malo Será» | C1 | Mega Andrés |
 | C3 Ponte Vella → praza da Compañía (Escolapios) | C1, D1 | Recorrido de la carrera |
 
@@ -66,7 +66,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 ### Acto 1 · «O regreso» (lunes)
 **Objetivo:** instalarse en la Casa Juana.
 
-1. **A1 → A2.** Martín baja del tren. En el vestíbulo, Iván le explica el mural (charla opcional, con pistas sembradas: «Bo balcón. Dende el vése o depósito»).
+1. **A1 → A2.** Martín baja del tren. En el vestíbulo, Xoán le explica el mural (charla opcional, con pistas sembradas: «Bo balcón. Dende el vése o depósito»).
 2. **Quiosco (A3).** Martín compra una **bolsa de ositos** y el **periódico**. Concha lo reconoce («o rapaz de Vilatán!») y le da las **llaves de la casa**, pero el contrato debe firmarlo Amparo, en la Fraternal.
 3. **Casa Juana (A5).** No hay agua: hay que darla de alta en el Concello con el contrato firmado. Desde la cocina se ven las argollas del techo de la nave.
 4. **Fraternal (B3).** Amparo no suelta las cartas en mitad de una brisca. **(propuesta)** Para firmar le falta un bolígrafo: el de Concha, que Martín consigue al devolverle el periódico con el crucigrama hecho («Oito letras: o que conduce un tren»). Al firmar, Amparo cuenta **la historia real de la casa**: Alfredo, Juana, el motor Siemens y la venta de 1952. Lanza la pregunta: ¿para qué quería una carpintería un ingeniero de Caminos?
@@ -78,10 +78,10 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 
 1. Cinemática del primer turno: hay un **candado nuevo** en las cocheras del museo.
 2. Tres reencuentros, en cualquier orden:
-   - **Valerio** (B2). Iván está recogiendo «las pastillas de su tía» (pista: es sobrino de Amparo). Valerio le regala la **crema de agujetas**.
+   - **Valerio** (B2). Xoán está recogiendo «las pastillas de su tía» (pista: es sobrino de Amparo). Valerio le regala la **crema de agujetas**.
    - **Mega Andrés** (C2). Reto de natación, con minijuego o alternativa. Premio: mojito o tarde de tumbona.
-   - **Xoán** (C1–D2). Reto de la Volta do Castelo. **(propuesta)** Sin la crema de Valerio, Martín se niega a subir la cuesta de San Vicente («tengo los gemelos de un señor de ochenta años»). Usar la crema sobre Martín desbloquea la carrera.
-3. **Noche de Champions** (B3, martes a las 20:00). Iván corrige el gol de David («Foi en mércores, e chovía»). A las 23:00, a dormir.
+   - **Brais** (C1–D2). Reto de la Volta do Castelo. **(propuesta)** Sin la crema de Valerio, Martín se niega a subir la cuesta de San Vicente («tengo los gemelos de un señor de ochenta años»). Usar la crema sobre Martín desbloquea la carrera.
+3. **Noche de Champions** (B3, martes a las 20:00). Xoán corrige el gol de David («Foi en mércores, e chovía»). A las 23:00, a dormir.
 4. **El silbato otra vez.** No viene de la estación, sino de detrás de la casa.
 5. **El taller de la Casa Juana** (A6), ya montado en la demo:
    - la llave de la nave la tiene Concha y solo se la da a quien «tenga un detalle» (los **ositos**);
@@ -96,7 +96,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 ### Acto 3 · «A curiosidade» (jueves)
 **Objetivo:** descubrir quién es el fantasma.
 
-1. **Iván en la estación** (A2).
+1. **Xoán en la estación** (A2).
    - Le habla de la **grasa que falta del almacén**.
    - Cuando Martín dice «dos largos y uno corto», se queda en silencio y cambia de tema hacia el regional de las 21:30 de 1958.
    - Si Martín le pregunta por «Xosé N.», responde: «Nogal é un apelido moi común... ou non».
@@ -122,10 +122,10 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
    - Martín le lleva el impreso a **Concha**, que vuelve con **112 firmas**. Una dice «Mega Andrés, tumbona 4».
    - Eladio sella el permiso y confiesa: «O meu pai era guardagullas».
 4. **El parte.**
-   - Al entregar la válvula, Remedios recuerda la frase de la carta de Xosé: «**Deixeino onde se moven as correas, na casa onde aprendín o oficio**». Iván lleva meses buscando en el motor del depósito sin encontrar nada.
+   - Al entregar la válvula, Remedios recuerda la frase de la carta de Xosé: «**Deixeino onde se moven as correas, na casa onde aprendín o oficio**». Xoán lleva meses buscando en el motor del depósito sin encontrar nada.
    - Martín lo entiende: las correas se movían primero **en su casa**.
    - De vuelta al taller (A6), usa la herramienta que le presta Remedios (o la navaja) sobre el 7.º soporte y saca la **lata de tabaco**. Al combinarla con la navaja sale el **parte del 14 de enero de 1958**: freno automático a 3 kg (el mínimo es 5), «Reparación denegada», «Para quen veña buscar. X. N.».
-   - **Iván llega.** «Esa letra...». Promete contarlo todo el sábado.
+   - **Xoán llega.** «Esa letra...». Promete contarlo todo el sábado.
 5. **La cuarta cosa.** Martín le enseña el parte a **Don Anxo**. Él promete hablar delante de todos. **Fin del acto.**
 
 ### Acto 5 · «O descubrimento» (sábado y domingo)
@@ -137,10 +137,10 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
    5. silbato de salida.
 2. **La aguja vieja.** Anxo indica la aguja de A Barreira. **(propuesta)** Está bloqueada y la abre la **llave de guardagujas del padre de Eladio**, que él le da a Martín.
 3. **A Barreira, 21:40** (A9).
-   - Iván: «Martín... Toca ti. Dous longos e un curto». El jugador usa el silbato.
-   - La revelación: Iván cuenta quién es, Martín lee el parte en voz alta como maquinista y Anxo confiesa.
+   - Xoán: «Martín... Toca ti. Dous longos e un curto». El jugador usa el silbato.
+   - La revelación: Xoán cuenta quién es (Carballeira por su padre, Nogal por su madre), Martín lee el parte en voz alta como maquinista y Anxo confiesa.
 4. Suena el móvil: le ofrecen a Martín un puesto de **jefe de maquinistas en Valencia**.
-5. **Domingo, 6:00, vestíbulo.** Cinemática del **mural con Iván** (imagen `cine-mural.jpg`): la escena de mayor peso del juego.
+5. **Domingo, 6:00, vestíbulo.** Cinemática del **mural con Xoán** (imagen `cine-mural.jpg`): la escena de mayor peso del juego.
 6. **Vilatán** (E1). Caldo con la madre y la elección:
    - **Valencia:** «As raíces non son para quedar quieto: son para saber onde volver».
    - **Quedarse:** «Monforte está viejo y medio vacío... pero esta semana he visto media ciudad en un andén».
@@ -175,6 +175,6 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
   - menú con Continuar, Nueva partida, Escoller acto, Opcións (texto rápido, música, efectos) y Créditos e fontes;
   - sonido sintetizado sin archivos: pasos según el suelo, coger, puertas, papel, música por zona y el silbato «dos largos y uno corto»;
   - móvil: en horizontal el inventario va en columna a la derecha; en vertical sale un aviso para girar y, si se sigue en vertical, la escena va arriba a todo el ancho con diálogo e inventario grandes debajo (elegido por Oscar).
-  - **Acto 1, primer tramo jugable:** A1 andén → A2 vestíbulo (Iván y el mural) → A3 plaza (quiosco de Concha: llaves, ositos, periódico) → mapa de Monforte. Fichas en `05_FICHAS_ESCENARIOS.md`. Termina al ir a Doutor Casares con las llaves.
-- **Provisional:** los fondos de A1–A3 y el mapa son bocetos por código (`tools/fondos.py`), y el sprite de Iván también. Se sustituyen con fotos de Oscar.
+  - **Acto 1, primer tramo jugable:** A1 andén → A2 vestíbulo (Xoán y el mural) → A3 plaza → A3b segunda pantalla de la plaza (quiosco de Concha: llaves, ositos, periódico) → A4b rúa Concepción Arenal (tío David) → B3 interior de la Fraternal (Amparo en plena brisca), más el mapa de Monforte. Fichas en `05_FICHAS_ESCENARIOS.md`. Termina al hablar con Amparo por primera vez; la firma del contrato queda para M2.
+- **Provisional:** el mapa es un boceto por código (`tools/fondos.py`). El sprite y el retrato de Xoán Carballeira (antes Iván Nogal) salen de la hoja de personaje de Oscar con `tools/sprite-xoan.py`.
 - **Siguiente paso:** M2 (resto del Acto 1: A4 exterior de la Casa Juana, casa sin agua, Fraternal y Concello). Antes hay que cerrar con Oscar los dos puzzles marcados como propuesta (bolígrafo de Concha y Eladio en el café).
