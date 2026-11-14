@@ -5,8 +5,10 @@
    - Todo se debuxa por código nun lenzo propio de 960×540 (sen vídeo).
    - O andén de 1958 é unha ilustración de Oscar (img/cine-anden-1958.jpg)
      con movemento por riba (cámara, luces, fume, chuvia, reloxo ás 21:38).
-     A rotonda pásase a noite cun mapa de luces; as rodas, a panca, a Mikado,
-     a máquina de escribir e a pinga de graxa son debuxo por código.
+     As rodas do mercadorías (img/cine-rodas.jpg) e a man no freo
+     (img/cine-freo.jpg) tamén son ilustracións de Oscar animadas.
+     A rotonda pásase a noite cun mapa de luces; a Mikado, a máquina de
+     escribir e a pinga de graxa son debuxo por código.
    - Cada plano é unha función pura do tempo: CINE.frame(t) debuxa o
      fotograma do segundo t (sérvenos para probar con capturas).
    - Son sintetizado con WebAudio, coma o resto do xogo.
@@ -120,8 +122,8 @@ const CINE = (() => {
     if (ready) return ready;
     ready = (async () => {
       FOG = makeFog();
-      const [a, r, v] = await Promise.all([load('img/cine-anden-1958.jpg'), load('img/portada-rotonda.jpg'), load('img/noite-vista.jpg')]);
-      IM = { anden: a, rotonda: r, vista: v };
+      const [a, r, v, ro, fr] = await Promise.all(['img/cine-anden-1958.jpg', 'img/portada-rotonda.jpg', 'img/noite-vista.jpg', 'img/cine-rodas.jpg', 'img/cine-freo.jpg'].map(load));
+      IM = { anden: a, rotonda: r, vista: v, rodas: ro, freo: fr };
       if (r) NIGHT.rotonda = bakeNight(r, '#16204a', l => {
         glow(l, 830, 500, 620, '150,175,255', 0.62);             // lúa sobre a Mikado
         glow(l, 250, 330, 330, '255,186,105', 0.85); glow(l, 250, 420, 300, '255,186,105', 0.5, 0.4);
@@ -199,121 +201,72 @@ const CINE = (() => {
     fogBand(c, t, 230, 240, 14, 0.3, 1); fogBand(c, t, 390, 230, -24, 0.26, 2);
     vignette(c, 0.7 + 0.2 * k);
   }
-  /* 4 · as rodas do mercadorías, sen freos */
-  function wheel(c, x, y, r, a) {
-    disc(c, x, y, r + 9, '#141925', OUT, 5);                       // pestana
-    disc(c, x, y, r, '#2b3345', OUT, 5); disc(c, x, y, r - 16, '#0c1019', OUT, 4);
-    c.save(); c.translate(x, y);
-    for (let g = 0; g < 3; g++) { c.save(); c.rotate(a - g * 0.16); c.globalAlpha = [0.9, 0.4, 0.2][g]; for (let i = 0; i < 8; i++) { c.rotate(TAU / 8); c.fillStyle = '#273044'; c.fillRect(-7, 20, 14, r - 38); } c.restore(); }
-    c.globalAlpha = 1; c.restore();
-    disc(c, x, y, 30, '#39435a', OUT, 5); disc(c, x, y, 11, '#161b28', OUT, 3);
-    c.beginPath(); c.arc(x, y, r - 7, Math.PI * 1.08, Math.PI * 1.62); c.strokeStyle = '#7f95c4'; c.lineWidth = 5; c.lineCap = 'round'; c.stroke();
-  }
-  function sparks(c, t, ox, oy, n, seed, dirx = 1, pow = 1) {
+  /* 4 · as rodas do mercadorías, sen freos: ilustración de Oscar (img/cine-rodas.jpg) con movemento */
+  function sparks(c, t, ox, oy, n, seed, floor, pow = 1) {
     c.save(); c.globalCompositeOperation = 'lighter'; c.lineCap = 'round';
     for (let i = 0; i < n; i++) {
       const k = i + seed, life = 0.28 + R(k) * 0.4, age = ((t + R(k + 7) * 3) % life), q = age / life;
-      const vx = dirx * (380 + R(k + 1) * 620) * pow, vy = -(60 + R(k + 2) * 330) * pow + (R(k + 5) > 0.7 ? 260 : 0), g = 900;
-      const x = ox + vx * age, y = Math.min(oy + vy * age + g * age * age / 2, 500 - R(k + 3) * 6), dx = vx * 0.022, dy = (vy + g * age) * 0.022;
+      const vx = (650 + R(k + 1) * 1100) * pow, vy = -(100 + R(k + 2) * 580) * pow + (R(k + 5) > 0.7 ? 450 : 0), g = 1600;
+      const x = ox + vx * age, y = Math.min(oy + vy * age + g * age * age / 2, floor - R(k + 3) * 10), dx = vx * 0.022, dy = (vy + g * age) * 0.022;
       c.strokeStyle = q < 0.25 ? `rgba(255,250,215,${1 - q})` : q < 0.6 ? `rgba(255,196,70,${1 - q})` : `rgba(255,96,30,${(1 - q) * 0.9})`;
-      c.lineWidth = 3.2 * (1 - q) + 0.8; c.beginPath(); c.moveTo(x, y); c.lineTo(x - dx, y - dy); c.stroke();
+      c.lineWidth = 5.5 * (1 - q) + 1.4; c.beginPath(); c.moveTo(x, y); c.lineTo(x - dx, y - dy); c.stroke();
     }
     c.restore();
   }
   function s4(c, u, t) {
-    const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#060912'); g.addColorStop(1, '#131d3a'); c.fillStyle = g; c.fillRect(0, 0, W, H);
-    c.save(); c.translate(W / 2, H / 2); c.rotate(Math.sin(t * 23) * 0.006); c.scale(1.06 + 0.03 * ss(0, 3, u), 1.06 + 0.03 * ss(0, 3, u)); c.translate(-W / 2 + Math.sin(t * 47) * 6, -H / 2 + Math.sin(t * 61 + 1) * 5);
-    // fondo: liñas de velocidade na néboa
-    for (let i = 0; i < 26; i++) { const y = 250 + R(i) * 200, x = ((R(i + 30) * 1400 + t * (900 + R(i + 60) * 900)) % 1400) - 220, l = 120 + R(i + 90) * 260; line(c, x, y, x + l, y, `rgba(120,140,190,${0.05 + R(i + 9) * 0.1})`, 2 + R(i + 4) * 5); }
-    // caixa do vagón: táboas, ferraxes e longueiro
-    c.fillStyle = '#34191a'; c.fillRect(-40, -40, W + 80, 262);
-    for (let x = -30; x < W + 40; x += 48) line(c, x, -40, x, 222, '#1f0e10', 3);
-    for (const x of [86, 480, 874]) { c.fillStyle = '#171b25'; c.fillRect(x - 11, -40, 22, 262); for (let y = 10; y < 220; y += 42) disc(c, x, y, 3.5, '#39435a'); }
-    c.fillStyle = 'rgba(255,255,255,.07)'; c.font = '700 44px Georgia, serif'; c.textAlign = 'left'; c.textBaseline = 'alphabetic'; c.fillText('Mf  20 t', 150, 150);
-    line(c, -40, 222, W + 40, 222, OUT, 6);
-    c.fillStyle = '#12151d'; c.fillRect(-40, 222, W + 80, 40); line(c, -40, 262, W + 40, 262, OUT, 5); line(c, -40, 228, W + 40, 228, '#3a4664', 2);
-    for (let x = 20; x < W; x += 60) disc(c, x, 244, 3.5, '#39435a');
-    // carril e travesas que pasan
-    for (let i = 0; i < 9; i++) { const x = ((i * 150 + t * 1500) % 1350) - 200; c.fillStyle = 'rgba(46,36,30,.85)'; c.fillRect(x, 500, 90, 26); c.fillStyle = 'rgba(46,36,30,.35)'; c.fillRect(x - 70, 500, 70, 26); }
-    for (let i = 0; i < 40; i++) { const x = ((R(i) * 1300 + t * 1500) % 1300) - 170, y = 520 + R(i + 20) * 30; line(c, x, y, x + 46, y, `rgba(96,104,126,${0.25 + R(i + 3) * 0.3})`, 3); }
-    // suspensión: gardas, caixas de graxa e ballestas
-    for (const wx of [262, 700]) {
-      poly(c, [[wx - 74, 262], [wx - 20, 262], [wx - 30, 372], [wx - 46, 372]], '#1a2030', OUT, 4); poly(c, [[wx + 20, 262], [wx + 74, 262], [wx + 46, 372], [wx + 30, 372]], '#1a2030', OUT, 4);
-      wheel(c, wx, 372, 110, -t * 27);
-      for (let i = 0; i < 5; i++) { c.beginPath(); c.moveTo(wx - 150 + i * 14, 300 + i * 7); c.quadraticCurveTo(wx, 322 + i * 7, wx + 150 - i * 14, 300 + i * 7); c.strokeStyle = OUT; c.lineWidth = 9; c.stroke(); c.strokeStyle = '#3a4560'; c.lineWidth = 4.5; c.stroke(); }
-      rrect(c, wx - 34, 334, 68, 62, 8, '#262e42', OUT, 5); rrect(c, wx - 22, 346, 44, 22, 4, '#39435a', OUT, 3);
-      // zapata do freo, ao roxo
-      const hot = 0.75 + 0.25 * Math.sin(t * 38 + wx);
-      c.save(); c.translate(wx, 372); c.rotate(-0.18);
-      c.beginPath(); c.arc(0, 0, 124, -0.26, 0.26); c.arc(0, 0, 150, 0.22, -0.22, true); c.closePath(); c.fillStyle = '#ff7a2a'; c.fill(); c.strokeStyle = OUT; c.lineWidth = 5; c.stroke();
-      c.beginPath(); c.arc(0, 0, 127, -0.2, 0.2); c.strokeStyle = '#fff0b0'; c.lineWidth = 5; c.stroke(); c.restore();
-      line(c, wx + 150, 350, wx + 196, 262, OUT, 12); line(c, wx + 150, 350, wx + 196, 262, '#262e42', 6);
-      glow(c, wx + 130, 360, 150, '255,120,40', 0.5 * hot); glow(c, wx + 6, 484, 120, '255,170,70', 0.5 * hot);
+    c.fillStyle = '#05070d'; c.fillRect(0, 0, W, H);
+    c.save(); c.translate(W / 2, H / 2); c.rotate(Math.sin(t * 23) * 0.005); c.translate(-W / 2 + Math.sin(t * 47) * 5, -H / 2 + Math.sin(t * 61 + 1) * 4);
+    cam(c, 1672, 836 + 30 * ss(0, 3, u), 480, 1.07 + 0.05 * ss(0, 3, u));
+    if (IM.rodas) c.drawImage(IM.rodas, 0, 0);
+    // o chan pasa a toda velocidade: travesas e balastro convértense en raias
+    c.fillStyle = 'rgba(9,10,16,.62)'; c.fillRect(-60, 836, 1800, 120);
+    for (let i = 0; i < 46; i++) { const x = ((R(i) * 2300 + t * 2600) % 2300) - 320, y = 842 + R(i + 20) * 96, l = 90 + R(i + 40) * 240; line(c, x, y, x + l, y, R(i + 3) > 0.7 ? `rgba(120,84,52,${0.3 + R(i + 5) * 0.3})` : `rgba(120,126,150,${0.14 + R(i + 5) * 0.26})`, 4 + R(i + 9) * 9); }
+    for (let i = 0; i < 16; i++) { const y = 420 + R(i) * 330, x = ((R(i + 30) * 2400 + t * (1700 + R(i + 60) * 1500)) % 2400) - 380, l = 200 + R(i + 90) * 420; line(c, x, y, x + l, y, `rgba(120,140,190,${0.03 + R(i + 9) * 0.05})`, 3 + R(i + 4) * 8); }
+    // as rodas xiran: radios varridos por riba dos pintados
+    for (const [wx, wy] of [[492, 586], [1298, 590]]) {
+      c.save(); c.translate(wx, wy);
+      c.beginPath(); c.arc(0, 0, 158, 0, TAU); c.arc(0, 0, 62, 0, TAU, true); c.fillStyle = 'rgba(18,20,30,.78)'; c.fill();
+      for (let g = 0; g < 3; g++) { c.save(); c.rotate(-t * 26 - g * 0.17); c.globalAlpha = [0.75, 0.35, 0.16][g]; for (let i = 0; i < 9; i++) { c.rotate(TAU / 9); c.fillStyle = '#3d4152'; c.fillRect(-11, 60, 22, 100); } c.restore(); }
+      c.restore();
+      c.beginPath(); c.arc(wx, wy, 178, Math.PI * 1.1 + Math.sin(t * 30) * 0.05, Math.PI * 1.5); c.strokeStyle = 'rgba(150,165,205,.35)'; c.lineWidth = 6; c.lineCap = 'round'; c.stroke();
     }
-    c.fillStyle = '#39445e'; c.fillRect(-40, 482, W + 80, 18); line(c, -40, 482, W + 40, 482, OUT, 4); line(c, -40, 500, W + 40, 500, OUT, 4); line(c, -40, 487, W + 40, 487, '#a9bbe4', 3);
-    for (const wx of [262, 700]) { sparks(c, t, wx + 122, 352, 60, wx, 1, 0.9); sparks(c, t, wx + 8, 480, 80, wx + 500, 1, 1.1); glow(c, wx + 8, 480, 34, '255,245,210', 0.9); }
+    // zapatas ao roxo, faíscas e resplandor
+    for (const [bx, by, rx] of [[736, 570, 668], [1543, 582, 1472]]) {
+      const hot = 0.6 + 0.4 * Math.sin(t * 38 + bx) * Math.sin(t * 9 + bx);
+      glow(c, bx, by, 240, '255,120,40', 0.4 + 0.25 * hot); glow(c, bx, by, 60, '255,236,180', 0.5 * hot + 0.2); glow(c, rx, 772, 190, '255,170,70', 0.3 + 0.25 * hot, 0.5);
+      sparks(c, t, bx + 14, by, 70, bx, 772, 1); sparks(c, t, rx, 768, 90, bx + 500, 776, 1.1); glow(c, rx, 770, 44, '255,245,210', 0.75);
+    }
     c.restore();
-    fogBand(c, t, 330, 260, 900, 0.22, 4);
+    fogBand(c, t, 330, 260, 900, 0.16, 4);
     vignette(c, 0.85);
   }
-  /* 5 · a man enluvada e a panca da agulla */
+  /* 5 · a man do maquinista tira do freo: ilustración de Oscar (img/cine-freo.jpg) con movemento */
   function s5(c, u, t) {
-    const swing = ss(1.2, 1.52, u), hit = u - 1.52, bounce = hit > 0 ? Math.exp(-hit * 7) * Math.sin(hit * 34) * 0.07 : 0;
-    const strain = u > 0.45 && u < 1.2 ? Math.sin(t * 60) * 0.012 * ss(0.45, 1.1, u) : 0;
-    const ang = lerp(0.62, -0.62, swing * swing) + bounce + strain;         // ángulo desde a vertical
-    const jolt = hit > 0 ? Math.exp(-hit * 9) : 0;
-    let g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#05080f'); g.addColorStop(0.7, '#101a34'); g.addColorStop(1, '#0a1022'); c.fillStyle = g; c.fillRect(0, 0, W, H);
-    c.save(); c.translate(W / 2, H / 2); c.scale(1.02 + 0.05 * ss(0, 3, u), 1.02 + 0.05 * ss(0, 3, u)); c.translate(-W / 2 + Math.sin(t * 90) * 7 * jolt, -H / 2 + 9 * jolt);
-    // luz do tren que se achega pola esquerda
-    const inc = ss(1.4, 3, u); glow(c, -60, 300, 520, '255,222,160', 0.14 + 0.35 * inc);
-    fogBand(c, t, 180, 260, 30, 0.45, 5);
-    // chan: balastro, travesas e carrís en fuga
-    c.fillStyle = '#0c1120'; c.fillRect(-40, 418, W + 80, 160);
-    for (let i = 0; i < 60; i++) disc(c, R(i) * 1040 - 40, 430 + R(i + 9) * 110, 5 + R(i + 5) * 9, R(i + 2) > 0.5 ? '#161d33' : '#101628');
-    for (let i = 0; i < 7; i++) poly(c, [[i * 150 - 60, 440], [i * 150 + 20, 440], [i * 150 + 4, 470], [i * 150 - 82, 470]], '#221a16', OUT, 3);
-    const bl = 14 * swing * swing + bounce * 30;                                // a agulla que se despraza
-    for (const [y, lw] of [[436, 8], [464, 10]]) { line(c, -40, y, W + 40, y, OUT, lw + 5); line(c, -40, y, W + 40, y, '#4b5878', lw); line(c, -40, y - lw / 2 + 1.5, W + 40, y - lw / 2 + 1.5, '#b7c6ea', 2); }
-    poly(c, [[560, 441 + bl], [1010, 449 + bl * 0.4], [1010, 456 + bl * 0.4], [560, 446 + bl]], '#5a6990', OUT, 3);
-    line(c, 470, 452, 640 + bl, 452 + bl * 0.5, OUT, 10); line(c, 470, 452, 640 + bl, 452 + bl * 0.5, '#39445e', 5);
-    // farol de man no chan
-    const fx = 742, fy = 430, fl = 0.86 + 0.14 * Math.sin(t * 11) * Math.sin(t * 3.7);
-    glow(c, fx, fy - 40, 330, '255,176,80', 0.5 * fl); glow(c, fx, fy + 4, 250, '255,176,80', 0.35 * fl, 0.25);
-    rrect(c, fx - 26, fy - 12, 52, 14, 3, '#1b2030', OUT, 4); rrect(c, fx - 20, fy - 66, 40, 56, 5, '#ffd27a', OUT, 4); disc(c, fx, fy - 38, 10, '#fff6d8');
-    line(c, fx - 20, fy - 38, fx + 20, fy - 38, OUT, 3); line(c, fx, fy - 66, fx, fy - 12, OUT, 3);
-    poly(c, [[fx - 24, fy - 66], [fx + 24, fy - 66], [fx + 12, fy - 86], [fx - 12, fy - 86]], '#1b2030', OUT, 4);
-    c.beginPath(); c.arc(fx, fy - 88, 22, Math.PI * 1.05, Math.PI * 1.95); c.strokeStyle = OUT; c.lineWidth = 5; c.stroke();
-    glow(c, fx, fy - 38, 60, '255,240,200', 0.8 * fl);
-    // pé da panca
-    const px = 430, py = 428;
-    poly(c, [[px - 86, 452], [px + 86, 452], [px + 52, 396], [px - 52, 396]], '#232b3f', OUT, 5); rrect(c, px - 108, 448, 216, 24, 4, '#1a2031', OUT, 5);
-    line(c, px - 40, 404, px + 44, 404, '#55668f', 3);
-    for (const x of [-84, 84]) disc(c, px + x, 460, 6, '#55668f', OUT, 2.5);
-    // panca, contrapeso e empuñadura
-    c.save(); c.translate(px, py); c.rotate(ang);
-    line(c, 0, 0, 96, -44, OUT, 22); line(c, 0, 0, 96, -44, '#2c3550', 13);
-    c.save(); c.translate(108, -50); disc(c, 0, 0, 50, '#e8e2cf', OUT, 5); c.beginPath(); c.moveTo(0, 0); c.arc(0, 0, 50, -Math.PI / 2 - ang, Math.PI / 2 - ang); c.closePath(); c.fillStyle = '#b3261d'; c.fill(); disc(c, 0, 0, 50, null, OUT, 5); disc(c, 0, 0, 9, '#2c3550', OUT, 3); c.restore();
-    rrect(c, -10, -318, 20, 324, 8, '#33405e', OUT, 5); line(c, -3.5, -306, -3.5, -10, '#8ea2d0', 3);
-    rrect(c, -13, -372, 26, 68, 11, '#17110c', OUT, 5); line(c, -5, -362, -5, -314, '#5a4634', 3);
+    const hit = u - 1.5, jolt = hit > 0 ? Math.exp(-hit * 8) : 0, strain = u > 0.4 && u < 1.5 ? ss(0.4, 1.4, u) : 0;
+    c.fillStyle = '#05070d'; c.fillRect(0, 0, W, H);
+    c.save(); c.translate(Math.sin(t * 75) * (1.6 * strain + 9 * jolt), Math.sin(t * 58 + 1) * 1.2 * strain + 10 * jolt);
+    const z = 1.03 + 0.07 * ss(0, 3, u) + 0.05 * jolt;
+    cam(c, 978, lerp(470, 500, ss(0, 3, u)), lerp(308, 338, ss(0.3, 1.6, u)), z);
+    if (IM.freo) c.drawImage(IM.freo, 0, 0);
+    // chuvia e luz que se achega pola fiestra (sen pisar a man)
+    c.save(); c.beginPath(); for (const [x, y] of [[152, 0], [814, 0], [814, 298], [416, 298], [416, 172], [392, 140], [338, 132], [252, 196], [152, 204]]) c.lineTo(x, y); c.closePath(); c.clip();
+    const inc = ss(1.7, 3, u); glow(c, 830, 120, 430, '255,226,170', 0.06 + 0.55 * inc);
+    c.lineCap = 'round';
+    for (let i = 0; i < 90; i++) { const sp = 1.6 + R(i + 900) * 1.2, ph = (R(i + 500) + t * sp) % 1, x = 150 + R(i) * 740 - ph * 90, y = ph * 340 - 20, l = 16 + R(i + 300) * 20; c.strokeStyle = `rgba(190,205,240,${0.18 + R(i + 700) * 0.35})`; c.lineWidth = 1 + R(i + 100); c.beginPath(); c.moveTo(x, y); c.lineTo(x - l * 0.28, y + l); c.stroke(); }
     c.restore();
-    disc(c, px, py, 20, '#3a4664', OUT, 5); disc(c, px, py, 7, '#151a28');
-    // man e manga (veñen de arriba á dereita)
-    const hx = px + Math.sin(ang) * 338, hy = py - Math.cos(ang) * 338, arr = 1 - ss(0, 0.45, u);
-    c.save(); c.translate(hx + arr * 260, hy - arr * 190); c.rotate(-0.5 + ang * 0.25);
-    poly(c, [[70, -62], [520, -150], [520, 150], [84, 60]], '#16223f', OUT, 6);                                 // manga
-    c.strokeStyle = '#0c1428'; c.lineWidth = 5; c.beginPath(); c.moveTo(150, -66); c.quadraticCurveTo(170, 0, 150, 62); c.moveTo(250, -90); c.quadraticCurveTo(280, -10, 262, 86); c.stroke();
-    line(c, 96, -62, 500, -140, '#31467a', 4);
-    poly(c, [[48, -50], [96, -70], [104, 68], [52, 46]], '#7a4f24', OUT, 6); line(c, 62, -48, 90, -60, '#c08a4a', 4);       // puño da luva
-    rrect(c, -22, -44, 84, 86, 22, '#99672f', OUT, 6);                                                                   // dorso
-    c.strokeStyle = '#6e4720'; c.lineWidth = 3.5; c.beginPath(); c.moveTo(16, -30); c.lineTo(46, -26); c.moveTo(16, -8); c.lineTo(46, -5); c.moveTo(16, 14); c.lineTo(46, 16); c.stroke();
-    for (let i = 0; i < 4; i++) rrect(c, -46, -46 + i * 22.5, 50, 22, 10, i % 2 ? '#a06c32' : '#aa7436', OUT, 5);       // dedos sobre a empuñadura
-    for (let i = 0; i < 4; i++) line(c, -36, -40 + i * 22.5, -12, -40 + i * 22.5, '#d09a56', 3);
-    rrect(c, -30, 38, 62, 26, 13, '#99672f', OUT, 5);                                                                    // polgar
+    // o farol treme
+    const fl = 0.6 + 0.4 * Math.sin(t * 11) * Math.sin(t * 3.7);
+    glow(c, 772, 520, 300, '255,170,70', 0.16 + 0.14 * fl); glow(c, 772, 522, 46, '255,240,200', 0.4 * fl);
+    // manómetro: a agulla cae co golpe de freo
+    c.save(); c.translate(906, 50);
+    c.beginPath(); c.ellipse(0, 0, 17, 18, 0, 0, TAU); c.fillStyle = '#c9b78f'; c.fill();
+    const na = lerp(-0.5, -2.5, ss(1.5, 2.3, u)) + (hit > 0 ? Math.exp(-hit * 5) * Math.sin(hit * 30) * 0.25 : Math.sin(t * 40) * 0.03 * strain);
+    line(c, 0, 0, Math.cos(na) * 15, Math.sin(na) * 15, '#231a12', 2.4); disc(c, 0, 0, 2.6, '#231a12');
     c.restore();
-    // golpe: raios curtos arredor do pé
-    if (hit > 0 && hit < 0.3) { const q = hit / 0.3; c.save(); c.globalAlpha = 1 - q; for (let i = 0; i < 11; i++) { const a = Math.PI + i / 10 * Math.PI, r1 = 104 + q * 50, r2 = r1 + 30 + R(i) * 44; line(c, px + Math.cos(a) * r1, 440 + Math.sin(a) * r1 * 0.75, px + Math.cos(a) * r2, 440 + Math.sin(a) * r2 * 0.75, '#fff3c8', 5); } c.restore(); }
+    // o golpe: raios que saltan arredor da panca e escape de aire
+    if (hit > 0 && hit < 0.35) { const q = hit / 0.35; c.save(); c.globalAlpha = 1 - q; for (let i = 0; i < 9; i++) { const a = Math.PI * (0.95 + i * 0.075), r1 = 120 + q * 60, r2 = r1 + 34 + R(i) * 50; line(c, 420 + Math.cos(a) * r1, 500 + Math.sin(a) * r1, 420 + Math.cos(a) * r2, 500 + Math.sin(a) * r2, '#ffe9b0', 5); } c.restore(); }
+    if (hit > 0) for (let i = 0; i < 10; i++) { const age = hit - i * 0.05; if (age < 0 || age > 1.2) continue; const q = age / 1.2; puff(c, 330 - q * 150 - R(i) * 30, 600 - q * 70 * R(i + 4), 16 + q * 70, '210,216,235', 0.3 * (1 - q)); }
     c.restore();
-    rain(c, t, 0.7, 120, 7);
-    fogBand(c, t, 360, 220, -40, 0.3, 6);
     vignette(c, 0.8);
   }
   /* 6 · o faro da Mikado */
@@ -591,9 +544,10 @@ const CINE = (() => {
     nz(T.s3, [[1, 0.02], [5, 0.3], [8, 0.5], [8.1, 0.25], [T.s7 - T.s3 - 0.05, 0.5], [T.s7 - T.s3, 0]], 'lowpass', 110);
     for (let k = 0; k < 9; k++) for (const dd of [0, 0.11]) { const at = T.s4 + 0.1 + k * 0.33 + dd; tone(at, [[0.005, 0.5], [0.09, 0]], 82, 'sine', 48); nz(at, [[0.004, 0.2], [0.06, 0]], 'bandpass', 900, 1.2); }
     nz(T.s4, [[0.1, 0.09], [2.9, 0.09], [3, 0]], 'highpass', 5200);
-    // a panca: esforzo e clac
+    // o freo: esforzo, clac e escape de aire
+    nz(T.s5 + 1.5, [[0.03, 0.22], [0.5, 0.1], [1.3, 0]], 'highpass', 3200, 0.5, master, 1800);
     tone(T.s5 + 0.5, [[0.1, 0.05], [0.7, 0.05], [0.75, 0]], 210, 'sawtooth', 150);
-    { const at = T.s5 + 1.52; nz(at, [[0.003, 0.7], [0.07, 0]], 'bandpass', 1900, 1); tone(at, [[0.004, 0.6], [0.14, 0]], 150, 'square', 70); for (const f of [1230, 1790, 2470]) tone(at, [[0.004, 0.09], [0.9, 0]], f); tone(at + 0.16, [[0.004, 0.2], [0.1, 0]], 120, 'square', 80); }
+    { const at = T.s5 + 1.5; nz(at, [[0.003, 0.7], [0.07, 0]], 'bandpass', 1900, 1); tone(at, [[0.004, 0.6], [0.14, 0]], 150, 'square', 70); for (const f of [1230, 1790, 2470]) tone(at, [[0.004, 0.09], [0.9, 0]], f); tone(at + 0.16, [[0.004, 0.2], [0.1, 0]], 120, 'square', 80); }
     // a Mikado: asubío, dous longos e un curto
     whistle(WH - 0, 0.3, bus(2200, false));
     nz(T.s6, [[0.4, 0.04], [4, 0.12], [T.s7 - T.s6, 0]], 'highpass', 2500);

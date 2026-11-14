@@ -11,8 +11,8 @@
   1. Negro, lluvia y la fecha a máquina: «Monforte de Lemos · 14 de xaneiro de 1958 · 21:38».
   2. **Andén 1 en 1958**, paneo lento. Fondo: `img/cine-anden-1958.jpg`, ilustración de Oscar (andén de noche, letrero, viajeros de espaldas con maletas, tren verde de viajeros con pilotos rojos, San Vicente iluminado al fondo). Por código se le añade movimiento: lámparas que tiemblan, pilotos que laten, humo de la chimenea, vapor bajo el vagón, lluvia solo fuera de la marquesina, reflejos del suelo mojado, niebla y el reloj corregido a las 21:38 con segundero.
   3. La luz que crece al fondo de la vía, zoom lento y temblor.
-  4. Inserto: ruedas del mercancías, zapatas al rojo, chispas.
-  5. Inserto: mano con guante que tira de la palanca de la aguja (contrapeso blanco y rojo, farol de mano); clac.
+  4. Inserto: ruedas del mercancías «M.T. 20-C» (`img/cine-rodas.jpg`, ilustración de Oscar). Por código: radios girando, zapatas que laten al rojo, chispas, suelo en rayas de velocidad y temblor de cámara.
+  5. Inserto: la mano del maquinista tira del freno en la cabina (`img/cine-freo.jpg`, ilustración de Oscar; sustituye a la palanca de la aguja del guion). Por código: lluvia en la ventana, farol que tiembla, sacudida y rayos en el golpe, escape de aire y la luz que entra por la ventana al final.
   6. Frente de la Mikado en la niebla: se enciende el faro, **silbato dos largos y uno corto**, la luz llena la pantalla.
   7. Corte a negro, golpe sordo, lluvia.
   8. Máquina de escribir: «PARTE DE INCIDENCIA», «Causa do incidente: erro do maquinista.» y sello «ARQUIVADO» (el sello es un añadido al guion).

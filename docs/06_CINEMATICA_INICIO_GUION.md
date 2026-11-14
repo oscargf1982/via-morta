@@ -51,3 +51,4 @@ Niebla, lluvia, vapor, chispas, temblor de cámara y versiones nocturnas por có
 - Va al pulsar «Nova partida», antes del andén del Acto 1.
 
 **Actualización 14-11-2026:** el andén de 1958 usa ya la ilustración de Oscar (`img/cine-anden-1958.jpg`), animada por código.
+**Actualización 14-11-2026 (2):** los planos 4 y 5 usan ilustraciones de Oscar: ruedas del mercancías (`img/cine-rodas.jpg`) y la mano del maquinista tirando del freno en la cabina (`img/cine-freo.jpg`), que sustituye a la palanca de la aguja.
