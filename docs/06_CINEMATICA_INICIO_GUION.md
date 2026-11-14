@@ -20,7 +20,7 @@ Un prólogo de 1958 que enseña el peligro y la culpa sin decir quién, y un sal
 | 9 | 34–37 | Fundido a negro. | Silencio total. | «68 anos despois» |
 | 10 | 48–55 | **La Mikado en la rotonda del museo, de noche** (portada oscurecida). La cámara la recorre de cerca, de las ruedas a la cabina; niebla del Cabe por delante. | Viento, un perro a lo lejos, zumbido de una farola. | — |
 | 11 | 55–61 | **La Casa Roja**, vacía y a oscuras, desde Doutor Casares. Acercamiento al portalón del taller: se enciende una luz dentro, pasa la sombra de alguien y se apaga. (Sustituye a la gota de grasa, que Oscar pidió quitar el 14-11-2026.) | Clic de interruptor, zumbido, pasos, clic. | — |
-| 12 | 61–67 | **Desde la ventana del salón**: la Mikado en su rotonda (la imagen de la portada, la misma vista que en el juego). Acercamiento lento; mientras suena el silbato, un resplandor tibio en la cabina. | **El silbato otra vez: dos largos y uno corto**, lejano, con eco. | — |
+| 12 | 61–67 | **Balcón nocturno sobre Doutor Casares** (la vista del juego, de noche). La cámara deja atrás la gasolinera y se acerca despacio hasta la Mikado, a lo lejos delante del museo; mientras suena el silbato, un resplandor tibio en la cabina. | **El silbato otra vez: dos largos y uno corto**, lejano, con eco. | — |
 | 13 | 50–55 | Negro. El título sale del vapor y el vapor se disipa. Debajo, la frase gancho. | Cola del silbato, golpe grave de música. | **VÍA MORTA** · «68 anos de silencio. / Dous longos e un curto. / Alguén segue a chamar.» (mezcla elegida por Oscar el 14-11-2026) |
 | → | — | Fundido al **andén 1 de día** (fondo actual). Empieza el Acto 1. | Bocina del regional que llega. | «Luns, 7:52» (hora por confirmar) |
 

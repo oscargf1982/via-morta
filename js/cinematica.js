@@ -8,8 +8,8 @@
      As rodas do mercadorías (img/cine-rodas.jpg), a man na panca da
      agulla (img/cine-agulla.jpg) e a Mikado de fronte (img/cine-mikado.jpg) tamén
      son ilustracións de Oscar animadas. A rotonda pásase a noite cun mapa
-     de luces, igual ca a Casa Roja (img/bg-doutor-casares.jpg); a vista da
-     fiestra é img/noite-vista.jpg. A máquina de escribir é debuxo por código.
+     de luces, igual ca a Casa Roja (img/bg-doutor-casares.jpg); a vista do
+     balcón é img/noite-vista.jpg, con zoom ata a Mikado. A máquina de escribir é debuxo por código.
    - Cada plano é unha función pura do tempo: CINE.frame(t) debuxa o
      fotograma do segundo t (sérvenos para probar con capturas).
    - Son sintetizado con WebAudio, coma o resto do xogo.
@@ -420,21 +420,24 @@ const CINE = (() => {
     fogBand(c, t, 250, 240, 12, 0.3, 12); fogBand(c, t, 400, 200, -18, 0.3, 13);
     vignette(c, 0.86);
   }
-  /* 12 · o que se ve desde a fiestra do salón: a Mikado na súa rotonda (img/noite-vista.jpg, a mesma vista ca no xogo) */
+  /* 12 · o balcón sobre Doutor Casares (img/noite-vista.jpg, a mesma vista ca no xogo): a cámara deixa atrás
+     a gasolineira e achégase amodo á Mikado, alá ao lonxe diante do museo (pedido por Oscar) */
   function s12(c, u, t) {
-    const k = ease(clamp(u / 5.6));
+    const k = ease(clamp((u - 0.5) / 4.6)), z = Math.exp(lerp(0, Math.log(4.3), k)), MX = 787, MY = 262;
+    // o punto (MX, MY) viaxa cara ao centro a medida que medra o zoom
+    const cx = lerp(836, MX, 1 - (1 - k) / z * 1), cy = lerp(470, MY, 1 - (1 - k) / z);
     c.fillStyle = '#04060c'; c.fillRect(0, 0, W, H);
-    c.save(); cam(c, 1672, lerp(836, 880, k), lerp(470, 440, k), lerp(1, 1.32, k));
+    c.save(); c.imageSmoothingQuality = 'high'; cam(c, 1672, cx, cy, z);
     if (IM.vista) c.drawImage(IM.vista, 0, 0);
-    // fóra, no oco da fiestra: lúa sobre a máquina e néboa que pasa
-    c.save(); c.beginPath(); c.rect(58, 36, 1556, 734); c.clip();
-    glow(c, 880, 440, 760, '150,178,255', 0.42); glow(c, 1130, 370, 300, '185,205,255', 0.26, 0.4);
-    const sx = 1672 / W; c.scale(sx, sx); fogBand(c, t, 40, 200, 9, 0.34, 14); fogBand(c, t, 215, 230, -13, 0.3, 15); c.restore();
+    // a lúa sobre a máquina, e a farola da rotonda
+    glow(c, MX, MY - 6, 150, '160,186,255', 0.2 + 0.25 * k); glow(c, MX, MY, 60, '190,208,255', 0.22 * k, 0.5);
+    glow(c, 1050, 420, 60, '255,190,110', 0.25 * (1 - k));
     // mentres soa o asubío, un resplandor morno na cabina. Despois, nada.
     let w = 0; for (const [w0, wd] of WHP) { const q = (u - 0.7) * K - w0; if (q > 0 && q < wd + 0.5) w = Math.max(w, ss(0, 0.12, q) * (1 - ss(wd, wd + 0.5, q))); }
-    if (w > 0) { const f = w * (0.85 + 0.15 * Math.sin(t * 40)); glow(c, 920, 416, 150, '255,160,70', 0.3 * f); glow(c, 920, 414, 44, '255,200,120', 0.45 * f, 0.6); }
+    if (w > 0) { const f = w * (0.85 + 0.15 * Math.sin(t * 40)); glow(c, 796, 250, 24, '255,160,70', 0.35 * f); glow(c, 796, 250, 5, '255,214,150', 0.7 * f); }
     c.restore();
-    vignette(c, 0.82);
+    fogBand(c, t, 90, 220, 9, 0.3, 14); fogBand(c, t, 260, 240, -12, 0.3, 15);
+    vignette(c, 0.8);
   }
   /* 13 · o título sae do vapor */
   function s13(c, u, t) {

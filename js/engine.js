@@ -151,8 +151,12 @@ async function goScene(id, at) {
   E.fadeTo = 1; await sleep(320); enterScene(id, at); E.fadeTo = 0; await sleep(320);
 }
 function showDoc(html) { SFX.paper(); const el = $('doc'); el.innerHTML = html.replace(/img\/[\w-]+\.(png|jpg)/g, res) + '<p class="doc-x">(toca para pechar)</p>'; el.hidden = false; return new Promise(r => { el.onclick = () => { el.hidden = true; r(); }; }); }
-async function cine(src, lines) {
-  const el = $('cine'); el.style.backgroundImage = `url(${res(src)})`; el.hidden = false; el.classList.remove('on'); void el.offsetWidth; el.classList.add('on');
+/* imaxe a pantalla completa con liñas de texto. zoom = { x, y, z } (opcional): a cámara achégase amodo
+   ao punto (x, y) da imaxe (fraccións 0..1) ata z aumentos e queda alí. */
+async function cine(src, lines, zoom) {
+  const el = $('cine'); el.style.backgroundImage = `url(${res(src)})`; el.hidden = false; el.classList.remove('on', 'zoom'); void el.offsetWidth;
+  if (zoom) { const f = v => (100 * (0.5 - zoom.z * v) / (1 - zoom.z)).toFixed(2) + '%'; el.style.setProperty('--zp', f(zoom.x) + ' ' + f(zoom.y)); el.style.setProperty('--zs', zoom.z * 100 + '%'); }
+  el.classList.add(zoom ? 'zoom' : 'on');
   for (const l of lines) { $('cineTxt').textContent = l; await new Promise(r => { el.onclick = r; }); }
   el.hidden = true;
 }
