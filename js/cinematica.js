@@ -5,8 +5,8 @@
    - Todo se debuxa por código nun lenzo propio de 960×540 (sen vídeo).
    - O andén de 1958 é unha ilustración de Oscar (img/cine-anden-1958.jpg)
      con movemento por riba (cámara, luces, fume, chuvia, reloxo ás 21:38).
-     As rodas do mercadorías (img/cine-rodas.jpg), a man no freo
-     (img/cine-freo.jpg) e a Mikado de fronte (img/cine-mikado.jpg) tamén
+     As rodas do mercadorías (img/cine-rodas.jpg), a man na panca da
+     agulla (img/cine-agulla.jpg) e a Mikado de fronte (img/cine-mikado.jpg) tamén
      son ilustracións de Oscar animadas. A rotonda pásase a noite cun mapa
      de luces; a máquina de escribir e a pinga de graxa son debuxo por código.
    - Cada plano é unha función pura do tempo: CINE.frame(t) debuxa o
@@ -122,8 +122,8 @@ const CINE = (() => {
     if (ready) return ready;
     ready = (async () => {
       FOG = makeFog();
-      const [a, r, v, ro, fr, mk] = await Promise.all(['img/cine-anden-1958.jpg', 'img/portada-rotonda.jpg', 'img/noite-vista.jpg', 'img/cine-rodas.jpg', 'img/cine-freo.jpg', 'img/cine-mikado.jpg'].map(load));
-      IM = { anden: a, rotonda: r, vista: v, rodas: ro, freo: fr, mikado: mk };
+      const [a, r, v, ro, fr, mk] = await Promise.all(['img/cine-anden-1958.jpg', 'img/portada-rotonda.jpg', 'img/noite-vista.jpg', 'img/cine-rodas.jpg', 'img/cine-agulla.jpg', 'img/cine-mikado.jpg'].map(load));
+      IM = { anden: a, rotonda: r, vista: v, rodas: ro, agulla: fr, mikado: mk };
       if (r) NIGHT.rotonda = bakeNight(r, '#16204a', l => {
         glow(l, 830, 500, 620, '150,175,255', 0.62);             // lúa sobre a Mikado
         glow(l, 250, 330, 330, '255,186,105', 0.85); glow(l, 250, 420, 300, '255,186,105', 0.5, 0.4);
@@ -240,33 +240,26 @@ const CINE = (() => {
     fogBand(c, t, 330, 260, 900, 0.16, 4);
     vignette(c, 0.85);
   }
-  /* 5 · a man do maquinista tira do freo: ilustración de Oscar (img/cine-freo.jpg) con movemento */
+  /* 5 · a man que cambia a agulla: ilustración de Oscar (img/cine-agulla.jpg) con movemento */
   function s5(c, u, t) {
     const hit = u - 1.5, jolt = hit > 0 ? Math.exp(-hit * 8) : 0, strain = u > 0.4 && u < 1.5 ? ss(0.4, 1.4, u) : 0;
     c.fillStyle = '#05070d'; c.fillRect(0, 0, W, H);
     c.save(); c.translate(Math.sin(t * 75) * (1.6 * strain + 9 * jolt), Math.sin(t * 58 + 1) * 1.2 * strain + 10 * jolt);
-    const z = 1.03 + 0.07 * ss(0, 3, u) + 0.05 * jolt;
-    cam(c, 978, lerp(470, 500, ss(0, 3, u)), lerp(308, 338, ss(0.3, 1.6, u)), z);
-    if (IM.freo) c.drawImage(IM.freo, 0, 0);
-    // chuvia e luz que se achega pola fiestra (sen pisar a man)
-    c.save(); c.beginPath(); for (const [x, y] of [[152, 0], [814, 0], [814, 298], [416, 298], [416, 172], [392, 140], [338, 132], [252, 196], [152, 204]]) c.lineTo(x, y); c.closePath(); c.clip();
-    const inc = ss(1.7, 3, u); glow(c, 830, 120, 430, '255,226,170', 0.06 + 0.55 * inc);
-    c.lineCap = 'round';
-    for (let i = 0; i < 90; i++) { const sp = 1.6 + R(i + 900) * 1.2, ph = (R(i + 500) + t * sp) % 1, x = 150 + R(i) * 740 - ph * 90, y = ph * 340 - 20, l = 16 + R(i + 300) * 20; c.strokeStyle = `rgba(190,205,240,${0.18 + R(i + 700) * 0.35})`; c.lineWidth = 1 + R(i + 100); c.beginPath(); c.moveTo(x, y); c.lineTo(x - l * 0.28, y + l); c.stroke(); }
-    c.restore();
-    // o farol treme
+    cam(c, 1672, lerp(800, 850, ss(0, 3, u)), lerp(455, 485, ss(0.3, 1.6, u)), 1.04 + 0.08 * ss(0, 3, u) + 0.05 * jolt);
+    if (IM.agulla) c.drawImage(IM.agulla, 0, 0);
+    // a luz do mercadorías que se achega pola vía, a caseta e os reflexos nos carrís mollados
+    const inc = ss(1.6, 3, u); glow(c, -40, 330, 900, '255,226,170', 0.08 + 0.42 * inc);
     const fl = 0.6 + 0.4 * Math.sin(t * 11) * Math.sin(t * 3.7);
-    glow(c, 772, 520, 300, '255,170,70', 0.16 + 0.14 * fl); glow(c, 772, 522, 46, '255,240,200', 0.4 * fl);
-    // manómetro: a agulla cae co golpe de freo
-    c.save(); c.translate(906, 50);
-    c.beginPath(); c.ellipse(0, 0, 17, 18, 0, 0, TAU); c.fillStyle = '#c9b78f'; c.fill();
-    const na = lerp(-0.5, -2.5, ss(1.5, 2.3, u)) + (hit > 0 ? Math.exp(-hit * 5) * Math.sin(hit * 30) * 0.25 : Math.sin(t * 40) * 0.03 * strain);
-    line(c, 0, 0, Math.cos(na) * 15, Math.sin(na) * 15, '#231a12', 2.4); disc(c, 0, 0, 2.6, '#231a12');
+    glow(c, 1362, 192, 150, '255,200,110', 0.14 + 0.1 * fl); glow(c, 1362, 192, 40, '255,240,200', 0.25 * fl);
+    for (let i = 0; i < 16; i++) { const x = 60 + R(i) * 1250, y = 330 + R(i + 20) * 330, a = (0.05 + 0.07 * inc) * (1 + Math.sin(t * (1.5 + R(i + 5) * 2.5) + i * 2.4)); glow(c, x, y, 30 + R(i + 9) * 40, '255,200,120', a, 0.35); }
+    // o golpe: raios arredor do pé da panca e salpicaduras
+    if (hit > 0 && hit < 0.35) { const q = hit / 0.35; c.save(); c.globalAlpha = 1 - q; for (let i = 0; i < 11; i++) { const a = Math.PI * (1.05 + i * 0.09), r1 = 190 + q * 90, r2 = r1 + 50 + R(i) * 80; line(c, 1010 + Math.cos(a) * r1, 800 + Math.sin(a) * r1 * 0.8, 1010 + Math.cos(a) * r2, 800 + Math.sin(a) * r2 * 0.8, '#ffe9b0', 8); } c.restore(); }
+    if (hit > 0 && hit < 0.5) for (let i = 0; i < 14; i++) { const vx = (R(i) - 0.5) * 900, vy = -300 - R(i + 3) * 500, x = 1010 + vx * hit, y = 860 + vy * hit + 1400 * hit * hit; disc(c, x, y, 3 + R(i + 6) * 4, `rgba(170,185,220,${0.7 * (1 - hit / 0.5)})`); }
+    // chuvia
+    c.lineCap = 'round';
+    for (let i = 0; i < 170; i++) { const sp = 1.5 + R(i + 900) * 1.1, ph = (R(i + 500) + t * sp) % 1, x = R(i) * 1900 - ph * 150, y = ph * 1040 - 50, l = 22 + R(i + 300) * 30; c.strokeStyle = `rgba(175,195,235,${0.12 + R(i + 700) * 0.28})`; c.lineWidth = 1.6 + R(i + 100) * 1.6; c.beginPath(); c.moveTo(x, y); c.lineTo(x - l * 0.22, y + l); c.stroke(); }
     c.restore();
-    // o golpe: raios que saltan arredor da panca e escape de aire
-    if (hit > 0 && hit < 0.35) { const q = hit / 0.35; c.save(); c.globalAlpha = 1 - q; for (let i = 0; i < 9; i++) { const a = Math.PI * (0.95 + i * 0.075), r1 = 120 + q * 60, r2 = r1 + 34 + R(i) * 50; line(c, 420 + Math.cos(a) * r1, 500 + Math.sin(a) * r1, 420 + Math.cos(a) * r2, 500 + Math.sin(a) * r2, '#ffe9b0', 5); } c.restore(); }
-    if (hit > 0) for (let i = 0; i < 10; i++) { const age = hit - i * 0.05; if (age < 0 || age > 1.2) continue; const q = age / 1.2; puff(c, 330 - q * 150 - R(i) * 30, 600 - q * 70 * R(i + 4), 16 + q * 70, '210,216,235', 0.3 * (1 - q)); }
-    c.restore();
+    fogBand(c, t, 150, 240, 30, 0.22, 5); fogBand(c, t, 360, 220, -40, 0.18, 6);
     vignette(c, 0.8);
   }
   /* 6 · a Mikado de fronte: ilustración de Oscar (img/cine-mikado.jpg) con movemento */
@@ -519,8 +512,7 @@ const CINE = (() => {
     nz(T.s3, [[1, 0.02], [5, 0.3], [8, 0.5], [8.1, 0.25], [T.s7 - T.s3 - 0.05, 0.5], [T.s7 - T.s3, 0]], 'lowpass', 110);
     for (let k = 0; k < 9; k++) for (const dd of [0, 0.11]) { const at = T.s4 + 0.1 + k * 0.33 + dd; tone(at, [[0.005, 0.5], [0.09, 0]], 82, 'sine', 48); nz(at, [[0.004, 0.2], [0.06, 0]], 'bandpass', 900, 1.2); }
     nz(T.s4, [[0.1, 0.09], [2.9, 0.09], [3, 0]], 'highpass', 5200);
-    // o freo: esforzo, clac e escape de aire
-    nz(T.s5 + 1.5, [[0.03, 0.22], [0.5, 0.1], [1.3, 0]], 'highpass', 3200, 0.5, master, 1800);
+    // a panca da agulla: esforzo e clac
     tone(T.s5 + 0.5, [[0.1, 0.05], [0.7, 0.05], [0.75, 0]], 210, 'sawtooth', 150);
     { const at = T.s5 + 1.5; nz(at, [[0.003, 0.7], [0.07, 0]], 'bandpass', 1900, 1); tone(at, [[0.004, 0.6], [0.14, 0]], 150, 'square', 70); for (const f of [1230, 1790, 2470]) tone(at, [[0.004, 0.09], [0.9, 0]], f); tone(at + 0.16, [[0.004, 0.2], [0.1, 0]], 120, 'square', 80); }
     // a Mikado: asubío, dous longos e un curto

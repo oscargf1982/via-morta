@@ -598,8 +598,24 @@ const MUSIC = {
 
 /* ---------- menú, opcións, actos e créditos ---------- */
 function showPane(id) { for (const p of document.querySelectorAll('#menu .pane')) p.hidden = p.id !== id; }
-function openMenu() { E.paused = true; $('menu').hidden = false; $('btnCont').hidden = !(E.scene || loadGame()); showPane('mMain'); }
-function closeMenu() { $('menu').hidden = true; E.paused = false; }
+/* música do menú: unha pista en bucle (MENU_MUSIC en data.js) que soa mentres o menú está á vista.
+   Os navegadores non deixan soar nada ata o primeiro toque: daquela arrinca soa. */
+const MENU = { el: null, on: false, timer: null };
+function menuMusic(on) {
+  if (typeof MENU_MUSIC === 'undefined' || !MENU_MUSIC) return;
+  if (!MENU.el) { MENU.el = new Audio(res(MENU_MUSIC)); MENU.el.loop = true; MENU.el.preload = 'auto'; MENU.el.volume = 0; }
+  MENU.on = on; const a = MENU.el; clearInterval(MENU.timer);
+  if (SFX.ctx) SFX.mus.gain.value = on ? 0 : E.opts.music * 0.5;      // a música de zona cala mentres o menú está aberto
+  if (on) { const p = a.play(); if (p && p.catch) p.catch(() => { }); }
+  MENU.timer = setInterval(() => {
+    const goal = MENU.on ? E.opts.music : 0, v = a.volume + Math.sign(goal - a.volume) * Math.min(0.06, Math.abs(goal - a.volume));
+    a.volume = Math.max(0, Math.min(1, v));
+    if (Math.abs(a.volume - goal) < 0.001) { clearInterval(MENU.timer); if (!MENU.on) a.pause(); }
+  }, 50);
+}
+function setMenu(vis) { $('menu').hidden = !vis; menuMusic(vis); }
+function openMenu() { E.paused = true; setMenu(true); $('btnCont').hidden = !(E.scene || loadGame()); showPane('mMain'); }
+function closeMenu() { setMenu(false); E.paused = false; }
 function startPreset(P) {
   E.act = P.id; E.inv = [...(P.inv || [])]; E.flags = { ...(P.flags || {}) }; E.held = null; E.dlg = null; $('dlg').hidden = true;
   closeMenu(); enterScene(P.scene, P.at); drawInv(); if (P.intro) run(P.intro);
@@ -610,7 +626,7 @@ async function startGame(fresh) {
   if (!fresh && E.scene) { closeMenu(); return; }
   const s = !fresh && loadGame();
   if (s) { E.act = s.act; E.inv = s.inv || []; E.flags = s.flags || {}; closeMenu(); enterScene(s.scene, [s.x, s.y]); drawInv(); }
-  else { const P = ACTS[0]; if (P.cine) { $('menu').hidden = true; SFX.music(null); await P.cine(); } startPreset(P); }
+  else { const P = ACTS[0]; if (P.cine) { setMenu(false); SFX.music(null); await P.cine(); } startPreset(P); }
 }
 function buildMenu() {
   const list = $('actList'); list.innerHTML = '';
@@ -624,10 +640,10 @@ function buildMenu() {
   const o = E.opts;
   $('optFast').checked = o.fast; $('optMus').value = o.music; $('optSfx').value = o.sfx;
   $('optFast').onchange = e => { o.fast = e.target.checked; saveOpts(); };
-  $('optMus').oninput = e => { o.music = +e.target.value; SFX.volume(); saveOpts(); };
+  $('optMus').oninput = e => { o.music = +e.target.value; SFX.volume(); if (MENU.el && MENU.on) { MENU.el.volume = o.music; if (SFX.ctx) SFX.mus.gain.value = 0; } saveOpts(); };
   $('optSfx').oninput = e => { o.sfx = +e.target.value; SFX.volume(); saveOpts(); };
   $('optTest').onclick = () => SFX.whistle();
-  const oc = $('optCine'); if (oc) { oc.hidden = !ACTS[0].cine; oc.onclick = async () => { SFX.init(); const m = SFX.want; $('menu').hidden = true; SFX.music(null); await ACTS[0].cine({ day: false }); $('menu').hidden = false; SFX.music(m); }; }
+  const oc = $('optCine'); if (oc) { oc.hidden = !ACTS[0].cine; oc.onclick = async () => { SFX.init(); const m = SFX.want; setMenu(false); SFX.music(null); await ACTS[0].cine({ day: false }); setMenu(true); SFX.music(m); }; }
   $('btnCont').onclick = () => startGame(false);
   $('btnNew').onclick = () => startGame(true);
   $('btnActs').onclick = () => showPane('mActs');
@@ -651,5 +667,7 @@ window.addEventListener('load', () => {
   for (const S of Object.values(SCENES)) if (S.bg) img(S.bg); img(MARTIN.sheet);
   for (const S of Object.values(SCENES)) for (const n of S.npcs || []) if (n.sheet) img(n.sheet);
   openMenu();
+  const kick = () => { if (MENU.on && MENU.el && MENU.el.paused) menuMusic(true); };
+  window.addEventListener('pointerdown', kick, true); window.addEventListener('keydown', kick, true);
   requestAnimationFrame(frame);
 });
