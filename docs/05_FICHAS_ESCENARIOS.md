@@ -3,6 +3,27 @@
 > Cada escenario se describe aquí antes de programarlo en `js/acto*.js`. Coordenadas en el lienzo lógico de 960×540.
 > Los fondos de A1, A2, A3, A3b, A4, A4b, A4c, B3 y la portada son ilustraciones de Oscar. El mapa sigue siendo un **boceto provisional** generado con `tools/fondos.py`.
 
+## C0 · Cinemática de inicio «Dous longos e un curto» (`js/cinematica.js`)
+- **Cuándo:** al pulsar «Nova partida», antes del andén del Acto 1. Se puede volver a ver en Opcións → «Ver a cinemática de inicio». Dura unos 60 s. Un toque (o Esc/Enter/espacio) enseña «Saltar ▸»; el segundo salta.
+- **Guion:** `docs/06_CINEMATICA_INICIO_GUION.md` (propuesta A, elegida por Oscar el 14-11-2026, estética cartoon). Martín no aparece. Todo es **ficción del juego** (la noche del 14 de enero de 1958); al principio sale el rótulo «Unha ficción inspirada en lugares reais de Monforte».
+- **Cómo está hecha:** todo se dibuja por código en un lienzo propio de 960×540 (no es vídeo). Cada plano es una función del tiempo; `CINE.frame(t)` dibuja el fotograma del segundo `t` para hacer capturas de prueba. Sonido sintetizado.
+- **Planos:**
+  1. Negro, lluvia y la fecha a máquina: «Monforte de Lemos · 14 de xaneiro de 1958 · 21:38».
+  2. **Andén 1 en 1958**, paneo. Es el fondo del andén del juego (`img/bg-anden-estacion.jpg`) pasado a noche con un mapa de luces; por encima se pinta lo de época: tren de viajeros verde con ventanas encendidas y farol rojo de cola (tapa el regional), letrero esmaltado «MONFORTE DE LEMOS» (tapa el de Adif), reloj de estación a las 21:38, lámparas colgadas, baúl y maleta (tapan la papelera), siluetas sin cara con maletas, vapor y niebla.
+  3. La luz que crece al fondo de la vía, zoom lento y temblor.
+  4. Inserto: ruedas del mercancías, zapatas al rojo, chispas.
+  5. Inserto: mano con guante que tira de la palanca de la aguja (contrapeso blanco y rojo, farol de mano); clac.
+  6. Frente de la Mikado en la niebla: se enciende el faro, **silbato dos largos y uno corto**, la luz llena la pantalla.
+  7. Corte a negro, golpe sordo, lluvia.
+  8. Máquina de escribir: «PARTE DE INCIDENCIA», «Causa do incidente: erro do maquinista.» y sello «ARQUIVADO» (el sello es un añadido al guion).
+  9. «68 anos despois».
+  10. Rotonda del museo de noche (`img/portada-rotonda.jpg` pasada a noche), zoom a la Mikado, niebla.
+  11. Inserto: la gota de grasa fresca cae de la biela al carril (pista del Acto 3).
+  12. Vista nocturna del balcón (`img/noite-vista.jpg`): se apaga una ventana; el silbato otra vez, lejano y con eco.
+  13. Título «VÍA MORTA» saliendo del vapor, con una vía que acaba en un tope, y la frase: «Esa máquina non se move dende hai décadas. / Entón, quen asubía?».
+  - Enlace: rótulo «Luns, 7:52» mientras aparece el andén de día (**hora por confirmar con Oscar**).
+- **Motor:** `engine.js` solo sabe que un acto puede tener `cine` (se reproduce en «Nova partida» antes de entrar en la escena). El contenido vive en `js/cinematica.js`.
+
 ## A1 · Andén 1 (`anden`)
 - **Fondo:** `img/bg-anden-estacion.jpg`, ilustración de Oscar. Marquesina con columnas de pie azul, la fachada con puertas azules en arco, el letrero «Monforte de Lemos», bancos, papelera y el regional parado en la vía 1.
 - **Suelo:** el andén, desde la fachada hasta la línea amarilla. Perspectiva fuerte (Martín se hace pequeño al fondo). Obstáculos y capas delanteras: las tres primeras columnas y la papelera.

@@ -604,12 +604,13 @@ function startPreset(P) {
   E.act = P.id; E.inv = [...(P.inv || [])]; E.flags = { ...(P.flags || {}) }; E.held = null; E.dlg = null; $('dlg').hidden = true;
   closeMenu(); enterScene(P.scene, P.at); drawInv(); if (P.intro) run(P.intro);
 }
-function startGame(fresh) {
+/* un acto pode levar unha cinemática de apertura (P.cine): vese en «Nova partida», antes de entrar na escena */
+async function startGame(fresh) {
   SFX.init();
   if (!fresh && E.scene) { closeMenu(); return; }
   const s = !fresh && loadGame();
   if (s) { E.act = s.act; E.inv = s.inv || []; E.flags = s.flags || {}; closeMenu(); enterScene(s.scene, [s.x, s.y]); drawInv(); }
-  else startPreset(ACTS[0]);
+  else { const P = ACTS[0]; if (P.cine) { $('menu').hidden = true; SFX.music(null); await P.cine(); } startPreset(P); }
 }
 function buildMenu() {
   const list = $('actList'); list.innerHTML = '';
@@ -626,12 +627,13 @@ function buildMenu() {
   $('optMus').oninput = e => { o.music = +e.target.value; SFX.volume(); saveOpts(); };
   $('optSfx').oninput = e => { o.sfx = +e.target.value; SFX.volume(); saveOpts(); };
   $('optTest').onclick = () => SFX.whistle();
+  const oc = $('optCine'); if (oc) { oc.hidden = !ACTS[0].cine; oc.onclick = async () => { SFX.init(); const m = SFX.want; $('menu').hidden = true; SFX.music(null); await ACTS[0].cine({ day: false }); $('menu').hidden = false; SFX.music(m); }; }
   $('btnCont').onclick = () => startGame(false);
   $('btnNew').onclick = () => startGame(true);
   $('btnActs').onclick = () => showPane('mActs');
   $('btnOpts').onclick = () => showPane('mOpts');
   $('btnCred').onclick = () => showPane('mCred');
-  for (const b of document.querySelectorAll('#menu .back')) b.onclick = () => showPane('mMain');
+  for (const b of document.querySelectorAll('#menu .back:not([id])')) b.onclick = () => showPane('mMain');
   const fs = $('btnFull');
   if (document.fullscreenEnabled && matchMedia('(pointer:coarse)').matches) {
     fs.hidden = false;
