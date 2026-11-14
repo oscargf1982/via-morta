@@ -629,7 +629,7 @@ SCENES.coruna = {
     { name: 'Porche', r: [330, 300, 200, 60], look: () => MA('El porche de madera sobre columnas de piedra. Debajo se refugiaban las madres cuando llovía. O sea, casi siempre.', 'risueno') },
     { name: 'Capela', r: [656, 140, 150, 236], look: () => MA('La capillita de piedra, con su campana. Es la que veo desde el balcón de casa. De cerca parece más pequeña. O yo más grande.', 'sonriente') },
     { name: 'Muro amarelo', r: [576, 316, 80, 70], look: () => MA('Un muro amarillo con verja. Aquí se apoyaban las mochilas mientras se esperaba al autobús.', 'pensativo') },
-    { name: 'Gasolineira', r: [848, 300, 52, 50], look: () => MA('La gasolinera, al fondo. Es la misma que veo desde el salón. Monforte es pequeño: todo se ve desde todo.', 'sonriente') },
+    { name: 'Gasolineira', r: [848, 300, 52, 50], look: () => MA('La gasolinera, al fondo. Detrás queda Doctor Casares. Monforte es pequeño: todo está detrás de todo.', 'sonriente') },
     { name: 'Árbore', r: [0, 0, 150, 240], look: () => MA('Un árbol enorme, de los que dan sombra a medio colegio. Seguro que alguna pelota sigue ahí arriba.', 'risueno') },
     { name: 'Farolas', r: [876, 230, 50, 140], look: () => MA('Farolas de las antiguas, en fila. De noche esta calle debe de parecer un andén.', 'pensativo') },
     { name: 'Edificios', r: [860, 0, 100, 228], look: () => MA('Pisos con balcones de forja. En cada uno, alguien que me vio pasar con la mochila hace veinte años. Y que se acuerda.', 'esceptico') },
@@ -705,7 +705,7 @@ async function noiteActo1() {
   ]);
   setTimeout(() => SFX.whistle('LLS', 0.3), 600);
   await cine('img/noite-vista.jpg', [
-    'Martín: «Desde el balcón: la gasolinera cerrada, la capillita a oscuras, la Mikado quieta en la rotonda.»',
+    'Martín: «Desde el balcón: el museo a oscuras, las cocheras en sombra, la Mikado quieta en su rotonda.»',
     'Martín: «Ahí está otra vez. Dos largos, uno corto. No viene de la estación: viene del lado del museo... y viene hacia aquí.»',
     'Martín: «No pasa por delante de mi casa. Llama a mi casa.»',
   ]);
@@ -762,12 +762,13 @@ SCENES.casaSalon = {
   ],
 };
 
-// vista desde o balcón do salón (imaxe de Oscar): gasolinera, capela, supermercado e, ao fondo, o museo do ferrocarril coa Mikado
+// vista desde o balcón do salón: a Mikado na rotonda do museo do ferrocarril, a imaxe principal do xogo (a da portada).
+// Decidido por Oscar o 14-11-2026: a vista anterior, coa gasolineira, distraía da Mikado. A imaxe sae de tools/vista.py.
 async function vistaSalon() {
   const primeira = !flag('vistaSalon'); setFlag('vistaSalon');
   await cine('img/vista-salon.jpg', primeira ? [
-    'Martín: «Desde aquí se ve medio barrio: la gasolinera, la capillita, el supermercado de enfrente...»',
-    'Martín: «Y al fondo, el museo del ferrocarril. Con la Mikado delante, quieta, como esperando turno.»',
+    'Martín: «Desde aquí se ve el museo del ferrocarril: la rotonda entera, con las cocheras en abanico y un tren asomando en cada puerta.»',
+    'Martín: «Y en el centro, sobre la placa giratoria, la Mikado. Negra, enorme y quieta, como esperando turno.»',
     'Martín: «Una locomotora de vapor parada desde hace décadas, y un maquinista mirándola desde su salón. Xoán tenía razón: buen balcón.»',
   ] : ['Martín: «La Mikado sigue ahí. Quieta. Ella no tiene prisa; yo tampoco.»']);
   if (primeira) await MA('Si alguna noche oigo un silbato de vapor, ya sé hacia dónde mirar.', 'dudoso');

@@ -8,7 +8,8 @@
      As rodas do mercadorías (img/cine-rodas.jpg), a man na panca da
      agulla (img/cine-agulla.jpg) e a Mikado de fronte (img/cine-mikado.jpg) tamén
      son ilustracións de Oscar animadas. A rotonda pásase a noite cun mapa
-     de luces; a máquina de escribir e a pinga de graxa son debuxo por código.
+     de luces, igual ca a Casa Roja (img/bg-doutor-casares.jpg); a vista da
+     fiestra é img/noite-vista.jpg. A máquina de escribir é debuxo por código.
    - Cada plano é unha función pura do tempo: CINE.frame(t) debuxa o
      fotograma do segundo t (sérvenos para probar con capturas).
    - Son sintetizado con WebAudio, coma o resto do xogo.
@@ -25,8 +26,12 @@ const CINE = (() => {
   const MONO = '"Courier New", Courier, "Cutive Mono", monospace';
 
   /* ---------- planos (segundos) ---------- */
-  const T = { s1: 0, s2: 4.6, s3: 11.6, s4: 16.6, s5: 19.6, s6: 22.6, s7: 26.9, s8: 29.6, s9: 35.6, s10: 38.6, s11: 44.6, s12: 47.8, s13: 52.8, end: 61.2 };
-  const WH = T.s6 + 0.6, WH2 = T.s12 + 0.5;            // comezo dos dous asubíos
+  /* Cada plano está escrito no seu «tempo de guion» (DUR, en segundos) e a montaxe estírao K veces:
+     Oscar pediu planos un chisco máis longos. O movemento continuo (chuvia, faíscas, fume) non se ralentiza. */
+  const K = 1.15;
+  const DUR = [4.6, 7, 5, 3, 3, 4.3, 2.7, 8.8, 3, 6, 5.6, 5.6, 8.4];
+  const T = {}; { let a = 0; DUR.forEach((d, i) => { T['s' + (i + 1)] = a; a += d * K; }); T.end = a; }
+  const WH = T.s6 + 0.6 * K, WH2 = T.s12 + 0.7 * K;    // comezo dos dous asubíos
   const WHP = [[0, 1.05], [1.27, 1.05], [2.54, 0.35]];  // dous longos e un curto
 
   let IM = {}, NIGHT = {}, FOG = null, ready = null;
@@ -122,7 +127,7 @@ const CINE = (() => {
     if (ready) return ready;
     ready = (async () => {
       FOG = makeFog();
-      const [a, r, v, ro, fr, mk] = await Promise.all(['img/cine-anden-1958.jpg', 'img/portada-rotonda.jpg', 'img/noite-vista.jpg', 'img/cine-rodas.jpg', 'img/cine-agulla.jpg', 'img/cine-mikado.jpg'].map(load));
+      const [a, r, v, ro, fr, mk, ca] = await Promise.all(['img/cine-anden-1958.jpg', 'img/portada-rotonda.jpg', 'img/noite-vista.jpg', 'img/cine-rodas.jpg', 'img/cine-agulla.jpg', 'img/cine-mikado.jpg', 'img/bg-doutor-casares.jpg'].map(load));
       IM = { anden: a, rotonda: r, vista: v, rodas: ro, agulla: fr, mikado: mk };
       if (r) NIGHT.rotonda = bakeNight(r, '#16204a', l => {
         glow(l, 830, 500, 620, '150,175,255', 0.62);             // lúa sobre a Mikado
@@ -130,6 +135,13 @@ const CINE = (() => {
         glow(l, 1330, 300, 240, '255,186,105', 0.6);
       }, c => {
         const g = c.createLinearGradient(0, 0, 0, 200); g.addColorStop(0, 'rgba(4,7,16,.92)'); g.addColorStop(1, 'rgba(4,7,16,0)'); c.fillStyle = g; c.fillRect(0, 0, 1536, 200);
+      });
+      // a Casa Roja de noite: só a farola da rúa e un chisco de lúa na fachada
+      if (ca) NIGHT.casa = bakeNight(ca, '#131a3e', l => {
+        glow(l, 1060, 380, 700, '150,175,255', 0.5);
+        glow(l, 640, 560, 420, '255,186,105', 0.8); glow(l, 660, 640, 380, '255,186,105', 0.55, 0.4);
+      }, c => {
+        const g = c.createLinearGradient(0, 0, 0, 260); g.addColorStop(0, 'rgba(4,7,16,.9)'); g.addColorStop(1, 'rgba(4,7,16,0)'); c.fillStyle = g; c.fillRect(0, 0, 1672, 260);
       });
     })();
     return ready;
@@ -277,7 +289,7 @@ const CINE = (() => {
     for (let i = 0; i < 16; i++) { const sd = i % 2 ? 1 : -1, ph = (t * 0.32 + R(i)) % 1; puff(c, 838 + sd * (400 + ph * 330), 720 - ph * 150 * R(i + 3), 50 + ph * 150, '196,200,222', 0.26 * Math.sin(ph * Math.PI)); }
     // o asubío: chorro de vapor branco
     for (const [w0, wd] of WHP) {
-      const wu = (T.s6 + u) - (WH + w0);
+      const wu = (u - 0.6) * K - w0;
       for (let i = 0; i < 16; i++) { const b = i / 16 * wd, age = wu - b; if (age < 0 || age > 1.3) continue; const q = age / 1.3; puff(c, 940 + q * 260 + R(i) * 30, 150 - q * 330 - R(i + 4) * 50, 20 + q * 110, '236,242,255', 0.6 * (1 - q)); }
       if (wu > 0 && wu < wd) line(c, 934, 156, 966, 84, 'rgba(240,246,255,.9)', 8);
     }
@@ -306,7 +318,7 @@ const CINE = (() => {
   }
   /* 8 · o parte, a máquina de escribir */
   const P1 = 'Causa do incidente:', P2 = 'erro do maquinista.';
-  const KEYS = (() => { const k = []; let t = 0.55; for (let i = 0; i < P1.length; i++) { k.push(t); t += 0.06 + R(i + 11) * 0.045 + (P1[i] === ' ' ? 0.04 : 0); } const bell = t + 0.05; t += 0.75; const ret = [bell + 0.1, t - 0.1]; for (let i = 0; i < P2.length; i++) { k.push(t); t += 0.062 + R(i + 71) * 0.045 + (P2[i] === ' ' ? 0.04 : 0); } return { k, bell, ret, end: t, stamp: t + 0.45 }; })();
+  const KEYS = (() => { const k = []; let t = 0.55; for (let i = 0; i < P1.length; i++) { k.push(t); t += 0.06 + R(i + 11) * 0.045 + (P1[i] === ' ' ? 0.04 : 0); } const bell = t + 0.05; t += 0.75; const ret = [bell + 0.1, t - 0.1]; for (let i = 0; i < P2.length; i++) { k.push(t); t += 0.062 + R(i + 71) * 0.045 + (P2[i] === ' ' ? 0.04 : 0); } return { k, bell, ret, end: t, stamp: t + 0.8 }; })();
   function s8(c, u, t) {
     const CWD = 30, n = KEYS.k.filter(x => x <= u).length, n1 = Math.min(n, P1.length), n2 = Math.max(0, n - P1.length);
     const rt = ss(KEYS.ret[0], KEYS.ret[1], u), last = n ? u - KEYS.k[n - 1] : 9;
@@ -314,7 +326,10 @@ const CINE = (() => {
     const col = n <= P1.length && rt < 1 ? lerp(n1, 0, rt) : n2;
     const px = 480 + (P1.length / 2 - col - 0.5) * CWD, feed = 58 * rt, by = 352;
     c.fillStyle = '#0d0b0a'; c.fillRect(0, 0, W, H);
-    c.save(); c.translate(W / 2, H / 2); c.scale(1.03 + 0.04 * ss(0, 6, u), 1.03 + 0.04 * ss(0, 6, u)); c.translate(-W / 2, -H / 2 - 36 + (last < 0.04 ? 1.5 : 0));
+    // o selo: golpe, e a cámara achégase e queda parada nel
+    const st = u - KEYS.stamp, zq = ease(clamp((st - 0.35) / 1.1)), sj = st > 0 ? Math.exp(-st * 9) * 7 : 0;
+    c.save(); c.translate(W / 2 + Math.sin(st * 90) * sj, H / 2 + Math.cos(st * 70) * sj); c.scale(1 + 0.75 * zq, 1 + 0.75 * zq); c.translate(-lerp(W / 2, 338, zq), -lerp(H / 2, 176, zq));
+    c.translate(W / 2, H / 2); c.scale(1.03 + 0.04 * ss(0, 6, u), 1.03 + 0.04 * ss(0, 6, u)); c.translate(-W / 2, -H / 2 - 36 + (last < 0.04 ? 1.5 : 0));
     // papel
     c.save(); c.translate(px, 0);
     rrect(c, -350, -60, 700, 520, 3, '#eadfc4', OUT, 4);
@@ -331,7 +346,8 @@ const CINE = (() => {
     for (let i = 0; i < n2; i++) { c.globalAlpha = 0.8 + R(i + 400) * 0.2; c.fillStyle = '#1c1714'; c.fillText(P2[i], x0 + i * CWD, by + 58 + (R(i + 420) - 0.5) * 3); }
     c.globalAlpha = 1;
     // selo
-    const st = u - KEYS.stamp; if (st > 0) { const q = clamp(st / 0.12), sc = lerp(1.9, 1, q); c.save(); c.translate(196, 208); c.rotate(-0.16); c.scale(sc, sc); c.globalAlpha = 0.85 * q; rrect(c, -128, -34, 256, 68, 6, null, '#a3261c', 6); c.fillStyle = '#a3261c'; c.font = '700 44px Georgia, serif'; c.textBaseline = 'middle'; c.fillText('ARQUIVADO', 0, 2); c.restore(); }
+    if (st > 0) { const q = clamp(st / 0.12), sc = lerp(1.9, 1, q); c.save(); c.translate(196, 208); c.rotate(-0.16); c.scale(sc, sc); c.globalAlpha = 0.88 * q; rrect(c, -134, -38, 268, 76, 7, null, '#a3261c', 6); rrect(c, -124, -29, 248, 58, 4, null, '#a3261c', 2); c.fillStyle = '#a3261c'; c.font = '700 44px Georgia, serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('ARQUIVADO', 0, 2);
+      c.globalAlpha = 0.5 * q; for (let i = 0; i < 26; i++) disc(c, -150 + R(i + 600) * 300, -46 + R(i + 630) * 92, 0.8 + R(i + 660) * 1.6, '#a3261c'); c.restore(); }
     c.restore(); c.restore();
     // guía do tipo, cinta e barra que golpea
     c.fillStyle = '#7d1712'; c.fillRect(436, by + 10, 88, 9); c.fillStyle = '#15110f'; c.fillRect(436, by + 19, 88, 9); line(c, 436, by + 10, 524, by + 10, OUT, 2); line(c, 436, by + 28, 524, by + 28, OUT, 2);
@@ -363,73 +379,62 @@ const CINE = (() => {
     c.globalAlpha = a; c.fillStyle = '#f2ead8'; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.font = 'italic 52px Georgia, serif'; c.fillText('68 anos despois', W / 2, 284);
     const w = 150 * ss(0.5, 1.6, u); c.fillStyle = '#f2a33a'; c.fillRect(W / 2 - w, 312, w * 2, 2.5); c.globalAlpha = 1;
   }
-  /* 10 · a rotonda do museo, de noite */
+  /* 10 · a Mikado na rotonda do museo, de noite: a cámara percorre a máquina de preto */
   function s10(c, u, t) {
     const k = ease(clamp(u / 6));
     c.fillStyle = '#04060c'; c.fillRect(0, 0, W, H);
-    c.save(); cam(c, 1536, lerp(768, 850, k), lerp(540, 525, k), lerp(1, 1.5, k));
+    c.save(); cam(c, 1536, lerp(1120, 760, k), lerp(545, 505, k), lerp(2.25, 1.75, k));
     if (NIGHT.rotonda) c.drawImage(NIGHT.rotonda, 0, 0);
     const fl = 0.8 + 0.2 * Math.sin(t * 13) * Math.sin(t * 3.1) - (Math.sin(t * 1.7) > 0.97 ? 0.5 : 0);
     glow(c, 250, 318, 120, '255,190,110', 0.5 * fl); glow(c, 250, 318, 26, '255,240,200', 0.9 * fl); glow(c, 1330, 292, 90, '255,190,110', 0.4);
+    // a lúa escorrega polo lombo da caldeira
+    glow(c, lerp(1250, 700, k), 400, 150, '170,195,255', 0.22, 0.35);
     c.restore();
-    fogBand(c, t, 60, 230, 10, 0.4, 9); fogBand(c, t, 300, 260, -16, 0.5, 10); fogBand(c, t, 390, 220, 26, 0.4, 11);
+    fogBand(c, t, 40, 230, 10, 0.4, 9); fogBand(c, t, 300, 260, -16, 0.5, 10); fogBand(c, t, 390, 220, 26, 0.4, 11);
     vignette(c, 0.85);
   }
-  /* 11 · a pinga de graxa fresca */
+  /* 11 · a Casa Roja, baleira e ás escuras... e unha luz que se acende no taller (img/bg-doutor-casares.jpg de noite) */
+  const TL = { on: 2.1, off: 5.05 };     // a luz por debaixo do portalón do taller
   function s11(c, u, t) {
-    let g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#070b18'); g.addColorStop(1, '#131d3c'); c.fillStyle = g; c.fillRect(0, 0, W, H);
-    const z = 1 + 0.12 * ease(clamp(u / 3.2));
-    c.save(); c.translate(600, 380); c.scale(z, z); c.translate(-600, -380);
-    fogBand(c, t, 120, 300, 8, 0.4, 12);
-    // balastro e travesas
-    c.fillStyle = '#0b1020'; c.fillRect(-60, 500, W + 120, 80);
-    for (let i = 0; i < 50; i++) disc(c, R(i + 60) * 1060 - 50, 522 + R(i + 70) * 40, 7 + R(i + 80) * 10, R(i) > 0.5 ? '#171f38' : '#111830', OUT, 2);
-    for (const x of [40, 400, 760]) rrect(c, x, 492, 170, 34, 4, '#2a2019', OUT, 4);
-    // rodas (dúas, enormes) e pestana
-    for (const wx of [250, 1010]) {
-      disc(c, wx, -52, 498, '#101522', OUT, 6); disc(c, wx, -52, 480, '#252d42', OUT, 6); disc(c, wx, -52, 430, '#0b0f1a', OUT, 5);
-      c.save(); c.translate(wx, -52); for (let i = 0; i < 14; i++) { c.rotate(TAU / 14); c.fillStyle = '#1a2133'; c.fillRect(-13, 60, 26, 372); c.strokeStyle = OUT; c.lineWidth = 3; c.strokeRect(-13, 60, 26, 372); } c.restore();
-      c.beginPath(); c.arc(wx, -52, 470, Math.PI * 0.3, Math.PI * 0.62); c.strokeStyle = '#8aa0d2'; c.lineWidth = 6; c.lineCap = 'round'; c.stroke();
-    }
-    // carril
-    c.fillStyle = '#3b4763'; c.fillRect(-60, 428, W + 120, 30); c.fillStyle = '#27304a'; c.fillRect(-60, 458, W + 120, 26); c.fillStyle = '#323c58'; c.fillRect(-60, 484, W + 120, 12);
-    for (const y of [428, 458, 484, 496]) line(c, -60, y, W + 60, y, OUT, 4);
-    line(c, -60, 433, W + 60, 433, '#c9d6f5', 3.5);
-    // biela vermella e a súa cabeza
-    rrect(c, 250, 196, 780, 46, 8, '#8f1d22', OUT, 6); line(c, 262, 204, 1020, 204, '#d2474a', 3.5); line(c, 262, 234, 1020, 234, '#5b1014', 3);
-    disc(c, 600, 219, 72, '#9c2227', OUT, 6); disc(c, 600, 219, 46, '#c9a254', OUT, 5); disc(c, 600, 219, 28, '#39435a', OUT, 4); disc(c, 600, 219, 9, '#141927');
-    c.beginPath(); c.arc(600, 219, 64, Math.PI * 1.1, Math.PI * 1.55); c.strokeStyle = '#e0676a'; c.lineWidth = 4; c.stroke();
-    // graxa fresca que rebordou
-    const AM = '#e09a28', AMD = '#8a5510';
-    c.beginPath(); c.moveTo(566, 262); c.quadraticCurveTo(584, 300, 600, 290); c.quadraticCurveTo(618, 300, 634, 262); c.quadraticCurveTo(600, 280, 566, 262); c.fillStyle = AM; c.fill(); c.strokeStyle = AMD; c.lineWidth = 3; c.stroke();
-    line(c, 582, 272, 592, 282, '#ffe2a0', 3);
-    // a pinga
-    const fall = 1.5, hitT = 1.9, dx = 600, y0 = 292;
-    if (u < fall) { const q = clamp(u / fall), len = 6 + 34 * q * q, r = 5 + 9 * q; c.beginPath(); c.moveTo(dx - 5, y0 - 4); c.quadraticCurveTo(dx - 2, y0 + len * 0.6, dx - r, y0 + len); c.arc(dx, y0 + len, r, Math.PI, 0, true); c.quadraticCurveTo(dx + 2, y0 + len * 0.6, dx + 5, y0 - 4); c.closePath(); c.fillStyle = AM; c.fill(); c.strokeStyle = AMD; c.lineWidth = 3; c.stroke(); disc(c, dx - r * 0.35, y0 + len - r * 0.2, r * 0.3, '#fff0c4'); glow(c, dx, y0 + len, 46, '255,190,90', 0.35 * q); }
-    else if (u < hitT) { const q = (u - fall) / (hitT - fall), y = lerp(y0 + 40, 418, q * q); c.beginPath(); c.moveTo(dx, y - 26); c.quadraticCurveTo(dx + 14, y, dx, y + 13); c.quadraticCurveTo(dx - 14, y, dx, y - 26); c.fillStyle = AM; c.fill(); c.strokeStyle = AMD; c.lineWidth = 3; c.stroke(); disc(c, dx - 4, y + 2, 3.5, '#fff0c4'); glow(c, dx, y, 50, '255,190,90', 0.4); }
-    else {
-      const q = u - hitT;
-      c.beginPath(); c.ellipse(dx, 428, 22, 6.5, 0, 0, TAU); c.fillStyle = AM; c.fill(); c.strokeStyle = AMD; c.lineWidth = 3; c.stroke(); line(c, dx - 10, 426, dx + 2, 425, '#fff0c4', 2.5);
-      if (q < 0.5) { const e = q / 0.5; for (let i = 0; i < 7; i++) { const a = Math.PI * (1.12 + i * 0.127), r = 14 + e * 44; disc(c, dx + Math.cos(a) * r, 428 + Math.sin(a) * r * 0.9 + e * e * 26, 3.4 * (1 - e) + 0.6, AM); } c.beginPath(); c.ellipse(dx, 428, 22 + e * 46, 6 + e * 9, 0, 0, TAU); c.strokeStyle = `rgba(255,226,160,${1 - e})`; c.lineWidth = 2.5; c.stroke(); }
-      // brillo en estrela
-      const sp = Math.sin(clamp(q / 1.2) * Math.PI); if (sp > 0) { c.save(); c.translate(dx + 4, 424); c.rotate(q * 0.6); c.globalCompositeOperation = 'lighter'; c.fillStyle = `rgba(255,244,214,${sp})`; for (let i = 0; i < 4; i++) { c.rotate(Math.PI / 2); c.beginPath(); c.moveTo(0, -3); c.lineTo(46 * sp + 8, 0); c.lineTo(0, 3); c.closePath(); c.fill(); } c.restore(); glow(c, dx + 4, 424, 80, '255,200,110', 0.6 * sp); }
-    }
-    c.restore();
-    fogBand(c, t, 400, 180, 20, 0.3, 13);
-    vignette(c, 0.85);
-  }
-  /* 12 · o balcón sobre Doutor Casares */
-  function s12(c, u, t) {
-    const k = clamp(u / 5);
+    const k = ease(clamp(u / 5.6));
     c.fillStyle = '#04060c'; c.fillRect(0, 0, W, H);
-    c.save(); cam(c, 1672, lerp(990, 1020, k), lerp(400, 380, k), lerp(1.3, 1.38, k));
-    if (IM.vista) c.drawImage(IM.vista, 0, 0);
-    const on = u < 2.5 ? 1 : u < 2.56 ? 0.25 : 0;
-    if (on) { c.fillStyle = `rgba(255,205,120,${0.85 * on})`; c.fillRect(1257, 197, 62, 42); c.strokeStyle = OUT; c.lineWidth = 2; c.strokeRect(1257, 197, 62, 42); line(c, 1288, 197, 1288, 239, OUT, 2); glow(c, 1288, 218, 120, '255,190,100', 0.4 * on); }
-    glow(c, 1050, 420, 60, '255,190,110', 0.25);
+    c.save(); cam(c, 1672, lerp(1000, 1030, k), lerp(440, 545, k), lerp(1.12, 1.95, k));
+    if (NIGHT.casa) c.drawImage(NIGHT.casa, 0, 0);
+    // a farola da rúa, que falla
+    const fl = 0.8 + 0.2 * Math.sin(t * 13) * Math.sin(t * 3.1) - (Math.sin(t * 1.9) > 0.96 ? 0.55 : 0);
+    glow(c, 618, 172, 150, '255,190,110', 0.45 * fl); glow(c, 618, 172, 30, '255,240,200', 0.9 * fl);
+    // a luz do taller: dous pestanexos, queda acesa, alguén pasa por diante, e apágase
+    const d = u - TL.on, li = d < 0 || u > TL.off ? 0 : (d < 0.08 ? 0.8 : d < 0.2 ? 0.1 : d < 0.3 ? 0.9 : d < 0.38 ? 0.3 : 1) * (0.9 + 0.1 * Math.sin(t * 23));
+    if (li > 0) {
+      const X1 = 961, X2 = 1084, YB = 688, XM = 1022;
+      const sw = (u - 3.25) / 1.2, sx = sw > 0 && sw < 1 ? lerp(X1 - 30, X2 + 6, sw) : -999, seam = Math.abs(sx + 17 - XM) < 17 ? 0.08 : 1;   // a sombra de quen anda dentro
+      glow(c, XM, YB + 14, 190, '255,196,110', 0.42 * li, 0.32); glow(c, XM, YB + 4, 80, '255,214,150', 0.4 * li, 0.3); glow(c, XM, 444, 100, '255,196,110', 0.25 * li, 0.5);
+      c.save(); c.globalCompositeOperation = 'lighter';
+      c.fillStyle = `rgba(255,224,160,${0.85 * li})`; c.fillRect(X1, YB - 1.5, X2 - X1, 3);                 // por debaixo
+      c.fillStyle = `rgba(255,214,140,${0.6 * li * seam})`; c.fillRect(XM - 1, 470, 2, YB - 470);          // entre as dúas follas
+      c.fillStyle = `rgba(255,205,125,${0.26 * li})`; c.fillRect(X1 + 6, 428, X2 - X1 - 12, 30);           // o montante de vidro
+      c.restore();
+      if (sx > -900) { c.fillStyle = 'rgba(8,9,16,.95)'; c.fillRect(Math.max(X1, sx), YB - 3, Math.min(X2, sx + 34) - Math.max(X1, sx), 6); }
+    }
     c.restore();
-    fogBand(c, t, 90, 220, 9, 0.35, 14); fogBand(c, t, 260, 240, -12, 0.3, 15);
-    vignette(c, 0.8);
+    fogBand(c, t, 250, 240, 12, 0.3, 12); fogBand(c, t, 400, 200, -18, 0.3, 13);
+    vignette(c, 0.86);
+  }
+  /* 12 · o que se ve desde a fiestra do salón: a Mikado na súa rotonda (img/noite-vista.jpg, a mesma vista ca no xogo) */
+  function s12(c, u, t) {
+    const k = ease(clamp(u / 5.6));
+    c.fillStyle = '#04060c'; c.fillRect(0, 0, W, H);
+    c.save(); cam(c, 1672, lerp(836, 880, k), lerp(470, 440, k), lerp(1, 1.32, k));
+    if (IM.vista) c.drawImage(IM.vista, 0, 0);
+    // fóra, no oco da fiestra: lúa sobre a máquina e néboa que pasa
+    c.save(); c.beginPath(); c.rect(58, 36, 1556, 734); c.clip();
+    glow(c, 880, 440, 760, '150,178,255', 0.42); glow(c, 1130, 370, 300, '185,205,255', 0.26, 0.4);
+    const sx = 1672 / W; c.scale(sx, sx); fogBand(c, t, 40, 200, 9, 0.34, 14); fogBand(c, t, 215, 230, -13, 0.3, 15); c.restore();
+    // mentres soa o asubío, un resplandor morno na cabina. Despois, nada.
+    let w = 0; for (const [w0, wd] of WHP) { const q = (u - 0.7) * K - w0; if (q > 0 && q < wd + 0.5) w = Math.max(w, ss(0, 0.12, q) * (1 - ss(wd, wd + 0.5, q))); }
+    if (w > 0) { const f = w * (0.85 + 0.15 * Math.sin(t * 40)); glow(c, 920, 416, 150, '255,160,70', 0.3 * f); glow(c, 920, 414, 44, '255,200,120', 0.45 * f, 0.6); }
+    c.restore();
+    vignette(c, 0.82);
   }
   /* 13 · o título sae do vapor */
   function s13(c, u, t) {
@@ -457,13 +462,13 @@ const CINE = (() => {
   }
 
   /* [inicio, función, fundido de entrada, fundido de saída] */
-  const SHOTS = [[T.s1, s1, 0.6, 0.5], [T.s2, s2, 0.9, 0], [T.s3, s3, 0, 0], [T.s4, s4, 0, 0], [T.s5, s5, 0, 0], [T.s6, s6, 0, 0], [T.s7, s7, 0, 0.4], [T.s8, s8, 0.5, 0.7], [T.s9, s9, 0, 0], [T.s10, s10, 1, 0.25], [T.s11, s11, 0.2, 0.25], [T.s12, s12, 0.35, 1], [T.s13, s13, 0, 0]];
+  const SHOTS = [[T.s1, s1, 0.6, 0.5], [T.s2, s2, 0.9, 0], [T.s3, s3, 0, 0], [T.s4, s4, 0, 0], [T.s5, s5, 0, 0], [T.s6, s6, 0, 0], [T.s7, s7, 0, 0.4], [T.s8, s8, 0.5, 0.8], [T.s9, s9, 0, 0], [T.s10, s10, 1, 0.5], [T.s11, s11, 0.5, 0.5], [T.s12, s12, 0.5, 1], [T.s13, s13, 0, 0]];
   function render(c, t) {
     t = clamp(t, 0, T.end - 0.001);
     let i = SHOTS.length - 1; while (i > 0 && SHOTS[i][0] > t) i--;
-    const [st, fn, fi, fo] = SHOTS[i], en = i + 1 < SHOTS.length ? SHOTS[i + 1][0] : T.end, u = t - st;
+    const [st, fn, fi, fo] = SHOTS[i], en = i + 1 < SHOTS.length ? SHOTS[i + 1][0] : T.end, u = (t - st) / K, ur = t - st;
     c.save(); fn(c, u, t); c.restore();
-    const a = Math.min(fi ? clamp(u / fi) : 1, fo ? clamp((en - t) / fo) : 1);
+    const a = Math.min(fi ? clamp(ur / fi) : 1, fo ? clamp((en - t) / fo) : 1);
     if (a < 1) { c.fillStyle = `rgba(2,3,6,${1 - a})`; c.fillRect(0, 0, W, H); }
     // bandas de cine
     c.fillStyle = '#000'; c.fillRect(0, 0, W, 34); c.fillRect(0, H - 34, W, 34);
@@ -498,8 +503,8 @@ const CINE = (() => {
     // tic-tac do reloxo da estación
     for (let i = 0; i < 9; i++) { const at = 0.5 + i; nz(at, [[0.004, i < 4 ? 0.16 : 0.07], [0.05, 0]], 'bandpass', i % 2 ? 2100 : 2600, 6); }
     // máquina de escribir da data
-    for (let i = 0; i < L1.length; i++) if (L1[i] !== ' ') nz(0.7 + i * 0.075, [[0.003, 0.2], [0.04, 0]], 'bandpass', 2600 + R(i) * 900, 2);
-    for (let i = 0; i < L2.length; i++) if (L2[i] !== ' ') nz(2.15 + i * 0.062, [[0.003, 0.2], [0.04, 0]], 'bandpass', 2600 + R(i + 9) * 900, 2);
+    for (let i = 0; i < L1.length; i++) if (L1[i] !== ' ') nz(K * (0.7 + i * 0.075), [[0.003, 0.2], [0.04, 0]], 'bandpass', 2600 + R(i) * 900, 2);
+    for (let i = 0; i < L2.length; i++) if (L2[i] !== ' ') nz(K * (2.15 + i * 0.062), [[0.003, 0.2], [0.04, 0]], 'bandpass', 2600 + R(i + 9) * 900, 2);
     // andén: murmurio, unha tose, porta de vagón, vapor
     nz(T.s2, [[1, 0.1], [6, 0.1], [9.5, 0.02], [11, 0]], 'bandpass', 420, 1.6); nz(T.s2, [[1.2, 0.05], [6, 0.05], [9, 0]], 'bandpass', 950, 2.2);
     for (let i = 0; i < 16; i++) { const at = T.s2 + 0.4 + i * 0.42 + R(i) * 0.3; tone(at, [[0.05, 0.022], [0.22 + R(i + 3) * 0.2, 0]], 170 + R(i + 5) * 190, 'triangle', 150 + R(i + 8) * 160); }
@@ -507,37 +512,40 @@ const CINE = (() => {
     tone(T.s2 + 4.6, [[0.01, 0.3], [0.3, 0]], 95, 'sine', 55); nz(T.s2 + 4.6, [[0.005, 0.18], [0.16, 0]], 'lowpass', 500);
     for (const dt of [0.6, 3.4, 5.9]) nz(T.s2 + dt, [[0.25, 0.05], [1.3, 0]], 'highpass', 3000);
     // chirrido e trono do mercadorías: medra dende o plano 3 ata o corte a negro
-    const sq = [[0.5, 0.004], [5, 0.035], [8, 0.055], [8.1, 0.022], [11, 0.03], [T.s7 - T.s3 - 0.05, 0.06], [T.s7 - T.s3, 0]];
+    const sq = [[0.5, 0.004], [5 * K, 0.035], [8 * K, 0.055], [8 * K + 0.1, 0.022], [11 * K, 0.03], [T.s7 - T.s3 - 0.05, 0.06], [T.s7 - T.s3, 0]];
     tone(T.s3, sq, 2850, 'sawtooth', 3150); tone(T.s3, sq.map(([a, b]) => [a, b * 0.7]), 3420, 'square', 3300); nz(T.s3, sq.map(([a, b]) => [a, b * 2]), 'bandpass', 3000, 9);
-    nz(T.s3, [[1, 0.02], [5, 0.3], [8, 0.5], [8.1, 0.25], [T.s7 - T.s3 - 0.05, 0.5], [T.s7 - T.s3, 0]], 'lowpass', 110);
-    for (let k = 0; k < 9; k++) for (const dd of [0, 0.11]) { const at = T.s4 + 0.1 + k * 0.33 + dd; tone(at, [[0.005, 0.5], [0.09, 0]], 82, 'sine', 48); nz(at, [[0.004, 0.2], [0.06, 0]], 'bandpass', 900, 1.2); }
-    nz(T.s4, [[0.1, 0.09], [2.9, 0.09], [3, 0]], 'highpass', 5200);
+    nz(T.s3, [[1, 0.02], [5 * K, 0.3], [8 * K, 0.5], [8 * K + 0.1, 0.25], [T.s7 - T.s3 - 0.05, 0.5], [T.s7 - T.s3, 0]], 'lowpass', 110);
+    for (let k = 0; k < 10; k++) for (const dd of [0, 0.11]) { const at = T.s4 + 0.1 + k * 0.33 + dd; tone(at, [[0.005, 0.5], [0.09, 0]], 82, 'sine', 48); nz(at, [[0.004, 0.2], [0.06, 0]], 'bandpass', 900, 1.2); }
+    nz(T.s4, [[0.1, 0.09], [3 * K - 0.1, 0.09], [3 * K, 0]], 'highpass', 5200);
     // a panca da agulla: esforzo e clac
-    tone(T.s5 + 0.5, [[0.1, 0.05], [0.7, 0.05], [0.75, 0]], 210, 'sawtooth', 150);
-    { const at = T.s5 + 1.5; nz(at, [[0.003, 0.7], [0.07, 0]], 'bandpass', 1900, 1); tone(at, [[0.004, 0.6], [0.14, 0]], 150, 'square', 70); for (const f of [1230, 1790, 2470]) tone(at, [[0.004, 0.09], [0.9, 0]], f); tone(at + 0.16, [[0.004, 0.2], [0.1, 0]], 120, 'square', 80); }
+    tone(T.s5 + 0.5 * K, [[0.1, 0.05], [0.9, 0.05], [0.95, 0]], 210, 'sawtooth', 150);
+    { const at = T.s5 + 1.5 * K; nz(at, [[0.003, 0.7], [0.07, 0]], 'bandpass', 1900, 1); tone(at, [[0.004, 0.6], [0.14, 0]], 150, 'square', 70); for (const f of [1230, 1790, 2470]) tone(at, [[0.004, 0.09], [0.9, 0]], f); tone(at + 0.16, [[0.004, 0.2], [0.1, 0]], 120, 'square', 80); }
     // a Mikado: asubío, dous longos e un curto
     whistle(WH - 0, 0.3, bus(2200, false));
-    nz(T.s6, [[0.4, 0.04], [4, 0.12], [T.s7 - T.s6, 0]], 'highpass', 2500);
+    nz(T.s6, [[0.4, 0.04], [4 * K, 0.12], [T.s7 - T.s6, 0]], 'highpass', 2500);
     // golpe xordo e lonxano
-    tone(T.s7 + 0.75, [[0.02, 0.9], [1.5, 0]], 62, 'sine', 30); nz(T.s7 + 0.75, [[0.02, 0.5], [0.9, 0]], 'lowpass', 140); nz(T.s7 + 0.95, [[0.3, 0.05], [1.8, 0]], 'bandpass', 500, 0.8);
+    tone(T.s7 + 0.75 * K, [[0.02, 0.9], [1.5, 0]], 62, 'sine', 30); nz(T.s7 + 0.75 * K, [[0.02, 0.5], [0.9, 0]], 'lowpass', 140); nz(T.s7 + 0.75 * K + 0.2, [[0.3, 0.05], [1.8, 0]], 'bandpass', 500, 0.8);
     // máquina de escribir do parte, campá e retorno do carro
-    [...P1, ...P2].forEach((ch, i) => { const at = T.s8 + KEYS.k[i]; if (ch === ' ') { tone(at, [[0.004, 0.2], [0.05, 0]], 140, 'sine', 90); return; } nz(at, [[0.002, 0.45], [0.035, 0]], 'bandpass', 2300 + R(i + 40) * 1000, 1.6); tone(at, [[0.003, 0.3], [0.05, 0]], 170, 'square', 90); });
-    for (const f of [2093, 4186]) tone(T.s8 + KEYS.bell, [[0.004, f < 3000 ? 0.16 : 0.05], [1.1, 0]], f);
-    nz(T.s8 + KEYS.ret[0], [[0.05, 0.16], [KEYS.ret[1] - KEYS.ret[0], 0.12], [KEYS.ret[1] - KEYS.ret[0] + 0.05, 0]], 'bandpass', 1200, 3, master, 2600); tone(T.s8 + KEYS.ret[1], [[0.004, 0.4], [0.08, 0]], 130, 'square', 70);
-    tone(T.s8 + KEYS.stamp, [[0.005, 0.9], [0.22, 0]], 105, 'sine', 45); nz(T.s8 + KEYS.stamp, [[0.004, 0.4], [0.1, 0]], 'lowpass', 600);
+    [...P1, ...P2].forEach((ch, i) => { const at = T.s8 + KEYS.k[i] * K; if (ch === ' ') { tone(at, [[0.004, 0.2], [0.05, 0]], 140, 'sine', 90); return; } nz(at, [[0.002, 0.45], [0.035, 0]], 'bandpass', 2300 + R(i + 40) * 1000, 1.6); tone(at, [[0.003, 0.3], [0.05, 0]], 170, 'square', 90); });
+    for (const f of [2093, 4186]) tone(T.s8 + KEYS.bell * K, [[0.004, f < 3000 ? 0.16 : 0.05], [1.1, 0]], f);
+    nz(T.s8 + KEYS.ret[0] * K, [[0.05, 0.16], [(KEYS.ret[1] - KEYS.ret[0]) * K, 0.12], [(KEYS.ret[1] - KEYS.ret[0]) * K + 0.05, 0]], 'bandpass', 1200, 3, master, 2600); tone(T.s8 + KEYS.ret[1] * K, [[0.004, 0.4], [0.08, 0]], 130, 'square', 70);
+    tone(T.s8 + KEYS.stamp * K, [[0.005, 1], [0.3, 0]], 105, 'sine', 42); nz(T.s8 + KEYS.stamp * K, [[0.004, 0.5], [0.12, 0]], 'lowpass', 600); tone(T.s8 + KEYS.stamp * K + 0.5, [[0.8, 0.07], [3.2, 0]], 55, 'sine');
     // hoxe: vento, farola, can ao lonxe
-    nz(T.s10 - 0.3, [[1.5, 0.11], [3, 0.05], [5, 0.12], [7.5, 0.06], [9.5, 0.1], [13.6, 0.06], [16.5, 0.02], [T.end - T.s10, 0]], 'bandpass', 300, 2.2, master, 460);
-    for (const f of [100, 200, 300]) tone(T.s10, [[1, 0.012], [5.6, 0.012], [6, 0]], f, 'sawtooth');
+    nz(T.s10 - 0.3, [[1.5, 0.11], [3, 0.05], [5, 0.12], [7.5, 0.06], [9.5, 0.1], [13.6, 0.06], [18.5, 0.04], [T.end - T.s10, 0]], 'bandpass', 300, 2.2, master, 460);
+    for (const f of [100, 200, 300]) tone(T.s10, [[1, 0.012], [T.s12 - T.s10 - 0.5, 0.012], [T.s12 - T.s10, 0]], f, 'sawtooth');
     { const b = bus(1100, true); for (const dt of [2.1, 2.38, 3.9]) { tone(T.s10 + dt, [[0.02, 0.07], [0.13, 0]], 520, 'sawtooth', 300, b.lp); nz(T.s10 + dt, [[0.02, 0.07], [0.12, 0]], 'bandpass', 900, 2, b.lp); } }
-    // plic
-    tone(T.s11 + 1.9, [[0.003, 0.4], [0.09, 0]], 2100, 'sine', 900); tone(T.s11 + 1.93, [[0.003, 0.12], [0.3, 0]], 3300, 'sine', 2900);
+    // o taller: o interruptor, un zunido de fluorescente, pasos sobre a serraxe, e apágase
+    { const on = T.s11 + TL.on * K, off = T.s11 + TL.off * K;
+      tone(on, [[0.003, 0.14], [0.05, 0]], 900, 'square', 300); tone(on + 0.25, [[0.003, 0.08], [0.04, 0]], 1300, 'square', 500);
+      for (const f of [100, 200, 400]) tone(on + 0.3, [[0.3, 0.02], [off - on - 0.35, 0.02], [off - on - 0.3, 0]], f, 'sawtooth');
+      for (let i = 0; i < 4; i++) { const at = T.s11 + (3.3 + i * 0.3) * K; tone(at, [[0.01, 0.16], [0.12, 0]], 90, 'sine', 60); nz(at, [[0.01, 0.05], [0.1, 0]], 'bandpass', 1500, 1); }
+      tone(off, [[0.003, 0.14], [0.05, 0]], 800, 'square', 280); }
     // o asubío outra vez, lonxe e con eco
     whistle(WH2, 0.2, bus(1300, true));
-    tone(T.s12 + 2.5, [[0.003, 0.12], [0.05, 0]], 900, 'square', 300);
     // golpe grave do título e acorde (re menor)
-    tone(T.s13 + 0.5, [[0.02, 0.8], [3.5, 0]], 55, 'sine', 36); nz(T.s13 + 0.5, [[0.02, 0.35], [1.2, 0]], 'lowpass', 160);
-    for (const [f, v] of [[73.4, 0.2], [110, 0.13], [146.8, 0.1], [174.6, 0.07], [220, 0.05]]) tone(T.s13 + 0.5, [[1.2, v], [5.3, v * 0.7], [8.2, 0]], f, 'triangle');
-    tone(T.s13 + 5.3, [[0.6, 0.06], [2.8, 0]], 293.7, 'sine'); tone(T.s13 + 5.3, [[0.6, 0.04], [2.8, 0]], 440, 'sine');
+    tone(T.s13 + 0.5 * K, [[0.02, 0.8], [3.5, 0]], 55, 'sine', 36); nz(T.s13 + 0.5 * K, [[0.02, 0.35], [1.2, 0]], 'lowpass', 160);
+    for (const [f, v] of [[73.4, 0.2], [110, 0.13], [146.8, 0.1], [174.6, 0.07], [220, 0.05]]) tone(T.s13 + 0.5 * K, [[1.2, v], [5.3 * K, v * 0.7], [8.2 * K - 0.6, 0]], f, 'triangle');
+    tone(T.s13 + 5.3 * K, [[0.6, 0.06], [2.8, 0]], 293.7, 'sine'); tone(T.s13 + 5.3 * K, [[0.6, 0.04], [2.8, 0]], 440, 'sine');
     return { ac, master, t0, nodes };
   }
   function audioStop(fast) {
