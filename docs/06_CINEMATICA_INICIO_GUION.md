@@ -49,3 +49,5 @@ Niebla, lluvia, vapor, chispas, temblor de cámara y versiones nocturnas por có
 - Textos en gallego. Móvil primero (vertical: escena arriba, textos grandes debajo).
 - Saltar: un toque muestra «Saltar ▸», segundo toque salta al andén. Se puede volver a ver desde Opcións.
 - Va al pulsar «Nova partida», antes del andén del Acto 1.
+
+**Actualización 14-11-2026:** el andén de 1958 usa ya la ilustración de Oscar (`img/cine-anden-1958.jpg`), animada por código.

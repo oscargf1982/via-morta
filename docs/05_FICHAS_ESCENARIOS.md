@@ -9,7 +9,7 @@
 - **Cómo está hecha:** todo se dibuja por código en un lienzo propio de 960×540 (no es vídeo). Cada plano es una función del tiempo; `CINE.frame(t)` dibuja el fotograma del segundo `t` para hacer capturas de prueba. Sonido sintetizado.
 - **Planos:**
   1. Negro, lluvia y la fecha a máquina: «Monforte de Lemos · 14 de xaneiro de 1958 · 21:38».
-  2. **Andén 1 en 1958**, paneo. Es el fondo del andén del juego (`img/bg-anden-estacion.jpg`) pasado a noche con un mapa de luces; por encima se pinta lo de época: tren de viajeros verde con ventanas encendidas y farol rojo de cola (tapa el regional), letrero esmaltado «MONFORTE DE LEMOS» (tapa el de Adif), reloj de estación a las 21:38, lámparas colgadas, baúl y maleta (tapan la papelera), siluetas sin cara con maletas, vapor y niebla.
+  2. **Andén 1 en 1958**, paneo lento. Fondo: `img/cine-anden-1958.jpg`, ilustración de Oscar (andén de noche, letrero, viajeros de espaldas con maletas, tren verde de viajeros con pilotos rojos, San Vicente iluminado al fondo). Por código se le añade movimiento: lámparas que tiemblan, pilotos que laten, humo de la chimenea, vapor bajo el vagón, lluvia solo fuera de la marquesina, reflejos del suelo mojado, niebla y el reloj corregido a las 21:38 con segundero.
   3. La luz que crece al fondo de la vía, zoom lento y temblor.
   4. Inserto: ruedas del mercancías, zapatas al rojo, chispas.
   5. Inserto: mano con guante que tira de la palanca de la aguja (contrapeso blanco y rojo, farol de mano); clac.

@@ -3,9 +3,10 @@
    VÍA MORTA · cinemática de inicio «Dous longos e un curto»
    Ficha: docs/05_FICHAS_ESCENARIOS.md (C0). Guion: docs/06_CINEMATICA_INICIO_GUION.md.
    - Todo se debuxa por código nun lenzo propio de 960×540 (sen vídeo).
-   - Os fondos do xogo (andén, rotonda, vista do balcón) pásanse a noite
-     cun mapa de luces; o tren de 1958, as siluetas, as rodas, a panca,
-     a Mikado, a máquina de escribir e a pinga de graxa son debuxo novo.
+   - O andén de 1958 é unha ilustración de Oscar (img/cine-anden-1958.jpg)
+     con movemento por riba (cámara, luces, fume, chuvia, reloxo ás 21:38).
+     A rotonda pásase a noite cun mapa de luces; as rodas, a panca, a Mikado,
+     a máquina de escribir e a pinga de graxa son debuxo por código.
    - Cada plano é unha función pura do tempo: CINE.frame(t) debuxa o
      fotograma do segundo t (sérvenos para probar con capturas).
    - Son sintetizado con WebAudio, coma o resto do xogo.
@@ -115,26 +116,12 @@ const CINE = (() => {
     if (post) post(c);
     return cv;
   }
-  const LAMPS = [[700, 262, 742, 1], [930, 452, 642, 0.5], [1035, 498, 603, 0.3], [1076, 517, 584, 0.19]]; // x, y lámpada, y chan, escala
   function prepare() {
     if (ready) return ready;
     ready = (async () => {
       FOG = makeFog();
-      const [a, r, v] = await Promise.all([load('img/bg-anden-estacion.jpg'), load('img/portada-rotonda.jpg'), load('img/noite-vista.jpg')]);
+      const [a, r, v] = await Promise.all([load('img/cine-anden-1958.jpg'), load('img/portada-rotonda.jpg'), load('img/noite-vista.jpg')]);
       IM = { anden: a, rotonda: r, vista: v };
-      if (a) NIGHT.anden = bakeNight(a, '#141d42', l => {
-        for (const [x, y, fy, k] of LAMPS) {
-          glow(l, x, y + 40 * k, 520 * k, '255,190,110', 0.95);
-          glow(l, x, fy, 470 * k, '255,200,125', 0.8, 0.3);
-        }
-        glow(l, 1185, 640, 190, '255,205,120', 0.5, 0.5);       // luz das ventás do tren no bordo do andén
-      }, c => {
-        // néboa ao fondo da vía e escuridade sobre o andén de enfronte (que é moderno)
-        let g = c.createLinearGradient(1330, 0, 1672, 0); g.addColorStop(0, 'rgba(7,10,22,0)'); g.addColorStop(0.55, 'rgba(7,10,22,.88)'); g.addColorStop(1, 'rgba(5,8,18,.97)');
-        c.fillStyle = g; c.fillRect(1330, 0, 342, 941);
-        g = c.createLinearGradient(0, 0, 0, 941); g.addColorStop(0, 'rgba(5,8,18,.55)'); g.addColorStop(0.3, 'rgba(5,8,18,0)'); c.fillStyle = g; c.fillRect(0, 0, 1672, 941);
-        puff(c, 1150, 520, 330, '120,138,188', 0.6);
-      });
       if (r) NIGHT.rotonda = bakeNight(r, '#16204a', l => {
         glow(l, 830, 500, 620, '150,175,255', 0.62);             // lúa sobre a Mikado
         glow(l, 250, 330, 330, '255,186,105', 0.85); glow(l, 250, 420, 300, '255,186,105', 0.5, 0.4);
@@ -146,138 +133,40 @@ const CINE = (() => {
     return ready;
   }
 
-  /* ---------- siluetas do andén (sen cara, só contorno e luz de bordo) ---------- */
-  function personShapes(c, o) {
-    const f = pts => { c.beginPath(); pts.forEach((p, i) => (i ? c.lineTo(p[0], p[1]) : c.moveTo(p[0], p[1]))); c.closePath(); c.fill(); };
-    const coat = o.coat ? -0.3 : -0.44;
-    if (o.skirt) { f([[-0.12, -0.5], [0.12, -0.5], [0.17, -0.2], [-0.17, -0.2]]); f([[-0.09, -0.22], [-0.03, -0.22], [-0.035, 0], [-0.1, 0]]); f([[0.03, -0.22], [0.09, -0.22], [0.1, 0], [0.035, 0]]); }
-    else { f([[-0.115, -0.5], [-0.005, -0.5], [-0.02, 0], [-0.125, 0]]); f([[0.005, -0.5], [0.115, -0.5], [0.125, 0], [0.02, 0]]); }
-    f([[-0.135, -0.8], [0.135, -0.8], [0.155, coat], [-0.155, coat]]);
-    c.beginPath(); c.ellipse(0, -0.8, 0.137, 0.05, 0, 0, TAU); c.fill();
-    c.beginPath(); c.arc(0, -0.915, 0.068, 0, TAU); c.fill();
-    f([[-0.03, -0.86], [0.03, -0.86], [0.035, -0.8], [-0.035, -0.8]]);
-    if (o.hat === 'boina') { c.beginPath(); c.ellipse(0.012, -0.972, 0.092, 0.034, -0.12, 0, TAU); c.fill(); }
-    if (o.hat === 'sombreiro') { c.beginPath(); c.ellipse(0, -0.965, 0.125, 0.02, 0, 0, TAU); c.fill(); f([[-0.07, -1.045], [0.07, -1.045], [0.078, -0.965], [-0.078, -0.965]]); }
-    if (o.hat === 'pano') { f([[-0.075, -0.96], [0.075, -0.96], [0.105, -0.815], [-0.105, -0.815]]); c.beginPath(); c.arc(0, -0.925, 0.082, Math.PI, TAU); c.fill(); }
-    // brazos: [ombreiro] → [man]
-    for (const [sx, hx, hy] of [[-0.135, o.lh ? o.lh[0] : -0.175, o.lh ? o.lh[1] : -0.42], [0.135, o.rh ? o.rh[0] : 0.175, o.rh ? o.rh[1] : -0.42]]) {
-      c.beginPath(); c.moveTo(sx, -0.79); c.lineTo(hx, hy); c.lineWidth = 0.062; c.lineCap = 'round'; c.strokeStyle = c.fillStyle; c.stroke();
-    }
-  }
-  function suitcase(c, x, y, w, h, lit) {
-    rrect(c, x - w / 2, y - h, w, h, w * 0.06, lit ? '#4a341f' : '#2c2016', OUT, w * 0.035);
-    c.strokeStyle = lit ? '#75532f' : '#463322'; c.lineWidth = w * 0.03;
-    c.beginPath(); c.moveTo(x - w * 0.27, y - h); c.lineTo(x - w * 0.27, y); c.moveTo(x + w * 0.27, y - h); c.lineTo(x + w * 0.27, y); c.stroke();
-    c.beginPath(); c.arc(x, y - h, w * 0.11, Math.PI, TAU); c.strokeStyle = OUT; c.lineWidth = w * 0.04; c.stroke();
-  }
-  /* persoa de altura h cos pés en (x, y); rim: de onde vén a luz (-1 esquerda, 1 dereita) */
-  function person(c, x, y, h, o, t) {
-    const br = 1 + Math.sin(t * 1.3 + x) * 0.006;
-    c.save(); c.translate(x, y); c.scale(h * (o.flip ? -1 : 1), h * br);
-    c.fillStyle = 'rgba(0,0,0,.45)'; c.beginPath(); c.ellipse(0.05, 0, 0.26, 0.035, 0, 0, TAU); c.fill();
-    if (o.rim) { c.save(); c.translate(o.rim * 0.014, -0.004); c.fillStyle = o.rimCol || '#b98244'; personShapes(c, o); c.restore(); }
-    c.fillStyle = o.col || '#0a0f1e'; personShapes(c, o);
-    if (o.case) suitcase(c, o.case[0], o.case[1], o.case[2] || 0.3, o.case[3] || 0.2, !!o.rim);
-    c.restore();
-  }
-  const FOLK = [ // x, y (pés, en coordenadas da imaxe do andén), opcións
-    [232, 706, { hat: 'boina', coat: 1, rim: 1, rimCol: '#6f5a48' }],
-    [436, 716, { hat: 'pano', skirt: 1, coat: 1, rim: 1, case: [-0.2, 0, 0.26, 0.2] }],
-    [492, 730, { hat: 'sombreiro', coat: 1, rim: 1, lh: [-0.2, -0.45] }],
-    [1104, 603, { hat: 'boina', rim: -1 }], [1082, 626, { hat: 'pano', skirt: 1, rim: -1 }], [1052, 641, { coat: 1, rim: -1, case: [0.2, 0, 0.3, 0.2] }],
-    [1168, 668, { hat: 'sombreiro', coat: 1, rim: -1, flip: 1 }],
-    [770, 800, { hat: 'pano', skirt: 1, coat: 1, rim: -1, rh: [0.22, -0.4] }],
-    [1012, 812, { hat: 'boina', coat: 1, rim: -1, case: [0.22, 0, 0.34, 0.23], flip: 1 }],
-    [1192, 742, { hat: 'boina', rim: -1, case: [-0.2, 0, 0.3, 0.2], rimCol: '#d9a04c' }],
-  ];
-
-  /* ---------- 1958: o que se pinta por riba do andén (tren de viaxeiros, letreiro, reloxo, lámpadas) ---------- */
-  function coach(c, t) {
-    // lateral en fuga cara ao punto de fuga (1125, 540)
-    const VX = 1125, VY = 540, X0 = 1240, TOP = 385, BOT = 652;
-    const sx = s => X0 - s * (X0 - VX), sT = s => TOP + (VY - TOP) * s, sB = s => BOT - (BOT - VY) * s, S = d => d / (d + 0.55);
-    poly(c, [[X0, TOP], [1266, 342], [sx(0.93), sT(0.93) - 3], [sx(0.93), sT(0.93)]], '#080b10');
-    poly(c, [[X0, TOP], [sx(0.93), sT(0.93)], [sx(0.93), sB(0.93)], [X0, BOT]], '#12211c', OUT, 3);
-    for (let k = 0; k < 3; k++) {
-      for (let i = 0; i < 7; i++) {
-        const d0 = k + 0.1 + i * 0.118, s0 = S(d0), s1 = S(d0 + 0.078), on = R(k * 9 + i) > 0.22, fl = on ? 0.82 + 0.1 * Math.sin(t * 7 + i * 2.1 + k) * R(i + k) : 0;
-        const y = (s, u) => lerp(sT(s), sB(s), u);
-        poly(c, [[sx(s0), y(s0, 0.2)], [sx(s1), y(s1, 0.2)], [sx(s1), y(s1, 0.5)], [sx(s0), y(s0, 0.5)]], on ? `rgba(246,196,96,${fl})` : '#0a1210', OUT, 1.6 * (1 - s0) + 0.4);
-      }
-      const sd = S(k + 0.96); line(c, sx(sd), sT(sd), sx(sd), sB(sd), OUT, 2.5 * (1 - sd) + 0.5);
-    }
-    line(c, X0, lerp(TOP, BOT, 0.62), sx(0.93), lerp(sT(0.93), sB(0.93), 0.62), '#b08a3a', 1.6);
-    // baixos e testeiro
-    poly(c, [[1236, 648], [1540, 648], [1540, 716], [1236, 716]], '#05070c');
-    c.beginPath(); c.moveTo(1240, 652); c.lineTo(1240, 388); c.quadraticCurveTo(1242, 338, 1389, 332); c.quadraticCurveTo(1536, 338, 1538, 388); c.lineTo(1538, 652); c.closePath();
-    c.fillStyle = '#16271f'; c.fill(); c.strokeStyle = OUT; c.lineWidth = 5; c.stroke();
-    c.beginPath(); c.moveTo(1244, 388); c.quadraticCurveTo(1246, 344, 1389, 338); c.quadraticCurveTo(1532, 344, 1534, 388); c.strokeStyle = '#2f4a3c'; c.lineWidth = 3; c.stroke();
-    rrect(c, 1340, 418, 98, 226, 6, '#0c1713', OUT, 4);
-    rrect(c, 1360, 440, 58, 76, 5, `rgba(240,190,95,${0.5 + 0.06 * Math.sin(t * 5)})`, OUT, 3);
-    line(c, 1326, 440, 1326, 630, '#3d5a48', 4); line(c, 1452, 440, 1452, 630, '#3d5a48', 4);
-    for (const x of [1272, 1470]) rrect(c, x, 436, 40, 62, 4, '#0a1210', OUT, 3);
-    line(c, 1246, 560, 1532, 560, '#b08a3a', 2.5);
-    rrect(c, 1246, 648, 286, 34, 3, '#0b0e14', OUT, 4);
-    for (const x of [1288, 1490]) { rrect(c, x - 9, 654, 18, 22, 2, '#1a1f29', OUT, 3); disc(c, x, 668, 24, '#262c38', OUT, 4); disc(c, x, 668, 15, '#1a1f29'); }
-    poly(c, [[1378, 676], [1400, 676], [1396, 706], [1382, 706]], '#1a1f29', OUT, 3);
-    for (const x of [1330, 1448]) { disc(c, x, 716, 30, '#0a0d13', OUT, 4); }
-    // farol vermello de cola
-    const p = 0.75 + 0.25 * Math.sin(t * 2.2);
-    rrect(c, 1492, 572, 22, 26, 3, '#20242e', OUT, 3); disc(c, 1503, 586, 7.5, '#ff5038');
-    glow(c, 1503, 586, 70, '255,60,40', 0.55 * p); glow(c, 1503, 586, 16, '255,200,170', 0.8 * p);
-    // vapor baixo o vagón
-    for (let i = 0; i < 9; i++) {
-      const ph = (t * 0.22 + R(i + 5)) % 1, bx = i % 2 ? 1262 : 1200 - i * 4, by = i % 2 ? 700 : 628;
-      puff(c, bx - ph * 150 - R(i) * 30, by - ph * 80 * (0.6 + R(i + 9)), 30 + ph * 95, '210,218,238', 0.2 * Math.sin(ph * Math.PI));
-    }
-  }
-  function props1958(c, t) {
-    // letreiro esmaltado en perspectiva (tapa o letreiro actual)
-    c.save(); c.transform(1, 0.472, 0, 1, 372, -8);
-    rrect(c, 0, 0, 262, 116, 4, '#132048', OUT, 5); rrect(c, 9, 9, 244, 98, 2, null, '#c9c2a4', 3);
-    c.fillStyle = '#d8d0b0'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = '700 36px Georgia, serif'; c.fillText('MONFORTE', 131, 40); c.font = '700 30px Georgia, serif'; c.fillText('DE LEMOS', 131, 80);
-    c.restore();
-    // reloxo de estación: 21:38
-    line(c, 330, 150, 330, 214, OUT, 7); line(c, 330, 150, 330, 214, '#2a3350', 3);
-    disc(c, 330, 252, 42, '#1c2440', OUT, 5); disc(c, 330, 252, 34, '#e9d9a6'); glow(c, 330, 252, 90, '255,215,140', 0.3);
-    for (let i = 0; i < 12; i++) { const a = i / 12 * TAU; line(c, 330 + Math.cos(a) * 28, 252 + Math.sin(a) * 28, 330 + Math.cos(a) * 32, 252 + Math.sin(a) * 32, '#1c2440', i % 3 ? 1.5 : 3); }
-    const am = (38 / 60) * TAU - Math.PI / 2, ah = ((9 + 38 / 60) / 12) * TAU - Math.PI / 2, as = (Math.floor(t) % 60 / 60) * TAU - Math.PI / 2;
-    line(c, 330, 252, 330 + Math.cos(ah) * 17, 252 + Math.sin(ah) * 17, '#141a30', 4.5); line(c, 330, 252, 330 + Math.cos(am) * 27, 252 + Math.sin(am) * 27, '#141a30', 3);
-    line(c, 330, 252, 330 + Math.cos(as) * 28, 252 + Math.sin(as) * 28, '#a52a22', 1.2); disc(c, 330, 252, 3, '#141a30');
-    // lámpadas colgadas
-    for (const [x, y, , k] of LAMPS) {
-      const fl = 0.9 + 0.1 * Math.sin(t * 9 + x) * Math.sin(t * 2.3 + x * 0.1);
-      line(c, x, y - 120 * k, x, y - 26 * k, OUT, 5 * k + 1);
-      poly(c, [[x - 46 * k, y], [x - 12 * k, y - 28 * k], [x + 12 * k, y - 28 * k], [x + 46 * k, y]], '#1d3a30', OUT, 4 * k + 0.6);
-      c.beginPath(); c.ellipse(x, y, 44 * k, 7 * k, 0, 0, TAU); c.fillStyle = '#fff1c4'; c.fill();
-      disc(c, x, y + 8 * k, 12 * k, '#fff6da');
-      glow(c, x, y + 8 * k, 190 * k, '255,200,110', 0.55 * fl); glow(c, x, y + 8 * k, 50 * k, '255,244,210', 0.9 * fl);
-    }
-    // baúl e maleta atados con corda (tapan a papeleira)
-    rrect(c, 846, 632, 86, 58, 5, '#4a321e', OUT, 4); line(c, 846, 650, 932, 650, '#7a5630', 3); line(c, 870, 632, 870, 690, '#2a1c10', 3); line(c, 908, 632, 908, 690, '#2a1c10', 3);
-    rrect(c, 856, 596, 64, 38, 4, '#5e4326', OUT, 4); line(c, 874, 596, 874, 634, '#9a7240', 2.5); line(c, 902, 596, 902, 634, '#9a7240', 2.5);
-    c.beginPath(); c.arc(888, 596, 9, Math.PI, TAU); c.strokeStyle = OUT; c.lineWidth = 3.5; c.stroke();
-  }
+  /* ---------- o andén 1 en 1958: ilustración de Oscar (img/cine-anden-1958.jpg) con movemento por riba ---------- */
+  const LAMPS = [[373, 116, 1], [795, 318, 0.55], [883, 388, 0.34], [925, 424, 0.2]];   // x, y, escala
+  const LX = 1006, LY = 489;                                                              // fondo da vía, onde aparece a luz
   function anden1958(c, t, cx, cy, z, light) {
     c.save(); cam(c, 1672, cx, cy, z);
-    if (NIGHT.anden) c.drawImage(NIGHT.anden, 0, 0); else { c.fillStyle = '#0a1024'; c.fillRect(0, 0, 1672, 941); }
-    // a luz que vén polo fondo da vía (detrás do tren)
+    if (IM.anden) c.drawImage(IM.anden, 0, 0); else { c.fillStyle = '#0a1024'; c.fillRect(0, 0, 1672, 941); }
+    const fk = 0.85 + 0.15 * Math.sin(t * 31) * Math.sin(t * 13);
+    if (light > 0) glow(c, LX, LY, 26 + 260 * light, '255,226,160', 0.5 * light * fk + 0.1);
+    // o reloxo da estación marca as 21:38 (tápanse as agullas pintadas) e o segundeiro anda
+    c.save(); c.translate(455, 356);
+    c.beginPath(); c.ellipse(0, 0, 13.5, 17, 0, 0, TAU); c.fillStyle = '#cdbf9f'; c.fill();
+    const hand = (v, len, col, lw) => { const a = v * TAU - Math.PI / 2; line(c, 0, 0, Math.cos(a) * len * 0.82, Math.sin(a) * len, col, lw); };
+    hand((9 + 38 / 60) / 12, 11, '#1d1a16', 2.6); hand(38 / 60, 17, '#1d1a16', 1.8); hand(Math.floor(t) % 60 / 60, 17, '#8e2a20', 0.8); disc(c, 0, 0, 1.8, '#1d1a16');
+    c.restore();
+    // lámpadas que tremen, ventás e pilotos de cola
+    for (const [x, y, k] of LAMPS) { const fl = 0.55 + 0.45 * Math.sin(t * 9 + x) * Math.sin(t * 2.3 + x * 0.1); glow(c, x, y, 210 * k, '255,196,110', 0.2 * fl + 0.08); glow(c, x, y, 46 * k, '255,244,210', 0.35 * fl); }
+    glow(c, 1137, 440, 150, '255,180,90', 0.1 + 0.05 * Math.sin(t * 3.1)); glow(c, 1420, 430, 120, '255,180,90', 0.1 + 0.05 * Math.sin(t * 4.3 + 1));
+    const p = 0.6 + 0.4 * Math.sin(t * 2.2);
+    for (const x of [1314, 1541]) { glow(c, x, 558, 78, '255,50,40', 0.5 * p); glow(c, x, 558, 15, '255,210,190', 0.55 * p); }
+    // reflexos que latexan no chan mollado
+    for (let i = 0; i < 14; i++) { const x = 60 + R(i) * 1150, y = 640 + R(i + 20) * 280, a = 0.05 + 0.05 * Math.sin(t * (1.5 + R(i + 5) * 2) + i * 2.4); glow(c, x, y, 26 + R(i + 9) * 30, '255,200,120', a, 2.6); }
+    // fume da cheminea e vapor baixo o vagón
+    for (let i = 0; i < 14; i++) { const ph = (t * 0.1 + i / 14) % 1; puff(c, 1186 + ph * 60 + Math.sin(ph * 9 + i) * 16 + ph * ph * 120, 352 - ph * 330, 14 + ph * 90, '176,178,204', 0.34 * Math.sin(ph * Math.PI) * (1 - ph * 0.5)); }
+    for (let i = 0; i < 10; i++) { const ph = (t * 0.2 + R(i + 5)) % 1, bx = 1290 + R(i) * 250, by = 712; puff(c, bx + ph * 60, by - ph * 90 * (0.6 + R(i + 9)), 24 + ph * 80, '205,212,235', 0.16 * Math.sin(ph * Math.PI)); }
+    // chuvia só fóra da marquesiña
+    c.save(); c.beginPath(); for (const [x, y] of [[1178, 0], [1672, 0], [1672, 941], [1440, 941], [1032, 522], [1004, 440]]) c.lineTo(x, y); c.closePath(); c.clip();
+    c.lineCap = 'round';
+    for (let i = 0; i < 150; i++) { const sp = 1.3 + R(i + 900), ph = (R(i + 500) + t * sp) % 1, x = 980 + R(i) * 760 - ph * 70, y = ph * 1000 - 30, l = 16 + R(i + 300) * 22; c.strokeStyle = `rgba(175,195,235,${0.14 + R(i + 700) * 0.3})`; c.lineWidth = 1.2 + R(i + 100) * 1.2; c.beginPath(); c.moveTo(x, y); c.lineTo(x - l * 0.2, y + l); c.stroke(); }
+    c.restore();
+    // a luz que vén polo fondo da vía
     if (light > 0) {
-      const LX = 1153, LY = 529, f = 0.85 + 0.15 * Math.sin(t * 31) * Math.sin(t * 13);
-      glow(c, LX, LY, 26 + 250 * light, '255,226,160', 0.5 * light * f + 0.12);
-      c.save(); c.globalCompositeOperation = 'lighter';
-      for (const [x2, y2] of [[1590, 941], [1672, 872]]) { const g = c.createLinearGradient(LX, LY, x2, y2); g.addColorStop(0, `rgba(255,230,170,${0.8 * light})`); g.addColorStop(0.5 * light + 0.05, 'rgba(255,230,170,0)'); c.strokeStyle = g; c.lineWidth = 2.5; c.beginPath(); c.moveTo(LX + 6, LY + 4); c.lineTo(x2, y2); c.stroke(); }
+      glow(c, LX, LY, 8 + 62 * light, '255,250,235', (0.55 + 0.45 * light) * fk);
+      c.save(); c.globalCompositeOperation = 'lighter'; c.fillStyle = `rgba(255,236,190,${0.5 * light * fk})`; c.beginPath(); c.ellipse(LX, LY, 30 + 210 * light, 1.2 + 3 * light, 0, 0, TAU); c.fill();
       c.restore();
-    }
-    coach(c, t); props1958(c, t);
-    for (const [x, y, o] of FOLK) person(c, x, y, 0.92 * (y - 527), o, t);
-    // neno da man da nai
-    person(c, 808, 806, 150, { rim: -1, lh: [-0.2, -0.62] }, t + 1);
-    if (light > 0) {
-      const LX = 1153, LY = 529, f = 0.85 + 0.15 * Math.sin(t * 31) * Math.sin(t * 13);
-      glow(c, LX, LY, 8 + 60 * light, '255,250,235', (0.55 + 0.45 * light) * f);
-      c.save(); c.globalCompositeOperation = 'lighter'; c.fillStyle = `rgba(255,236,190,${0.5 * light * f})`;
-      c.beginPath(); c.ellipse(LX, LY, 30 + 210 * light, 1.2 + 3 * light, 0, 0, TAU); c.fill(); c.restore();
     }
     c.restore();
   }
@@ -294,25 +183,20 @@ const CINE = (() => {
     if (u > 0.7 && u < 4.2 && Math.floor(u * 2.6) % 2 === 0) { const two = n1 >= L1.length && u > 2.1, n = two ? n2 : n1, L = two ? L2 : L1, sz = two ? 34 : 46; c.fillStyle = two ? '#f2a33a' : '#f2ead8'; c.fillRect(W / 2 - L.length * sz * 0.3 + n * sz * 0.6 + 2, (two ? 312 : 252) - sz * 0.72, sz * 0.5, sz * 0.82); }
     c.globalAlpha = 0.5 * ss(2.6, 3.4, u); c.fillStyle = '#b9c2d6'; c.font = 'italic 17px Georgia, serif'; c.textAlign = 'center'; c.fillText('Unha ficción inspirada en lugares reais de Monforte', W / 2, 498); c.globalAlpha = 1;
   }
-  /* 2 · o andén 1 en 1958: paneo */
+  /* 2 · o andén 1 en 1958: paneo lento sobre a ilustración */
   function s2(c, u, t) {
     const k = ease(clamp(u / 7.2));
-    anden1958(c, t, lerp(600, 1062, k), lerp(440, 520, k), lerp(1.4, 1.38, k), 0);
-    fogBand(c, t, 250, 210, 14, 0.5, 1); fogBand(c, t, 380, 240, -24, 0.4, 2);
-    // primeiro plano: un viaxeiro de costas, moi preto da cámara (dá fondura ao paneo)
-    c.save(); c.translate(lerp(150, -330, k), 830);
-    c.save(); c.scale(760, 760); c.fillStyle = '#03050b'; personShapes(c, { hat: 'boina', coat: 1 }); c.restore();
-    c.restore();
-    fogBand(c, t, 400, 200, 40, 0.3, 3);
+    anden1958(c, t, lerp(585, 1060, k), lerp(455, 505, k), lerp(1.42, 1.36, k), 0);
+    fogBand(c, t, 230, 210, 14, 0.3, 1); fogBand(c, t, 390, 230, -24, 0.26, 2);
     vignette(c, 0.7);
   }
   /* 3 · a luz que medra ao fondo da vía */
   function s3(c, u, t) {
     const k = ease(clamp(u / 5)), li = Math.pow(clamp(u / 5), 1.7);
     c.save(); const sh = li * 2.2; c.translate(Math.sin(t * 43) * sh, Math.sin(t * 57 + 1) * sh);
-    anden1958(c, t, lerp(1062, 1150, k), lerp(520, 520, k), lerp(1.38, 2.35, k), li);
+    anden1958(c, t, lerp(1060, 1030, k), lerp(505, 492, k), lerp(1.36, 2.3, k), li);
     c.restore();
-    fogBand(c, t, 230, 240, 14, 0.5 - 0.2 * k, 1); fogBand(c, t, 390, 230, -24, 0.4, 2);
+    fogBand(c, t, 230, 240, 14, 0.3, 1); fogBand(c, t, 390, 230, -24, 0.26, 2);
     vignette(c, 0.7 + 0.2 * k);
   }
   /* 4 · as rodas do mercadorías, sen freos */
