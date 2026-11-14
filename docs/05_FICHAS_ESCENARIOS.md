@@ -182,6 +182,67 @@
 - **NPC:** **Rosario Higueras**, jugando a la brisca. Sentada en la silla del lado derecho de la mesa de las cartas (sprite con su propia silla, mirando a la mesa); al interrumpirla se cruza de brazos. Abre con «Copas! E arrastro!» y no suelta las cartas a mitad de mano.
 - **Puzzle de la firma (elegido por Oscar):** Rosario gana la mano y pide bolígrafo; no tiene (pista: Concha tiene el de los crucigramas). Concha no lo presta hasta acabar el crucigrama: le falta el 7 horizontal, de fútbol. Martín consigue un periódico (comprándoselo a Concha o cogiéndolo de la mesa «Xornal e baralla» de la Fraternal), lee la pista «Oito letras: o máximo goleador dunha liga» y se la enseña al tío Demetrio (A4b), que responde PICHICHI: el máximo goleador, como él en la liga pirata de Monforte (22 goles, antes eran 18; Xoán dice que 12). Martín le dice PICHICHI a Concha (o le da el periódico) y ella le presta el bolígrafo. Con él, Rosario firma (objeto `contrato`), cuenta la historia de la casa (Alfredo, Juana, el motor Siemens, la venta de 1952; mientras habla de la carpintería sale a pantalla completa `img/taller-1952.jpg`, la ilustración de Oscar del taller lleno de máquinas antes de la venta; elegido por Oscar. El taller de hoy, vacío, queda pendiente de fondo) y deja la pregunta del ingeniero de Caminos. Después, objetivo: ir a la Casa Juana (A4).
 
+## Acto 2 · «O reencontro» (versión intermedia, elegida por Oscar el 14-11-2026)
+> Código en `js/acto2.js`. Sin Brais ni la Volta do Castelo. Los fondos marcados **provisional** se dibujan por código hasta que lleguen las ilustraciones de Oscar; los NPC nuevos (Valerio, Andrés) también son provisionales hasta sus hojas de personaje.
+
+### C2 · Cinemática del primer turno (martes)
+- **Cuándo:** justo después de «FIN DO ACTO 1» y al elegir «Acto 2» en Escoller acto.
+- **Fondo:** exterior de las cocheras del museo con el **candado nuevo** (A7). **Pendiente de ilustración de Oscar**; mientras, la portada de la rotonda (`img/portada-rotonda.jpg`) con acercamiento a la Mikado.
+- **Texto:** «Martes, 6:40. Primeiro turno no depósito». Martín: la cadena oxidada de siempre y, hoy, un candado nuevo, brillante, «de los caros». «Martes, 15:10. Fin do turno». Al salir se queja de los gemelos (pista de la crema).
+- **Después:** Martín aparece en la praza da Estación (A3). Objetivo: «Saudar aos de sempre. Concha sabe onde anda todo o mundo».
+
+### A3b · Quiosco de Concha (cambios en el Acto 2)
+- Nueva opción «¿Qué se cuenta hoy?»: Valerio preguntó por Martín (farmacia de la rúa do Cardeal) y Andrés dice que le debe la revancha de natación. Marcas `objValerio`, `objAndres`.
+- Tras el segundo silbato: «¿Y la llave del taller?». Dar los **ositos** → **Chave do taller**. Si no hay ositos, Concha los vende en el momento (broma: «Regalarme os meus propios ositos, co meu cambio...»).
+
+### Mapa (cambios en el Acto 2)
+- **Centro** pregunta adónde ir: el Concello (B4a) o la rúa do Cardeal (B1). No se afirma que estén pegados.
+- **Río Cabe** se abre con `objAndres` y lleva directo al Club Fluvial (C2).
+- **Castelo de San Vicente** sigue cerrado («otro día; hoy mis gemelos no suben ni a una silla»).
+
+### B1 · Rúa do Cardeal (`cardeal`) · fondo provisional
+- **Fondo:** calle peatonal de bares y tiendas, la farmacia con **toldo de rayas rojas y blancas y cruz verde de neón** (n.º 23), y locales con carteles «Se aluga» (el Monforte que se vacía, tema de Valerio). **Pendiente de ilustración de Oscar.**
+- **Salidas:** farmacia → B2; borde izquierdo → mapa.
+- **Hotspots:** farmacia, cruz verde, toldo, carteles «Se aluga», bares, escaparates, farolas, adoquines.
+
+### B2 · Farmacia, interior (`farmacia`) · fondo provisional
+- **Fondo:** mostrador de madera, estanterías de cajitas, báscula antigua, retrato del padre de Valerio. **Pendiente de ilustración de Oscar.**
+- **NPC:** **Valerio** (compañero de instituto de Martín), con la bata de su padre. **Xoán Carballeira** en el mostrador, recogiendo «o xarope de Eugenia, a nena da miña curmá». Martín ata cabos: Eugenia es la hija de Rosario, así que Xoán es primo de Rosario (marca `pistaCurma`).
+- **Crema de agujetas:** Valerio ve andar a Martín y se ríe: «Andas coma un home de oitenta anos». Se la regala, de muestra. Objeto `crema`, marca `valerioFeito`.
+- **Hotspots:** mostrador, estanterías, báscula, retrato del padre, cajón de muestras, calendario, cruz de la puerta.
+- **Personas reales:** ninguna.
+
+### C2 · Club Fluvial: piscina y chiringuito «Malo Será» (`fluvial`) · fondo provisional
+- **Fondo:** piscina al aire libre junto al Cabe, tumbonas, chiringuito «Malo Será» con su pizarra, la carretilla de las tumbonas, sacos de carbón junto a la barbacoa. Cerrada desde septiembre... salvo para Andrés. **Pendiente de ilustración de Oscar.**
+- **Llegada:** desde el mapa, zona Río Cabe. **Salida:** mapa.
+- **NPC:** **Mega Andrés**, en su tumbona. Filósofo: «a vida, mellor deitado».
+- **Puzzle:** Andrés quiere la revancha de natación (cuatro largos). Sin `crema`, Martín se niega y apunta a la farmacia. Con ella, minijuego de toques alternos (izquierda/derecha, mecánica general `minixogoToques` en engine.js). Si gana Martín: tarde de tumbona. Si pierde dos veces, Andrés propone empate técnico a cambio de un mojito. Siempre se sale con `andresFeito`.
+- **Siembra para el Acto 4:** el abuelo fogonero, los sacos de carbón «para o churrasco» y la carretilla de las tumbonas (hotspots mirables).
+- **Hotspots:** piscina, agua (14 grados), tumbonas, chiringuito, pizarra, carretilla, sacos de carbón, barbacoa, río Cabe, Ponte Vella al fondo.
+
+### B3 · A Fraternal de noche (`fraternalNoite`)
+- **Fondo:** `img/bg-fraternal.jpg` oscurecida por código, con la tele encendida (luz azulada) y el reloj. Se entra desde A4b cuando `valerioFeito` y `andresFeito` («Las ocho menos diez. Champions»).
+- **NPC:** **tío Demetrio** (en la barra), **Xoán** y **Rosario** (en su mesa).
+- **Escena:** Demetrio cuenta su gol al Ourense «un domingo de sol»; Xoán lo corrige: «Foi en mércores, Demetrio. E chovía». Martín nota la memoria de archivo de Xoán (sospecha suave). Preguntado por el candado nuevo, Xoán cambia de tema.
+- **Salida:** a las 23:00 («ni prórroga ni penaltis») Martín vuelve a casa: marca `champions`.
+
+### A5 · Segunda noche (dormitorio → patio)
+- Con `champions`, el dormitorio lanza la noche: suena el silbato, Martín baja al patio a oscuras (`img/noite-patio.jpg`, de `tools/noite.py`) y ve **luz por debajo de la puerta del taller**, que se apaga. Ya no viene de la estación: viene de detrás de la casa. Marca `silbato2`.
+- «Mércores, 8:00». Objetivo: la llave del taller (Concha).
+
+### A6 · O taller vello (`tallerA2`, `vigasA2`), con las fotos de Oscar
+- **Entrada:** desde el patio, usando la **Chave do taller** en la puerta verde (marca `tallerAberto`; después se entra sin más).
+- **Pistas** (cada una deja una marca para el cuaderno):
+  - **cajón de madera** → copia de la **escritura n.º 375** (`escritura`);
+  - **foto vieja** → «O señor Alfredo cos aprendices, 1949. Pepe, Manolo, Xosé N.» (`pistaFoto`);
+  - con el ollo: **huellas recientes** que van y vuelven del 7.º soporte (`pistaPegadas`) y **marcas de pernos** en grupos de cuatro (`pistaPernos`);
+  - en las vigas, el **7.º soporte con la tapa soldada** (`pistaSoporte`). La navaja no puede: «Esto lo soldó alguien que sabía». Se abre en el Acto 4.
+- **Final:** con las cinco pistas, Martín abre su cuaderno (documento con las pistas y la hipótesis). Hipótesis, presentada como tal: si un ingeniero de Caminos y un contratista compraron una carpintería entera, quizá las máquinas acabaron en un sitio con vías. **FIN DO ACTO 2.**
+- **Personas reales:** Alfredo Fernández Gutiérrez, Juan Lowy Szabo y Manuel Goñi Echeverría solo aparecen por lo que dice la escritura (la venta de 1952). Ni hablan ni se les atribuyen intenciones.
+
+### Sin callejones sin salida
+- Los ositos se pueden comprar siempre a Concha. La crema, si se pierde, Valerio da otra muestra. El minijuego no se puede perder del todo (empate técnico). La llave del taller no se gasta.
+
 ## Portada
 - **Música del menú:** `audio/musica-menu.mp3`, pista creada por Oscar con Suno (14-11-2026). Suena en bucle mientras el menú está a la vista, con el volumen de «Música» de Opcións; se apaga al empezar la cinemática o la partida y vuelve al abrir el menú. Arranca con el primer toque (los navegadores no dejan sonar antes).
 - **Fondo del menú:** `img/portada-rotonda.jpg`, ilustración de Oscar de la rotonda del museo del ferrocarril de Monforte, con un velo oscuro para que se lea el menú.

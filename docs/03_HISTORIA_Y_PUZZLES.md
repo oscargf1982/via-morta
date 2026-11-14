@@ -75,23 +75,22 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 
 ### Acto 2 · «O reencontro» (martes y miércoles)
 **Objetivo:** reencontrarse con los suyos y descubrir de dónde viene el silbato.
+**Alcance elegido por Oscar (14-11-2026): versión intermedia.** Valerio, Mega Andrés, la Champions y el taller. **Fuera Brais «o Galgo» y la Volta do Castelo** (el castillo sigue cerrado en el mapa). Fichas en `05_FICHAS_ESCENARIOS.md`, sección «Acto 2».
 
-1. Cinemática del primer turno: hay un **candado nuevo** en las cocheras del museo.
-2. Tres reencuentros, en cualquier orden:
-   - **Valerio** (B2). Xoán está recogiendo «el jarabe de Eugenia, la niña de su prima» (pista: es primo de Rosario). Valerio le regala la **crema de agujetas**.
-   - **Mega Andrés** (C2). Reto de natación, con minijuego o alternativa. Premio: mojito o tarde de tumbona.
-   - **Brais** (C1–D2). Reto de la Volta do Castelo. **(propuesta)** Sin la crema de Valerio, Martín se niega a subir la cuesta de San Vicente («tengo los gemelos de un señor de ochenta años»). Usar la crema sobre Martín desbloquea la carrera.
-3. **Noche de Champions** (B3, martes a las 20:00). Xoán corrige el gol de Demetrio («Foi en mércores, e chovía»). A las 23:00, a dormir.
-4. **El silbato otra vez.** No viene de la estación, sino de detrás de la casa.
-5. **El taller de la Casa Juana** (A6), ya montado en la demo:
-   - la llave de la nave la tiene Concha y solo se la da a quien «tenga un detalle» (los **ositos**);
-   - dentro, con el ollo, aparecen:
-     - la **copia de la escritura n.º 375 (1952)** con el inventario real;
-     - la **foto de 1949**: «O señor Alfredo cos aprendices: Pepe, Manolo, **Xosé N.**»;
-     - **huellas recientes**, que van y vuelven del 7.º soporte;
-     - **marcas de pernos**;
-     - **el 7.º soporte, con la tapa soldada**. Sin herramienta no se abre, y todavía no se sabe que importa.
-   - Martín ordena las pistas y formula una hipótesis: las máquinas fueron a un sitio con vías. **Fin del acto.**
+1. **Cinemática del primer turno** (martes, 6:40): hay un **candado nuevo** en las cocheras del museo. Al salir, Martín se queja de los gemelos («de un señor de ochenta años», por la silla del Concello): pista de la crema.
+2. **Concha reparte los encargos** («Que se conta hoxe?»): Valerio preguntó por él en la farmacia y Andrés dice que le debe una revancha de natación desde el instituto. Se abren la rúa do Cardeal (mapa, Centro) y el Río Cabe.
+3. Dos reencuentros, en cualquier orden:
+   - **Valerio** (B1–B2). Xoán está recogiendo «o xarope de Eugenia, a nena da miña curmá» (pista: es primo de Rosario). Valerio ve a Martín andar como un señor de ochenta años y le regala la **crema de agujetas** («de mostra, que se a pago eu, fáiseme falta a min»).
+   - **Mega Andrés** (C2). Reto de natación en la piscina del Club Fluvial, cerrada desde septiembre pero no para Andrés. Sin la crema, Martín no se mete («con estos gemelos me hundo como un ancla»). Con ella, minijuego de toques alternos; si se pierde dos veces, Andrés propone un empate técnico a cambio de un mojito. Siembra el Acto 4: el abuelo fogonero, los sacos de carbón del churrasco y la carretilla de las tumbonas.
+4. **Noche de Champions** (B3, martes a las 20:00, cuando están hechos los dos reencuentros). Xoán corrige el gol de Demetrio («Foi en mércores, Demetrio. E chovía»). Preguntado por el candado, Xoán se va por las ramas. A las 23:00, a dormir.
+5. **El silbato otra vez** (dormitorio). Martín baja al patio: no viene de la estación, sino de detrás de la casa. Por debajo de la puerta del taller se ve luz, que se apaga.
+6. **Miércoles.** Concha da la llave del taller a quien «tenga un detalle»: los **ositos** (si no se compraron, se compran en el momento; broma: le regala sus propios ositos).
+7. **El taller de la Casa Juana** (A6, con las fotos de Oscar):
+   - la **copia de la escritura n.º 375 (1952)** con el inventario real;
+   - la **foto de 1949**: «O señor Alfredo cos aprendices: Pepe, Manolo, **Xosé N.**»;
+   - con el ollo: **huellas recientes**, que van y vuelven del 7.º soporte, y **marcas de pernos**;
+   - **el 7.º soporte, con la tapa soldada**. La navaja no puede con la soldadura y todavía no se sabe que importa (se abre en el Acto 4).
+   - Con todo visto, Martín ordena las pistas en su cuaderno y formula **una hipótesis, no un hecho**: quizá las máquinas fueron a un sitio con vías. **Fin del acto.**
 
 ### Acto 3 · «A curiosidade» (jueves)
 **Objetivo:** descubrir quién es el fantasma.
@@ -154,7 +153,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 | Periódico y bolígrafo | Quiosco y Concha | Firma del contrato |
 | Llaves de la casa | Concha | Entrar en la Casa Juana |
 | Contrato firmado | Rosario | Alta del agua en el Concello |
-| Crema de agujetas | Valerio | Desbloquea la Volta do Castelo (propuesta) |
+| Crema de agujetas | Valerio | Desbloquea el reto de natación de Andrés (Acto 2) |
 | Llave del taller | Concha | Patio y nave de atrás |
 | Copia de la escritura n.º 375 | Taller | Pista: venta de 1952 |
 | Foto de 1949 | Taller (se examina) | Pista: Xosé N. |
