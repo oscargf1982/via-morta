@@ -244,7 +244,7 @@
 - Los ositos se pueden comprar siempre a Concha. La crema, si se pierde, Valerio da otra muestra. El minijuego no se puede perder del todo (empate técnico). La llave del taller no se gasta.
 
 ## Portada
-- **Música del menú:** `audio/musica-menu.mp3`, pista creada por Oscar con Suno (14-11-2026). Suena en bucle mientras el menú está a la vista, con el volumen de «Música» de Opcións; se apaga al empezar la cinemática o la partida y vuelve al abrir el menú. Arranca con el primer toque (los navegadores no dejan sonar antes).
+- **Música del menú:** `audio/musica-menu.mp3`, pista creada por Oscar con Suno (14-11-2026). Suena en bucle mientras el menú está a la vista, con el volumen de «Música» de Opcións; se apaga al empezar la cinemática o la partida y vuelve al abrir el menú. Los navegadores no dejan sonar nada antes del primer toque, así que el juego abre con una pantalla «Toca para comezar» (`mStart`): ese toque desbloquea el sonido y pasa al menú ya con la música. Antes (hasta el 14-11-2026) el primer toque solía ser «Nova partida» y la música no llegaba a oírse; además en pantallas táctiles el arranque no contaba como toque válido. Si el elemento `<audio>` falla, la pista se reproduce con WebAudio.
 - **Fondo del menú:** `img/portada-rotonda.jpg`, ilustración de Oscar de la rotonda del museo del ferrocarril de Monforte, con un velo oscuro para que se lea el menú.
 
 ## Mapa de Monforte (`mapa`)

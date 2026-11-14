@@ -632,22 +632,34 @@ const MUSIC = {
 /* ---------- menú, opcións, actos e créditos ---------- */
 function showPane(id) { for (const p of document.querySelectorAll('#menu .pane')) p.hidden = p.id !== id; }
 /* música do menú: unha pista en bucle (MENU_MUSIC en data.js) que soa mentres o menú está á vista.
-   Os navegadores non deixan soar nada ata o primeiro toque: daquela arrinca soa. */
-const MENU = { el: null, on: false, timer: null };
+   Os navegadores non deixan soar nada ata o primeiro toque: por iso o xogo abre cunha pantalla
+   «Toca para comezar» (mStart) e a música arrinca con ese toque, xa no menú.
+   Se o navegador non pode reproducir a pista co elemento <audio>, descodifícase con WebAudio (MENU.wa). */
+const MENU = { el: null, on: false, timer: null, wa: null, vol: 0 };
+function menuWebAudio() {
+  if (MENU.wa) return; MENU.wa = { g: null, src: null };
+  SFX.init(); const ac = SFX.ctx; if (!ac) return;
+  fetch(res(MENU_MUSIC)).then(r => r.arrayBuffer()).then(b => ac.decodeAudioData(b)).then(buf => {
+    const g = ac.createGain(); g.gain.value = MENU.vol; g.connect(ac.destination);
+    const s = ac.createBufferSource(); s.buffer = buf; s.loop = true; s.connect(g); s.start();
+    MENU.wa = { g, src: s };
+  }).catch(e => console.warn('Música do menú: non se puido cargar', e));
+}
 function menuMusic(on) {
   if (typeof MENU_MUSIC === 'undefined' || !MENU_MUSIC) return;
-  if (!MENU.el) { MENU.el = new Audio(res(MENU_MUSIC)); MENU.el.loop = true; MENU.el.preload = 'auto'; MENU.el.volume = 0; }
+  if (!MENU.el) { MENU.el = new Audio(res(MENU_MUSIC)); MENU.el.loop = true; MENU.el.preload = 'auto'; MENU.el.volume = 0; MENU.el.addEventListener('error', () => { MENU.bad = true; if (MENU.on) menuWebAudio(); }); }
   MENU.on = on; const a = MENU.el; clearInterval(MENU.timer);
   if (SFX.ctx) SFX.mus.gain.value = on ? 0 : E.opts.music * 0.5;      // a música de zona cala mentres o menú está aberto
-  if (on) { const p = a.play(); if (p && p.catch) p.catch(() => { }); }
+  if (on && MENU.bad) menuWebAudio();
+  else if (on) { const p = a.play(); if (p && p.catch) p.catch(e => { if (e && e.name === 'NotSupportedError') { MENU.bad = true; menuWebAudio(); } }); }
   MENU.timer = setInterval(() => {
-    const goal = MENU.on ? E.opts.music : 0, v = a.volume + Math.sign(goal - a.volume) * Math.min(0.06, Math.abs(goal - a.volume));
-    a.volume = Math.max(0, Math.min(1, v));
-    if (Math.abs(a.volume - goal) < 0.001) { clearInterval(MENU.timer); if (!MENU.on) a.pause(); }
+    const goal = MENU.on ? E.opts.music : 0; MENU.vol += Math.sign(goal - MENU.vol) * Math.min(0.06, Math.abs(goal - MENU.vol));
+    MENU.vol = Math.max(0, Math.min(1, MENU.vol)); a.volume = MENU.vol; if (MENU.wa && MENU.wa.g) MENU.wa.g.gain.value = MENU.vol;
+    if (Math.abs(MENU.vol - goal) < 0.001) { clearInterval(MENU.timer); if (!MENU.on) a.pause(); }
   }, 50);
 }
 function setMenu(vis) { $('menu').hidden = !vis; menuMusic(vis); }
-function openMenu() { E.paused = true; setMenu(true); $('btnCont').hidden = !(E.scene || loadGame()); showPane('mMain'); }
+function openMenu() { E.paused = true; setMenu(true); $('btnCont').hidden = !(E.scene || loadGame()); showPane(MENU.started ? 'mMain' : 'mStart'); }
 function closeMenu() { setMenu(false); E.paused = false; }
 function startPreset(P) {
   E.act = P.id; E.inv = [...(P.inv || [])]; E.flags = { ...(P.flags || {}) }; E.held = null; E.dlg = null; $('dlg').hidden = true;
@@ -673,7 +685,7 @@ function buildMenu() {
   const o = E.opts;
   $('optFast').checked = o.fast; $('optMus').value = o.music; $('optSfx').value = o.sfx;
   $('optFast').onchange = e => { o.fast = e.target.checked; saveOpts(); };
-  $('optMus').oninput = e => { o.music = +e.target.value; SFX.volume(); if (MENU.el && MENU.on) { MENU.el.volume = o.music; if (SFX.ctx) SFX.mus.gain.value = 0; } saveOpts(); };
+  $('optMus').oninput = e => { o.music = +e.target.value; SFX.volume(); if (MENU.el && MENU.on) { MENU.vol = o.music; MENU.el.volume = o.music; if (MENU.wa && MENU.wa.g) MENU.wa.g.gain.value = o.music; if (SFX.ctx) SFX.mus.gain.value = 0; } saveOpts(); };
   $('optSfx').oninput = e => { o.sfx = +e.target.value; SFX.volume(); saveOpts(); };
   $('optTest').onclick = () => SFX.whistle();
   const oc = $('optCine'); if (oc) { oc.hidden = !ACTS[0].cine; oc.onclick = async () => { SFX.init(); const m = SFX.want; setMenu(false); SFX.music(null); await ACTS[0].cine({ day: false }); setMenu(true); SFX.music(m); }; }
@@ -700,7 +712,10 @@ window.addEventListener('load', () => {
   for (const S of Object.values(SCENES)) if (S.bg) img(S.bg); img(MARTIN.sheet);
   for (const S of Object.values(SCENES)) for (const n of S.npcs || []) if (n.sheet) img(n.sheet);
   openMenu();
-  const kick = () => { if (MENU.on && MENU.el && MENU.el.paused) menuMusic(true); };
-  window.addEventListener('pointerdown', kick, true); window.addEventListener('keydown', kick, true);
+  // o primeiro toque (pantalla «Toca para comezar») desbloquea o son e pasa ao menú, xa con música
+  $('btnStart').onclick = () => { MENU.started = true; SFX.init(); if (SFX.ctx && SFX.ctx.state === 'suspended') SFX.ctx.resume(); menuMusic(true); showPane('mMain'); };
+  // por se o navegador rexeitou o arranque: reinténtase en calquera toque de verdade (en táctil, pointerdown non vale)
+  const kick = () => { if (MENU.started && MENU.on && MENU.el && MENU.el.paused && !MENU.bad) menuMusic(true); };
+  for (const ev of ['pointerup', 'touchend', 'click', 'keydown']) window.addEventListener(ev, kick, true);
   requestAnimationFrame(frame);
 });
