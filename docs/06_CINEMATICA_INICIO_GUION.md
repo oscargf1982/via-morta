@@ -21,7 +21,7 @@ Un prólogo de 1958 que enseña el peligro y la culpa sin decir quién, y un sal
 | 10 | 37–43 | **Rotonda del museo de noche** (portada oscurecida): la Mikado parada en el puente giratorio. Zoom lento, niebla del Cabe por delante. | Viento, un perro a lo lejos, zumbido de una farola. | — |
 | 11 | 43–46 | Inserto: el carril bajo la rueda de la Mikado. Una gota de grasa fresca brilla y cae. | Un *plic* muy nítido. | — |
 | 12 | 46–50 | **Balcón nocturno sobre Doutor Casares** (vista de noche). Quieto. Se apaga una ventana enfrente. | **El silbato otra vez: dos largos y uno corto**, lejano, con eco. | — |
-| 13 | 50–55 | Negro. El título sale del vapor y el vapor se disipa. Debajo, la frase gancho. | Cola del silbato, golpe grave de música. | **VÍA MORTA** · «Esa máquina non se move dende hai décadas. Entón, quen asubía?» |
+| 13 | 50–55 | Negro. El título sale del vapor y el vapor se disipa. Debajo, la frase gancho. | Cola del silbato, golpe grave de música. | **VÍA MORTA** (frase de cierre quitada por Oscar; pendiente de elegir otra) |
 | → | — | Fundido al **andén 1 de día** (fondo actual). Empieza el Acto 1. | Bocina del regional que llega. | «Luns, 7:52» (hora por confirmar) |
 
 - Plano 8: es la versión oficial falsa; el juego la desmonta en el Acto 5.

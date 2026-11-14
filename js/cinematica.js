@@ -643,9 +643,7 @@ const CINE = (() => {
     c.restore();
     // vapor que se disipa
     for (let i = 0; i < 38; i++) { const q = clamp((u - R(i + 5) * 0.8) / 4.2), dirx = (R(i) - 0.5) * 2; puff(c, W / 2 + dirx * (200 + q * 430) + Math.sin(t * 0.4 + i) * 12, 230 + (R(i + 20) - 0.5) * 170 - q * 110, 90 + R(i + 9) * 110 + q * 90, '214,222,244', 0.42 * (1 - q) * ss(0, 0.6, u)); }
-    c.textAlign = 'center'; c.font = 'italic 29px Georgia, serif';
-    c.globalAlpha = ss(3.2, 4.1, u) * out; c.fillStyle = '#f2ead8'; c.fillText('Esa máquina non se move dende hai décadas.', W / 2, 388);
-    c.globalAlpha = ss(4.7, 5.5, u) * out; c.fillStyle = '#f2a33a'; c.font = 'italic 700 34px Georgia, serif'; c.fillText('Entón, quen asubía?', W / 2, 440);
+    // a frase de peche está pendente: Oscar elixe entre varias propostas
     c.globalAlpha = 1;
   }
 
@@ -730,7 +728,6 @@ const CINE = (() => {
     // golpe grave do título e acorde (re menor)
     tone(T.s13 + 0.5, [[0.02, 0.8], [3.5, 0]], 55, 'sine', 36); nz(T.s13 + 0.5, [[0.02, 0.35], [1.2, 0]], 'lowpass', 160);
     for (const [f, v] of [[73.4, 0.2], [110, 0.13], [146.8, 0.1], [174.6, 0.07], [220, 0.05]]) tone(T.s13 + 0.5, [[1.2, v], [4.5, v * 0.7], [7.4, 0]], f, 'triangle');
-    tone(T.s13 + 4.7, [[0.6, 0.06], [2.6, 0]], 293.7, 'sine'); tone(T.s13 + 4.7, [[0.6, 0.04], [2.6, 0]], 440, 'sine');
     return { ac, master, t0, nodes };
   }
   function audioStop(fast) {
