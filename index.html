@@ -37,6 +37,7 @@ button{font-family:inherit}
 #doc img{display:block;width:min(94%,760px);max-height:72dvh;object-fit:contain;padding:8px;background:#efe4c8}
 #cine{position:absolute;inset:0;background:#000 center/cover;display:flex;align-items:flex-end;justify-content:center;cursor:pointer;box-shadow:inset 0 70px 0 #000,inset 0 -70px 0 #000}
 #cine[hidden]{display:none}#cine.on{animation:cz 14s linear forwards}@keyframes cz{from{background-size:100%}to{background-size:112%}}
+#cine.zoom{background-position:var(--zp);animation:czz 9s 1.4s cubic-bezier(.45,0,.25,1) both}@keyframes czz{from{background-size:100%}to{background-size:var(--zs)}}
 #cineTxt{margin-bottom:22px;font:italic 20px Georgia,serif;color:#fff;text-shadow:0 2px 6px #000;text-align:center;padding:0 20px}
 #toast{position:absolute;left:50%;top:10px;transform:translate(-50%,-160%);background:var(--panel);border:1px solid var(--acc);padding:6px 14px;border-radius:4px;font-size:14px;transition:transform .3s;pointer-events:none;white-space:nowrap}#toast.on{transform:translate(-50%,0)}
 /* menú: ocupa sempre toda a pantalla */

@@ -167,7 +167,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 
 ## 5. Estado actual
 - **Paquete inicial (M0):** motor básico y demo de 4 escenas de la Casa Juana (salón, cocina, taller y vigas). La demo **no es canónica**: el parte aparece ya para enseñar las mecánicas; en la versión final se encuentra en el Acto 4. Sigue disponible en «Escoller acto».
-- **Cinemática de inicio (14 de noviembre de 2026):** «Dous longos e un curto» (propuesta A, cartoon), al pulsar «Nova partida» y en Opcións. Ficha C0 en `05_FICHAS_ESCENARIOS.md`, guion en `06_CINEMATICA_INICIO_GUION.md`. Pendiente de Oscar: confirmar la hora del rótulo «Luns, 7:52» y, si quiere, sustituir algún plano por ilustraciones suyas.
+- **Cinemática de inicio (14 de noviembre de 2026):** «Dous longos e un curto» (propuesta A, cartoon), al pulsar «Nova partida» y en Opcións. Ficha C0 en `05_FICHAS_ESCENARIOS.md`, guion en `06_CINEMATICA_INICIO_GUION.md`. Pendiente de Oscar: confirmar la hora del rótulo «Luns, 7:52» y, si quiere, sustituir algún plano por ilustraciones suyas. Retoques del 14-11 por la tarde: planos un 15 % más largos (unos 77 s), zoom y pausa en el sello «ARQUIVADO», la gota de grasa sustituida por la Casa Roja de noche con luz en el taller, y en la vista del balcón del salón (la de la gasolinera, con la Mikado a lo lejos) la cámara se acerca despacio hasta la Mikado, tanto en la cinemática como en el juego (`cine(src, lines, zoom)`).
 - **M1 · Motor completo (8 de noviembre de 2026):**
   - caminos con A* sobre varios polígonos de suelo y obstáculos;
   - capas delanteras (Martín pasa por detrás de columnas, bancos y el quiosco);

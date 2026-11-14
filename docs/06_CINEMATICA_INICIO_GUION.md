@@ -18,14 +18,16 @@ Un prólogo de 1958 que enseña el peligro y la culpa sin decir quién, y un sal
 | 7 | 26–29 | Corte a negro. | Un golpe sordo y lejano. Silencio. Solo queda la lluvia. | — |
 | 8 | 29–34 | Primer plano de un papel en una máquina de escribir; las letras aparecen una a una. | Teclas, campanilla de fin de línea. | «Causa do incidente: erro do maquinista.» |
 | 9 | 34–37 | Fundido a negro. | Silencio total. | «68 anos despois» |
-| 10 | 37–43 | **Rotonda del museo de noche** (portada oscurecida): la Mikado parada en el puente giratorio. Zoom lento, niebla del Cabe por delante. | Viento, un perro a lo lejos, zumbido de una farola. | — |
-| 11 | 43–46 | Inserto: el carril bajo la rueda de la Mikado. Una gota de grasa fresca brilla y cae. | Un *plic* muy nítido. | — |
-| 12 | 46–50 | **Balcón nocturno sobre Doutor Casares** (vista de noche). Quieto. Se apaga una ventana enfrente. | **El silbato otra vez: dos largos y uno corto**, lejano, con eco. | — |
+| 10 | 48–55 | **La Mikado en la rotonda del museo, de noche** (portada oscurecida). La cámara la recorre de cerca, de las ruedas a la cabina; niebla del Cabe por delante. | Viento, un perro a lo lejos, zumbido de una farola. | — |
+| 11 | 55–61 | **La Casa Roja**, vacía y a oscuras, desde Doutor Casares. Acercamiento al portalón del taller: se enciende una luz dentro, pasa la sombra de alguien y se apaga. (Sustituye a la gota de grasa, que Oscar pidió quitar el 14-11-2026.) | Clic de interruptor, zumbido, pasos, clic. | — |
+| 12 | 61–67 | **Balcón nocturno sobre Doutor Casares** (la vista del juego, de noche). La cámara deja atrás la gasolinera y se acerca despacio hasta la Mikado, a lo lejos delante del museo; mientras suena el silbato, un resplandor tibio en la cabina. | **El silbato otra vez: dos largos y uno corto**, lejano, con eco. | — |
 | 13 | 50–55 | Negro. El título sale del vapor y el vapor se disipa. Debajo, la frase gancho. | Cola del silbato, golpe grave de música. | **VÍA MORTA** · «68 anos de silencio. / Dous longos e un curto. / Alguén segue a chamar.» (mezcla elegida por Oscar el 14-11-2026) |
 | → | — | Fundido al **andén 1 de día** (fondo actual). Empieza el Acto 1. | Bocina del regional que llega. | «Luns, 7:52» (hora por confirmar) |
 
 - Plano 8: es la versión oficial falsa; el juego la desmonta en el Acto 5.
-- Plano 11: pista para el jugador atento (grasa fresca del Acto 3).
+- Plano 8: al caer el sello «ARQUIVADO» la cámara se acerca y se queda parada en él (pedido por Oscar).
+- Plano 11: alguien entra de noche en el taller de una casa vacía (enlaza con el taller del Acto 2 y la pista del Acto 4).
+- Duración real: unos 77 s; todos los planos duran un 15 % más que en los tiempos de la tabla hasta el plano 9 (pedido por Oscar el 14-11-2026).
 
 ## Arte
 
@@ -38,7 +40,7 @@ Un prólogo de 1958 que enseña el peligro y la culpa sin decir quién, y un sal
 | Ruedas de mercancías | Inserto; chispas por código |
 | Mano con guante y palanca de aguja | Inserto; solo mano y manga |
 | Frente de la Mikado con faro, de noche | O recorte ampliado de la portada; brillo por código |
-| Carril con gota de grasa | Inserto; gota y brillo por código |
+| Casa Roja de noche | `bg-doutor-casares.jpg` pasada a noche; luz del taller y sombra por código |
 | Luz del mercancías, papel en la máquina de escribir | Por código |
 
 Niebla, lluvia, vapor, chispas, temblor de cámara y versiones nocturnas por código. Sonidos sintetizados como el resto del juego.

@@ -708,7 +708,7 @@ async function noiteActo1() {
     'Martín: «Desde el balcón: la gasolinera cerrada, la capillita a oscuras, la Mikado quieta en la rotonda.»',
     'Martín: «Ahí está otra vez. Dos largos, uno corto. No viene de la estación: viene del lado del museo... y viene hacia aquí.»',
     'Martín: «No pasa por delante de mi casa. Llama a mi casa.»',
-  ]);
+  ], ZOOM_MIKADO);
   setFlag('fimActo1');
   await showDoc('<h4>FIN DO ACTO 1 · «O regreso»</h4><p>Martín xa vive na Casa Juana: chaves, contrato, auga para mañá... e un asubío que, polo visto, ten enderezo.</p><p>O Acto 2, «O reencontro», chegará nun próximo hito.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
   E.fadeTo = 0; await sleep(400);
@@ -762,14 +762,16 @@ SCENES.casaSalon = {
   ],
 };
 
-// vista desde o balcón do salón (imaxe de Oscar): gasolinera, capela, supermercado e, ao fondo, o museo do ferrocarril coa Mikado
+// vista desde o balcón do salón (imaxe de Oscar): gasolinera, capela, supermercado e, ao fondo, o museo do ferrocarril coa Mikado.
+// Pedido por Oscar (14-11-2026): a cámara achégase amodo á Mikado, que é a protagonista; a gasolineira non debe distraer.
+const ZOOM_MIKADO = { x: 0.47, y: 0.278, z: 3.8 };
 async function vistaSalon() {
   const primeira = !flag('vistaSalon'); setFlag('vistaSalon');
   await cine('img/vista-salon.jpg', primeira ? [
     'Martín: «Desde aquí se ve medio barrio: la gasolinera, la capillita, el supermercado de enfrente...»',
     'Martín: «Y al fondo, el museo del ferrocarril. Con la Mikado delante, quieta, como esperando turno.»',
     'Martín: «Una locomotora de vapor parada desde hace décadas, y un maquinista mirándola desde su salón. Xoán tenía razón: buen balcón.»',
-  ] : ['Martín: «La Mikado sigue ahí. Quieta. Ella no tiene prisa; yo tampoco.»']);
+  ] : ['Martín: «La Mikado sigue ahí. Quieta. Ella no tiene prisa; yo tampoco.»'], ZOOM_MIKADO);
   if (primeira) await MA('Si alguna noche oigo un silbato de vapor, ya sé hacia dónde mirar.', 'dudoso');
 }
 
