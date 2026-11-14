@@ -20,7 +20,7 @@
   10. Rotonda del museo de noche (`img/portada-rotonda.jpg` pasada a noche), zoom a la Mikado, niebla.
   11. Inserto: la gota de grasa fresca cae de la biela al carril (pista del Acto 3).
   12. Vista nocturna del balcón (`img/noite-vista.jpg`): se apaga una ventana; el silbato otra vez, lejano y con eco.
-  13. Título «VÍA MORTA» saliendo del vapor, con una vía que acaba en un tope. La frase de cierre original no gustó a Oscar (14-11-2026) y se quitó; pendiente de que elija otra.
+  13. Título «VÍA MORTA» saliendo del vapor, con una vía que acaba en un tope, y el cierre: «68 anos de silencio. / Dous longos e un curto. / Alguén segue a chamar.» (mezcla elegida por Oscar el 14-11-2026).
   - Enlace: rótulo «Luns, 7:52» mientras aparece el andén de día (**hora por confirmar con Oscar**).
 - **Motor:** `engine.js` solo sabe que un acto puede tener `cine` (se reproduce en «Nova partida» antes de entrar en la escena). El contenido vive en `js/cinematica.js`.
 

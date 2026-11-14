@@ -22,7 +22,7 @@ const CINE = (() => {
   const MONO = '"Courier New", Courier, "Cutive Mono", monospace';
 
   /* ---------- planos (segundos) ---------- */
-  const T = { s1: 0, s2: 4.6, s3: 11.6, s4: 16.6, s5: 19.6, s6: 22.6, s7: 26.9, s8: 29.6, s9: 35.6, s10: 38.6, s11: 44.6, s12: 47.8, s13: 52.8, end: 60.4 };
+  const T = { s1: 0, s2: 4.6, s3: 11.6, s4: 16.6, s5: 19.6, s6: 22.6, s7: 26.9, s8: 29.6, s9: 35.6, s10: 38.6, s11: 44.6, s12: 47.8, s13: 52.8, end: 61.2 };
   const WH = T.s6 + 0.6, WH2 = T.s12 + 0.5;            // comezo dos dous asubíos
   const WHP = [[0, 1.05], [1.27, 1.05], [2.54, 0.35]];  // dous longos e un curto
 
@@ -630,7 +630,7 @@ const CINE = (() => {
   function s13(c, u, t) {
     c.fillStyle = '#030408'; c.fillRect(0, 0, W, H);
     glow(c, W / 2, 230, 520, '60,80,150', 0.3 * ss(0, 2, u));
-    const out = 1 - ss(6.7, 7.5, u), a = ss(0.7, 2.4, u) * out, sc = lerp(1.06, 1, ss(0.5, 4, u));
+    const out = 1 - ss(7.5, 8.3, u), a = ss(0.7, 2.4, u) * out, sc = lerp(1.06, 1, ss(0.5, 4, u));
     c.save(); c.translate(W / 2, 228); c.scale(sc, sc); c.globalAlpha = a;
     c.fillStyle = '#f2a33a'; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.font = '900 118px Georgia, serif';
     const txt = 'VÍA MORTA'; let tw = 0; const ws = [...txt].map(ch => { const w = c.measureText(ch).width + 9; tw += w; return w; }); let x = -tw / 2;
@@ -643,7 +643,11 @@ const CINE = (() => {
     c.restore();
     // vapor que se disipa
     for (let i = 0; i < 38; i++) { const q = clamp((u - R(i + 5) * 0.8) / 4.2), dirx = (R(i) - 0.5) * 2; puff(c, W / 2 + dirx * (200 + q * 430) + Math.sin(t * 0.4 + i) * 12, 230 + (R(i + 20) - 0.5) * 170 - q * 110, 90 + R(i + 9) * 110 + q * 90, '214,222,244', 0.42 * (1 - q) * ss(0, 0.6, u)); }
-    // a frase de peche está pendente: Oscar elixe entre varias propostas
+    // peche (mestura elixida por Oscar): tres golpes curtos baixo o título
+    c.textAlign = 'center'; c.fillStyle = '#f2ead8'; c.font = 'italic 28px Georgia, serif';
+    c.globalAlpha = ss(3.0, 3.8, u) * out; c.fillText('68 anos de silencio.', W / 2, 372);
+    c.globalAlpha = ss(4.1, 4.9, u) * out; c.fillText('Dous longos e un curto.', W / 2, 410);
+    c.globalAlpha = ss(5.3, 6.0, u) * out; c.fillStyle = '#f2a33a'; c.font = 'italic 700 34px Georgia, serif'; c.fillText('Alguén segue a chamar.', W / 2, 462);
     c.globalAlpha = 1;
   }
 
@@ -727,7 +731,8 @@ const CINE = (() => {
     tone(T.s12 + 2.5, [[0.003, 0.12], [0.05, 0]], 900, 'square', 300);
     // golpe grave do título e acorde (re menor)
     tone(T.s13 + 0.5, [[0.02, 0.8], [3.5, 0]], 55, 'sine', 36); nz(T.s13 + 0.5, [[0.02, 0.35], [1.2, 0]], 'lowpass', 160);
-    for (const [f, v] of [[73.4, 0.2], [110, 0.13], [146.8, 0.1], [174.6, 0.07], [220, 0.05]]) tone(T.s13 + 0.5, [[1.2, v], [4.5, v * 0.7], [7.4, 0]], f, 'triangle');
+    for (const [f, v] of [[73.4, 0.2], [110, 0.13], [146.8, 0.1], [174.6, 0.07], [220, 0.05]]) tone(T.s13 + 0.5, [[1.2, v], [5.3, v * 0.7], [8.2, 0]], f, 'triangle');
+    tone(T.s13 + 5.3, [[0.6, 0.06], [2.8, 0]], 293.7, 'sine'); tone(T.s13 + 5.3, [[0.6, 0.04], [2.8, 0]], 440, 'sine');
     return { ac, master, t0, nodes };
   }
   function audioStop(fast) {
