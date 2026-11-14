@@ -5,10 +5,10 @@
    - Todo se debuxa por código nun lenzo propio de 960×540 (sen vídeo).
    - O andén de 1958 é unha ilustración de Oscar (img/cine-anden-1958.jpg)
      con movemento por riba (cámara, luces, fume, chuvia, reloxo ás 21:38).
-     As rodas do mercadorías (img/cine-rodas.jpg) e a man no freo
-     (img/cine-freo.jpg) tamén son ilustracións de Oscar animadas.
-     A rotonda pásase a noite cun mapa de luces; a Mikado, a máquina de
-     escribir e a pinga de graxa son debuxo por código.
+     As rodas do mercadorías (img/cine-rodas.jpg), a man no freo
+     (img/cine-freo.jpg) e a Mikado de fronte (img/cine-mikado.jpg) tamén
+     son ilustracións de Oscar animadas. A rotonda pásase a noite cun mapa
+     de luces; a máquina de escribir e a pinga de graxa son debuxo por código.
    - Cada plano é unha función pura do tempo: CINE.frame(t) debuxa o
      fotograma do segundo t (sérvenos para probar con capturas).
    - Son sintetizado con WebAudio, coma o resto do xogo.
@@ -122,8 +122,8 @@ const CINE = (() => {
     if (ready) return ready;
     ready = (async () => {
       FOG = makeFog();
-      const [a, r, v, ro, fr] = await Promise.all(['img/cine-anden-1958.jpg', 'img/portada-rotonda.jpg', 'img/noite-vista.jpg', 'img/cine-rodas.jpg', 'img/cine-freo.jpg'].map(load));
-      IM = { anden: a, rotonda: r, vista: v, rodas: ro, freo: fr };
+      const [a, r, v, ro, fr, mk] = await Promise.all(['img/cine-anden-1958.jpg', 'img/portada-rotonda.jpg', 'img/noite-vista.jpg', 'img/cine-rodas.jpg', 'img/cine-freo.jpg', 'img/cine-mikado.jpg'].map(load));
+      IM = { anden: a, rotonda: r, vista: v, rodas: ro, freo: fr, mikado: mk };
       if (r) NIGHT.rotonda = bakeNight(r, '#16204a', l => {
         glow(l, 830, 500, 620, '150,175,255', 0.62);             // lúa sobre a Mikado
         glow(l, 250, 330, 330, '255,186,105', 0.85); glow(l, 250, 420, 300, '255,186,105', 0.5, 0.4);
@@ -269,64 +269,39 @@ const CINE = (() => {
     c.restore();
     vignette(c, 0.8);
   }
-  /* 6 · o faro da Mikado */
-  function mikado(c) {
-    const B = '#0b0e16', B2 = '#141927', RIM = '#4f6aa8';
-    // vía
-    poly(c, [[384, 430], [576, 430], [760, 560], [200, 560]], '#0c1020');
-    for (let i = 0; i < 6; i++) { const y = 440 + i * i * 4.2 + i * 6, w = 120 + (y - 430) * 2.1; poly(c, [[480 - w, y], [480 + w, y], [480 + w + 8, y + 9 + i * 2], [480 - w - 8, y + 9 + i * 2]], '#1c1612'); }
-    line(c, 420, 428, 268, 560, OUT, 12); line(c, 540, 428, 692, 560, OUT, 12); line(c, 420, 428, 268, 560, '#7386b5', 5); line(c, 540, 428, 692, 560, '#7386b5', 5);
-    // cheminea, domo e cabina por detrás
-    rrect(c, 392, 150, 176, 60, 10, B, OUT, 5);
-    poly(c, [[452, 64], [508, 64], [502, 126], [458, 126]], B2, OUT, 5); rrect(c, 444, 52, 72, 18, 6, B2, OUT, 5); line(c, 452, 62, 508, 62, RIM, 2.5);
-    // cilindros e pasarela
-    for (const s of [-1, 1]) { rrect(c, 480 + s * 196 - 34, 318, 68, 78, 10, B2, OUT, 5); disc(c, 480 + s * 196, 357, 22, B, OUT, 4); line(c, 480 + s * 170, 322, 480 + s * 222, 322, RIM, 2.5); }
-    // caldeira e caixa de fumes
-    disc(c, 480, 262, 128, B2, OUT, 6); disc(c, 480, 262, 110, B, OUT, 5); disc(c, 480, 262, 110, null, '#232c44', 2);
-    c.beginPath(); c.arc(480, 262, 124, Math.PI * 1.12, Math.PI * 1.45); c.strokeStyle = RIM; c.lineWidth = 3.5; c.lineCap = 'round'; c.stroke();
-    for (const y of [222, 302]) { line(c, 374, y, 462, y, OUT, 9); line(c, 374, y, 462, y, '#262f48', 4); }
-    disc(c, 480, 262, 17, B2, OUT, 4); line(c, 480, 262, 520, 238, OUT, 8); line(c, 480, 262, 520, 238, '#3a4664', 3.5); line(c, 480, 262, 456, 300, OUT, 8); line(c, 480, 262, 456, 300, '#3a4664', 3.5);
-    for (let i = 0; i < 16; i++) { const a = i / 16 * TAU; disc(c, 480 + Math.cos(a) * 119, 262 + Math.sin(a) * 119, 2.6, '#2c3653'); }
-    rrect(c, 452, 326, 56, 20, 3, '#5b1418', OUT, 3);
-    // pantallas levantafumes
-    for (const s of [-1, 1]) { poly(c, [[480 + s * 150, 96], [480 + s * 186, 108], [480 + s * 186, 372], [480 + s * 150, 372]], B2, OUT, 5); line(c, 480 + s * 152, 104, 480 + s * 152, 366, RIM, 2.5); for (const y of [150, 240, 330]) disc(c, 480 + s * 168, y, 3, '#2c3653'); }
-    // traveseiro, topes e gancho
-    rrect(c, 272, 372, 416, 52, 5, '#6d1318', OUT, 6); line(c, 278, 378, 682, 378, '#b3303a', 3);
-    for (const s of [-1, 1]) { rrect(c, 480 + s * 150 - 15, 384, 30, 34, 3, B2, OUT, 4); disc(c, 480 + s * 150, 400, 31, '#20273a', OUT, 5); disc(c, 480 + s * 150, 400, 20, '#141927'); c.beginPath(); c.arc(480 + s * 150, 400, 27, Math.PI * 1.1, Math.PI * 1.6); c.strokeStyle = RIM; c.lineWidth = 3; c.stroke(); }
-    poly(c, [[468, 398], [492, 398], [488, 440], [472, 440]], B2, OUT, 4);
-    for (const s of [-1, 1]) { rrect(c, 480 + s * 84 - 11, 350, 22, 24, 4, B2, OUT, 4); }
-    // faro
-    rrect(c, 446, 118, 68, 34, 6, B2, OUT, 5); disc(c, 480, 128, 34, B2, OUT, 6);
-  }
+  /* 6 · a Mikado de fronte: ilustración de Oscar (img/cine-mikado.jpg) con movemento */
   function s6(c, u, t) {
     const on = u < 0.5 ? 0 : u < 0.62 ? 0.7 : u < 0.72 ? 0.12 : u < 0.8 ? 0.85 : u < 0.86 ? 0.3 : 1, grow = ss(0.5, 4.2, u), li = on * (0.35 + 0.65 * grow);
-    const z = 1 + 0.26 * Math.pow(clamp(u / 4.3), 1.4);
-    let g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#080d1c'); g.addColorStop(0.75, '#1a2748'); g.addColorStop(1, '#0c1226'); c.fillStyle = g; c.fillRect(0, 0, W, H);
-    c.save(); c.translate(480, 200); c.scale(z, z); c.translate(-480 + Math.sin(t * 51) * 2.5 * grow, -200 + Math.sin(t * 67) * 2 * grow);
-    fogBand(c, t, 60, 320, 12, 0.6, 7);
-    glow(c, 480, 128, 380 + 300 * grow, '255,228,170', 0.3 * li);
-    // vapor nos cilindros
-    for (let i = 0; i < 12; i++) { const s = i % 2 ? 1 : -1, ph = (t * 0.35 + R(i)) % 1; puff(c, 480 + s * (230 + ph * 170), 372 - ph * 70 * R(i + 3), 30 + ph * 80, '200,212,240', 0.24 * Math.sin(ph * Math.PI)); }
-    mikado(c);
+    const k = Math.pow(clamp(u / 4.3), 1.4), HX = 838, HY = 203;
+    c.fillStyle = '#05070d'; c.fillRect(0, 0, W, H);
+    c.save(); c.translate(Math.sin(t * 51) * (1.5 + 4 * grow), Math.sin(t * 67) * (1 + 3.5 * grow));
+    cam(c, 1672, 836, lerp(475, 330, k), lerp(1.03, 1.42, k));
+    if (IM.mikado) c.drawImage(IM.mikado, 0, 0);
+    // antes de acender: a máquina é unha sombra na chuvia
+    if (on < 1) { c.fillStyle = `rgba(4,6,14,${0.62 * (1 - on)})`; c.fillRect(-100, -100, 1900, 1200); disc(c, HX, HY, 47, `rgba(20,16,10,${0.9 * (1 - on)})`); }
+    // fume da cheminea e vapor dos cilindros
+    for (let i = 0; i < 16; i++) { const ph = (t * 0.28 + i / 16) % 1; puff(c, 838 + Math.sin(ph * 7 + i) * 40 + (R(i) - 0.5) * 90, 96 - ph * 260, 40 + ph * 130, '178,172,176', 0.3 * Math.sin(ph * Math.PI)); }
+    for (let i = 0; i < 16; i++) { const sd = i % 2 ? 1 : -1, ph = (t * 0.32 + R(i)) % 1; puff(c, 838 + sd * (400 + ph * 330), 720 - ph * 150 * R(i + 3), 50 + ph * 150, '196,200,222', 0.26 * Math.sin(ph * Math.PI)); }
     // o asubío: chorro de vapor branco
     for (const [w0, wd] of WHP) {
       const wu = (T.s6 + u) - (WH + w0);
-      for (let i = 0; i < 16; i++) { const b = i / 16 * wd, age = wu - b; if (age < 0 || age > 1.3) continue; const q = age / 1.3; puff(c, 560 + q * 150 + R(i) * 18, 150 - q * 190 - R(i + 4) * 30, 12 + q * 64, '236,242,255', 0.6 * (1 - q)); }
-      if (wu > 0 && wu < wd) { line(c, 556, 152, 574, 110, 'rgba(240,246,255,.9)', 5); }
+      for (let i = 0; i < 16; i++) { const b = i / 16 * wd, age = wu - b; if (age < 0 || age > 1.3) continue; const q = age / 1.3; puff(c, 940 + q * 260 + R(i) * 30, 150 - q * 330 - R(i + 4) * 50, 20 + q * 110, '236,242,255', 0.6 * (1 - q)); }
+      if (wu > 0 && wu < wd) line(c, 934, 156, 966, 84, 'rgba(240,246,255,.9)', 8);
     }
-    rrect(c, 548, 150, 14, 26, 4, '#b08a3a', OUT, 3);
-    // luz do faro
+    // luz do faro: raios, halo e reflexo nos carrís
     if (li > 0) {
-      c.save(); c.globalCompositeOperation = 'lighter'; c.translate(480, 128);
-      for (let i = 0; i < 14; i++) { const a = i / 14 * TAU + t * 0.12, w = 0.05 + R(i) * 0.07, r = 300 + 500 * grow; const rg = c.createRadialGradient(0, 0, 20, 0, 0, r); rg.addColorStop(0, `rgba(255,236,190,${0.2 * li})`); rg.addColorStop(1, 'rgba(255,236,190,0)'); c.fillStyle = rg; c.beginPath(); c.moveTo(0, 0); c.arc(0, 0, r, a - w, a + w); c.closePath(); c.fill(); }
+      c.save(); c.globalCompositeOperation = 'lighter'; c.translate(HX, HY);
+      for (let i = 0; i < 14; i++) { const a = i / 14 * TAU + t * 0.12, w = 0.05 + R(i) * 0.07, r = 520 + 870 * grow; const rg = c.createRadialGradient(0, 0, 36, 0, 0, r); rg.addColorStop(0, `rgba(255,232,180,${0.2 * li})`); rg.addColorStop(1, 'rgba(255,232,180,0)'); c.fillStyle = rg; c.beginPath(); c.moveTo(0, 0); c.arc(0, 0, r, a - w, a + w); c.closePath(); c.fill(); }
       c.restore();
-      disc(c, 480, 128, 26, `rgba(255,246,214,${on})`);
-      glow(c, 480, 128, 110 + 420 * grow, '255,232,180', 0.85 * li); glow(c, 480, 128, 40 + 160 * grow, '255,255,245', li);
-      c.save(); c.globalCompositeOperation = 'lighter'; c.fillStyle = `rgba(255,240,200,${0.55 * li})`; c.beginPath(); c.ellipse(480, 128, 260 + 520 * grow, 4 + 10 * grow, 0, 0, TAU); c.fill(); c.restore();
+      glow(c, HX, HY, 190 + 730 * grow, '255,226,170', 0.8 * li); glow(c, HX, HY, 70 + 280 * grow, '255,255,245', li);
+      c.save(); c.globalCompositeOperation = 'lighter'; c.fillStyle = `rgba(255,238,196,${0.5 * li})`; c.beginPath(); c.ellipse(HX, HY, 450 + 900 * grow, 7 + 17 * grow, 0, 0, TAU); c.fill(); c.restore();
+      glow(c, 838, 900, 330, '255,200,110', 0.25 * li, 0.35);
     }
-    fogBand(c, t, 300, 240, -30, 0.35 + 0.25 * grow, 8);
+    // chuvia
+    c.lineCap = 'round';
+    for (let i = 0; i < 170; i++) { const sp = 1.5 + R(i + 900) * 1.1, ph = (R(i + 500) + t * sp) % 1, x = R(i) * 1900 - ph * 150, y = ph * 1040 - 50, l = 22 + R(i + 300) * 30; c.strokeStyle = `rgba(175,195,235,${0.14 + R(i + 700) * 0.3})`; c.lineWidth = 1.6 + R(i + 100) * 1.6; c.beginPath(); c.moveTo(x, y); c.lineTo(x - l * 0.22, y + l); c.stroke(); }
     c.restore();
-    rain(c, t, 0.6, 100, 9);
+    fogBand(c, t, 300, 240, -30, 0.2 + 0.2 * grow, 8);
     vignette(c, 0.8 * (1 - grow));
     const wo = ss(3.15, 4.25, u); if (wo > 0) { c.fillStyle = `rgba(255,250,236,${wo})`; c.fillRect(0, 0, W, H); }
   }

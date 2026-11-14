@@ -13,7 +13,7 @@
   3. La luz que crece al fondo de la vía, zoom lento y temblor.
   4. Inserto: ruedas del mercancías «M.T. 20-C» (`img/cine-rodas.jpg`, ilustración de Oscar). Por código: radios girando, zapatas que laten al rojo, chispas, suelo en rayas de velocidad y temblor de cámara.
   5. Inserto: la mano del maquinista tira del freno en la cabina (`img/cine-freo.jpg`, ilustración de Oscar; sustituye a la palanca de la aguja del guion). Por código: lluvia en la ventana, farol que tiembla, sacudida y rayos en el golpe, escape de aire y la luz que entra por la ventana al final.
-  6. Frente de la Mikado en la niebla: se enciende el faro, **silbato dos largos y uno corto**, la luz llena la pantalla.
+  6. La Mikado de frente bajando sin control (`img/cine-mikado.jpg`, ilustración de Oscar). Por código: empieza en sombra, el faro parpadea y se enciende, rayos y halo que crecen hasta llenar la pantalla, humo, vapor a los lados, chorro del silbato (**dos largos y uno corto**), lluvia, temblor y acercamiento.
   7. Corte a negro, golpe sordo, lluvia.
   8. Máquina de escribir: «PARTE DE INCIDENCIA», «Causa do incidente: erro do maquinista.» y sello «ARQUIVADO» (el sello es un añadido al guion).
   9. «68 anos despois».
