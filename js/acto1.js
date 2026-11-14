@@ -710,9 +710,10 @@ async function noiteActo1() {
     'Martín: «No pasa por delante de mi casa. Llama a mi casa.»',
   ], ZOOM_MIKADO);
   setFlag('fimActo1');
-  await showDoc('<h4>FIN DO ACTO 1 · «O regreso»</h4><p>Martín xa vive na Casa Juana: chaves, contrato, auga para mañá... e un asubío que, polo visto, ten enderezo.</p><p>O Acto 2, «O reencontro», chegará nun próximo hito.</p><p class="sub">Mentres, en «Escoller acto» podes xogar a demo técnica da Casa Juana.</p>');
+  await showDoc(FIN_ACTO1);
   E.fadeTo = 0; await sleep(400);
   await MA('Mañana, Xoán. Él sabrá quién silba así. O conocerá a alguien que lo sepa.', 'pensativo');
+  await primeiroTurno();   // segue o Acto 2 (js/acto2.js)
 }
 async function estanciaPechada(linea, mood) { await MA(linea, mood || 'pensativo'); toast('Estancia en construción · chega nun próximo hito'); }
 

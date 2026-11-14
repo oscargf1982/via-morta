@@ -160,6 +160,35 @@ async function cine(src, lines, zoom) {
   for (const l of lines) { $('cineTxt').textContent = l; await new Promise(r => { el.onclick = r; }); }
   el.hidden = true;
 }
+/* minixogo de toques alternos (estilo Track & Field): hai que premer esquerda e dereita por quendas.
+   o = { title, me, rival, goal (toques), rivalSpeed (toques/s), hint } → true se gaña o xogador.
+   Botóns grandes para o dedo; no teclado, frechas ou A/D. Un toque repetido do mesmo lado non conta. */
+function minixogoToques(o) {
+  return new Promise(done => {
+    const st = $('stage'), el = document.createElement('div');
+    el.style.cssText = 'position:absolute;inset:0;z-index:15;background:rgba(6,10,16,.82);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#f2ead8;font:700 16px "Trebuchet MS",sans-serif;touch-action:none';
+    const bar = (n, col) => `<div style="width:min(80%,520px)"><div style="font-size:13px;opacity:.85">${n}</div><div style="height:22px;border:2px solid #000;border-radius:11px;background:#1d2026;overflow:hidden"><div data-b style="height:100%;width:0;background:${col}"></div></div></div>`;
+    el.innerHTML = `<div style="font-size:20px;color:#f2a33a">${o.title}</div><div data-msg style="font-size:14px;opacity:.9;text-align:center;padding:0 12px">${o.hint || 'Toca esquerda e dereita por quendas!'}</div>${bar(o.me, '#ffd23a')}${bar(o.rival, '#8fd0ff')}
+      <div style="display:flex;gap:18px;margin-top:8px"><button data-k="L" style="width:120px;height:84px;border-radius:14px;border:3px solid #000;background:#ffd23a;font:900 30px sans-serif">◀</button><button data-k="R" style="width:120px;height:84px;border-radius:14px;border:3px solid #000;background:#ffd23a;font:900 30px sans-serif">▶</button></div>`;
+    st.appendChild(el);
+    const [bMe, bRi] = el.querySelectorAll('[data-b]'), msg = el.querySelector('[data-msg]');
+    let me = 0, ri = 0, last = null, t0 = 0, raf = 0, fin = false;
+    const tap = k => { if (fin) return; if (!t0) t0 = performance.now(); if (k === last) return; last = k; me++; SFX.tone(k === 'L' ? 330 : 392, 0.05, 'square', 0.03); };
+    el.querySelectorAll('button').forEach(b => b.addEventListener('pointerdown', ev => { ev.preventDefault(); ev.stopPropagation(); tap(b.dataset.k); }));
+    const key = ev => { const k = { ArrowLeft: 'L', a: 'L', A: 'L', ArrowRight: 'R', d: 'R', D: 'R' }[ev.key]; if (k) { ev.preventDefault(); tap(k); } };
+    addEventListener('keydown', key);
+    const loop = now => {
+      if (t0) ri = Math.min(o.goal, (now - t0) / 1000 * o.rivalSpeed);
+      bMe.style.width = Math.min(100, 100 * me / o.goal) + '%'; bRi.style.width = 100 * ri / o.goal + '%';
+      if (!fin && (me >= o.goal || ri >= o.goal)) {
+        fin = true; const win = me >= o.goal; msg.textContent = win ? 'Chegaches primeiro!' : `${o.rival} chega primeiro.`;
+        removeEventListener('keydown', key); setTimeout(() => { el.remove(); done(win); }, 1300);
+      }
+      if (!fin || el.isConnected) raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+  });
+}
 function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 2200); }
 /* executa un script bloqueando a entrada mentres dura */
 async function run(fn) { if (!fn) return; E.busy++; try { await fn(); } catch (e) { console.error(e); } finally { E.busy--; E.held = null; drawInv(); } }
