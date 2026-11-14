@@ -963,9 +963,9 @@ SCENES.concelloVest = {
     { name: 'Escaleira', r: [0, 100, 200, 280], look: () => MA('La escalera noble, con barandilla de forja. Arriba estará el Salón de Plenos. Yo, con llegar a la ventanilla, me conformo.', 'pensativo') },
     { name: 'Farol', r: [336, 0, 80, 104], look: () => MA('Un farol de bronce colgando del techo. Ilumina mucho más que algunas resoluciones.', 'risueno') },
     { name: 'Expositor', r: [852, 214, 104, 226], look: () => MA('Folletos turísticos de Monforte: el castillo, el Cabe, la Ribeira Sacra... Ni uno sobre cómo dar de alta el agua. Ese sería el más leído.', 'risueno') },
-    { name: 'Cadeiras', key: true, done: () => !flag('reloxoAlto') || hasItem('cadeira') || flag('cadeiraDevolta'), r: [0, 350, 170, 190], at: [200, 470], face: 'L',
+    { name: 'Cadeiras', key: true, done: () => !flag('reloxoAlto') || flag('cadeiraDevolta') || (hasItem('cadeira') && !flag('eladioVolveu')), r: [0, 350, 170, 190], at: [200, 470], face: 'L',
       look: () => MA('Sillas azules para esperar. Desgastadas justo donde se apoyan los codos. Aquí se espera con oficio.', 'esceptico'),
-      act: () => cadeirasEspera(), use: { cadeira: () => cadeirasEspera(), desaparafusador: () => cadeirasEspera() } },
+      act: () => cadeirasEspera('act'), use: { cadeira: () => cadeirasEspera('cadeira'), desaparafusador: () => cadeirasEspera('desaparafusador') } },
     { name: 'Plantas', r: [204, 258, 66, 122], look: () => MA('Plantas en maceta, bien regadas. Hasta ellas tienen el agua dada de alta.', 'esceptico') },
   ],
 };
@@ -1013,7 +1013,12 @@ async function eladioCafe() {
 async function adiantarReloxo() {
   if (flag('eladioVolveu')) return MA('Ya está adelantado. Si lo adelanto más, mañana llego al lunes que viene.', 'risueno');
   if (!flag('eladioFicha')) return MA('¿Tocar el reloj del bar? No sé por qué iba a hacer eso. Todavía.', 'dudoso');
-  if (!hasItem('cadeira')) {
+  if (hasItem('cadeira')) {
+    await MA('Con la silla en brazos no llego más alto: llego más cansado. Hay que ponerla debajo del reloj y subirse.', 'risueno');
+    toast('Pista: usa a cadeira co reloxo');
+    return;
+  }
+  {
     if (!flag('reloxoAlto')) {
       setFlag('reloxoAlto');
       await MA('Me estiro, me pongo de puntillas... Nada. El reloj está encima de la estantería de las botellas. Quien lo colgó ahí no quería que nadie llegara tarde. Ni pronto.', 'frustrado');
@@ -1023,8 +1028,21 @@ async function adiantarReloxo() {
     } else await MA('Sigue igual de alto. Sin algo para subirme, solo llego a la máquina del café. Y eso no adelanta nada.', 'esceptico');
     return;
   }
-  await MA('Eladio no levanta la vista de las esquelas. Silla del Concello, un poco de equilibrio... y diez minutos de adelanto.', 'risueno');
-  await sleep(500);
+  await subirCadeira();
+}
+// USAR CADEIRA CO RELOXO: Martín pon a cadeira azul, sóbese, adianta o reloxo e baixa
+const CADEIRA_CAFE = { x: 690, y: 331 };
+async function subirCadeira() {
+  if (flag('eladioVolveu')) return adiantarReloxo();
+  if (!flag('eladioFicha')) return MA('¿Subirme a una silla para tocar el reloj de un bar? Sin un buen motivo, eso es vandalismo. Con él, también, pero con estilo.', 'dudoso');
+  const A = E.actor; A.x = A.tx = CADEIRA_CAFE.x; A.y = A.ty = CADEIRA_CAFE.y; A.face = 'L';
+  take('cadeira'); SCENES.cafeEladio._cadeira = true; SFX.step('madeira');
+  await MA('Eladio no levanta la vista de las esquelas. Silla debajo del reloj...', 'risueno');
+  SFX.step('madeira'); await actorLift(78);
+  await MA('...un poco de equilibrio... y diez minutos de adelanto.', 'pensativo');
+  await sleep(400);
+  await actorLift(0); SFX.step('madeira');
+  SCENES.cafeEladio._cadeira = false; give('cadeira');
   await MA('Las dos en punto. Y yo aquí, silbando, como quien no ha hecho nada.', 'sonriente');
   await EL('...Ás dúas?! Xa?! E sen fichar!');
   await EL('Abofé que hoxe o café pasou voando. Paguei? Non paguei. Mañá pago!');
@@ -1040,30 +1058,50 @@ async function adiantarReloxo() {
   toast('Eladio volveu á ventanilla');
 }
 // a cadeira de espera: préstase para subir ao reloxo do café e hai que devolvela antes de que Eladio asine nada
-async function cadeirasEspera() {
+async function cadeirasEspera(como) {
+  // 1) devolvela: primeiro poñela no seu sitio, despois atornillala co desaparafusador
   if (hasItem('cadeira')) {
-    take('cadeira'); setFlag('cadeiraDevolta');
-    await MA('Silla en su sitio y sus cuatro tornillos, otra vez apretados. Ni un rasguño. Si alguien pregunta, solo la he sacado a pasear.', 'aliviado');
+    if (como === 'desaparafusador') return MA('Primero tengo que ponerla en su sitio. Atornillar una silla en brazos es un número de circo, no un trámite.', 'risueno');
+    take('cadeira'); setFlag('cadeiraPosta');
+    await MA('La silla, en su sitio, al final de la fila. Pero suelta: le faltan sus cuatro tornillos.', 'pensativo');
+    toast('Pista: usa o desaparafusador coas cadeiras');
+    return;
+  }
+  if (flag('cadeiraPosta') && !flag('cadeiraDevolta')) {
+    if (como !== 'desaparafusador') return MA('Está en su sitio, pero suelta. Si alguien se sienta, la reclamación le llega a Eladio. Y luego a mí.', 'esceptico');
+    setFlag('cadeiraDevolta');
+    await MA('Cuatro tornillos, cuatro vueltas... apretados. Ni un rasguño. Si alguien pregunta, solo la he sacado a pasear.', 'aliviado');
     if (flag('eladioVolveu') && !flag('aguaAlta')) toast('Pista: agora, a ventanilla 1');
     return;
   }
+  // 2) collela: está atornillada, fai falla USAR O DESAPARAFUSADOR COAS CADEIRAS
   if (flag('reloxoAlto') && !flag('eladioVolveu')) {
-    if (!hasItem('desaparafusador')) {
-      if (!flag('cadeiraAparafusada')) {
-        setFlag('cadeiraAparafusada');
-        await MA('Tiro de la del final de la fila... y no se mueve. Atornillada al suelo, como los taburetes del bar. En Monforte atornillan todo lo que sirve para sentarse.', 'frustrado');
-        await MA('Cuatro tornillos de estrella. Con un destornillador, sale en un minuto. Y en algún cajón de la cocina de casa tiene que haber uno: en todas las cocinas hay uno.', 'convencido');
-        toast('Pista: nos caixóns da cociña da Casa Juana');
-      } else await MA('Sigue atornillada. Sin destornillador, lo único que me llevo de aquí es la paciencia de esperar.', 'esceptico');
+    if (como === 'desaparafusador') {
+      setFlag('cadeiraAparafusada'); give('cadeira');
+      await MA('Cuatro tornillos, cuatro vueltas... fuera. Mobiliario público: la pago con mis impuestos. Me la llevo prestada... y la devuelvo, que conste.', 'risueno');
       return;
     }
-    give('cadeira');
-    await MA('Cuatro tornillos, cuatro vueltas... fuera. Mobiliario público: la pago con mis impuestos. Me la llevo prestada... y la devuelvo, que conste.', 'risueno');
+    if (!flag('cadeiraAparafusada')) {
+      setFlag('cadeiraAparafusada');
+      await MA('Tiro de la del final de la fila... y no se mueve. Atornillada al suelo, como los taburetes del bar. En Monforte atornillan todo lo que sirve para sentarse.', 'frustrado');
+      await MA('Cuatro tornillos de estrella. Con un destornillador, sale en un minuto. Y en algún cajón de la cocina de casa tiene que haber uno: en todas las cocinas hay uno.', 'convencido');
+      toast('Pista: nos caixóns da cociña da Casa Juana');
+    } else if (hasItem('desaparafusador')) {
+      await MA('Sigue atornillada. Y yo con un destornillador en el bolsillo, tirando con las manos. Será la costumbre.', 'avergonzado');
+      toast('Pista: usa o desaparafusador coas cadeiras');
+    } else await MA('Sigue atornillada. Sin destornillador, lo único que me llevo de aquí es la paciencia de esperar.', 'esceptico');
     return;
   }
+  if (como === 'desaparafusador') return MA('Desatornillar el mobiliario municipal sin motivo. No: eso ya no es un préstamo, es una mudanza.', 'esceptico');
   await MA('Me siento un momento... No. Si me siento aquí, me convierto en uno más de la cola. Y no hay cola.', 'esceptico');
 }
 async function eladioVentanilla() {
+  if (flag('cadeiraPosta') && !flag('cadeiraDevolta') && !flag('aguaAlta')) {
+    await EL('E esa cadeira do final da fila? Está solta! Senta un cidadán, cae, e a reclamación vén para min.');
+    await MA('Vale, vale. Le pongo sus tornillos.', 'avergonzado');
+    toast('Pista: usa o desaparafusador coas cadeiras');
+    return;
+  }
   if (hasItem('cadeira') && !flag('aguaAlta')) {
     await EL('Un momento. Esa cadeira... é da sala de espera! Mobiliario municipal, inventariado.');
     await EL('Eu non asino nada con mobiliario fóra do seu sitio. Despois veñen as auditorías e quen dá a cara? Eu.');
@@ -1083,6 +1121,17 @@ async function eladioVentanilla() {
 }
 SCENES.cafeEladio = {
   name: 'Café', bg: 'img/bg-cafe-eladio.jpg', music: 'casa', floor: 'pedra',
+  // a cadeira azul da sala de espera, só mentres Martín está subido nela
+  draw(c) {
+    if (!this._cadeira) return;
+    const s = scaleAt(CADEIRA_CAFE.y), x = CADEIRA_CAFE.x, y = CADEIRA_CAFE.y, w = 62 * s, sh = 78 * s;
+    c.strokeStyle = '#8f96a0'; c.lineWidth = Math.max(2, 5 * s); c.lineCap = 'round';
+    c.beginPath(); c.moveTo(x - w * 0.42, y); c.lineTo(x - w * 0.38, y - sh); c.moveTo(x + w * 0.42, y); c.lineTo(x + w * 0.38, y - sh);
+    c.moveTo(x + w * 0.38, y - sh); c.lineTo(x + w * 0.42, y - sh - 64 * s); c.stroke();
+    c.fillStyle = '#26408c'; c.fillRect(x + w * 0.3, y - sh - 70 * s, 16 * s, 58 * s);
+    c.fillStyle = '#2f4fa8'; c.beginPath(); c.roundRect ? c.roundRect(x - w / 2, y - sh - 9 * s, w, 14 * s, 5 * s) : c.rect(x - w / 2, y - sh - 9 * s, w, 14 * s); c.fill();
+    c.fillStyle = '#4a6cc8'; c.fillRect(x - w / 2 + 3 * s, y - sh - 8 * s, w - 6 * s, 4 * s);
+  },
   walk: [[668, 292], [790, 292], [960, 424], [960, 540], [640, 540], [668, 420]],
   front: [
     { y: 540, r: [550, 336, 100, 190] },   // os dous taburetes de diante (no do fondo senta Eladio)
@@ -1099,7 +1148,7 @@ SCENES.cafeEladio = {
   hotspots: [
     { name: 'Porta', key: true, r: [664, 120, 64, 168], at: [700, 300], face: 'B', exit: ['concelloExt', [900, 400]], hint: 'U', door: true,
       look: () => MA('La puerta de cristal. Por ahí se ve el Concello. Eladio también lo ve. Y aun así, aquí sigue.', 'esceptico') },
-    { name: 'Reloxo', key: true, done: () => flag('eladioVolveu'), r: [496, 70, 32, 48], at: [690, 330], face: 'L', act: () => adiantarReloxo(), use: { cadeira: () => adiantarReloxo() },
+    { name: 'Reloxo', key: true, done: () => flag('eladioVolveu'), r: [496, 70, 32, 48], at: [690, 330], face: 'L', act: () => adiantarReloxo(), use: { cadeira: () => subirCadeira() },
       look: () => MA(flag('eladioVolveu') ? 'El reloj, diez minutos adelantado. Lo dejo así: en este bar, un poco de prisa no le viene mal a nadie.' : 'Un reloj de pared. Las dos menos diez. Y Eladio, aquí, con el café.', flag('eladioVolveu') ? 'risueno' : 'dudoso') },
     { name: 'Lousa', r: [24, 4, 142, 196], look: () => MA('Café a 1,20, aguardiente a 2. En Monforte el desayuno completo sale por 3,20. El de los funcionarios, por 3,20 y una hora.', 'risueno') },
     { name: 'Botellas', r: [228, 40, 186, 102], look: () => MA('Licores de colores en fila, como vagones de un mercancías. Este va cargado.', 'risueno') },
