@@ -259,7 +259,7 @@ def mapa():
     cx, cy = 440, 238
     d.polygon([(cx, cy - 18), (cx + 4, cy), (cx, cy + 18), (cx - 4, cy)], fill=hexc('#6a4a2a'))
     d.polygon([(cx - 18, cy), (cx, cy - 4), (cx + 18, cy), (cx, cy + 4)], fill=hexc('#a88a5a'))
-    save(im, 'bg-mapa.png')
+    save(im, 'bg-mapa.png')  # antigo bosquexo: o xogo xa usa a ilustración de Oscar img/bg-mapa.jpg
 
 
 

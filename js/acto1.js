@@ -288,8 +288,11 @@ SCENES.praza = {
     { name: 'Rótulo da estación', r: [655, 168, 300, 72], look: () => MA('«Monforte de Lemos», en letras bien grandes. Por si alguien se baja del tren creyendo que esto es Ourense.', 'risueno') },
     { name: 'Outra parte da praza', key: true, r: [0, 286, 40, 64], at: [14, 336], face: 'L', exit: ['praza2', [40, 346]],
       look: () => MA('Por ahí sigue la plaza. Si no han movido el quiosco en veinte años, Concha está a la vuelta.', 'pensativo') },
-    { name: 'Rúa cara ao centro', key: true, r: [454, 272, 90, 34], at: [500, 314], face: 'B', exit: ['mapa'],
-      look: () => MA('La calle que sube hacia el centro. Desde aquí se va a toda Monforte. Bueno, a la parte llana.', 'pensativo') },
+    { name: 'Museo do Ferrocarril', key: true, r: [454, 272, 90, 34], at: [500, 314], face: 'B', exit: ['__museo'], hint: 'U',
+      act: museoPechado,
+      look: () => MA('Calle arriba, pegado a las vías, el Museo del Ferrocarril: las cocheras, la rotonda y la Mikado. El sitio más bonito de Monforte, y lo digo sin ser imparcial.', 'sonriente') },
+    { name: 'Mapa de Monforte', key: true, r: [380, 504, 200, 36], at: [480, 520], face: 'F', exit: ['mapa'], hint: 'D',
+      look: () => MA('Por aquí se va al resto de Monforte. Al centro, al río, a la gasolinera... A pie, que el coche se lo quedó Valencia.', 'pensativo') },
     { name: 'Fonte', r: [86, 236, 300, 108], look: () => MA('Una fuente con su rotonda de setos. Los coches dan vueltas alrededor, el agua también. Nadie llega a ningún sitio, pero queda bonito.', 'risueno') },
     { name: 'Hotel', r: [100, 90, 226, 200], look: () => MA('Un hotel frente a la estación. Para quien llega en el último tren y no tiene una Concha que le guarde las llaves.', 'neutro') },
     { name: 'Hostal', r: [0, 60, 32, 92], look: () => MA('El hostal de la esquina. Si lo del contrato se tuerce, ya sé dónde dormir esta noche.', 'esceptico') },
@@ -336,6 +339,12 @@ async function crucigramaResolto() {
   await CO('Toma o bolígrafo. Pero devólvemo, eh? É o da sorte: con el acertei catorce na quiniela. Ben, trece.');
   give('boli'); setFlag('boliDado');
   await MA('Un crucigrama a cambio de un bolígrafo. En Monforte, así se firman los contratos.', 'sonriente');
+}
+// O Museo do Ferrocarril (cocheras) xógase no Acto 3; ata entón Martín dá a volta ao chegar
+async function museoPechado() {
+  if (flag('fimActo1')) await MA('Las cocheras del museo, con su candado nuevo brillando como un diente de oro. Sin saber qué lo abre, ahí no hago nada más que mirar. Y de mirar ya me duele el cuello.', 'pensativo');
+  else await MA('El museo del ferrocarril. La Mikado me ha esperado veinte años; puede esperar a que tenga agua en casa. Ella tampoco tiene, y no se queja.', 'sonriente');
+  toast('Museo do Ferrocarril · ábrese no Acto 3');
 }
 async function ruaPechada(linea, mood) { await MA(linea, mood || 'pensativo'); toast('Rúa en construción · chega nun próximo hito'); }
 SCENES.praza2 = {
@@ -533,8 +542,8 @@ async function asinarContrato() {
   await MA('¿Un ingeniero de Caminos? ¿Para qué quiere un ingeniero de Caminos una carpintería entera?', 'dudoso');
   await RO('Iso pregúntome eu. O meu home, que é de matemáticas, di que a conta non lle sae. Pero el di iso de todo.');
   if (flag('sinAgua')) {
-    await MA('Contrato, llaves y una pregunta. Ahora sí, al Concello a por el agua: en el mapa, zona Centro.', 'convencido');
-    toast('Novo obxectivo: o Concello (mapa, zona Centro)');
+    await MA('Contrato, llaves y una pregunta. Ahora sí, al Concello a por el agua: en el mapa, la plaza del Concello.', 'convencido');
+    toast('Novo obxectivo: o Concello (mapa, Praza do Concello)');
   } else {
     await MA('Contrato, llaves y una pregunta. Ahora sí: a casa. Doctor Casares, 211, por la calle Morín.', 'convencido');
     toast('Novo obxectivo: ir á Casa Juana (rúa Doutor Casares)');
@@ -809,7 +818,7 @@ async function billaSenAuga() {
   if (flag('contratoAsinado')) {
     await MA('Claro: el contrato está firmado, pero el agua hay que darla de alta en el Concello. Con el contrato en la mano, como todo en esta vida.', 'pensativo');
     await MA('Y la planta del salón tan verde... Esa sabe algo que yo no sé.', 'esceptico');
-    toast('Novo obxectivo: o Concello. Na rúa, cara ao centro, e no mapa, zona Centro');
+    toast('Novo obxectivo: o Concello. No mapa, Praza do Concello');
   } else {
     await MA('Claro: el agua hay que darla de alta en el Concello. Y el Concello querrá ver el contrato firmado. Que todavía no lo está.', 'pensativo');
     await MA('Así que primero Rosario, en la Fraternal, y luego el Concello. Y la planta del salón tan verde... Esa sabe algo que yo no sé.', 'esceptico');
@@ -927,7 +936,7 @@ SCENES.casaPatio = {
 };
 
 /* ---------- B4a · Concello, exterior ----------
-   Chégase dende o mapa (zona Centro) co contrato asinado. A porta leva ao vestíbulo das ventanillas de Eladio (pendente). */
+   Chégase dende o mapa (Praza do Concello) co contrato asinado. A porta leva ao vestíbulo das ventanillas de Eladio (pendente). */
 SCENES.concelloExt = {
   name: 'Concello de Monforte', bg: 'img/bg-concello-exterior.jpg', music: 'estacion', floor: 'pedra',
   walk: [[40, 352], [160, 302], [300, 284], [440, 292], [530, 296], [940, 360], [940, 428], [860, 406], [700, 362], [520, 350], [330, 350], [170, 370], [40, 412]],
@@ -1217,49 +1226,68 @@ SCENES.cafeEladio = {
   ],
 };
 
-/* ---------- Mapa de Monforte (pantalla de viaxe entre zonas) ---------- */
+/* ---------- Mapa de Monforte (pantalla de viaxe rápida) ----------
+   Fondo: mapa ilustrado de Oscar «Escolle o teu destino» (img/bg-mapa.jpg, 16:9). Cinco destinos co seu
+   icono e cartel; o resto (castelo, río, Ponte Vella...) só se mira. Coordenadas en unidades do lenzo (960×540).
+   O Museo do Ferrocarril non está no mapa: chégase a pé dende a praza da estación, pola rúa do fondo. */
 const ZONAS = [
-  { id: 'estacion', name: 'Barrio da Estación', x: 760, y: 380, open: () => true },
-  { id: 'casa', name: 'Casa Roja', x: 660, y: 456, open: () => hasItem('chavesCasa') || flag('contratoAsinado') },
-  { id: 'centro', name: 'Centro · Concello', x: 560, y: 300, open: () => flag('contratoAsinado') },
-  { id: 'rio', name: 'Río Cabe · Malecón', x: 300, y: 330, open: () => false },
-  { id: 'castelo', name: 'Castelo de San Vicente', x: 486, y: 160, open: () => false },
+  { id: 'fluvial', name: 'Club Fluvial', icon: [540, 34], r: [490, 14, 124, 56], open: () => false },
+  { id: 'gasolineira', name: 'Gasolineira', icon: [619, 106], r: [574, 84, 104, 58], open: () => true },
+  { id: 'estacion', name: 'Estación', icon: [778, 89], r: [736, 34, 86, 92], open: () => true },
+  { id: 'concello', name: 'Praza do Concello', icon: [304, 326], r: [242, 304, 136, 60], open: () => flag('contratoAsinado') },
+  { id: 'cardeal', name: 'Rúa do Cardeal', icon: [482, 468], r: [416, 446, 120, 60], open: () => false },
 ];
 SCENES.mapa = {
-  name: 'Mapa de Monforte', bg: 'img/bg-mapa.png', noActor: true, music: 'mapa', hideName: true,
+  name: 'Mapa de Monforte', bg: 'img/bg-mapa.jpg', noActor: true, music: 'mapa', hideName: true,
   draw(c, t) {
-    c.fillStyle = '#5a3d1e'; c.font = '700 26px Georgia, serif'; c.fillText('MONFORTE DE LEMOS', 34, 52);
-    c.font = 'italic 14px Georgia, serif'; c.fillText('mapa ilustrado · non está a escala', 36, 72);
-    // rúa da estación á Casa Roja (Doutor Casares)
-    c.strokeStyle = '#efe2bf'; c.lineWidth = 4; c.beginPath(); c.moveTo(752, 396); c.lineTo(700, 430); c.lineTo(660, 456); c.stroke();
     for (const z of ZONAS) {
-      const on = z.open(), pulse = on ? 3 * Math.sin(t * 4) : 0;
-      c.fillStyle = on ? '#c0221c' : '#8a7a5a'; c.beginPath(); c.arc(z.x, z.y, 12 + pulse, 0, 7); c.fill();
-      c.strokeStyle = '#f6ecd0'; c.lineWidth = 3; c.stroke();
-      c.font = '700 17px Georgia, serif'; c.textAlign = 'center'; c.lineWidth = 4; c.strokeStyle = '#f6ecd0';
-      const ty = z.y < 200 ? z.y - 22 : z.y + 34; c.strokeText(z.name, z.x, ty); c.fillStyle = on ? '#3a2410' : '#7a6a4a'; c.fillText(z.name, z.x, ty);
-      if (!on) { c.font = 'italic 13px Georgia, serif'; c.strokeText('(aínda non)', z.x, ty + 17); c.fillText('(aínda non)', z.x, ty + 17); }
-      c.textAlign = 'left';
+      const [x, y] = z.icon, [rx, ry, rw, rh] = z.r;
+      if (z.open()) {
+        // aro dourado que latexa arredor do icono: aquí pódese ir
+        const k = 0.5 + 0.5 * Math.sin(t * 3.2);
+        c.save(); c.strokeStyle = `rgba(255, 214, 90, ${0.55 + 0.4 * k})`; c.lineWidth = 3; c.shadowColor = '#ffd65a'; c.shadowBlur = 10;
+        c.beginPath(); c.arc(x, y, 17 + 3 * k, 0, 7); c.stroke(); c.restore();
+      } else {
+        // aínda pechado: o cartel apagado e unha nota
+        c.save(); c.fillStyle = 'rgba(40, 32, 20, 0.45)'; c.beginPath(); c.arc(x, y, 16, 0, 7); c.fill();
+        c.fillRect(rx + 6, y + 12, rw - 12, 22);
+        c.font = 'italic 700 12px Georgia, serif'; c.textAlign = 'center'; c.lineWidth = 4; c.lineJoin = 'round'; c.strokeStyle = '#2a1e10';
+        const ty = Math.min(y + 50, 532); c.strokeText('(aínda non)', x, ty); c.fillStyle = '#f6ecd0'; c.fillText('(aínda non)', x, ty); c.restore();
+      }
     }
-    c.fillStyle = '#efe2bfcc'; c.fillRect(28, 440, 230, 66); c.strokeStyle = '#8a6a40'; c.lineWidth = 2; c.strokeRect(28, 440, 230, 66);
-    c.fillStyle = '#5a3d1e'; c.font = 'italic 14px Georgia, serif'; c.fillText('Fóra do mapa:', 42, 464); c.font = '700 18px Georgia, serif'; c.fillText('Vilatán (casa da nai)', 42, 490);
   },
   hotspots: [
-    { name: 'Barrio da Estación', key: true, r: [700, 340, 150, 90], exit: ['praza', [600, 420]] },
-    { name: 'Casa Roja', key: true, r: [596, 428, 130, 84], exit: ['__casa'],
-      act: async () => { if (hasItem('chavesCasa') || flag('contratoAsinado')) return goScene('casares', [690, 430]); await MA('La Casa Roja, en Doctor Casares. Sin llaves, lo único que puedo hacer allí es mirar la fachada. Las llaves las tiene Concha.', 'pensativo'); } },
-    { name: 'Centro · Concello', r: [490, 270, 150, 80], exit: ['__centro'],
+    { name: 'Estación', key: true, r: ZONAS[2].r, exit: ['__estacion'], noHint: true,
+      act: () => goScene('praza', [600, 420]),
+      look: () => MA('La estación y el barrio de mi infancia. Desde ahí se va a todas partes. O se iba.', 'pensativo') },
+    { name: 'Gasolineira', key: true, r: ZONAS[1].r, exit: ['__gasolineira'], noHint: true,
+      act: async () => {
+        if (!hasItem('chavesCasa') && !flag('contratoAsinado')) return goScene('morin', [430, 500]);
+        const o = [{ t: 'A la rúa Morín, la de la gasolinera.', k: 'morin' }, { t: 'A casa: Doctor Casares, 211.', k: 'casa' }, { t: 'Mejor me quedo en el mapa.', k: 'no' }];
+        const k = o[await choose(o)].k;
+        if (k === 'morin') return goScene('morin', [430, 500]);
+        if (k === 'casa') return goScene('casares', [690, 430]);
+      },
+      look: () => MA('La gasolinera de la Estación, al pie de la calle Morín. De ahí sube Doctor Casares, la de la casa roja.', 'pensativo') },
+    { name: 'Praza do Concello', key: true, r: ZONAS[3].r, exit: ['__concello'], noHint: true,
       act: async () => {
         if (flag('contratoAsinado')) return goScene('concelloExt', [90, 360]);
         if (flag('sinAgua')) return MA('El Concello, para el agua. Pero sin contrato firmado, Eladio no me da ni la hora. Primero, la firma de Rosario en la Fraternal.', 'convencido');
-        await MA('El centro, con el Concello. Sin contrato, ¿a qué voy? ¿A empadronarme en un banco del parque? Primero, la firma de Rosario.', 'pensativo');
-      } },
-    { name: 'Río Cabe · Malecón', r: [230, 300, 150, 80], act: () => mapaPechado('El Malecón, junto al Cabe. Para pasear hace falta tener casa a la que volver. Primero, instalarse.', 'M3') },
-    { name: 'Castelo de San Vicente', r: [410, 110, 160, 80], act: () => mapaPechado('Subir al castillo de San Vicente el primer día. Ni en mis tiempos de cross, y eso que los ganaba todos.', 'M3') },
-    { name: 'Vilatán', r: [28, 440, 230, 66], act: () => mapaPechado('Vilatán. Mi madre me espera el domingo para el caldo. Si voy hoy, me pregunta por qué no he avisado. Mejor el domingo.', 'M6') },
+        await MA('La plaza del Concello, en el Campo de San Antonio. Sin contrato, ¿a qué voy? ¿A empadronarme en un banco del parque? Primero, la firma de Rosario.', 'pensativo');
+      },
+      look: () => MA('El Concello, en el Campo de San Antonio. Donde se arregla todo, en ventanilla y con paciencia.', 'esceptico') },
+    { name: 'Rúa do Cardeal', key: true, r: ZONAS[4].r, exit: ['__cardeal'], noHint: true,
+      act: () => mapaPechado('La calle del Cardeal, la de los bares. Para ir de bares hay que tener a alguien con quien ir. Todavía no he avisado a nadie de que he vuelto.', 'Acto 2'),
+      look: () => MA('La calle del Cardeal: bares, tiendas y la farmacia del padre de Valerio. El centro del centro.', 'sonriente') },
+    { name: 'Club Fluvial', key: true, r: ZONAS[0].r, exit: ['__fluvial'], noHint: true,
+      act: () => mapaPechado('El Club Fluvial, las piscinas del Cabe. Para un baño hace falta tener casa a la que volver a secarse. Primero, instalarse.', 'Acto 2'),
+      look: () => MA('Las piscinas del río Cabe. Aquí aprendí a nadar. Bueno, a no ahogarme, que es parecido.', 'risueno') },
+    { name: 'Castelo de San Vicente', r: [520, 270, 96, 70], look: () => MA('El castillo de San Vicente, en lo alto. Subir el primer día, ni en mis tiempos de cross, y eso que los ganaba todos.', 'risueno') },
+    { name: 'Río Cabe', r: [392, 220, 70, 120], look: () => MA('El Cabe, partiendo Monforte en dos. Un río tranquilo; los que no estamos tranquilos somos los de las orillas.', 'pensativo') },
+    { name: 'Ponte Vella', r: [394, 326, 50, 30], look: () => MA('La Ponte Vella. Romana, dicen. Yo sólo sé que de crío la cruzaba corriendo para no pagar peaje a los mayores.', 'risueno') },
   ],
 };
-async function mapaPechado(linea, hito) { await MA(linea, 'pensativo'); toast(`Zona en construción · chega no ${hito}`); }
+async function mapaPechado(linea, hito) { await MA(linea, 'pensativo'); toast(`Aínda non · ábrese no ${hito}`); }
 
 /* ---------- caderno de Martín · Acto 1 (cambio 1 da revisión Gilbert) ---------- */
 {
@@ -1274,7 +1302,7 @@ async function mapaPechado(linea, hito) { await MA(linea, 'pensativo'); toast(`Z
     { when: () => A1() && flag('chavesDadas') && !flag('salonVisto'), t: 'Ver la casa: Doctor Casares, 211. Por la calle Morín o por la calle Coruña.' },
     { when: () => A1() && flag('salonVisto') && !flag('sinAgua'), t: 'Revisar la casa entera: salón, cocina y patio. A ver qué le falta.' },
     { when: () => A1() && flag('sinAgua') && !flag('contratoAsinado'), t: 'La casa no tiene agua. El alta se da en el Concello, pero con el contrato firmado.' },
-    { when: () => A1() && flag('sinAgua') && flag('contratoAsinado') && !flag('eladioAusente'), t: 'Dar de alta el agua en el Concello (mapa, zona Centro). Con el contrato en la mano.' },
+    { when: () => A1() && flag('sinAgua') && flag('contratoAsinado') && !flag('eladioAusente'), t: 'Dar de alta el agua en el Concello (en el mapa, la plaza del Concello). Con el contrato en la mano.' },
     { when: () => A1() && flag('eladioAusente') && !flag('eladioFicha'), t: 'Eladio ha dejado «Volvo nun momento». Estará en el café de enfrente.' },
     { when: () => A1() && flag('eladioFicha') && !flag('reloxoAlto') && !flag('eladioVolveu'), t: 'Eladio ficha a las dos en punto, «nin un minuto antes». Son las dos menos diez. Y el café tiene un reloj...' },
     { when: () => A1() && flag('reloxoAlto') && !flag('cadeiraAparafusada') && !flag('eladioVolveu'), t: 'El reloj del café está muy alto. Algo para subirme: las sillas de espera del Concello.' },
