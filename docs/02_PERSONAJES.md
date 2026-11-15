@@ -77,11 +77,16 @@
 
 ## Valerio (farmacia, Rúa do Cardeal 23)
 - Compañero de instituto de Martín. Está detrás del mostrador de su padre, con la bata de su padre y los clientes de su padre.
-- Retrata el Monforte que se vacía: locales con «Se aluga» hasta que el cartel se cae de viejo. Le regala a Martín crema para las agujetas.
+- Retrata el Monforte que se vacía: locales con «Se aluga» hasta que el cartel se cae de viejo. Es goloso: le da la crema de agujetas a Martín a cambio de algo dulce (los ositos de Concha).
+- **Los libros de su padre** (ficción): su padre apuntaba cada cura y cada receta en libros de tapas negras desde 1950, guardados en la rebotica. Sembrado en el Acto 2. En el Acto 3, el de enero de 1958 tiene, la noche del 14, «Curas por queimaduras nas mans. X. Nogal. Non quixo ir ao médico» (indicio, no prueba; la prueba es el parte del Acto 4).
+- **Conoce a Don Anxo:** le prepara la medicación cada semana, sabe dónde vive y que «do 58 non fala». Es la puerta para llegar a él en el Acto 3 o 4.
+- **Final (Acto 5):** cierra la farmacia por primera vez en su vida para ver salir la Mikado.
 
 ## Mega Andrés (Club Fluvial, chiringuito «Malo Será»)
 - Filósofo de tumbona: «a vida, mellor deitado». Su abuelo era fogonero.
 - Guarda sacos de carbón para el churrasco, que en el Acto 4 hacen falta para la Mikado. Reta a Martín a nadar al estilo *Track & Field*.
+- **Acto 2:** le desaparece cada pocas semanas un saco de carbón de piedra y aparece pagado con un billete bajo una piedra. Él no pregunta («un ladrón honrado»). Es una pista de que alguien prepara la Mikado de noche.
+- **Acto 5 (elegido por Oscar):** es el **fogonero** de la Mikado en la salida a A Barreira: pala el carbón en la cabina como su abuelo. Es su cierre emotivo y forma parte del puzzle de la cabina.
 - **Recursos gráficos:** `andres.png` y `andres-face.png` en el juego anterior; cópialos de allí si hacen falta.
 
 ## Brais «o Galgo» (Malecón)

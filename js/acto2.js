@@ -205,6 +205,7 @@ async function valerioTalk() {
     const opts = [
       { t: '¿Qué tal va Monforte?', k: 'monforte' },
       { t: '¿Has oído el silbato de noche?', k: 'asubio' },
+      { t: '¿Guardas todavía las cosas de tu padre?', k: 'libros' },
       ...(!flag('valerioFeito') && hasItem('ositos') ? [{ t: '(Darle los ositos.)', k: 'doce' }] : []),
       ...(!flag('valerioFeito') && !hasItem('ositos') ? [{ t: '¿Y no me puedes fiar la crema?', k: 'fiar' }] : []),
       ...(flag('valerioFeito') && !hasItem('crema') && !flag('cremaPosta') ? [{ t: '¿Me das otra muestra de crema?', k: 'crema' }] : []),
@@ -221,6 +222,13 @@ async function valerioTalk() {
       await VA('Se queres, fágoche prezo. Dous pares, un euro. Para os veciños da casa roxa, dous e medio.');
       await MA('¿Más caro para mí?', 'esceptico');
       await VA('Ti necesítalos máis.');
+    }
+    if (k === 'libros') {   // sementa o libro de 1958 do Acto 3 (ideas de Oscar do 15-11-2026)
+      await VA('Todas. A bata, o mostrador... e os libros. O meu pai apuntaba cada cura, cada receita e cada xarope fiado nuns libros de tapas negras. Dende o cincuenta.');
+      await VA('Están na rebotica, nun estante que xa non aguanta máis. Nin os tiro nin os leo. Son coma el: non ocupan moito, pero se os tiras, quedas sen nada.');
+      await MA('Medio Monforte, apuntado a pluma. Con letra de farmacéutico.', 'pensativo');
+      await VA('Letra de farmacéutico, que é coma a de médico pero entendéndose. Iso si: o que pasou no barrio, alí está.');
+      setFlag('librosValerio');
     }
     if (k === 'doce') return valerioOsitos();
     if (k === 'fiar') {
@@ -322,6 +330,7 @@ async function andresTalk() {
       { t: '¿La piscina no cerraba en septiembre?', k: 'pechada' },
       { t: '¿Qué tal el Malo Será?', k: 'malo' },
       ...(flag('andresFeito') ? [{ t: 'Tu abuelo era fogonero, ¿no?', k: 'avo' }] : []),
+      ...(flag('carbonRoubado') ? [{ t: '¿Te ha vuelto a desaparecer carbón?', k: 'carbon' }] : []),
       { t: 'Hasta luego, Andrés.', k: 'adeus' },
     ];
     const k = opts[await choose(opts)].k;
@@ -339,8 +348,25 @@ async function andresTalk() {
       await AN('Fogoneiro no depósito, si. Dicía que o carbón bo se coñece polo son ao caer na pa. Por iso gardo sacos do bo, para o churrasco.');
       await AN('E aquela carretilla, a das tumboas, era súa. Leva cen quilos sen queixarse. Coma min, pero sen queixarse.');
     }
+    if (k === 'carbon') {
+      await AN('Esta semana inda non. Pero mira: os sacos están aí, á vista. Quen os leva sabe que non hai can, nin cadeado, nin eu esperto.');
+      await MA('¿Y el billete siempre debajo de la misma piedra?', 'dudoso');
+      await AN('Sempre. Coma quen paga a cota do clube. Ordenado. Puntual. Coma un horario de tren.');
+      await MA('(Puntual como un horario de tren. Eso huele a ferroviario. A ferroviario con grasa en las manos.)', 'pensativo');
+    }
     if (k === 'adeus') { await AN(flag('andresFeito') ? 'Vai, vai. A tumboa catro queda reservada para ti.' : 'Ti volve, que a revancha non caduca.'); return; }
   }
+}
+/* pista do misterio (opción 1 elixida por Oscar, 15-11-2026): alguén merca carbón de pedra ás agachadas.
+   Quen é non se di no Acto 2 (é para a Mikado: ver 03_HISTORIA, «O carbón que desaparece»). */
+async function carbonMisterio() {
+  await AN('E xa que es de trens, unha cousa rara: cada dúas ou tres semanas desaparéceme un saco. Do bo, do de pedra, non do vexetal.');
+  await AN('E ao día seguinte, debaixo da pedra grande da entrada, un billete de vinte dobrado en catro. Nin nota, nin nome, nin nada.');
+  await MA('¿Alguien te roba carbón... y te lo paga?', 'sorprendido');
+  await AN('Un ladrón honrado. Inda quedan, en Monforte. Eu non pregunto: vinte euros por saco é mellor prezo do que me fai o almacén.');
+  await MA('(Carbón de piedra, del bueno. Con eso nadie hace un churrasco: eso lo traga una caldera. Una caldera de vapor.)', 'pensativo');
+  await AN('Ti non lle deas voltas, que se che enruga a cara. E se o pillas, dille que a próxima vez deixe tamén para un mojito.');
+  setFlag('carbonRoubado');
 }
 async function retoNatacion() {
   if (!hasItem('crema') && !flag('cremaPosta')) {
@@ -375,6 +401,7 @@ async function retoNatacion() {
   }
   await AN('Sabes que o meu avó era fogoneiro no depósito? Dicía que o carbón bo se coñece polo son. Aínda gardo uns sacos, para o churrasco.');
   await MA('Un fogonero en la familia. Andrés, eso tiene más mérito que cuatro largos.', 'sonriente');
+  await carbonMisterio();
   setFlag('andresFeito'); comprobarChampions();
   return true;
 }
@@ -649,6 +676,7 @@ async function cadernoMartin() {
 <p>Alguien entra aquí sin llave, por la ventana del fondo, y va siempre al séptimo soporte. Se dejó un trapo con grasa de locomotora: viene del depósito.</p>
 <p>El séptimo soporte tiene la tapa soldada. Los otros seis, no. Ahí dentro hay algo.</p>
 <p>Y alguien silba, dos largos y uno corto, para que yo lo oiga.</p>
+<p>A Andrés le desaparece, cada pocas semanas, un saco de carbón de piedra. Y aparece pagado, debajo de una piedra. Ese carbón no es para un churrasco: es para una caldera.</p>
 <p>Las cocheras del museo tienen un candado nuevo de cuatro cifras. Y en el pilar hay una fecha. Catorce, uno...</p>
 <p><b>Pregunta:</b> ¿quién era Xosé N.? Y ¿quién, en el depósito, tiene tanto interés en él?</p>`);
   await MA('Un aprendiz que se hizo maquinista. Una fecha. Grasa del depósito. Y un silbato que llama a esta casa.', 'pensativo');

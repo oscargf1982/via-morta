@@ -93,6 +93,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 3. Dos reencuentros, en cualquier orden:
    - **Valerio** (B1–B2). Xoán está recogiendo «o xarope de Eugenia, a nena da miña curmá» (pista: es primo de Rosario). Valerio ve a Martín andar como un señor de ochenta años. Tiene la **crema de agujetas**, pero no da ni vende nada sin un «peaje» dulce: es goloso. Martín le lleva los **ositos del quiosco de Concha** y le da la crema («de mostra, que se a pago eu, fáiseme falta a min»).
    - **Mega Andrés** (C2). Reto de natación en la piscina del Club Fluvial, cerrada desde septiembre pero no para Andrés. Sin la crema, Martín no se mete («con estos gemelos me hundo como un ancla»). Con ella, minijuego de toques alternos; si se pierde dos veces, Andrés propone un empate técnico a cambio de un mojito. Siembra el Acto 4: el abuelo fogonero, los sacos de carbón del churrasco y la carretilla de las tumbonas.
+   - **El carbón que desaparece (elegido por Oscar el 15-11-2026, opción 1).** Tras la revancha, Andrés cuenta que cada dos o tres semanas le desaparece un saco de carbón de piedra y al día siguiente aparece un billete de veinte bajo la piedra grande de la entrada. Martín: con ese carbón no se hace un churrasco, eso lo traga una caldera de vapor. Pista del misterio: **alguien está preparando la Mikado de noche**. En el Acto 2 no se dice quién; Martín solo nota que paga «puntual como un horario de tren» («huele a ferroviario»). Queda anotado en el cuaderno de Martín (flag `carbonRoubado`). **Pendiente de decidir en el Acto 3 o 4 quién se lleva el carbón** (lo natural: Xoán, que entra en el taller y viene del depósito, o Remedios).
    - **Xoán en el vestíbulo** (opcional): cumple el «Mañana, Xoán» del final del Acto 1. Se escabulle con lo del silbato («o vento de Monforte ten estudos») y con lo del candado.
    - En la natación, tras la primera derrota Andrés ya ofrece el empate técnico.
 4. **Noche de Champions** (B3, martes a las 20:00, cuando están hechos los dos reencuentros). Xoán corrige el gol de Demetrio («Foi en mércores, Demetrio. E chovía»). Preguntado por el candado, Xoán se va por las ramas. A las 23:00, a dormir.
@@ -113,6 +114,8 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
    - Le habla de la **grasa que falta del almacén**.
    - Cuando Martín dice «dos largos y uno corto», se queda en silencio y cambia de tema hacia el regional de las 21:30 de 1958.
    - Si Martín le pregunta por «Xosé N.», responde: «Nogal é un apelido moi común... ou non».
+1b. **Valerio y el libro de 1958** (B2, farmacia; elegido por Oscar el 15-11-2026, idea 2). **Es ficción** (ver 04). Ya sembrado en el Acto 2: Valerio cuenta que su padre lo apuntaba todo en unos libros de tapas negras desde 1950, guardados en la rebotica (flag `librosValerio`). En el Acto 3, con la fecha del pilar (14-I-1958), Martín le pide ver enero de 1958. En la noche del 14 aparece: «Curas por queimaduras nas mans. X. Nogal. Non quixo ir ao médico.» Es un **indicio**, no la prueba: dice que Xosé estuvo allí esa noche y que se quemó las manos (frenando el tren a mano). **La prueba de que avisó de los frenos sigue siendo el parte del 7.º soporte (Acto 4).** Martín puede copiar la anotación o fotografiarla (objeto `libro1958` o nota en el cuaderno); Valerio no deja sacar el libro de la farmacia: «Os libros do meu pai non saen da rebotica. Nin para ti.»
+   - **Valerio, puerta a Don Anxo** (idea 3). Valerio le prepara la medicación a **Don Anxo** cada semana, sabe dónde vive y que «do 58 non fala». Al ver el nombre de Nogal en el libro, avisa a Martín: «Hai un home que estaba no depósito ese inverno. Venlle buscar as pastillas os luns. Pero do 58 non fala, Martín. Nunca.» Es el camino para llegar a Anxo en el Acto 3 o 4 (en el Acto 4 es a quien Martín le enseña el parte).
 2. **Pistas alrededor del depósito** (A7–A8), con el ollo de maquinista (mundo en gris, pistas en amarillo):
    - **grasa fresca** en el carril de la Mikado;
    - **huellas** de botas con carbonilla y de zapatillas de andar por casa;
@@ -142,8 +145,8 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 5. **La cuarta cosa.** Martín le enseña el parte a **Don Anxo**. Él promete hablar delante de todos. **Fin del acto.**
 
 ### Acto 5 · «O descubrimento» (sábado y domingo)
-1. **Sábado, 21:00. La cabina de la Mikado** (puzzle de procedimiento). El orden importa:
-   1. comprobar la presión: 9 kg, el dato de la pizarra;
+1. **Sábado, 21:00. La cabina de la Mikado** (puzzle de procedimiento). **Mega Andrés es el fogonero** (elegido por Oscar el 15-11-2026, opción 3): sube a la cabina con los sacos de su abuelo y pala el carbón, haciendo el trabajo de su abuelo fogonero. Es el cierre emotivo del personaje. Forma parte del puzzle: Martín tiene que pedirle fuego en el momento justo (sin carbón en la caldera no sube la presión, y si se le pide antes de tiempo, Andrés hace una broma y espera). Una frase posible: «O avó dicía que o carbón bo se coñece polo son. Escoita, Martín: este é do bo». El orden importa:
+   1. pedirle a Andrés que cargue la caldera y comprobar la presión: 9 kg, el dato de la pizarra;
    2. inyector;
    3. aflojar el freno;
    4. regulador;
@@ -153,6 +156,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
    - Xoán: «Martín... Toca ti. Dous longos e un curto». El jugador usa el silbato.
    - La revelación: Xoán cuenta quién es (Carballeira por su padre, Nogal por su madre), Martín lee el parte en voz alta como maquinista y Anxo confiesa.
 4. Suena el móvil: le ofrecen a Martín un puesto de **jefe de maquinistas en Valencia**.
+4b. **Valerio cierra la farmacia** (idea 3): por primera vez en su vida baja la persiana un sábado por la noche («Pechado por asuntos de familia», con la letra de su padre en un cartel viejo) y está en el andén o en A Barreira viendo salir la Mikado. Es su cierre, en eco de la elección de Martín: el que nunca se movió del mostrador también decide salir.
 5. **Domingo, 6:00, vestíbulo.** Cinemática del **mural con Xoán** (imagen `cine-mural.jpg`): la escena de mayor peso del juego.
 6. **Vilatán** (E1). Caldo con la madre y la elección:
    - **Valencia:** «As raíces non son para quedar quieto: son para saber onde volver».
