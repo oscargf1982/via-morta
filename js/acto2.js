@@ -685,7 +685,7 @@ SCENES.tallerA2 = {
         await pistaTaller('pistaFoto');
       },
       look: () => MA('Una foto vieja clavada al pilar. Gente con mono delante de una sierra. Habrá que verla de cerca.', 'pensativo') },
-    { name: 'Gravado no piar', key: true, olloOnly: 'pistaData', done: () => flag('pistaData'), r: [500, 280, 82, 52], at: [452, 484], face: 'R',
+    { name: 'Gravado no piar', key: true, olloOnly: 'gravadoVisto', done: () => flag('pistaData'), r: [500, 280, 82, 52], at: [452, 484], face: 'R',
       look: async () => {
         await MA('Debajo de donde estaba la foto, algo grabado a navaja en el ladrillo. Hay que acercarse mucho...', 'pensativo');
         await showDoc('<h4>Gravado a navalla no piar</h4><p style="font-size:22px;text-align:center">X. N. 1949</p><p style="font-size:22px;text-align:center;font-style:italic">14-I-1958</p><p class="sub">A mesma letra nas dúas liñas. A segunda, máis tremente, coma feita á présa.</p>');
