@@ -574,7 +574,7 @@ async function cadernoMartin() {
   await MA('Vale. Paro. Respiro. Lo apunto todo antes de que se me mezcle con la Champions.', 'pensativo');
   await showDoc(`<h4>Cuaderno de Martín · miércoles</h4><p class="sub">Lo que sé</p>
 <p>1949: Xosé N. aprendía el oficio en esta carpintería. Luego entró en Renfe.</p>
-<p>Alguien grabó en el pilar «X. N. 1949» y, debajo, con otra mano, «14-I-1958». El 14 de enero de 1958 pasó algo. Y tiene que ver con él.</p>
+<p>Alguien grabó en el pilar «X. N. 1949» y, debajo, con la misma letra pero temblando, «14-I-1958». El 14 de enero de 1958 pasó algo. Y tiene que ver con él.</p>
 <p>Alguien entra aquí sin llave, por la ventana del fondo, y va siempre al séptimo soporte. Se dejó un trapo con grasa de locomotora: viene del depósito.</p>
 <p>El séptimo soporte tiene la tapa soldada. Los otros seis, no. Ahí dentro hay algo.</p>
 <p>Y alguien silba, dos largos y uno corto, para que yo lo oiga.</p>
@@ -615,8 +615,8 @@ SCENES.tallerA2 = {
     { name: 'Gravado no piar', key: true, olloOnly: 'pistaData', done: () => flag('pistaData'), r: [490, 300, 80, 60], at: [525, 480], face: 'B',
       look: async () => {
         await MA('Debajo de donde estaba la foto, algo grabado a navaja en el ladrillo. Hay que acercarse mucho...', 'pensativo');
-        await showDoc('<h4>Gravado a navalla no piar</h4><p style="font-size:22px;text-align:center">X. N. 1949</p><p style="font-size:22px;text-align:center;font-style:italic">14-I-1958</p><p class="sub">A primeira liña, firme e coidada. A segunda, máis tremente, coma feita á présa.</p>');
-        await MA('«X. N.», como el aprendiz de la foto. Y debajo, otra mano, más nerviosa: catorce de enero de mil novecientos cincuenta y ocho.', 'sorprendido');
+        await showDoc('<h4>Gravado a navalla no piar</h4><p style="font-size:22px;text-align:center">X. N. 1949</p><p style="font-size:22px;text-align:center;font-style:italic">14-I-1958</p><p class="sub">A mesma letra nas dúas liñas. A segunda, máis tremente, coma feita á présa.</p>');
+        await MA('«X. N.», como el aprendiz de la foto. Y debajo, la misma letra, pero temblando: catorce de enero de mil novecientos cincuenta y ocho.', 'sorprendido');
         await MA('Esa fecha... Ese invierno pasó algo en el depósito. No sé qué. Pero alguien quiso dejarlo escrito donde no lo borrase nadie.', 'dudoso');
         await pistaTaller('pistaData');
       } },

@@ -16,6 +16,16 @@ Esa noche, Xosé desvió un mercancías sin frenos a la vía muerta de A Barreir
 
 En el último acto, la Mikado sale con media ciudad mirando y termina en la vía muerta a las 21:40. Allí Martín toca el silbato, Xoán cuenta quién es y Don Anxo, el fogonero de 1958, rompe 68 años de silencio. Después, Martín elige: Valencia o Monforte.
 
+### Xosé y las máquinas (decidido por Oscar el 15-11-2026, «opción 3»)
+Todo es ficción sobre personajes inventados. De la venta de 1952 y de sus protagonistas reales solo se cuenta lo que dice la escritura.
+1. **1949.** Xosé Nogal es aprendiz en la carpintería de la Casa Juana (la foto).
+2. **1952.** Se vende la maquinaria (dato real). Xosé se queda sin oficio y entra en Renfe, en el depósito («Xosé entra en Renfe. Sorte, rapaz»).
+3. **Años 50.** En el depósito reconoce un motor Siemens viejo: el de su taller. Le graba «A.F.G.» a navaja. **Cómo llegó el motor al depósito no se cuenta nunca**: nadie lo sabe, y Martín no se lo inventa.
+4. **14-I-1958.** La noche del mercancías sin frenos. Le echan la culpa.
+5. **Antes de emigrar a Suiza**, esconde el parte en el 7.º soporte de la transmisión de la casa (los soportes siguen anclados a las vigas aunque las poleas se vendieran), suelda la tapa y graba «14-I-1958» bajo su «X. N. 1949», con la misma letra, temblando. Al pasar en tren por delante de la casa, silbaba dos largos y uno corto para saludar a su taller.
+6. **Su carta** («Deixeino onde se moven as correas, na casa onde aprendín o oficio») confunde a Xoán: cree que se refiere al motor del depósito y lleva meses buscando allí. Entra en el taller de la casa por la ventana (la sombra negra) porque allí aprendió su abuelo, pero no cae en el soporte soldado. Por eso le consigue la casa al maquinista nuevo y le silba.
+7. **Lo que va descubriendo el jugador:** Acto 2, Xosé, la fecha, el intruso del depósito y el soporte; Acto 3, el motor «A.F.G.» («el motor del taller de Xosé... aquí, donde trabajaba él») y el candado 1401; Acto 4, Martín entiende que «onde se moven as correas» es su casa y saca el parte; Acto 5, Xoán cuenta quién es y Concha reconoce el silbido de Xosé.
+
 ## 2. Mapa de escenarios (Monforte real)
 
 Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a otra se usa la **pantalla de mapa**. Oscar validará las conexiones exactas con fotos y Street View.
@@ -87,7 +97,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 6. **Miércoles.** Concha da la llave del taller a quien «tenga un detalle»: los **ositos** (si no se compraron, se compran en el momento; broma: le regala sus propios ositos).
 7. **El taller de la Casa Juana** (A6, con las fotos de Oscar). **Pistas rehechas el 15-11-2026 a petición de Oscar:** cada pista cuenta un trozo de la trama de ficción y sirve para avanzar más adelante.
    - **Foto de 1949** (objeto `foto1949`): «O señor Alfredo cos aprendices, 1949. Pepe, Manolo, Xosé N.» y, con otra letra, «Xosé entra en Renfe. Sorte, rapaz». El aprendiz de la carpintería se hizo ferroviario. *Uso:* en el Acto 3 se le enseña a Xoán.
-   - **Grabado a navaja en el pilar** (con el ollo): «X. N. 1949» y, con otra mano más nerviosa, «14-I-1958», la fecha de la cinemática. *Uso:* el **candado nuevo de las cocheras es de combinación: 1401** (Acto 3).
+   - **Grabado a navaja en el pilar** (con el ollo): «X. N. 1949» y, con la misma letra pero temblando (Xosé, nueve años después), «14-I-1958», la fecha de la cinemática. *Uso:* el **candado nuevo de las cocheras es de combinación: 1401** (Acto 3).
    - **Huellas** (con el ollo) que vienen de la ventana rota del fondo hasta el pilar del 7.º soporte, y al final un **trapo con grasa de locomotora** (objeto `trapo`): quien entra viene del depósito. Es Xoán, la sombra negra que salta el muro (decidido por Oscar): mira la transmisión sin entender la frase de su abuelo. *Uso:* en el Acto 3, la grasa que falta del almacén.
    - **El 7.º soporte, con la tapa soldada.** Ni la navaja puede. Se abre en el Acto 4.
    - La **escritura n.º 375 (1952)** (datos reales) y las marcas de pernos quedan como decorado opcional: ya no hacen falta para terminar el acto.
