@@ -77,7 +77,7 @@ async function conchaActo2() {
         await MA('¿Una revancha? Le gané yo. Por una brazada. Él dice que fue salida nula.', 'risueno');
         await CO('Pois arregládeo na auga. Eu dende aquí non vexo a piscina, pero vou saber quen gañou antes ca vós.');
         setFlag('objValerio'); setFlag('objAndres');
-        toast('Novo obxectivo: Valerio (mapa, Centro, rúa do Cardeal) e Andrés (mapa, Río Cabe)');
+        toast('Novo obxectivo: Valerio (mapa, Rúa do Cardeal) e Andrés (mapa, Club Fluvial)');
       } else if (flag('silbato2')) {
         await CO('Que se conta? Que onte á noite volveu soar o tren pantasma. E que a ti viuse baixar ao patio en pixama. De raias.');
         await MA('¿Quién me ha visto? ¡Si eran las tantas!', 'avergonzado');
@@ -132,22 +132,20 @@ async function conchaChaveTaller() {
     : flag('fimActo1') ? CO(flag('silbato2') ? 'Ositos para min? Agora non, rapaz. Gárdaos para cando me pidas algo.' : 'Os ositos? Gárdaos, que aínda non me pediches nada. E eu sei esperar.') : ositosA1();
 }
 
-/* ---------- Mapa no Acto 2 ---------- */
+/* ---------- Mapa no Acto 2 ----------
+   Valerio abre a Rúa do Cardeal e Andrés, o Club Fluvial. Antes de que alguén os mencione, Martín dá un motivo para non ir. */
 {
-  ZONAS.find(z => z.id === 'rio').open = () => flag('objAndres');
-  const M = SCENES.mapa.hotspots, centro = M.find(h => h.name === 'Centro · Concello'), rio = M.find(h => h.name === 'Río Cabe · Malecón'), castelo = M.find(h => h.name === 'Castelo de San Vicente');
-  const centroA1 = centro.act;
-  centro.act = async () => {
-    if (!flag('fimActo1') || !flag('objValerio')) return centroA1();
-    const o = [{ t: 'A la rúa do Cardeal: la farmacia de Valerio.', k: 'cardeal' }, { t: 'Al Concello.', k: 'concello' }, { t: 'Mejor me quedo en el mapa.', k: 'no' }];
-    const k = o[await choose(o)].k;
-    if (k === 'cardeal') return goScene('cardeal', [740, 520]);
-    if (k === 'concello') return goScene('concelloExt', [90, 360]);
-  };
-  const rioA1 = rio.act;
-  rio.act = () => flag('objAndres') ? goScene('fluvial', [900, 490]) : rioA1();
-  const casteloA1 = castelo.act;
-  castelo.act = () => flag('fimActo1') ? mapaPechado('El castillo de San Vicente, otro día. Hoy mis gemelos no suben ni a una silla. Y ya sé lo que pasa cuando me subo a una silla.', 'próximo hito') : casteloA1();
+  ZONAS.find(z => z.id === 'fluvial').open = () => flag('objAndres');
+  ZONAS.find(z => z.id === 'cardeal').open = () => flag('objValerio');
+  const M = SCENES.mapa.hotspots, cardeal = M.find(h => h.name === 'Rúa do Cardeal'), fluvial = M.find(h => h.name === 'Club Fluvial'), castelo = M.find(h => h.name === 'Castelo de San Vicente');
+  const cardealA1 = cardeal.act, fluvialA1 = fluvial.act, casteloA1 = castelo.look;
+  cardeal.act = () => flag('objValerio') ? goScene('cardeal', [740, 520])
+    : flag('fimActo1') ? MA('La calle del Cardeal. Sin un motivo, acabo en un bar contándole lo del silbato a un desconocido. Antes, a ver qué se cuenta Concha.', 'pensativo')
+    : cardealA1();
+  fluvial.act = () => flag('objAndres') ? goScene('fluvial', [900, 490])
+    : flag('fimActo1') ? MA('El Club Fluvial. ¿Bañarme yo solo, un martes, con estas piernas? Sin un buen motivo, no. Concha seguro que tiene uno.', 'esceptico')
+    : fluvialA1();
+  castelo.look = () => flag('fimActo1') ? MA('El castillo de San Vicente, otro día. Hoy mis gemelos no suben ni a una silla. Y ya sé lo que pasa cuando me subo a una silla.', 'frustrado') : casteloA1();
 }
 
 /* ---------- B1 · Rúa do Cardeal (ilustración de Oscar) ---------- */
@@ -331,7 +329,7 @@ async function retoNatacion() {
     await MA('¿Nadar? ¿Con estos gemelos? Me hundo como un ancla. Necesito algo para las agujetas antes. Una farmacia o un milagro. La farmacia queda más cerca.', 'avergonzado');
     await AN('Valerio, no Cardeal. Dille que vas da miña parte e cóbrache o dobre.');
     setFlag('faltaCrema');
-    toast('Pista: Valerio ten farmacia na rúa do Cardeal (mapa, Centro)');
+    toast('Pista: Valerio ten farmacia na rúa do Cardeal (está no mapa)');
     return false;
   }
   if (!flag('cremaPosta')) {
@@ -734,8 +732,8 @@ SCENES.vigasA2 = {
   const A2 = () => flag('fimActo1') && !flag('fimActo2');
   CADERNO.push(
     { when: () => A2() && !flag('objValerio'), t: 'Hablar con Concha, en el quiosco: ella sabe dónde anda todo el mundo. (Y Xoán, en la estación, quizá sepa quién silba.)' },
-    { when: () => A2() && flag('objValerio') && !flag('valerioFeito'), t: 'Pasar por la farmacia de Valerio: calle del Cardeal (mapa, zona Centro).' },
-    { when: () => A2() && flag('objAndres') && !flag('andresFeito'), t: () => 'La revancha de natación con Mega Andrés, en el Club Fluvial (mapa, Río Cabe).' + (!hasItem('crema') && !flag('cremaPosta') ? ' Antes, algo para estos gemelos.' : '') },
+    { when: () => A2() && flag('objValerio') && !flag('valerioFeito'), t: 'Pasar por la farmacia de Valerio: calle del Cardeal (en el mapa).' },
+    { when: () => A2() && flag('objAndres') && !flag('andresFeito'), t: () => 'La revancha de natación con Mega Andrés, en el Club Fluvial (en el mapa).' + (!hasItem('crema') && !flag('cremaPosta') ? ' Antes, algo para estos gemelos.' : '') },
     { when: () => A2() && flag('avisoChampions') && !flag('champions'), t: 'Champions en la Fraternal, con el tío Demetrio. Hay cosas que no se negocian.' },
     { when: () => A2() && flag('champions') && !flag('silbato2'), t: 'A dormir. El dormitorio, a la izquierda del salón.' },
     { when: () => A2() && flag('silbato2') && !hasItem('chave') && !flag('tallerAberto'), t: 'La llave del taller: la tiene Concha. Quiere un detalle... algo dulce de su propio quiosco.' },

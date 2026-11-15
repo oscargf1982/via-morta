@@ -1,7 +1,7 @@
 # «Vía morta» · Fichas de escenarios
 
 > Cada escenario se describe aquí antes de programarlo en `js/acto*.js`. Coordenadas en el lienzo lógico de 960×540.
-> Los fondos de A1, A2, A3, A3b, A4, A4b, A4c, B3 y la portada son ilustraciones de Oscar. El mapa sigue siendo un **boceto provisional** generado con `tools/fondos.py`.
+> Los fondos de A1, A2, A3, A3b, A4, A4b, A4c, B3 y la portada son ilustraciones de Oscar. El mapa de viaje rápido es la ilustración de Oscar «Escolle o teu destino» (`img/bg-mapa.jpg`); ver la ficha «Mapa de Monforte (viaje rápido)» al final.
 
 ## C0 · Cinemática de inicio «Dous longos e un curto» (`js/cinematica.js`)
 - **Cuándo:** al pulsar «Nova partida», antes del andén del Acto 1. Se puede volver a ver en Opcións → «Ver a cinemática de inicio». Dura unos 60 s. Un toque (o Esc/Enter/espacio) enseña «Saltar ▸»; el segundo salta.
@@ -43,8 +43,8 @@
 ## A3 · Praza da Estación (`praza`)
 - **Fondo:** `img/bg-praza-estacion.jpg`, ilustración de Oscar, recortada (`crop [300,120,1300,731]`) para dejar fuera el quiosco, que en la realidad está en la segunda pantalla. Hotel, hostal Riosol, la rotonda con su fuente, el árbol, la farola de dos brazos y la fachada de la estación con el rótulo de Adif.
 - **Suelo:** el empedrado. Obstáculos: la rotonda de la fuente, el alcorque del árbol y la base de la farola. Capas delanteras: farola y tronco del árbol.
-- **Salidas:** Estación (A2) por la puerta azul; segunda pantalla de la plaza (A3b) por la calle de la izquierda; la calle del centro lleva al mapa de Monforte.
-- **Hotspots:** estación (dos puertas), placa, rótulo, otra parte de la plaza (clave), calle hacia el centro (→ mapa), fuente de la rotonda, hotel, hostal, coches, farola y árbol.
+- **Salidas:** Estación (A2) por la puerta azul; segunda pantalla de la plaza (A3b) por la calle de la izquierda; la calle del fondo sube al Museo del Ferrocarril (cerrado hasta el Acto 3); el borde de abajo lleva al mapa de Monforte.
+- **Hotspots:** estación (dos puertas), placa, rótulo, otra parte de la plaza (clave), Museo do Ferrocarril (calle del fondo, cerrado hasta el Acto 3), mapa de Monforte (borde de abajo), fuente de la rotonda, hotel, hostal, coches, farola y árbol.
 
 ## A3b · Praza da Estación, segunda pantalla (`praza2`)
 - **Fondo:** `img/bg-praza-estacion-2.jpg`, ilustración de Oscar, recortada a 16:9 sin la barra de interfaz. Quiosco negro de Dona Concha, fuente rectangular con chorros, jardinera con la señal de prohibido aparcar, casa amarilla, edificio verde de la esquina y las calles del fondo.
@@ -139,7 +139,7 @@
 
 ## B4a · Concello, exterior (`concelloExt`)
 - **Fondo:** `img/bg-concello-exterior.jpg`, ilustración de Oscar recortada a 16:9. Edificio del Concello con banderas (Galicia, España, Unión Europea) en el balcón, escalinata y puerta principal, jardinera con arbustos y, en primer plano, un estanque con una roca en el centro.
-- **Llegada (decidido por Oscar):** desde el mapa, zona «Centro», que se abre al tener el contrato firmado. Antes, la zona sigue cerrada con su comentario.
+- **Llegada (decidido por Oscar):** desde el mapa, destino «Praza do Concello», que se abre al tener el contrato firmado. Antes, la zona sigue cerrada con su comentario.
 - **Suelo:** la franja de la plaza entre el edificio y el estanque. El estanque y la jardinera son obstáculos.
 - **Salidas:**
   - Puerta principal (escalinata) → vestíbulo con las ventanillas de Eladio (B4). Si Martín aún no sabe que no hay agua, comenta que no tiene nada que hacer dentro.
@@ -214,7 +214,7 @@
 
 ### C2 · Club Fluvial: piscina y chiringuito «Malo Será» (`fluvial`) · ilustración de Oscar
 - **Fondo:** `img/bg-fluvial.jpg` (15-11-2026): chiringuito «Malo Será» de paja con pizarra (refrescos, cerveza, agua, zumos), mesas con sombrilla en el césped, la piscina al fondo tras la valla con salvavidas y el castillo de San Vicente en lo alto. **La carretilla azul y los sacos de carbón se pintan por código** (a la derecha, junto a la valla) porque no salen en el dibujo y hacen falta en el Acto 4. Cerrada desde septiembre... salvo para Andrés.
-- **Llegada:** desde el mapa, zona Río Cabe, por la derecha. **Salida:** borde derecho → mapa.
+- **Llegada:** desde el mapa, destino «Club Fluvial», por la derecha. **Salida:** borde derecho → mapa.
 - **NPC:** **Mega Andrés**, en su tumbona (dibujada con él, por código) sobre el césped. Filósofo: «a vida, mellor deitado».
 - **Puzzle:** Andrés quiere la revancha de natación (cuatro largos). Sin `crema`, Martín se niega y apunta a la farmacia. Con ella, minijuego de toques alternos (izquierda/derecha, mecánica general `minixogoToques` en engine.js). Si gana Martín: tarde de tumbona. Si pierde dos veces, Andrés propone empate técnico a cambio de un mojito. Siempre se sale con `andresFeito`.
 - **Siembra para el Acto 4:** el abuelo fogonero, los sacos de carbón «para o churrasco» y la carretilla de las tumbonas (hotspots mirables).
@@ -245,7 +245,7 @@
 - Los ositos se pueden comprar siempre a Concha. La crema, si se pierde, Valerio da otra muestra. El minijuego no se puede perder del todo (empate técnico). La llave del taller no se gasta.
 
 ## Cambios de la revisión con las reglas de Ron Gilbert (15-11-2026)
-- **A4 Doutor Casares:** la puerta de la Casa Juana se abre con las llaves, sin contrato. El mapa abre la Casa Roja en cuanto se tienen las llaves; el Concello sigue pidiendo el contrato (Martín lo explica).
+- **A4 Doutor Casares:** la puerta de la Casa Juana se abre con las llaves, sin contrato. En el mapa, la Gasolineira ofrece ir directo a casa en cuanto se tienen las llaves; el Concello sigue pidiendo el contrato (Martín lo explica).
 - **A4b Concepción Arenal:** la puerta de la Fraternal se abre aunque no se haya hablado con Demetrio; él da el aviso de la brisca al pasar.
 - **A3b Quiosco (Acto 1):** Concha menciona la llave de la nave y «el detalle» (flag `sabeChaveTaller`).
 - **A5b Cocina:** el cajón da la navaja vieja (flag `navallaCollida`) y, si hace falta, el destornillador.
@@ -265,3 +265,23 @@
 - **Fondo:** `img/bg-mapa.png`, mapa ilustrado en papel (no a escala, y así lo dice): río Cabe, Ponte Vella, monte de San Vicente, calles en esquema, vías que convergen en la estación y la rotonda del depósito.
 - **Zonas:** Barrio da Estación (abierta → A3), Casa Roja (con el contrato firmado → A4 Doutor Casares, delante de la casa; pedido por Oscar), Centro · Concello (con el contrato firmado → B4a), Río Cabe · Malecón (M3), Castelo de San Vicente (M3), Vilatán fuera del mapa (M6). Las zonas cerradas dan una frase de Martín y un aviso del hito en el que llegan.
 - **Pendiente:** Oscar debe validar la posición de las zonas con el mapa real.
+
+
+## Mapa de Monforte (viaje rápido)
+
+- **Fondo:** ilustración de Oscar «Monforte de Lemos · Escolle o teu destino» (`img/bg-mapa.jpg`, 1920×1080). Sustituye al boceto provisional. Lleva la atribución de OpenStreetMap y Catastro, que también está en los créditos.
+- **Cómo se llega:** desde la plaza de la estación (borde de abajo), desde Doutor Casares («Rúa cara ao centro»), desde el exterior del Concello (izquierda), desde la rúa do Cardeal y desde el Club Fluvial.
+- **Destinos (icono + cartel, zona pulsable de tamaño dedo):**
+
+| Destino | Escenario | Se abre |
+|---|---|---|
+| Estación | A3 plaza de la estación | siempre |
+| Gasolineira | rúa Morín (con las llaves, Martín ofrece ir directo a Doutor Casares, 211) | siempre |
+| Praza do Concello | exterior del Concello | contrato firmado |
+| Rúa do Cardeal | B1 rúa do Cardeal | Acto 2, cuando Concha manda a ver a Valerio |
+| Club Fluvial | Club Fluvial | Acto 2, cuando Concha habla de Mega Andrés |
+
+- **Destinos cerrados:** cartel apagado y «(aínda non)»; al tocarlos Martín da un motivo con su voz (nunca un callejón: siempre quedan Estación y Gasolineira). Los abiertos llevan un aro dorado que late.
+- **Solo para mirar:** castillo de San Vicente, río Cabe, Ponte Vella.
+- **Museo del Ferrocarril:** no está en el mapa (decisión de Oscar, 15 nov). Se llega a pie desde la plaza de la estación por la calle del fondo; hasta el Acto 3 Martín se da la vuelta con un comentario.
+- **Fuera del mapa nuevo:** Vilatán (casa de la madre), que en el boceto era una zona cerrada de broma; vuelve cuando haga falta.
