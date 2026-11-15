@@ -922,10 +922,10 @@ async function asomarMuro() {
   else await MA('Un gato muy grande. O un vecino muy delgado. O algo que no quiero pensar antes de cenar.', 'dudoso');
   await MA('Mañana pregunto. En Monforte siempre hay alguien que lo ha visto todo... dos veces.', 'pensativo');
 }
-// a porta do taller segue co candado (a chave dáa Concha no Acto 2): Martín mira pola regaña e vese a foto real do taller baleiro
+// a porta do taller segue co candado (a chave dáa Concha no Acto 2): Martín mira pola regaña e vese o interior do taller baleiro (ilustración de Oscar)
 async function espiarTaller() {
   if (!flag('tallerEspiado')) await MA('La puerta verde del taller del señor Alfredo. Cerrada a cal y canto, con un candado que ha visto pasar a tres papas. Pero tiene una rendija...', 'pensativo');
-  await cine('img/bg-taller.jpg', flag('tallerEspiado') ? ['Martín: «Polvo, vigas y silencio. Sigue igual. Los talleres vacíos no tienen prisa.»'] : [
+  await cine('img/bg-taller-interior.jpg', flag('tallerEspiado') ? ['Martín: «Polvo, vigas y silencio. Sigue igual. Los talleres vacíos no tienen prisa.»'] : [
     'Martín: «Vacío. Ni una máquina. Una columna de ladrillo, ventanas con hiedra y setenta años de polvo.»',
     'Martín: «Por arriba asoman las vigas de la transmisión, todavía en su sitio. Abajo, nada que mover.»',
     'Martín: «Rosario decía que aquí sonaba como una fábrica...»',
