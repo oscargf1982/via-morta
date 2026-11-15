@@ -16,6 +16,8 @@ button{font-family:inherit}
 #sceneName{position:absolute;left:10px;top:8px;font:700 13px "Trebuchet MS",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-shadow:0 1px 3px #000;opacity:.85;pointer-events:none}
 #hud{position:absolute;right:8px;top:8px;display:flex;gap:8px}
 #hud button{height:44px;min-width:44px;border-radius:8px;border:2px solid #000;font:900 15px "Trebuchet MS",sans-serif;cursor:pointer;box-shadow:0 2px 0 #000}
+#bCaderno{background:#f2ead8;display:flex;align-items:center;justify-content:center;padding:0 8px}#bCaderno.novo{animation:latexo 0.9s ease-in-out 4}@keyframes latexo{50%{transform:scale(1.18);background:#ffd23a}}
+#doc ul.caderno{margin:4px 0 4px 18px;padding:0}#doc ul.caderno li{margin:6px 0}
 #bOllo{background:#ffd23a;color:#111;padding:0 12px;letter-spacing:.06em}
 #bMenu{background:#2a2e35;color:#fff;font-size:20px!important}
 #inv{width:min(100vw,calc((100dvh - var(--invH)) * 16 / 9));height:var(--invH);display:flex;gap:6px;padding:6px;background:#15171b;border-top:2px solid #2a2e35;overflow-x:auto;flex:0 0 auto}
@@ -96,7 +98,7 @@ button{font-family:inherit}
   <div id="stage">
     <canvas id="game" width="960" height="540"></canvas>
     <div id="sceneName"></div>
-    <div id="hud"><button id="bOllo" type="button" title="Ollo de maquinista (Q)">OLLO</button><button id="bMenu" type="button" title="Menú (Esc)" aria-label="Menú">☰</button></div>
+    <div id="hud"><button id="bCaderno" type="button" title="Caderno de Martín (C)" aria-label="Caderno"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" fill="#f4efe2" stroke="#111" stroke-width="2"/><path d="M8 3v18" stroke="#c0221c" stroke-width="2"/><path d="M11 8h5M11 12h5M11 16h3" stroke="#111" stroke-width="1.6"/></svg></button><button id="bOllo" type="button" title="Ollo de maquinista (Q)">OLLO</button><button id="bMenu" type="button" title="Menú (Esc)" aria-label="Menú">☰</button></div>
     <div id="toast"></div>
     <div id="cine" hidden><div id="cineTxt"></div></div>
     <div id="dlg" hidden><div id="dlgPor"></div><div style="flex:1"><div id="dlgName"></div><div id="dlgText"></div></div><div id="dlgMore">▸</div></div>
@@ -121,7 +123,7 @@ button{font-family:inherit}
     <button id="btnOpts" type="button">Opcións</button>
     <button id="btnCred" type="button">Créditos e fontes</button>
     <button id="btnFull" type="button" hidden>Pantalla completa</button>
-    <p class="help">Clic / toque: actuar · Clic dereito / manter premido: mirar<br>Toca un obxecto do inventario e despois algo do escenario para usalo<br>Botón OLLO ou tecla Q: ollo de maquinista<br>Dobre clic / dobre toque nunha frecha de saída: saír ao momento</p>
+    <p class="help">Clic / toque: actuar · Clic dereito / manter premido: mirar<br>Toca un obxecto do inventario e despois algo do escenario para usalo<br>Botón OLLO ou tecla Q: ollo de maquinista<br>Botón do caderno ou tecla C: o que tes pendente<br>Dobre clic / dobre toque nunha frecha de saída: saír ao momento</p>
   </div>
   <div class="pane" id="mActs" hidden>
     <h2>Escoller acto</h2>
@@ -131,6 +133,7 @@ button{font-family:inherit}
   <div class="pane" id="mOpts" hidden>
     <h2>Opcións</h2>
     <label>Texto rápido <input id="optFast" type="checkbox"></label>
+    <label>Modo axuda (pistas en pantalla) <input id="optAxuda" type="checkbox"></label>
     <label>Música <input id="optMus" type="range" min="0" max="1" step="0.05"></label>
     <label>Efectos <input id="optSfx" type="range" min="0" max="1" step="0.05"></label>
     <button id="optTest" type="button" class="back">Probar o asubío</button>

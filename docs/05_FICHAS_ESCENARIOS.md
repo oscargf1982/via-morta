@@ -244,6 +244,19 @@
 ### Sin callejones sin salida
 - Los ositos se pueden comprar siempre a Concha. La crema, si se pierde, Valerio da otra muestra. El minijuego no se puede perder del todo (empate técnico). La llave del taller no se gasta.
 
+## Cambios de la revisión con las reglas de Ron Gilbert (15-11-2026)
+- **A4 Doutor Casares:** la puerta de la Casa Juana se abre con las llaves, sin contrato. El mapa abre la Casa Roja en cuanto se tienen las llaves; el Concello sigue pidiendo el contrato (Martín lo explica).
+- **A4b Concepción Arenal:** la puerta de la Fraternal se abre aunque no se haya hablado con Demetrio; él da el aviso de la brisca al pasar.
+- **A3b Quiosco (Acto 1):** Concha menciona la llave de la nave y «el detalle» (flag `sabeChaveTaller`).
+- **A5b Cocina:** el cajón da la navaja vieja (flag `navallaCollida`) y, si hace falta, el destornillador.
+- **A5c Patio:** la rendija del taller termina con una línea de Martín, sin aviso de programador.
+- **B4 Concello:** devolver la silla la deja atornillada en el mismo paso (`cadeiraPosta` + `cadeiraDevolta`). Al sellar, Eladio menciona a «un tal Nogal» (`eladioNogal`).
+- **B5 Café:** hotspot nuevo «Desaparafusador» encima de la barra (flag `desapCafe`).
+- **A2 Vestíbulo (Acto 2):** Xoán con charla nueva (`a2XoanSauda`, `xoanCandadoV`).
+- **C2 Cinemática del primer turno:** el candado es de combinación, de cuatro cifras.
+- **C2 Club Fluvial:** tras la primera derrota se puede elegir «Otra» o «Empate técnico».
+- **Motor:** cuaderno de Martín (`CADERNO`, botón y tecla C) y opción «Modo axuda».
+
 ## Portada
 - **Música del menú:** `audio/musica-menu.mp3`, pista creada por Oscar con Suno (14-11-2026). Suena en bucle mientras el menú está a la vista, con el volumen de «Música» de Opcións; se apaga al empezar la cinemática o la partida y vuelve al abrir el menú. Los navegadores no dejan sonar nada antes del primer toque, así que el juego abre con una pantalla «Toca para comezar» (`mStart`): ese toque desbloquea el sonido y pasa al menú ya con la música. Antes (hasta el 14-11-2026) el primer toque solía ser «Nova partida» y la música no llegaba a oírse; además en pantallas táctiles el arranque no contaba como toque válido. Si el elemento `<audio>` falla, la pista se reproduce con WebAudio.
 - **Fondo del menú:** `img/portada-rotonda.jpg`, ilustración de Oscar de la rotonda del museo del ferrocarril de Monforte, con un velo oscuro para que se lea el menú.

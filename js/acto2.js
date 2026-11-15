@@ -62,6 +62,7 @@ async function primeiroTurno() {
     'Martes, 6:40. Primeiro turno no depósito de Monforte.',
     'Martín: «Café de máquina, un compañero que no habla hasta las ocho... y la Mikado ahí, en su rotonda, mirándome como un perro viejo al que nadie saca a pasear.»',
     'Martín: «Las cocheras del museo llevan años cerradas con una cadena oxidada. Hoy tienen, además, un candado nuevo. Brillante. De los caros.»',
+    'Martín: «De combinación: cuatro ruedecitas con números. Quien lo puso no quería llaves que se pierdan. Ni que se copien.»',
     'Martín: «Nadie le pone un candado de cuarenta euros a una puerta que no se abre. A no ser que alguien la abra.»',
     'Martes, 15:10. Fin do turno.',
   ], ZOOM_COCHERAS);
@@ -359,9 +360,12 @@ async function retoNatacion() {
     await MA('Brazada limpia. Veinte años después, y sigues sin saber perder.', 'orgulloso');
     await AN('Vale, vale. Gañaches. O premio: unha tarde de tumboa por conta da casa. É o meu maior premio. Non llo dou a calquera.');
   } else if (intento < 2) {
-    await AN('Ha! A saída nula pásache factura vinte anos despois. Outra?');
+    await AN('Ha! A saída nula pásache factura vinte anos despois. Outra? Ou deixámolo en empate técnico e convídasme a un mojito?');
     await MA('Me ha entrado agua en la nariz. Y en el orgullo.', 'frustrado');
-    return false;
+    const o = [{ t: 'Otra. Esta vez va en serio.', k: 'outra' }, { t: 'Empate técnico. Y mojito.', k: 'empate' }];
+    if (o[await choose(o)].k === 'outra') return false;
+    await AN('Empate técnico! Ti convídasme a un mojito e eu non llo conto a Concha.');
+    await MA('Un empate pagado. Muy de Monforte. Trato hecho.', 'risueno');
   } else {
     await AN('Mira, deixámolo en empate técnico. Ti convídasme a un mojito e eu non llo conto a Concha.');
     await MA('Un empate pagado. Muy de Monforte. Trato hecho.', 'risueno');
@@ -578,6 +582,7 @@ async function cadernoMartin() {
 <p>Alguien entra aquí sin llave, por la ventana del fondo, y va siempre al séptimo soporte. Se dejó un trapo con grasa de locomotora: viene del depósito.</p>
 <p>El séptimo soporte tiene la tapa soldada. Los otros seis, no. Ahí dentro hay algo.</p>
 <p>Y alguien silba, dos largos y uno corto, para que yo lo oiga.</p>
+<p>Las cocheras del museo tienen un candado nuevo de cuatro cifras. Y en el pilar hay una fecha. Catorce, uno...</p>
 <p><b>Pregunta:</b> ¿quién era Xosé N.? Y ¿quién, en el depósito, tiene tanto interés en él?</p>`);
   await MA('Un aprendiz que se hizo maquinista. Una fecha. Grasa del depósito. Y un silbato que llama a esta casa.', 'pensativo');
   await MA('Mañana, Xoán. Él se sabe todas las fechas de Monforte. A ver si se sabe esta.', 'dudoso');
@@ -618,6 +623,7 @@ SCENES.tallerA2 = {
         await showDoc('<h4>Gravado a navalla no piar</h4><p style="font-size:22px;text-align:center">X. N. 1949</p><p style="font-size:22px;text-align:center;font-style:italic">14-I-1958</p><p class="sub">A mesma letra nas dúas liñas. A segunda, máis tremente, coma feita á présa.</p>');
         await MA('«X. N.», como el aprendiz de la foto. Y debajo, la misma letra, pero temblando: catorce de enero de mil novecientos cincuenta y ocho.', 'sorprendido');
         await MA('Esa fecha... Ese invierno pasó algo en el depósito. No sé qué. Pero alguien quiso dejarlo escrito donde no lo borrase nadie.', 'dudoso');
+        await MA('Catorce, uno... (¿Por qué me suena a cuatro ruedecitas con números?)', 'pensativo');
         await pistaTaller('pistaData');
       } },
     { name: 'Pegadas no po', key: true, olloOnly: 'pistaPegadas', done: () => flag('pistaTrapo'), r: [262, 456, 190, 74],
@@ -675,8 +681,66 @@ SCENES.vigasA2 = {
   const F = {};
   for (const k of ['chavesDadas', 'conchaRecoñece', 'davidSauda', 'objetivoContrato', 'davidAmparo', 'amparoMan', 'faltaBoli', 'sabeCrucigrama', 'sabePalabra', 'boliDado',
     'contratoAsinado', 'sabeCasa', 'xoanCoñece', 'muralExplicado', 'trenSaiu', 'salonVisto', 'sinAgua', 'eladioAusente', 'eladioFicha', 'eladioVolveu', 'cadeiraDevolta',
-    'aguaAlta', 'noiteAviso', 'noiteActo1', 'fimActo1', 'vistaSalon']) F[k] = true;
+    'aguaAlta', 'noiteAviso', 'noiteActo1', 'fimActo1', 'vistaSalon', 'sabeChaveTaller', 'navallaCollida', 'eladioNogal', 'cadeiraPosta', 'desapCafe']) F[k] = true;
   const i = ACTS.findIndex(a => a.id === 'acto2');
   ACTS[i] = { id: 'acto2', name: 'Acto 2 · O reencontro', desc: 'Martes e mércores: o candado novo, Valerio, Mega Andrés, a Champions na Fraternal e o taller da Casa Juana',
-    scene: 'praza', at: [780, 420], inv: ['chavesCasa', 'contrato'], flags: F, intro: () => primeiroTurno() };
+    scene: 'praza', at: [780, 420], inv: ['chavesCasa', 'contrato', 'navalla'], flags: F, intro: () => primeiroTurno() };
+}
+
+/* ---------- A2 · Xoán no vestíbulo no Acto 2 (cambio 8 da revisión Gilbert) ----------
+   O Acto 1 remata con «Mañana, Xoán»: no martes e no mércores Xoán está na estación e escápase polas ramas. */
+{
+  const xoanA1 = xoanTalk;
+  xoanTalk = async () => {
+    if (!flag('fimActo1')) return xoanA1();
+    if (!flag('a2XoanSauda')) {
+      setFlag('a2XoanSauda');
+      await XO('Martín! Que tal a primeira noite na casa roxa? Ben de vento?');
+      await MA('De vento, poco. De silbato, bastante. Dos largos y uno corto, a medianoche.', 'esceptico');
+      await XO('Un asubío? Será un graciosiño. Ou un mercancías que pasou tarde. Ou o vento, que en Monforte asubía moi ben.');
+      await MA('El viento no silba en código, Xoán.', 'esceptico');
+      await XO('Ti non coñeces o vento de Monforte. Ten estudos.');
+      await MA('(Lleva dos frases mirando el mural para no mirarme a mí.)', 'pensativo');
+    } else await XO('Volves? O mural segue no seu sitio. Eu tamén.');
+    for (;;) {
+      const opts = [
+        { t: '¿De verdad no has oído el silbato?', k: 'asubio' },
+        ...(!flag('xoanCandadoV') ? [{ t: 'En las cocheras del museo hay un candado nuevo.', k: 'candado' }] : []),
+        { t: '¿Qué cuenta ese mural?', k: 'mural' },
+        { t: 'Me voy, que tengo cosas que hacer.', k: 'adeus' },
+      ];
+      const k = opts[await choose(opts)].k;
+      if (k === 'asubio') {
+        await XO('Oíno. Coma todo o barrio. Pero eu durmo con tapóns, e cos tapóns todo soa a vento.');
+        await MA('Valerio vende tapones. Qué casualidad, otra vez.', 'esceptico');
+        await XO('Monforte é pequeno. As casualidades veñen en fila.');
+      }
+      if (k === 'candado') {
+        await XO('Nas cocheras? Iso será cousa de Adif. Ou do museo. Eu son de Renfe: de candados sei o xusto para non perder o tren.');
+        await MA('(Para alguien que se sabe el ancho del vestíbulo en baldosas, hoy sabe muy poco.)', 'dudoso');
+        setFlag('xoanCandadoV');
+      }
+      if (k === 'mural') await XO('O mural? 1954, Inchaurbe, Monforte no medio. Ese si que non cambia. Por iso me gusta.');
+      if (k === 'adeus') { await XO('Vai, vai. E de noite, pecha ben a fiestra. Polo vento.'); return; }
+    }
+  };
+  const X = SCENES.vestibulo.npcs.find(n => n.id === 'xoan'), dX = X.done;
+  X.done = () => flag('fimActo1') ? flag('a2XoanSauda') : dX();
+  X.give.foto1949 = async () => { await XO('...Onde atopaches isto?'); await MA('En mi taller. Clavada a un pilar.', 'dudoso'); await XO('Gárdaa ben. Moi ben. Xa falaremos.'); };
+}
+
+/* ---------- caderno de Martín · Acto 2 ---------- */
+{
+  const A2 = () => flag('fimActo1') && !flag('fimActo2');
+  CADERNO.push(
+    { when: () => A2() && !flag('objValerio'), t: 'Hablar con Concha, en el quiosco: ella sabe dónde anda todo el mundo. (Y Xoán, en la estación, quizá sepa quién silba.)' },
+    { when: () => A2() && flag('objValerio') && !flag('valerioFeito'), t: 'Pasar por la farmacia de Valerio: calle del Cardeal (mapa, zona Centro).' },
+    { when: () => A2() && flag('objAndres') && !flag('andresFeito'), t: () => 'La revancha de natación con Mega Andrés, en el Club Fluvial (mapa, Río Cabe).' + (!hasItem('crema') && !flag('cremaPosta') ? ' Antes, algo para estos gemelos.' : '') },
+    { when: () => A2() && flag('avisoChampions') && !flag('champions'), t: 'Champions en la Fraternal, con el tío Demetrio. Hay cosas que no se negocian.' },
+    { when: () => A2() && flag('champions') && !flag('silbato2'), t: 'A dormir. El dormitorio, a la izquierda del salón.' },
+    { when: () => A2() && flag('silbato2') && !hasItem('chave') && !flag('tallerAberto'), t: 'La llave del taller: la tiene Concha. Quiere un detalle... algo dulce de su propio quiosco.' },
+    { when: () => A2() && hasItem('chave') && !flag('tallerAberto'), t: 'Abrir el taller, al fondo del patio de casa.' },
+    { when: () => A2() && flag('tallerAberto'), t: () => `Revisar el taller con calma. Con el OLLO se ve lo que se escapa, y las vigas de arriba también cuentan. Pistas: ${PISTAS_TALLER.filter(flag).length} de ${PISTAS_TALLER.length}.` },
+    { when: () => flag('fimActo2'), t: 'Preguntarle a Xoán quién era Xosé N. Y probar ese candado nuevo de las cocheras. (Acto 3, próximamente.)' },
+  );
 }

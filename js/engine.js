@@ -22,7 +22,7 @@ const E = {
   actor: { x: 480, y: 500, tx: 480, ty: 500, path: [], dir: 1, face: 'F', walking: false, t: 0, visible: true, pose: null, stepT: 0 },
   inv: [], flags: {}, held: null, hover: null, hoverUntil: 0, mouse: { x: 0, y: 0 },
   busy: 0, dlg: null, imgs: {}, fade: 0, fadeTo: 0, t: 0, barks: [], olloT: 0, paused: true, act: null,
-  opts: { fast: false, music: 0.35, sfx: 0.8 },
+  opts: { fast: false, music: 0.35, sfx: 0.8, axuda: false },
 };
 /* ---------- utilidades ---------- */
 const $ = id => document.getElementById(id);
@@ -150,6 +150,18 @@ function setFlag(k, v = true) { E.flags[k] = v; saveGame(); }
 async function goScene(id, at) {
   E.fadeTo = 1; await sleep(320); enterScene(id, at); E.fadeTo = 0; await sleep(320);
 }
+/* caderno de Martín: lista de tarefas pendentes. Os actos engaden entradas a CADERNO
+   { when: () => bool, t: 'texto' (ou función) }; o motor só as amosa. Tecla C ou botón do HUD. */
+const CADERNO = [];
+async function abrirCaderno() {
+  $('bCaderno') && $('bCaderno').classList.remove('novo');
+  const pend = CADERNO.filter(c => { try { return c.when(); } catch (e) { return false; } }).map(c => typeof c.t === 'function' ? c.t() : c.t);
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  let h = '<h4>Caderno de Martín</h4><p class="sub">Pendente</p>';
+  h += pend.length ? '<div><ul class="caderno">' + pend.map(t => `<li>${esc(t)}</li>`).join('') + '</ul></div>' : '<p>Nada apuntado. Raro. Algo se me estará olvidando.</p>';
+  if (E.flags._pista && !E.opts.axuda) h += `<p class="sub">Última nota ao marxe: ${esc(E.flags._pista)}</p>`;
+  await showDoc(h);
+}
 function showDoc(html) { SFX.paper(); const el = $('doc'); el.innerHTML = html.replace(/img\/[\w-]+\.(png|jpg)/g, res) + '<p class="doc-x">(toca para pechar)</p>'; el.hidden = false; return new Promise(r => { el.onclick = () => { el.hidden = true; r(); }; }); }
 /* imaxe a pantalla completa con liñas de texto. zoom = { x, y, z } (opcional): a cámara achégase amodo
    ao punto (x, y) da imaxe (fraccións 0..1) ata z aumentos e queda alí. */
@@ -189,7 +201,12 @@ function minixogoToques(o) {
     raf = requestAnimationFrame(loop);
   });
 }
-function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 2200); }
+/* avisos: os que empezan por «Pista:» só saen co «Modo axuda» (Opcións); se non, gárdanse para o caderno.
+   Un «Novo obxectivo» fai latexar o botón do caderno. */
+function toast(t) {
+  if (/^Pista:/.test(t)) { E.flags._pista = t.replace(/^Pista:\s*/, ''); if (!E.opts.axuda) return; }
+  if (/^Novo obxectivo/.test(t)) { delete E.flags._pista; const b = $('bCaderno'); if (b) { b.classList.remove('novo'); void b.offsetWidth; b.classList.add('novo'); } }
+  const el = $('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 2200); }
 /* executa un script bloqueando a entrada mentres dura */
 async function run(fn) { if (!fn) return; E.busy++; try { await fn(); } catch (e) { console.error(e); } finally { E.busy--; E.held = null; drawInv(); } }
 
@@ -322,6 +339,8 @@ function wireInput() {
   });
   $('bOllo').onclick = () => { SFX.init(); ollo(); };
   $('bMenu').onclick = () => { if (!E.busy && !E.dlg) openMenu(); };
+  const bc = $('bCaderno'); if (bc) bc.onclick = () => { SFX.init(); if (!E.busy && !E.dlg && !E.paused) run(abrirCaderno); };
+  window.addEventListener('keydown', e => { if (e.code === 'KeyC' && !E.busy && !E.dlg && !E.paused) run(abrirCaderno); });
 }
 function advanceDlg() {
   const D = E.dlg; if (!D || D.choices) return;
@@ -685,6 +704,7 @@ function buildMenu() {
   const o = E.opts;
   $('optFast').checked = o.fast; $('optMus').value = o.music; $('optSfx').value = o.sfx;
   $('optFast').onchange = e => { o.fast = e.target.checked; saveOpts(); };
+  const ax = $('optAxuda'); if (ax) { ax.checked = !!o.axuda; ax.onchange = e => { o.axuda = e.target.checked; saveOpts(); }; }
   $('optMus').oninput = e => { o.music = +e.target.value; SFX.volume(); if (MENU.el && MENU.on) { MENU.vol = o.music; MENU.el.volume = o.music; if (MENU.wa && MENU.wa.g) MENU.wa.g.gain.value = o.music; if (SFX.ctx) SFX.mus.gain.value = 0; } saveOpts(); };
   $('optSfx').oninput = e => { o.sfx = +e.target.value; SFX.volume(); saveOpts(); };
   $('optTest').onclick = () => SFX.whistle();

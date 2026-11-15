@@ -217,6 +217,8 @@ async function conchaQuiosco() {
       await CO('Pero o contrato asínao ela, eh? Está na Fraternal, xogando á brisca. E non a molestes en metade dunha man, que morde.');
       await MA('Firmar con Rosario, en la Fraternal, sin interrumpir la brisca. Apuntado. Lo de morder, también.', 'convencido');
       setFlag('objetivoContrato');
+      await chaveTallerConcha();
+      await MA('Y la casa, mientras tanto, ya puedo verla. Llaves tengo. Doctor Casares, 211.', 'sonriente');
     }
     if (k === 'chaves2') {
       await CO('Perdícheslas xa? Ai, Martiño... Menos mal que Rosario me deixou outra copia. Coma se te coñecese.');
@@ -248,9 +250,17 @@ async function conchaQuiosco() {
       await CO('Atrás tiña unha carpintaría que daba gusto. Dende o quiosco oíase o serrón.');
       await MA('¿Desde aquí? Pues sí que serraba fuerte el señor Alfredo.', 'sorprendido');
       await CO('Ou eu tiña bo oído. As dúas cousas. Pregúntalle a Rosario, que lle encanta contalo.');
+      if (!flag('sabeChaveTaller')) await chaveTallerConcha();
     }
     if (k === 'adeus') { await CO('Vai, e come algo, que estás chupado.'); return; }
   }
+}
+// cambio 6 (revisión Gilbert): Concha di no Acto 1 que garda a chave do taller e que pide «un detalle»
+async function chaveTallerConcha() {
+  await CO('Ah, e tamén teño a chave da nave de atrás, a do taller do señor Alfredo. Esa non lla dou a calquera.');
+  await CO(flag('chavesDadas') ? 'A esa chave hai que lle ter un detalle. E hoxe xa che dei bastante: primeiro instálate.' : 'A esa chave hai que lle ter un detalle. E ti aínda nin colliches a da casa.');
+  await MA('Un detalle. Con Concha, los detalles se compran en su propio quiosco. Lo apunto.', 'risueno');
+  setFlag('sabeChaveTaller');
 }
 
 /* Fondo: ilustración da praza enviada por Oscar (img/bg-praza-estacion.jpg), recortada para deixar
@@ -445,7 +455,11 @@ SCENES.arenal = {
     { name: 'Porta da Fraternal', key: true, r: [646, 282, 56, 140], at: [672, 438], face: 'B', exit: ['__fraternal'], done: () => flag('davidAmparo'),
       act: async () => {
         if (!flag('objetivoContrato')) { await bark('La Fraternal. Ahora no tengo nada que hacer dentro. Primero, las llaves de casa: las tiene Concha, en el quiosco.'); return; }
-        if (!flag('davidAmparo')) { await bark('¿Estará Rosario dentro? No quiero entrar a ciegas en mitad de una brisca. El tío Demetrio está en la puerta: él lo sabrá.'); return; }
+        if (!flag('davidAmparo')) {
+          await DA('Vas por Rosario? Na primeira mesa, coa brisca. Pero non lle fales ata que remate a man, que despois a culpa da derrota é túa!');
+          await MA('Entrar, esperar a que acabe la mano y no tener la culpa de nada. Como en el trabajo.', 'risueno');
+          setFlag('davidAmparo');
+        }
         SFX.door(); await goScene('fraternal', [590, 266]);
       },
       look: () => MA('La puerta de la Fraternal. Por aquí han entrado más goles de Champions que en muchos estadios.', 'sonriente') },
@@ -518,8 +532,13 @@ async function asinarContrato() {
   await RO('E o dous de xuño do cincuenta e dous vendeuno todo, toda a maquinaria, por trinta mil pesetas. A un enxeñeiro de Camiños e a un contratista.');
   await MA('¿Un ingeniero de Caminos? ¿Para qué quiere un ingeniero de Caminos una carpintería entera?', 'dudoso');
   await RO('Iso pregúntome eu. O meu home, que é de matemáticas, di que a conta non lle sae. Pero el di iso de todo.');
-  await MA('Contrato, llaves y una pregunta. Ahora sí: a casa. Doctor Casares, 211, por la calle Morín.', 'convencido');
-  toast('Novo obxectivo: ir á Casa Juana (rúa Doutor Casares)');
+  if (flag('sinAgua')) {
+    await MA('Contrato, llaves y una pregunta. Ahora sí, al Concello a por el agua: en el mapa, zona Centro.', 'convencido');
+    toast('Novo obxectivo: o Concello (mapa, zona Centro)');
+  } else {
+    await MA('Contrato, llaves y una pregunta. Ahora sí: a casa. Doctor Casares, 211, por la calle Morín.', 'convencido');
+    toast('Novo obxectivo: ir á Casa Juana (rúa Doutor Casares)');
+  }
 }
 SCENES.fraternal = {
   name: 'A Fraternal', bg: 'img/bg-fraternal.jpg', music: 'casa', floor: 'pedra',
@@ -667,13 +686,12 @@ SCENES.casares = {
     { name: 'Rúa cara ao centro', key: true, done: () => !flag('sinAgua') || flag('aguaAlta'), r: [180, 300, 120, 40], at: [240, 342], face: 'B', exit: ['__centro'], hint: 'U',
       act: async () => {
         if (flag('sinAgua') && !flag('aguaAlta')) { await MA('Hacia el centro, al Concello. A dar de alta el agua, contrato en mano.', 'convencido'); return goScene('mapa'); }
-        if (flag('contratoAsinado')) return goScene('mapa');
+        if (flag('contratoAsinado') || flag('sinAgua')) return goScene('mapa');
         await ruaPechada('La calle sigue hacia el centro. Hoy ya he visto bastante Monforte para un lunes.', 'pensativo');
       } },
-    { name: 'Porta da Casa Juana', key: true, r: [654, 236, 70, 176], at: [690, 424], face: 'B', exit: ['__casa'], done: () => flag('contratoAsinado'),
+    { name: 'Porta da Casa Juana', key: true, r: [654, 236, 70, 176], at: [690, 424], face: 'B', exit: ['__casa'], done: () => flag('salonVisto'),
       act: async () => {
         if (!hasItem('chavesCasa')) { await bark('Cerrada, claro. Las llaves las tiene Concha, en el quiosco de la plaza.'); return; }
-        if (!flag('contratoAsinado')) { await bark('Tengo las llaves, pero sin contrato firmado sería entrar como un ladrón con permiso. Primero, Rosario, en la Fraternal.'); return; }
         SFX.door(); await goScene('casaSalon', [470, 500]);
       },
       look: () => MA('La puerta de casa. Madera vieja, cristal labrado y una cerradura que pide aceite. Mi puerta, si todo va bien.', 'pensativo') },
@@ -732,7 +750,7 @@ SCENES.casaSalon = {
     }
     if (flag('salonVisto')) return;
     setFlag('salonVisto');
-    await MA('Hola, casa. Soy Martín. Vamos a llevarnos bien.', 'sonriente');
+    await MA(flag('contratoAsinado') ? 'Hola, casa. Soy Martín. Vamos a llevarnos bien.' : 'Hola, casa. Soy Martín. Todavía sin firmar, pero con llaves. Vamos a llevarnos bien.', 'sonriente');
     await MA('Sofá, mesa para seis, cuadros de paisaje... Para ser de alquiler, está mejor que mi piso de Valencia. Y no huele a humedad. De momento.', 'pensativo');
     toast('Pista: explora a casa. A cociña está á dereita');
   },
@@ -786,9 +804,15 @@ async function billaSenAuga() {
   await sleep(500);
   await MA('...', 'dudoso');
   await MA('Ni una gota. Ni un gorgoteo. Ni un triste suspiro de tubería.', 'sorprendido');
-  await MA('Claro: el contrato está firmado, pero el agua hay que darla de alta en el Concello. Con el contrato en la mano, como todo en esta vida.', 'pensativo');
-  await MA('Y la planta del salón tan verde... Esa sabe algo que yo no sé.', 'esceptico');
-  toast('Novo obxectivo: o Concello. Na rúa, cara ao centro, e no mapa, zona Centro');
+  if (flag('contratoAsinado')) {
+    await MA('Claro: el contrato está firmado, pero el agua hay que darla de alta en el Concello. Con el contrato en la mano, como todo en esta vida.', 'pensativo');
+    await MA('Y la planta del salón tan verde... Esa sabe algo que yo no sé.', 'esceptico');
+    toast('Novo obxectivo: o Concello. Na rúa, cara ao centro, e no mapa, zona Centro');
+  } else {
+    await MA('Claro: el agua hay que darla de alta en el Concello. Y el Concello querrá ver el contrato firmado. Que todavía no lo está.', 'pensativo');
+    await MA('Así que primero Rosario, en la Fraternal, y luego el Concello. Y la planta del salón tan verde... Esa sabe algo que yo no sé.', 'esceptico');
+    toast('Novo obxectivo: asinar o contrato con Rosario e despois o Concello');
+  }
 }
 SCENES.casaCocina = {
   name: 'Casa Juana · Cociña', bg: 'img/bg-casa-cocina.jpg', music: 'casa', floor: 'madeira',
@@ -811,11 +835,16 @@ SCENES.casaCocina = {
     { name: 'Neveira', r: [0, 60, 40, 300], look: () => MA('La nevera. La abro con fe... vacía, salvo una botella de agua. Ah, mira: agua. La guardo para una emergencia.', 'risueno') },
     { name: 'Froiteiro', r: [52, 264, 70, 50], look: () => MA('Un frutero con naranjas y manzanas de verdad. La casera piensa en todo. Hasta en mi colesterol.', 'sonriente') },
     { name: 'Illa', r: [40, 284, 356, 116], look: () => MA('Una isla de cocina con encimera de madera. Para desayunar de pie, como un maquinista con prisa.', 'risueno') },
-    { name: 'Caixóns', key: true, done: () => !flag('cadeiraAparafusada') || hasItem('desaparafusador'), r: [508, 258, 194, 116], at: [600, 410], face: 'B',
+    { name: 'Caixóns', key: true, done: () => flag('navallaCollida') && (!flag('cadeiraAparafusada') || hasItem('desaparafusador')), r: [508, 258, 194, 116], at: [600, 410], face: 'B',
       look: () => MA('Cajones de cocina. En el primero, los cubiertos. En el último, el caos de cada casa: pilas, gomas, llaves que no abren nada...', 'pensativo'),
       act: async () => {
+        if (!hasItem('navalla') && !flag('navallaCollida')) {
+          setFlag('navallaCollida'); give('navalla');
+          await MA('Cubiertos, pilas, gomas... y una navaja vieja de mango de madera. Me la quedo: en esta casa todo parece tener una cerradura o una tapa.', 'sonriente');
+          if (!flag('cadeiraAparafusada') || hasItem('desaparafusador')) return;
+        }
         if (hasItem('desaparafusador')) return MA('Cubiertos, gomas, pilas gastadas. Lo útil ya me lo he llevado.', 'neutro');
-        if (!flag('cadeiraAparafusada')) return MA('Cubiertos, pilas, gomas y un destornillador. El kit básico de supervivencia. De momento no necesito nada.', 'neutro');
+        if (!flag('cadeiraAparafusada')) return MA('Cubiertos, pilas, gomas y un destornillador. El kit básico de supervivencia. De momento no necesito nada más.', 'neutro');
         give('desaparafusador');
         await MA('El último cajón, el del caos: pilas, gomas, un abrebotellas... ¡y un destornillador de estrella! Lo sabía. Es ley.', 'orgulloso');
       } },
@@ -855,7 +884,10 @@ async function espiarTaller() {
     '...o serrón da cinta, o golpe das prensas, as correas zoando nas poleas...',
     'Martín: «Casi lo oigo. Como si las máquinas siguieran ahí, esperando turno.»',
   ]);
-  if (!flag('tallerEspiado')) { setFlag('tallerEspiado'); toast('A chave do taller chegará máis adiante'); }
+  if (!flag('tallerEspiado')) {
+    setFlag('tallerEspiado');
+    await MA(flag('sabeChaveTaller') ? 'La llave la tiene Concha, y quiere un detalle. Hoy no: hoy bastante tengo con instalarme.' : 'Y el candado, sin llave. Alguien la tendrá. En Monforte, alguien siempre tiene la llave de todo.', 'pensativo');
+  }
 }
 SCENES.casaPatio = {
   name: 'Casa Juana · Patio', bg: 'img/bg-casa-patio.jpg', floor: 'pedra', music: 'casa',
@@ -1065,9 +1097,9 @@ async function cadeirasEspera(como) {
   // 1) devolvela: primeiro poñela no seu sitio, despois atornillala co desaparafusador
   if (hasItem('cadeira')) {
     if (como === 'desaparafusador') return MA('Primero tengo que ponerla en su sitio. Atornillar una silla en brazos es un número de circo, no un trámite.', 'risueno');
-    take('cadeira'); setFlag('cadeiraPosta');
-    await MA('La silla, en su sitio, al final de la fila. Pero suelta: le faltan sus cuatro tornillos.', 'pensativo');
-    toast('Pista: usa o desaparafusador coas cadeiras');
+    take('cadeira'); setFlag('cadeiraPosta'); setFlag('cadeiraDevolta');
+    await MA('La silla, en su sitio, al final de la fila. Cuatro tornillos, cuatro vueltas... apretados. Ni un rasguño. Si alguien pregunta, solo la he sacado a pasear.', 'aliviado');
+    if (flag('eladioVolveu') && !flag('aguaAlta')) toast('Pista: agora, a ventanilla 1');
     return;
   }
   if (flag('cadeiraPosta') && !flag('cadeiraDevolta')) {
@@ -1087,8 +1119,9 @@ async function cadeirasEspera(como) {
     if (!flag('cadeiraAparafusada')) {
       setFlag('cadeiraAparafusada');
       await MA('Tiro de la del final de la fila... y no se mueve. Atornillada al suelo, como los taburetes del bar. En Monforte atornillan todo lo que sirve para sentarse.', 'frustrado');
-      await MA('Cuatro tornillos de estrella. Con un destornillador, sale en un minuto. Y en algún cajón de la cocina de casa tiene que haber uno: en todas las cocinas hay uno.', 'convencido');
-      toast('Pista: nos caixóns da cociña da Casa Juana');
+      await MA('Cuatro tornillos de estrella. Con un destornillador, sale en un minuto.', 'convencido');
+      await MA('Y los taburetes del café también están atornillados... Quien los atornilla, los aprieta de vez en cuando. En ese bar tiene que haber un destornillador.', 'pensativo');
+      toast('Pista: no café de enfronte, enriba da barra');
     } else if (hasItem('desaparafusador')) {
       await MA('Sigue atornillada. Y yo con un destornillador en el bolsillo, tirando con las manos. Será la costumbre.', 'avergonzado');
       toast('Pista: usa o desaparafusador coas cadeiras');
@@ -1117,7 +1150,11 @@ async function eladioVentanilla() {
   await MA('El alta del agua de la Casa Juana, Doctor Casares, 211. Aquí está el contrato.', 'convencido');
   await EL('A ver... Rosario Higueras, a dona... asinado... con bolígrafo azul. Ben.');
   await EL('(selo, selo, selo) Alta feita. Mañá pola mañá ten auga. Se non hai ningunha incidencia. E sempre hai algunha.');
-  setFlag('aguaAlta');
+  await EL('Casa Juana... Esa casa ten moito público. O mes pasado xa veu preguntar por ela un tal Nogal.');
+  await MA('¿Nogal? ¿Preguntar qué?', 'dudoso');
+  await EL('Iso é protección de datos, rapaz. Nogal: apelido de aquí. Hai moitos. Ou non tantos.');
+  await MA('(Un tal Nogal, preguntando por mi casa antes que yo. En Monforte hasta las casas tienen cola.)', 'pensativo');
+  setFlag('aguaAlta'); setFlag('eladioNogal');
   await EL('Por certo: o reloxo do café adianta dez minutos. Debería denunciarse. Pero hoxe xa fichei.');
   await MA('Agua, mañana. Por hoy, bastante he hecho: llaves, contrato, Concello. A casa, a descansar.', 'aliviado');
   toast('Novo obxectivo: volver á Casa Juana e descansar');
@@ -1126,6 +1163,9 @@ SCENES.cafeEladio = {
   name: 'Café', bg: 'img/bg-cafe-eladio.jpg', music: 'casa', floor: 'pedra',
   // a cadeira azul da sala de espera, só mentres Martín está subido nela
   draw(c) {
+    if (!hasItem('desaparafusador') && !flag('desapCafe')) {   // o destornillador do bar, enriba da barra
+      c.save(); c.translate(478, 274); c.rotate(-0.12); c.scale(1.35, 1.35); c.fillStyle = '#d23a2a'; c.fillRect(-22, -3, 16, 6); c.fillStyle = '#c9ccd2'; c.fillRect(-6, -1.5, 24, 3); c.restore();
+    }
     if (!this._cadeira) return;
     const s = scaleAt(CADEIRA_CAFE.y), x = CADEIRA_CAFE.x, y = CADEIRA_CAFE.y, w = 62 * s, sh = 78 * s;
     c.strokeStyle = '#8f96a0'; c.lineWidth = Math.max(2, 5 * s); c.lineCap = 'round';
@@ -1153,6 +1193,13 @@ SCENES.cafeEladio = {
       look: () => MA('La puerta de cristal. Por ahí se ve el Concello. Eladio también lo ve. Y aun así, aquí sigue.', 'esceptico') },
     { name: 'Reloxo', key: true, done: () => flag('eladioVolveu'), r: [496, 70, 32, 48], at: [690, 330], face: 'L', act: () => adiantarReloxo(), use: { cadeira: () => subirCadeira() },
       look: () => MA(flag('eladioVolveu') ? 'El reloj, diez minutos adelantado. Lo dejo así: en este bar, un poco de prisa no le viene mal a nadie.' : 'Un reloj de pared. Las dos menos diez. Y Eladio, aquí, con el café.', flag('eladioVolveu') ? 'risueno' : 'dudoso') },
+    { name: 'Desaparafusador', key: true, when: () => !hasItem('desaparafusador') && !flag('desapCafe'), done: () => !flag('cadeiraAparafusada'), r: [450, 262, 60, 22], at: [690, 330], face: 'L',
+      look: () => MA('Un destornillador de estrella encima de la barra, junto al servilletero. Alguien ha estado apretando taburetes.', 'dudoso'),
+      act: async () => {
+        if (!flag('cadeiraAparafusada')) return MA('Un destornillador del bar. No es mío y no lo necesito. Todavía.', 'neutro');
+        setFlag('desapCafe'); give('desaparafusador');
+        await MA('Me lo llevo prestado. Lo devuelvo luego. «Luego», aquí al lado del Concello, es un plazo muy flexible.', 'risueno');
+      } },
     { name: 'Lousa', r: [24, 4, 142, 196], look: () => MA('Café a 1,20, aguardiente a 2. En Monforte el desayuno completo sale por 3,20. El de los funcionarios, por 3,20 y una hora.', 'risueno') },
     { name: 'Botellas', r: [228, 40, 186, 102], look: () => MA('Licores de colores en fila, como vagones de un mercancías. Este va cargado.', 'risueno') },
     { name: 'Cafeteira', r: [312, 140, 98, 100], look: () => MA('Una cafetera de las de verdad, de dos brazos. Silba como una locomotora pequeña. Me cae bien.', 'sonriente') },
@@ -1171,7 +1218,7 @@ SCENES.cafeEladio = {
 /* ---------- Mapa de Monforte (pantalla de viaxe entre zonas) ---------- */
 const ZONAS = [
   { id: 'estacion', name: 'Barrio da Estación', x: 760, y: 380, open: () => true },
-  { id: 'casa', name: 'Casa Roja', x: 660, y: 456, open: () => flag('contratoAsinado') },
+  { id: 'casa', name: 'Casa Roja', x: 660, y: 456, open: () => hasItem('chavesCasa') || flag('contratoAsinado') },
   { id: 'centro', name: 'Centro · Concello', x: 560, y: 300, open: () => flag('contratoAsinado') },
   { id: 'rio', name: 'Río Cabe · Malecón', x: 300, y: 330, open: () => false },
   { id: 'castelo', name: 'Castelo de San Vicente', x: 486, y: 160, open: () => false },
@@ -1198,12 +1245,41 @@ SCENES.mapa = {
   hotspots: [
     { name: 'Barrio da Estación', key: true, r: [700, 340, 150, 90], exit: ['praza', [600, 420]] },
     { name: 'Casa Roja', key: true, r: [596, 428, 130, 84], exit: ['__casa'],
-      act: async () => { if (flag('contratoAsinado')) return goScene('casares', [690, 430]); await mapaPechado('La Casa Roja, en Doctor Casares. Sin contrato firmado no es mi casa: es la casa de otro con mis llaves. Primero, Rosario.', 'M1'); } },
+      act: async () => { if (hasItem('chavesCasa') || flag('contratoAsinado')) return goScene('casares', [690, 430]); await MA('La Casa Roja, en Doctor Casares. Sin llaves, lo único que puedo hacer allí es mirar la fachada. Las llaves las tiene Concha.', 'pensativo'); } },
     { name: 'Centro · Concello', r: [490, 270, 150, 80], exit: ['__centro'],
-      act: async () => { if (flag('contratoAsinado')) return goScene('concelloExt', [90, 360]); await mapaPechado('El centro, con el Concello. Sin casa ni contrato, ¿a qué voy? ¿A empadronarme en un banco del parque? Primero, las llaves y la firma.', 'M2'); } },
+      act: async () => {
+        if (flag('contratoAsinado')) return goScene('concelloExt', [90, 360]);
+        if (flag('sinAgua')) return MA('El Concello, para el agua. Pero sin contrato firmado, Eladio no me da ni la hora. Primero, la firma de Rosario en la Fraternal.', 'convencido');
+        await MA('El centro, con el Concello. Sin contrato, ¿a qué voy? ¿A empadronarme en un banco del parque? Primero, la firma de Rosario.', 'pensativo');
+      } },
     { name: 'Río Cabe · Malecón', r: [230, 300, 150, 80], act: () => mapaPechado('El Malecón, junto al Cabe. Para pasear hace falta tener casa a la que volver. Primero, instalarse.', 'M3') },
     { name: 'Castelo de San Vicente', r: [410, 110, 160, 80], act: () => mapaPechado('Subir al castillo de San Vicente el primer día. Ni en mis tiempos de cross, y eso que los ganaba todos.', 'M3') },
     { name: 'Vilatán', r: [28, 440, 230, 66], act: () => mapaPechado('Vilatán. Mi madre me espera el domingo para el caldo. Si voy hoy, me pregunta por qué no he avisado. Mejor el domingo.', 'M6') },
   ],
 };
 async function mapaPechado(linea, hito) { await MA(linea, 'pensativo'); toast(`Zona en construción · chega no ${hito}`); }
+
+/* ---------- caderno de Martín · Acto 1 (cambio 1 da revisión Gilbert) ---------- */
+{
+  const A1 = () => !flag('fimActo1');
+  CADERNO.push(
+    { when: () => A1() && !flag('chavesDadas'), t: 'Recoger las llaves de la Casa Juana. Las tiene Concha, en el quiosco de la plaza de la estación.' },
+    { when: () => A1() && flag('chavesDadas') && !flag('contratoAsinado') && !flag('faltaBoli'), t: 'Firmar el contrato con Rosario Higueras, en la Fraternal (calle Concepción Arenal). Sin interrumpir la brisca.' },
+    { when: () => A1() && flag('faltaBoli') && !flag('sabeCrucigrama') && !flag('contratoAsinado'), t: 'Rosario no tiene bolígrafo. Concha tiene uno, el de los crucigramas. A ver si me lo presta.' },
+    { when: () => A1() && flag('sabeCrucigrama') && !flag('sabePalabra'), t: () => hasItem('xornal') ? 'El 7 horizontal de Concha: «o máximo goleador dunha liga», ocho letras. Esto es cosa de alguien que sepa de fútbol. El tío Demetrio, en la puerta de la Fraternal.' : 'El 7 horizontal de Concha es de fútbol. Necesito el periódico: se lo compro a ella o cojo el de la Fraternal.' },
+    { when: () => A1() && flag('sabePalabra') && !flag('boliDado'), t: 'Decirle a Concha la palabra que le falta: PICHICHI.' },
+    { when: () => A1() && flag('boliDado') && !flag('contratoAsinado'), t: 'Llevarle el bolígrafo de Concha a Rosario y firmar.' },
+    { when: () => A1() && flag('chavesDadas') && !flag('salonVisto'), t: 'Ver la casa: Doctor Casares, 211. Por la calle Morín o por la calle Coruña.' },
+    { when: () => A1() && flag('salonVisto') && !flag('sinAgua'), t: 'Revisar la casa entera: salón, cocina y patio. A ver qué le falta.' },
+    { when: () => A1() && flag('sinAgua') && !flag('contratoAsinado'), t: 'La casa no tiene agua. El alta se da en el Concello, pero con el contrato firmado.' },
+    { when: () => A1() && flag('sinAgua') && flag('contratoAsinado') && !flag('eladioAusente'), t: 'Dar de alta el agua en el Concello (mapa, zona Centro). Con el contrato en la mano.' },
+    { when: () => A1() && flag('eladioAusente') && !flag('eladioFicha'), t: 'Eladio ha dejado «Volvo nun momento». Estará en el café de enfrente.' },
+    { when: () => A1() && flag('eladioFicha') && !flag('reloxoAlto') && !flag('eladioVolveu'), t: 'Eladio ficha a las dos en punto, «nin un minuto antes». Son las dos menos diez. Y el café tiene un reloj...' },
+    { when: () => A1() && flag('reloxoAlto') && !flag('cadeiraAparafusada') && !flag('eladioVolveu'), t: 'El reloj del café está muy alto. Algo para subirme: las sillas de espera del Concello.' },
+    { when: () => A1() && flag('cadeiraAparafusada') && !hasItem('cadeira') && !flag('eladioVolveu'), t: () => hasItem('desaparafusador') ? 'Desatornillar una silla de espera del Concello.' : 'La silla de espera está atornillada. Un destornillador: en el café, los taburetes también están atornillados. O en el cajón de la cocina de casa.' },
+    { when: () => A1() && hasItem('cadeira') && !flag('eladioVolveu'), t: 'Poner la silla debajo del reloj del café y subirme.' },
+    { when: () => A1() && flag('eladioVolveu') && !flag('cadeiraDevolta'), t: 'Devolver la silla a su sitio, con las otras del Concello.' },
+    { when: () => A1() && flag('eladioVolveu') && flag('cadeiraDevolta') && !flag('aguaAlta'), t: 'Ventanilla 1: el alta del agua.' },
+    { when: () => A1() && flag('aguaAlta'), t: 'Volver a casa y dormir. El dormitorio está a la izquierda del salón.' },
+  );
+}
