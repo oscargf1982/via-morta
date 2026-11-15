@@ -195,16 +195,21 @@ async function valerioTalk() {
     await VA('É a bata do meu pai. E o mostrador do meu pai. E os clientes do meu pai, os que quedan.');
     await VA('E ti que tes nas pernas? Entraches andando coma un home de oitenta anos.');
     await MA('Una silla del Concello, un reloj de bar y veinte años sin correr. Tengo los gemelos de un señor de ochenta años. Uno de los dos, de noventa.', 'avergonzado');
-    await VA('Toma, crema de agulletas. De mostra, que se a pago eu, fáiseme falta a min.');
-    give('crema'); setFlag('valerioSauda'); setFlag('valerioFeito');
-    await MA(flag('faltaCrema') ? 'Crema para las agujetas. Andrés, prepárate: el de Vilatán vuelve al agua.' : 'Crema para las agujetas. Gratis. En Monforte aún quedan cosas que funcionan como antes.', 'orgulloso');
-    comprobarChampions();
-  } else await VA('Outra vez por aquí? Iso é que che gustou a crema.');
+    await VA('Para iso tes crema de agulletas, aí no estante. Pero coñécesme: eu non vendo nin dou nada a un amigo... sen o seu peaxe.');
+    await MA('¿Peaje? ¿Qué peaje?', 'dudoso');
+    await VA('Algo doce. Son lambón dende o instituto: quen che cres que roubaba os caramelos de eucalipto do meu pai? Ti non, eu.');
+    await VA('Tráeme algo doce e a crema é túa. E non me veñas con caramelos de eucalipto, que eses téñoos eu.');
+    setFlag('valerioSauda'); setFlag('valerioDoce');
+    if (hasItem('ositos')) await MA('(Algo dulce... ¡los ositos de Concha! Los llevo encima.)', 'sonriente');
+    else { await MA('(Algo dulce. En el quiosco de Concha hay ositos de goma de los de siempre. Un euro bien invertido.)', 'pensativo'); toast('Pista: Concha vende ositos no quiosco da praza'); }
+  } else await VA(flag('valerioFeito') ? 'Outra vez por aquí? Iso é que che gustou a crema.' : hasItem('ositos') ? 'Iso que asoma do peto... cheira a doce.' : 'Volviches? Sen nada doce? Martín, Martín...');
   for (;;) {
     const opts = [
       { t: '¿Qué tal va Monforte?', k: 'monforte' },
       { t: '¿Has oído el silbato de noche?', k: 'asubio' },
-      ...(!hasItem('crema') && !flag('cremaPosta') ? [{ t: '¿Me das otra muestra de crema?', k: 'crema' }] : []),
+      ...(!flag('valerioFeito') && hasItem('ositos') ? [{ t: '(Darle los ositos.)', k: 'doce' }] : []),
+      ...(!flag('valerioFeito') && !hasItem('ositos') ? [{ t: '¿Y no me puedes fiar la crema?', k: 'fiar' }] : []),
+      ...(flag('valerioFeito') && !hasItem('crema') && !flag('cremaPosta') ? [{ t: '¿Me das otra muestra de crema?', k: 'crema' }] : []),
       { t: 'Hasta luego, Valerio.', k: 'adeus' },
     ];
     const k = opts[await choose(opts)].k;
@@ -219,9 +224,22 @@ async function valerioTalk() {
       await MA('¿Más caro para mí?', 'esceptico');
       await VA('Ti necesítalos máis.');
     }
+    if (k === 'doce') return valerioOsitos();
+    if (k === 'fiar') {
+      await VA('Fiar? A un home que volve a Monforte despois de vinte anos? Fíoche o saúdo. A crema, a cambio de algo doce.');
+      await MA('(Ositos. El quiosco de Concha, en la plaza de la estación.)', 'pensativo');
+    }
     if (k === 'crema') { await VA('Xa a perdiches? Ai, Martín. Toma outra. A última, que me quedo sen mostras e teño que traballar.'); give('crema'); }
     if (k === 'adeus') { await VA('Vai, e pon a crema antes de facer o parvo, non despois.'); return; }
   }
+}
+async function valerioOsitos() {
+  take('ositos');
+  await VA('Ositos de goma! Dos de Concha, dos de sempre! Ai, Martín, ti si que sabes.');
+  await VA('Un para min... outro para min... e este, para min. Toma, a crema. De mostra, que se a pago eu, fáiseme falta a min.');
+  give('crema'); setFlag('valerioFeito');
+  await MA(flag('faltaCrema') ? 'Crema para las agujetas. Pagada en ositos. Andrés, prepárate: el de Vilatán vuelve al agua.' : 'Crema para las agujetas, pagada en ositos. En Monforte aún quedan cosas que funcionan como antes. El trueque, por ejemplo.', 'orgulloso');
+  comprobarChampions();
 }
 async function xoanFarmacia() {
   if (!flag('pistaCurma')) return;
@@ -279,7 +297,7 @@ SCENES.farmacia = {
       look: () => MA('Valerio, mi compañero de pupitre en el instituto. Con la bata de su padre parece un médico de serie. De serie de sobremesa.', 'sonriente'),
       talk: () => valerioTalk(),
       give: {
-        ositos: async () => { await VA('Ositos? Na farmacia? Martín, levo vinte anos dicindo que o azucre fai mal. Dame un.'); },
+        ositos: async () => { if (flag('valerioFeito')) await VA('Máis ositos? Martín, levo vinte anos dicindo que o azucre fai mal. Dame un. Só un.'); else await valerioOsitos(); },
         crema: async () => { await VA('Non, non: é para ti. Póñaa ti, que eu non che dou masaxes. Iso é cousa dos fisios.'); },
         xornal: async () => { await VA('Xa o lin. As esquelas primeiro: é deformación profesional.'); },
       } },
@@ -417,16 +435,36 @@ function comprobarChampions() {
   bark('Las ocho menos diez. Martes. Champions en la Fraternal con el tío Demetrio. Hay cosas que no se negocian.', 'Martín', 3600);
   toast('Novo obxectivo: a Champions na Fraternal (rúa Concepción Arenal)');
 }
+Object.assign(ico, {
+  pilas(c) { for (const [x, r] of [[14, -0.2], [26, 0.15]]) { c.save(); c.translate(x + 4, 25); c.rotate(r); c.fillStyle = '#2a2a2e'; c.fillRect(-5, -14, 10, 28); c.fillStyle = '#d9a032'; c.fillRect(-5, -14, 10, 9); c.fillStyle = '#ccc'; c.fillRect(-2, -17, 4, 3); c.restore(); } },
+});
+Object.assign(ITEMS, {
+  pilas: { name: 'Pilas gastadas', icon: ico.pilas, look: () => MA('Dos pilas del cajón de las gastadas. Si las froto un poco con las manos, siempre les queda energía para un par de clics. No lo dice ningún manual. Lo dice cualquier maquinista.', 'risueno') },
+});
 async function championsNoite() {
   await DA('Martín! Senta, que xa empeza. Gardeiche o tamborete bo. O gastado.');
   await MA('El de media vida sentándose en el mismo. Un honor.', 'risueno');
+  await MA('¿Y la tele? Está negra.', 'dudoso');
+  await DA('O mando. Sen pilas. E no bar non quedan: as últimas puxéronse no reloxo da parede, e xa viches como vai.');
   await DA('Isto lémbrame o meu gol ao Ourense, en Terceira. Un domingo de sol, collo o balón...');
   await XO('Foi en mércores, Demetrio. E chovía. Catorce de marzo, minuto oitenta e un, de cabeza e de rebote.');
   await DA('De rebote?! Cinco euros a que non!');
   await XO('Está na acta do partido. Teño copia.');
   await MA('(¿Copia del acta de un partido de Tercera de hace treinta años? Este hombre no tiene memoria: tiene archivo.)', 'pensativo');
   await RO('Xoán ten copia de todo. Ata das miñas notas do colexio. Por iso non o deixo entrar na casa.');
-  setFlag('champSauda');
+  await DA('E mentres, o partido empezando e nós mirando unha tele apagada. Coma na posguerra, pero sen radio.');
+  await MA('Pilas... En casa hay un cajón en la cocina con pilas gastadas. Todas las casas tienen uno: nadie las tira, nadie las usa.', 'pensativo');
+  await DA('Gastadas? E para que queres ti pilas gastadas?');
+  await MA('Si las frotas un poco con las manos, siempre les queda energía para un par de clics. Ciencia de maquinista. Vuelvo en nada.', 'convencido');
+  setFlag('champSauda'); setFlag('faltanPilas');
+  toast('Novo obxectivo: pilas para o mando (caixón da cociña, Casa Juana)');
+}
+async function acenderTele() {
+  take('pilas'); setFlag('teleAcesa');
+  await MA('Pilas gastadas, frotadas con fe. Las meto en el mando... apunto... ¡clic!', 'convencido');
+  await DA('Acendeu! Martín, es un mago! Un mago con pilas mortas!');
+  await XO('Dous clics, dixo. Non cambies de canle, Demetrio. Por favor.');
+  await MA('Ciencia de maquinista. Y ahora, que nadie toque el mando.', 'orgulloso');
 }
 async function xoanChampions() {
   for (;;) {
@@ -449,6 +487,13 @@ async function xoanChampions() {
     if (k === 'adeus') { await XO('Iso. E non apostes con Demetrio, que paga en goles.'); return; }
   }
 }
+async function sairChampions() {
+  if (flag('teleAcesa')) return fimChampions();
+  if (hasItem('pilas')) return MA('Llevo las pilas en el bolsillo. Primero, la tele; después, ya veremos.', 'convencido');
+  await MA('A por las pilas: el cajón de la cocina de casa. Demetrio, guárdame el taburete.', 'convencido');
+  await DA('Vai, vai. Eu vou contando o partido de memoria.');
+  SFX.door(); await goScene('arenal', [672, 446]);
+}
 async function fimChampions() {
   await MA('Las once. Ni prórroga ni penaltis: a dormir, que mañana madrugo.', 'convencido');
   await DA('Ás once! Coma os nenos. E agora que ía marcar o noso...');
@@ -461,6 +506,7 @@ SCENES.fraternalNoite = {
   front: SCENES.fraternal.front.map(L => ({ ...L, withDraw: true })),
   draw(c, t) {
     c.fillStyle = 'rgba(8,12,36,.46)'; c.fillRect(0, 0, 960, 540);
+    if (!flag('teleAcesa')) { c.fillStyle = '#0b0d12'; c.fillRect(726, 80, 66, 42); c.fillStyle = 'rgba(255,255,255,.08)'; c.fillRect(730, 84, 20, 4); return; }
     const f = 0.6 + 0.4 * Math.sin(t * 9) * Math.sin(t * 2.3);
     const g = c.createRadialGradient(759, 101, 6, 759, 101, 230); g.addColorStop(0, `rgba(150,200,255,${0.5 * f})`); g.addColorStop(1, 'rgba(150,200,255,0)');
     c.fillStyle = g; c.fillRect(500, 0, 460, 360);
@@ -468,17 +514,26 @@ SCENES.fraternalNoite = {
   },
   async onEnter() { if (!flag('champSauda')) await championsNoite(); },
   hotspots: [
-    { name: 'Saír · ás once, á cama', key: true, r: [520, 82, 76, 128], at: [590, 262], face: 'B', exit: ['__casa'], door: true, act: () => fimChampions(),
+    { name: 'Saír · ás once, á cama', key: true, when: () => flag('teleAcesa'), r: [520, 82, 76, 128], at: [590, 262], face: 'B', exit: ['__casa'], door: true, act: () => fimChampions(),
       look: () => MA('La puerta. A las once en punto, por ahí salgo. Es la única regla de mi vida que nunca me he saltado.', 'convencido') },
+    { name: 'Saír · a por pilas', key: true, when: () => !flag('teleAcesa'), r: [520, 82, 76, 128], at: [590, 262], face: 'B', exit: ['arenal'], door: true, act: () => sairChampions(),
+      look: () => MA('La puerta. Sin pilas para el mando, aquí no hay partido. Y las pilas están en mi cocina.', 'pensativo') },
     ...SCENES.fraternal.hotspots.filter(h => !h.exit && h.name !== 'Tele' && h.name !== 'Xornal e baralla'),
-    { name: 'Tele', r: [724, 76, 70, 50], look: () => MA('Champions. Corre uno, se cae otro, el árbitro pita algo que nadie entiende. Lo mismo que en la Tercera de Demetrio, pero con mejor césped.', 'risueno') },
+    { name: 'Tele', key: true, done: () => flag('teleAcesa'), r: [724, 76, 70, 50],
+      act: () => flag('teleAcesa') ? MA('Ni la toco. Dos clics, dijo Xoán. Uno ya lo hemos gastado.', 'risueno') : hasItem('pilas') ? acenderTele() : MA('Sin mando no hay tele, y sin pilas no hay mando. Las pilas gastadas del cajón de mi cocina: ese es el plan.', 'pensativo'),
+      use: { pilas: () => acenderTele() },
+      look: () => flag('teleAcesa') ? MA('Champions. Corre uno, se cae otro, el árbitro pita algo que nadie entiende. Lo mismo que en la Tercera de Demetrio, pero con mejor césped.', 'risueno') : MA('La tele, apagada. Negra como la carbonilla. Y Demetrio mirándola igual, por si acaso.', 'esceptico') },
   ],
   npcs: [
     { ...SCENES.fraternal.npcs[0], done: () => true, talk: async () => { await RO('Shhh, que xa empezou. E que tal a casa? Xa tes auga?'); await MA('Agua, luz y un silbato de regalo.', 'esceptico'); await RO('Iso non vén no contrato. Non me fago responsable.'); } },
     { id: 'davidN', name: 'Tío Demetrio', key: true, sheet: 'img/david-sprite.png', spec: { cw: 160, ch: 280, cols: 8 },
       get idle() { return E.dlg ? 3 : 5; }, talkFrames: [4, 9, 3, 7], x: 300, y: 430, w: 90, h: 290, at: [380, 440], face: 'L', done: () => true,
       look: () => MA('El tío Demetrio, pegado a la tele. Comenta cada jugada como si la hubiera jugado él. Algunas, según él, sí.', 'risueno'),
-      talk: async () => { await DA('Viches iso? Iso marcábao eu cos ollos pechados. E de domingo.'); await MA('Y con sol, claro.', 'risueno'); await DA('Con sol! Por fin alguén con memoria nesta casa.'); } },
+      give: { pilas: () => acenderTele() },
+      talk: async () => {
+        if (!flag('teleAcesa')) { await DA(hasItem('pilas') ? 'Esas son as pilas? Mételas no mando, home, que eu non me fío das miñas mans.' : 'As pilas, Martín! O partido non agarda. Ben, agarda, pero sen nós.'); return; }
+        await DA('Viches iso? Iso marcábao eu cos ollos pechados. E de domingo.'); await MA('Y con sol, claro.', 'risueno'); await DA('Con sol! Por fin alguén con memoria nesta casa.');
+      } },
     { id: 'xoanN', name: 'Xoán Carballeira', key: true, sheet: 'img/xoan-sprite.png', spec: { cw: 160, ch: 280, cols: 8 }, idle: 0, talkFrames: [7, 0],
       x: 610, y: 300, w: 70, h: 296, at: [700, 340], face: 'L', done: () => flag('xoanCandado'),
       look: () => MA('Xoán, viendo el partido con los brazos cruzados. No celebra los goles: los apunta. Seguro que tiene una libreta.', 'pensativo'),
@@ -496,6 +551,18 @@ SCENES.fraternalNoite = {
   const D = SCENES.arenal.npcs.find(n => n.id === 'david'), dD = D.done;
   D.when = () => !(flag('avisoChampions') && !flag('champions'));
   D.done = () => flag('fimActo1') || dD();
+}
+
+{ // o caixón das pilas gastadas da cociña (Champions)
+  const C = SCENES.casaCocina.hotspots.find(h => h.name === 'Caixóns'), actA1 = C.act, doneA1 = C.done;
+  const queroPilas = () => flag('faltanPilas') && !flag('teleAcesa') && !hasItem('pilas');
+  C.act = async () => {
+    if (!queroPilas()) return actA1();
+    give('pilas');
+    await MA('El último cajón, el del caos. Gomas, un abrebotellas... y pilas gastadas, como en todas las casas. Cojo dos.', 'sonriente');
+    await MA('Las froto un poco con las manos... Ya está. Para un par de clics, dan. Demetrio, aguanta.', 'convencido');
+  };
+  C.done = () => !queroPilas() && doneA1();
 }
 
 /* ---------- A5 · a segunda noite: o asubío vén de detrás da casa ---------- */
@@ -734,9 +801,11 @@ SCENES.vigasA2 = {
   const A2 = () => flag('fimActo1') && !flag('fimActo2');
   CADERNO.push(
     { when: () => A2() && !flag('objValerio'), t: 'Hablar con Concha, en el quiosco: ella sabe dónde anda todo el mundo. (Y Xoán, en la estación, quizá sepa quién silba.)' },
-    { when: () => A2() && flag('objValerio') && !flag('valerioFeito'), t: 'Pasar por la farmacia de Valerio: calle del Cardeal (mapa, zona Centro).' },
+    { when: () => A2() && flag('objValerio') && !flag('valerioFeito'), t: () => flag('valerioDoce') ? (hasItem('ositos') ? 'Darle los ositos a Valerio, en la farmacia del Cardeal. Su «peaje» por la crema.' : 'Valerio no suelta la crema sin algo dulce. Ositos de goma, en el quiosco de Concha.') : 'Pasar por la farmacia de Valerio: calle del Cardeal (mapa, zona Centro).' },
     { when: () => A2() && flag('objAndres') && !flag('andresFeito'), t: () => 'La revancha de natación con Mega Andrés, en el Club Fluvial (mapa, Río Cabe).' + (!hasItem('crema') && !flag('cremaPosta') ? ' Antes, algo para estos gemelos.' : '') },
-    { when: () => A2() && flag('avisoChampions') && !flag('champions'), t: 'Champions en la Fraternal, con el tío Demetrio. Hay cosas que no se negocian.' },
+    { when: () => A2() && flag('avisoChampions') && !flag('champions') && (!flag('faltanPilas') || flag('teleAcesa')), t: 'Champions en la Fraternal, con el tío Demetrio. Hay cosas que no se negocian.' },
+    { when: () => A2() && flag('faltanPilas') && !flag('teleAcesa') && !hasItem('pilas'), t: 'Pilas para el mando de la Fraternal: el cajón de la cocina de casa, el de las pilas gastadas.' },
+    { when: () => A2() && hasItem('pilas') && !flag('teleAcesa'), t: 'Volver a la Fraternal y darle vida al mando con las pilas frotadas.' },
     { when: () => A2() && flag('champions') && !flag('silbato2'), t: 'A dormir. El dormitorio, a la izquierda del salón.' },
     { when: () => A2() && flag('silbato2') && !hasItem('chave') && !flag('tallerAberto'), t: 'La llave del taller: la tiene Concha. Quiere un detalle... algo dulce de su propio quiosco.' },
     { when: () => A2() && hasItem('chave') && !flag('tallerAberto'), t: 'Abrir el taller, al fondo del patio de casa.' },
