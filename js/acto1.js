@@ -288,8 +288,7 @@ SCENES.praza = {
     { name: 'Rótulo da estación', r: [655, 168, 300, 72], look: () => MA('«Monforte de Lemos», en letras bien grandes. Por si alguien se baja del tren creyendo que esto es Ourense.', 'risueno') },
     { name: 'Outra parte da praza', key: true, r: [0, 286, 40, 64], at: [14, 336], face: 'L', exit: ['praza2', [40, 346]],
       look: () => MA('Por ahí sigue la plaza. Si no han movido el quiosco en veinte años, Concha está a la vuelta.', 'pensativo') },
-    { name: 'Museo do Ferrocarril', key: true, r: [454, 272, 90, 34], at: [500, 314], face: 'B', exit: ['__museo'], hint: 'U',
-      act: museoPechado,
+    { name: 'Museo do Ferrocarril', key: true, r: [454, 272, 90, 34], at: [500, 314], face: 'B', exit: ['cocheras', [480, 515]], hint: 'U',
       look: () => MA('Calle arriba, pegado a las vías, el Museo del Ferrocarril: las cocheras, la rotonda y la Mikado. El sitio más bonito de Monforte, y lo digo sin ser imparcial.', 'sonriente') },
     { name: 'Mapa de Monforte', key: true, r: [380, 504, 200, 36], at: [480, 520], face: 'F', exit: ['mapa'], hint: 'D',
       look: () => MA('Por aquí se va al resto de Monforte. Al centro, al río, a la gasolinera... A pie, que el coche se lo quedó Valencia.', 'pensativo') },
@@ -340,12 +339,53 @@ async function crucigramaResolto() {
   give('boli'); setFlag('boliDado');
   await MA('Un crucigrama a cambio de un bolígrafo. En Monforte, así se firman los contratos.', 'sonriente');
 }
-// O Museo do Ferrocarril (cocheras) xógase no Acto 3; ata entón Martín dá a volta ao chegar
-async function museoPechado() {
-  if (flag('fimActo1')) await MA('Las cocheras del museo, con su candado nuevo brillando como un diente de oro. Sin saber qué lo abre, ahí no hago nada más que mirar. Y de mirar ya me duele el cuello.', 'pensativo');
-  else await MA('El museo del ferrocarril. La Mikado me ha esperado veinte años; puede esperar a que tenga agua en casa. Ella tampoco tiene, y no se queja.', 'sonriente');
-  toast('Museo do Ferrocarril · ábrese no Acto 3');
-}
+/* ---------- A7 · Exterior das cocheras do Museo do Ferrocarril ----------
+   Fondo: ilustración de Oscar (img/bg-cocheras.jpg, 1779×884, recortada a 16:9). Chégase a pé dende a praza da
+   estación pola rúa do fondo; non é destino do mapa. O candado novo da porta dereita aparece o martes (cinemática
+   do primeiro turno): no Acto 1 tápase cun anaco da propia persiana. O candado ábrese co código no Acto 3;
+   ata entón é o que pecha o paso, e a praza queda sempre aberta polo bordo de abaixo. */
+const COCHERAS_CROP = [100, 0, 1571, 884];
+const candadoPosto = () => flag('fimActo1');
+SCENES.cocheras = {
+  name: 'Museo do Ferrocarril', bg: 'img/bg-cocheras.jpg', crop: COCHERAS_CROP, music: 'estacion', floor: 'pedra',
+  walk: [[166, 436], [520, 428], [960, 428], [960, 540], [0, 540], [0, 470], [120, 460]],
+  scale: [428, 0.27, 540, 0.48], actorH: 300, start: [480, 515], minSpeed: 0.4,
+  draw(c) {
+    if (candadoPosto()) return;
+    // Acto 1: aínda non hai candado. Repítese un anaco liso da persiana por riba del (as lamas coinciden porque é a mesma altura)
+    const bg = img(this.bg); if (!bg) return;
+    const k = 960 / COCHERAS_CROP[2], y0 = 544, y1 = 642;
+    for (let x = 1320; x < 1402; x += 28) { const w = Math.min(28, 1402 - x); c.drawImage(bg, 1292, y0, w, y1 - y0, (x - COCHERAS_CROP[0]) * k, y0 * k, w * k + 0.5, (y1 - y0) * k); }
+  },
+  hotspots: [
+    { name: 'Praza da Estación', key: true, r: [300, 506, 360, 34], at: [480, 528], face: 'F', exit: ['praza', [500, 318]], hint: 'D',
+      look: () => MA('Por ahí bajo otra vez a la plaza de la estación. Dos pasos: en Monforte, el tren y el museo son vecinos de rellano.', 'pensativo') },
+    { name: 'Candado', key: true, when: candadoPosto, r: [744, 324, 52, 60], at: [700, 446], face: 'R',
+      act: async () => {
+        if (flag('fimActo2') || flag('pistaData')) {
+          await MA('Catorce, uno... Tengo cuatro cifras en la cabeza desde que vi el pilar del taller. Y me pican los dedos.', 'pensativo');
+          await MA('Pero antes de abrirle la puerta a nadie, quiero saber de quién es esa letra. Xoán sabrá quién era Xosé N.', 'convencido');
+          return toast('O candado ábrese no Acto 3');
+        }
+        await MA('Pruebo: cero, cero, cero, cero. Uno, dos, tres, cuatro. Mil novecientos cincuenta y ocho. Nada.', 'frustrado');
+        await MA('Cuatro cifras son diez mil combinaciones. A mi ritmo, salgo de aquí jubilado. Y con artritis.', 'esceptico');
+      },
+      look: () => MA('Un candado nuevo, brillante, de los caros. Cerradura de llave y, debajo, cuatro ruedecitas con números. En una puerta que llevaba años sin abrirse.', 'dudoso') },
+    { name: 'Porta do taller', r: [720, 288, 102, 138], at: [700, 446], face: 'R',
+      act: () => MA(candadoPosto() ? 'Con ese candado puesto, ni empujando con el hombro. Y mi hombro no es lo que era en el instituto.' : 'Cerrada, como siempre. De crío pensaba que ahí dentro dormían las locomotoras castigadas.', candadoPosto() ? 'frustrado' : 'risueno'),
+      look: () => MA(candadoPosto() ? 'La puerta grande de la derecha, la del taller. Años sin abrirse... y ahora alguien le pone candado nuevo. Eso no se hace para guardar polvo.' : 'La puerta grande de la derecha, la del taller. La persiana tiene más años que yo y menos golpes.', 'pensativo') },
+    { name: 'Entrada do museo', r: [426, 292, 80, 130], at: [466, 434], face: 'B', door: true,
+      act: () => MA('Cerrado a estas horas. Mejor: aquí dentro no se entra de paso, se entra con la tarde libre y sin reloj.', 'sonriente'),
+      look: () => MA('La entrada del museo, puerta de cristal y marco de madera. Detrás, trenes que ya no van a ninguna parte y que, aun así, llegan a todos lados.', 'pensativo') },
+    { name: 'Persianas', r: [168, 292, 206, 128], look: () => MA('Dos persianas grises, bajadas. Las cocheras de toda la vida, con sus locomotoras durmiendo la siesta. Larga, la siesta.', 'neutro') },
+    { name: 'Coche de viaxeiros', r: [0, 215, 160, 238], look: () => MA('Un coche de viajeros azul, con cortinas y todo. Me subiría ahora mismo, aunque no vaya a ninguna parte. Sobre todo si no va a ninguna parte.', 'sonriente') },
+    { name: 'Cartel do maquinista', r: [530, 246, 80, 128], look: () => MA('Un cartel con un maquinista y su locomotora echando humo. Ese uniforme me lo prometí con siete años. Ahora lo llevo, y no es tan glamuroso.', 'risueno') },
+    { name: 'Letreiro', r: [164, 150, 384, 34], look: () => MA('«Museo do Ferrocarril de Galicia». En Monforte, claro. ¿Dónde iba a estar? ¿En Lugo? Que no se entere nadie de Lugo.', 'risueno') },
+    { name: 'Letreiro grande', r: [596, 196, 364, 48], look: () => MA('Otro letrero, por si al primero se le escapaba algún despistado. Aquí el ferrocarril se anuncia dos veces. Como los trenes de antes, que pitaban al llegar y al salir.', 'pensativo') },
+    { name: 'Escudo', r: [322, 66, 46, 78], look: () => MA('El escudo de Galicia en lo alto del frontón. Vigilando que nadie se lleve ni un tornillo.', 'neutro') },
+    { name: 'Reloxo', r: [758, 104, 28, 30], look: () => MA('Un reloj en el frontón. En una estación, el reloj es casi un santo. Y como los santos, a veces va a su aire.', 'risueno') },
+  ],
+};
 async function ruaPechada(linea, mood) { await MA(linea, mood || 'pensativo'); toast('Rúa en construción · chega nun próximo hito'); }
 SCENES.praza2 = {
   name: 'Praza da Estación', bg: 'img/bg-praza-estacion-2.jpg', music: 'estacion', floor: 'pedra',
