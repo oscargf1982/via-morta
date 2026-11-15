@@ -54,18 +54,23 @@ function andresDeitado(c, x, y, h, talking, t) {
 }
 
 /* ---------- C2 · cinemática do primeiro turno (martes) ----------
-   Fondo pendente de ilustración de Oscar (exterior das cocheras co candado novo); mentres, a portada da rotonda. */
-const ZOOM_COCHERAS = { x: 0.5, y: 0.2, z: 2.2 };
+   A Mikado na rotonda e, despois, o exterior das cocheras do Museo do Ferrocarril (ilustración de Oscar,
+   img/bg-cocheras.jpg): a cámara achégase ao candado novo da porta dereita do taller. */
+const ZOOM_MIKADO_ROTONDA = { x: 0.5, y: 0.55, z: 1.5 };
+const ZOOM_CANDADO = { x: 0.766, y: 0.673, z: 2.6 };
 async function primeiroTurno() {
   E.act = 'acto2';
   await cine('img/portada-rotonda.jpg', [
     'Martes, 6:40. Primeiro turno no depósito de Monforte.',
     'Martín: «Café de máquina, un compañero que no habla hasta las ocho... y la Mikado ahí, en su rotonda, mirándome como un perro viejo al que nadie saca a pasear.»',
-    'Martín: «Las cocheras del museo llevan años cerradas con una cadena oxidada. Hoy tienen, además, un candado nuevo. Brillante. De los caros.»',
-    'Martín: «De combinación: cuatro ruedecitas con números. Quien lo puso no quería llaves que se pierdan. Ni que se copien.»',
+  ], ZOOM_MIKADO_ROTONDA);
+  await cine('img/bg-cocheras.jpg', [
+    'Martín: «Al salir paso por delante del museo. La puerta de la derecha, la del taller, lleva años sin abrirse.»',
+    'Martín: «Hoy tiene un candado nuevo. Brillante. De los caros.»',
+    'Martín: «Ni una mota de polvo encima. Este candado no lleva aquí ni una semana.»',
     'Martín: «Nadie le pone un candado de cuarenta euros a una puerta que no se abre. A no ser que alguien la abra.»',
     'Martes, 15:10. Fin do turno.',
-  ], ZOOM_COCHERAS);
+  ], ZOOM_CANDADO);
   setFlag('a2Inicio');
   await goScene('praza');
   await MA('Primer turno superado. Y los gemelos, destrozados: lo de subirme ayer a la silla del Concello me ha dejado las piernas de un señor de ochenta años.', 'frustrado');

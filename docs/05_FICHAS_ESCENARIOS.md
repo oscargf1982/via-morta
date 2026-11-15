@@ -187,7 +187,7 @@
 
 ### C2 · Cinemática del primer turno (martes)
 - **Cuándo:** justo después de «FIN DO ACTO 1» y al elegir «Acto 2» en Escoller acto.
-- **Fondo:** exterior de las cocheras del museo con el **candado nuevo** (A7). **Pendiente de ilustración de Oscar**; mientras, la portada de la rotonda (`img/portada-rotonda.jpg`) con acercamiento a la Mikado.
+- **Fondo:** primero la Mikado en la rotonda (`img/portada-rotonda.jpg`) y después el **exterior de las cocheras del Museo do Ferrocarril** (`img/bg-cocheras.jpg`, ilustración de Oscar del 15-11-2026), con acercamiento al **candado nuevo de la puerta derecha del taller**. La misma imagen servirá de fondo de A7 en el Acto 3. En el dibujo el candado es de llave; si en el Acto 3 se mantiene el código 1401, habrá que retocarlo a combinación.
 - **Texto:** «Martes, 6:40. Primeiro turno no depósito». Martín: la cadena oxidada de siempre y, hoy, un candado nuevo, brillante, «de los caros». «Martes, 15:10. Fin do turno». Al salir se queja de los gemelos (pista de la crema).
 - **Después:** Martín aparece en la praza da Estación (A3). Objetivo: «Saudar aos de sempre. Concha sabe onde anda todo o mundo».
 
