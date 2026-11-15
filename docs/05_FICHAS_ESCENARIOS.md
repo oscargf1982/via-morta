@@ -232,12 +232,13 @@
 
 ### A6 · O taller vello (`tallerA2`, `vigasA2`), con las fotos de Oscar
 - **Entrada:** desde el patio, usando la **Chave do taller** en la puerta verde (marca `tallerAberto`; después se entra sin más).
-- **Pistas** (cada una deja una marca para el cuaderno):
-  - **cajón de madera** → copia de la **escritura n.º 375** (`escritura`);
-  - **foto vieja** → «O señor Alfredo cos aprendices, 1949. Pepe, Manolo, Xosé N.» (`pistaFoto`);
-  - con el ollo: **huellas recientes** que van y vuelven del 7.º soporte (`pistaPegadas`) y **marcas de pernos** en grupos de cuatro (`pistaPernos`);
-  - en las vigas, el **7.º soporte con la tapa soldada** (`pistaSoporte`). La navaja no puede: «Esto lo soldó alguien que sabía». Se abre en el Acto 4.
-- **Final:** con las cinco pistas, Martín abre su cuaderno (documento con las pistas y la hipótesis). Hipótesis, presentada como tal: si un ingeniero de Caminos y un contratista compraron una carpintería entera, quizá las máquinas acabaron en un sitio con vías. **FIN DO ACTO 2.**
+- **Pistas** (rehechas el 15-11-2026: cada una cuenta la ficción y sirve más adelante; contador «Pistas do taller: n de 4»):
+  - **foto vieja** del pilar → se coge (`foto1949`): «Pepe, Manolo, Xosé N.» y «Xosé entra en Renfe. Sorte, rapaz» (`pistaFoto`). Uso: Acto 3, enseñársela a Xoán;
+  - con el ollo, **grabado en el pilar** bajo la foto: «X. N. 1949 / 14-I-1958» (`pistaData`). Uso: código 1401 del candado de las cocheras (Acto 3);
+  - con el ollo, **huellas** desde la ventana rota del fondo hasta el pilar → al final, un **trapo con grasa de locomotora** (`trapo`, `pistaTrapo`). Uso: Acto 3, la grasa que falta del almacén;
+  - en las vigas, el **7.º soporte con la tapa soldada** (`pistaSoporte`). La navaja no puede. Se abre en el Acto 4.
+  - Decorado opcional: el cajón con la **escritura n.º 375** y las **marcas de pernos**.
+- **Final:** con las cuatro pistas, el cuaderno de Martín resume lo que sabe y deja la pregunta «¿quién era Xosé N.?». **FIN DO ACTO 2.**
 - **Personas reales:** Alfredo Fernández Gutiérrez, Juan Lowy Szabo y Manuel Goñi Echeverría solo aparecen por lo que dice la escritura (la venta de 1952). Ni hablan ni se les atribuyen intenciones.
 
 ### Sin callejones sin salida
