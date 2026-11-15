@@ -192,20 +192,23 @@
 - **Después:** Martín aparece en la praza da Estación (A3). Objetivo: «Saudar aos de sempre. Concha sabe onde anda todo o mundo».
 
 ### A3b · Quiosco de Concha (cambios en el Acto 2)
-- Nueva opción «¿Qué se cuenta hoy?»: Valerio preguntó por Martín (farmacia de la rúa do Cardeal) y Andrés dice que le debe la revancha de natación. Marcas `objValerio`, `objAndres`.
+- Nueva opción «¿Qué se cuenta hoy?»: Valerio preguntó por Martín (Farmacia de la Estación, calle Calvo Sotelo, detrás del quiosco) y Andrés dice que le debe la revancha de natación. Marcas `objValerio`, `objAndres`.
 - Tras el segundo silbato: «¿Y la llave del taller?». Dar los **ositos** → **Chave do taller**. Si no hay ositos, Concha los vende en el momento (broma: «Regalarme os meus propios ositos, co meu cambio...»).
 
 ### Mapa (cambios en el Acto 2)
-- **Centro** pregunta adónde ir: el Concello (B4a) o la rúa do Cardeal (B1). No se afirma que estén pegados.
-- **Río Cabe** se abre con `objAndres` y lleva directo al Club Fluvial (C2).
+- **Rúa do Cardeal** (destino del mapa de viaje rápido): cerrada en el Acto 2; la farmacia está en Calvo Sotelo, a pie desde la plaza.
+- **Club Fluvial** se abre con `objAndres` y lleva directo a C2.
 - **Castelo de San Vicente** sigue cerrado («otro día; hoy mis gemelos no suben ni a una silla»).
 
-### B1 · Rúa do Cardeal (`cardeal`) · ilustración de Oscar
-- **Fondo:** `img/bg-cardeal.jpg` (15-11-2026): calle peatonal con árboles y una torre al fondo, la farmacia con **toldo de rayas rojas y blancas, letrero «FARMACIA» y cruz verde de neón** (el neón late por código), una terraza con sombrilla a la derecha. Los carteles «Se aluga» de dos puertas de más abajo se pintan por código (tema de Valerio).
-- **Salidas:** farmacia → B2; abajo a la derecha → mapa.
+### B1 · Rúa Calvo Sotelo: Farmacia de la Estación (`calvoSotelo`) · ilustración de Oscar
+- **Cambio de Oscar (15-11-2026):** la farmacia de Valerio está en la calle **Calvo Sotelo** y se llama **«Farmacia de la Estación»**. Así queda todo cerca del barrio de la estación, la zona central del juego.
+- **Llegada:** desde la plaza de la estación, 2.ª pantalla (A3b), por la salida del noroeste, junto al quiosco de Concha («Rúa Calvo Sotelo»). En el Acto 1 sigue cerrada; en el Acto 2 se abre siempre.
+- **Fondo:** `img/bg-cardeal.jpg`, la ilustración de Oscar de la calle de la farmacia: toldo de rayas rojas y blancas, letrero «FARMACIA» y cruz verde de neón (el neón late por código), terraza con sombrilla a la derecha. Los carteles «Se aluga» se pintan por código. **El rótulo del dibujo dice solo «FARMACIA»**: el nombre «Farmacia de la Estación» sale en los textos (nombre de la escena, hotspots y diálogos).
+- **Salidas:** farmacia → B2; abajo a la derecha → plaza de la estación (A3b).
 - **Hotspots:** farmacia, letrero, cruz verde, escaparate, locales «Se aluga», toldo, balcones, farol, terraza, árboles, torre al fondo, papelera, losas.
+- **Rúa do Cardeal en el mapa:** cerrada en el Acto 2 («lo que busco está en el barrio de la estación»). Pendiente de que Oscar decida qué hacer con ese destino.
 
-### B2 · Farmacia, interior (`farmacia`) · ilustración de Oscar
+### B2 · Farmacia de la Estación, interior (`farmacia`) · ilustración de Oscar
 - **Fondo:** `img/bg-farmacia.jpg` (15-11-2026): estanterías de madera con arcos y el letrero «Ortopedia y deporte», un expositor central, mostrador del fondo con lámparas de bola, butaca y pantalla de turnos. Se anda por el pasillo de la derecha; la puerta a la calle queda abajo a la derecha (fuera de cuadro). Valerio espera delante del mostrador del fondo; Xoán, en el pasillo.
 - **NPC:** **Valerio** (compañero de instituto de Martín), con la bata de su padre. **Xoán Carballeira** en el mostrador, recogiendo «o xarope de Eugenia, a nena da miña curmá». Martín ata cabos: Eugenia es la hija de Rosario, así que Xoán es primo de Rosario (marca `pistaCurma`).
 - **Crema de agujetas (puzzle del dulce, pedido por Oscar el 15-11-2026):** Valerio ve andar a Martín y se ríe: «Entraches andando coma un home de oitenta anos». Tiene la crema, pero a un amigo no le vende ni le da nada sin su «peaxe»: algo dulce, porque es goloso desde el instituto (era él quien robaba los caramelos de eucalipto de su padre). Marca `valerioDoce`. Martín piensa en los ositos del quiosco de Concha, que se pueden comprar siempre. Al darle los ositos (opción de diálogo o usando el objeto con él), Valerio se los come «un para min, outro para min…» y da la crema. Objeto `crema`, marca `valerioFeito`. Después, Concha vuelve a vender ositos para el detalle de la llave del taller.
@@ -279,7 +282,7 @@
 | Estación | A3 plaza de la estación | siempre |
 | Gasolineira | rúa Morín (con las llaves, Martín ofrece ir directo a Doutor Casares, 211) | siempre |
 | Praza do Concello | exterior del Concello | contrato firmado |
-| Rúa do Cardeal | B1 rúa do Cardeal | Acto 2, cuando Concha manda a ver a Valerio |
+| Rúa do Cardeal | (sin escena) | Cerrada en el Acto 2: la farmacia pasó a Calvo Sotelo. Pendiente de Oscar |
 | Club Fluvial | Club Fluvial | Acto 2, cuando Concha habla de Mega Andrés |
 
 - **Destinos cerrados:** cartel apagado y «(aínda non)»; al tocarlos Martín da un motivo con su voz (nunca un callejón: siempre quedan Estación y Gasolineira). Los abiertos llevan un aro dorado que late.

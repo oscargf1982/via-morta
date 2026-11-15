@@ -75,7 +75,7 @@
 - **Aspecto (hoja de Oscar, `assets/personajes/don-eladio-hoja.png`):** calvo con cuatro pelos grises a los lados, cejas fruncidas, traje marrón, camisa beige con bolígrafos en el bolsillo y corbata granate.
 - **Recursos gráficos:** `eladio-sprite.png` (celdas de 160×280, 8 columnas: 0 sentado en el taburete, 1 sentado hablando, 8-15 corriendo de espaldas) y retrato `eladio-face.png`. Se regeneran con `python3 tools/sprite-eladio.py`. En la ventanilla se dibuja solo la mitad de arriba de la celda sentada.
 
-## Valerio (farmacia, Rúa do Cardeal 23)
+## Valerio (Farmacia de la Estación, calle Calvo Sotelo)
 - Compañero de instituto de Martín. Está detrás del mostrador de su padre, con la bata de su padre y los clientes de su padre.
 - Retrata el Monforte que se vacía: locales con «Se aluga» hasta que el cartel se cae de viejo. Es goloso: le da la crema de agujetas a Martín a cambio de algo dulce (los ositos de Concha).
 - **Los libros de su padre** (ficción): su padre apuntaba cada cura y cada receta en libros de tapas negras desde 1950, guardados en la rebotica. Sembrado en el Acto 2. En el Acto 3, el de enero de 1958 tiene, la noche del 14, «Curas por queimaduras nas mans. X. Nogal. Non quixo ir ao médico» (indicio, no prueba; la prueba es el parte del Acto 4).
