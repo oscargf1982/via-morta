@@ -231,12 +231,14 @@
 - Con `champions`, el dormitorio lanza la noche: suena el silbato en el dormitorio a oscuras (`img/noite-dormitorio.jpg`, la ilustración de Oscar pasada a noche con `tools/noite.py`; luego `noite-dormitorio-lampada.jpg` con la lámpara de la mesilla encendida), Martín baja al patio a oscuras (`img/noite-patio.jpg`, de `tools/noite.py`) y ve **luz por debajo de la puerta del taller**, que se apaga. Ya no viene de la estación: viene de detrás de la casa. Marca `silbato2`.
 - «Mércores, 8:00». Objetivo: la llave del taller (Concha).
 
-### A6 · O taller vello (`tallerA2`, `vigasA2`), con las fotos de Oscar
+### A6 · O taller vello (`tallerA2`, `vigasA2`), con la ilustración de Oscar
+- **Fondo (15-11-2026):** `img/bg-taller-interior.jpg`, ilustración de Oscar del interior: caja de madera a la izquierda, huellas de botas que van hacia el fondo, pilar de ladrillo en el centro con un trapo a sus pies, marcas circulares en el suelo a la derecha, cinco ventanas (la última con hiedra) y las vigas de la transmisión arriba. El pilar es capa delantera: Martín pasa por detrás. La misma imagen sale ahora cuando Martín mira por la rendija en el Acto 1. La vista de las vigas (`vigasA2`) sigue con la foto de Oscar.
+- **Encaje de las pistas con el dibujo:** la foto de 1949 se dibuja clavada en el pilar (desaparece al cogerla) y el grabado, debajo; las huellas son las del dibujo; el trapo es el del dibujo, y Martín se lleva solo una esquina con la grasa (así el trapo sigue en la imagen sin contradicción); el cajón con la escritura es la caja de la izquierda; las marcas de pernos son los círculos del suelo de la derecha; las vigas de arriba llevan a la vista del 7.º soporte. Salida al patio abajo a la izquierda.
 - **Entrada:** desde el patio, usando la **Chave do taller** en la puerta verde (marca `tallerAberto`; después se entra sin más).
 - **Pistas** (rehechas el 15-11-2026: cada una cuenta la ficción y sirve más adelante; contador «Pistas do taller: n de 4»):
   - **foto vieja** del pilar → se coge (`foto1949`): «Pepe, Manolo, Xosé N.» y «Xosé entra en Renfe. Sorte, rapaz» (`pistaFoto`). Uso: Acto 3, enseñársela a Xoán;
   - con el ollo, **grabado en el pilar** bajo la foto: «X. N. 1949 / 14-I-1958» (`pistaData`). Uso: código 1401 del candado de las cocheras (Acto 3);
-  - con el ollo, **huellas** desde la ventana rota del fondo hasta el pilar → al final, un **trapo con grasa de locomotora** (`trapo`, `pistaTrapo`). Uso: Acto 3, la grasa que falta del almacén;
+  - con el ollo, **huellas** desde el fondo, bajo las ventanas, hasta el pilar → al final, un **trapo con grasa de locomotora** (`trapo`, `pistaTrapo`). Uso: Acto 3, la grasa que falta del almacén;
   - en las vigas, el **7.º soporte con la tapa soldada** (`pistaSoporte`). La navaja no puede. Se abre en el Acto 4.
   - Decorado opcional: el cajón con la **escritura n.º 375** y las **marcas de pernos**.
 - **Final:** con las cuatro pistas, el cuaderno de Martín resume lo que sabe y deja la pregunta «¿quién era Xosé N.?». **FIN DO ACTO 2.**
