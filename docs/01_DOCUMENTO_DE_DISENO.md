@@ -34,6 +34,7 @@ El esquema es el de Broken Sword: un cursor inteligente en lugar de la lista de 
 | Soltar el objeto seleccionado | Esc o clic en el suelo | Toque en el suelo |
 | Avanzar diálogo | Clic, Espacio o Intro | Toque |
 | **Ollo de maquinista** | Q | Botón amarillo «OLLO» |
+| **Caderno de Martín** (lo pendiente) | C | Botón del cuaderno, junto a «OLLO» |
 
 - **Etiqueta flotante.** Al pasar por encima de algo aparece su nombre. Las salidas se marcan en azul con «→ Lugar». Con un objeto seleccionado se lee «Usar navalla con Soporte» o «Dar ositos a Dona Concha».
 - **Inventario.** Es una barra fija bajo la escena. Cada objeto tiene un icono y un nombre, y se examina con clic derecho o pulsación larga.
@@ -45,9 +46,13 @@ El esquema es el de Broken Sword: un cursor inteligente en lugar de la lista de 
   - La escena se pone en gris y los hotspots importantes se marcan con recuadros amarillos discontinuos, con su nombre. Los ya resueltos salen en verde.
   - Dura unos segundos y se puede usar siempre.
   - En el Acto 3 es además una mecánica de historia, porque revela rastros invisibles a simple vista: grasa fresca, huellas de carbonilla, la letra de la pizarra.
+- **Caderno de Martín** (revisión con las reglas de Ron Gilbert, 15-11-2026):
+  - Lista de tareas pendientes, escritas por Martín en castellano y con su retranca. Se abre con el botón del cuaderno o la tecla C, y se actualiza sola según lo que ya ha hecho el jugador.
+  - Cada acto añade sus entradas a `CADERNO` (`{ when, t }`); el motor solo las enseña. Cuando sale un «Novo obxectivo», el botón late.
+  - Los avisos que empiezan por «Pista:» solo aparecen en pantalla con el **Modo axuda** de Opcións (apagado de serie). Si está apagado, el último se guarda como «nota al margen» en el cuaderno.
 - **Documentos.** Las escrituras, partes, cartas y notas se abren a pantalla completa en papel envejecido, como la escritura n.º 375 de la demo.
 - **Mapa de Monforte.** Es una pantalla de viaje entre zonas, como el mapa de Broken Sword. Las zonas se van desbloqueando con la historia. Dentro de cada zona se camina de escenario en escenario por salidas que siguen las calles reales.
-- **Menú.** Tiene Continuar, Nueva partida, Selector de acto (para el jurado del concurso), Opciones (texto rápido, volumen) y **Créditos y fuentes**, que es obligatorio.
+- **Menú.** Tiene Continuar, Nueva partida, Selector de acto (para el jurado del concurso), Opciones (texto rápido, modo ayuda, volumen) y **Créditos y fuentes**, que es obligatorio.
 
 ## 4. Mecánicas
 

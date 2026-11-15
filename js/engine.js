@@ -22,7 +22,7 @@ const E = {
   actor: { x: 480, y: 500, tx: 480, ty: 500, path: [], dir: 1, face: 'F', walking: false, t: 0, visible: true, pose: null, stepT: 0 },
   inv: [], flags: {}, held: null, hover: null, hoverUntil: 0, mouse: { x: 0, y: 0 },
   busy: 0, dlg: null, imgs: {}, fade: 0, fadeTo: 0, t: 0, barks: [], olloT: 0, paused: true, act: null,
-  opts: { fast: false, music: 0.35, sfx: 0.8 },
+  opts: { fast: false, music: 0.35, sfx: 0.8, axuda: false },
 };
 /* ---------- utilidades ---------- */
 const $ = id => document.getElementById(id);
@@ -150,6 +150,18 @@ function setFlag(k, v = true) { E.flags[k] = v; saveGame(); }
 async function goScene(id, at) {
   E.fadeTo = 1; await sleep(320); enterScene(id, at); E.fadeTo = 0; await sleep(320);
 }
+/* caderno de Martín: lista de tarefas pendentes. Os actos engaden entradas a CADERNO
+   { when: () => bool, t: 'texto' (ou función) }; o motor só as amosa. Tecla C ou botón do HUD. */
+const CADERNO = [];
+async function abrirCaderno() {
+  $('bCaderno') && $('bCaderno').classList.remove('novo');
+  const pend = CADERNO.filter(c => { try { return c.when(); } catch (e) { return false; } }).map(c => typeof c.t === 'function' ? c.t() : c.t);
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  let h = '<h4>Caderno de Martín</h4><p class="sub">Pendente</p>';
+  h += pend.length ? '<div><ul class="caderno">' + pend.map(t => `<li>${esc(t)}</li>`).join('') + '</ul></div>' : '<p>Nada apuntado. Raro. Algo se me estará olvidando.</p>';
+  if (E.flags._pista && !E.opts.axuda) h += `<p class="sub">Última nota ao marxe: ${esc(E.flags._pista)}</p>`;
+  await showDoc(h);
+}
 function showDoc(html) { SFX.paper(); const el = $('doc'); el.innerHTML = html.replace(/img\/[\w-]+\.(png|jpg)/g, res) + '<p class="doc-x">(toca para pechar)</p>'; el.hidden = false; return new Promise(r => { el.onclick = () => { el.hidden = true; r(); }; }); }
 /* imaxe a pantalla completa con liñas de texto. zoom = { x, y, z } (opcional): a cámara achégase amodo
    ao punto (x, y) da imaxe (fraccións 0..1) ata z aumentos e queda alí. */
@@ -160,7 +172,41 @@ async function cine(src, lines, zoom) {
   for (const l of lines) { $('cineTxt').textContent = l; await new Promise(r => { el.onclick = r; }); }
   el.hidden = true;
 }
-function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 2200); }
+/* minixogo de toques alternos (estilo Track & Field): hai que premer esquerda e dereita por quendas.
+   o = { title, me, rival, goal (toques), rivalSpeed (toques/s), hint } → true se gaña o xogador.
+   Botóns grandes para o dedo; no teclado, frechas ou A/D. Un toque repetido do mesmo lado non conta. */
+function minixogoToques(o) {
+  return new Promise(done => {
+    const st = $('stage'), el = document.createElement('div');
+    el.style.cssText = 'position:absolute;inset:0;z-index:15;background:rgba(6,10,16,.82);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#f2ead8;font:700 16px "Trebuchet MS",sans-serif;touch-action:none';
+    const bar = (n, col) => `<div style="width:min(80%,520px)"><div style="font-size:13px;opacity:.85">${n}</div><div style="height:22px;border:2px solid #000;border-radius:11px;background:#1d2026;overflow:hidden"><div data-b style="height:100%;width:0;background:${col}"></div></div></div>`;
+    el.innerHTML = `<div style="font-size:20px;color:#f2a33a">${o.title}</div><div data-msg style="font-size:14px;opacity:.9;text-align:center;padding:0 12px">${o.hint || 'Toca esquerda e dereita por quendas!'}</div>${bar(o.me, '#ffd23a')}${bar(o.rival, '#8fd0ff')}
+      <div style="display:flex;gap:18px;margin-top:8px"><button data-k="L" style="width:120px;height:84px;border-radius:14px;border:3px solid #000;background:#ffd23a;font:900 30px sans-serif">◀</button><button data-k="R" style="width:120px;height:84px;border-radius:14px;border:3px solid #000;background:#ffd23a;font:900 30px sans-serif">▶</button></div>`;
+    st.appendChild(el);
+    const [bMe, bRi] = el.querySelectorAll('[data-b]'), msg = el.querySelector('[data-msg]');
+    let me = 0, ri = 0, last = null, t0 = 0, raf = 0, fin = false;
+    const tap = k => { if (fin) return; if (!t0) t0 = performance.now(); if (k === last) return; last = k; me++; SFX.tone(k === 'L' ? 330 : 392, 0.05, 'square', 0.03); };
+    el.querySelectorAll('button').forEach(b => b.addEventListener('pointerdown', ev => { ev.preventDefault(); ev.stopPropagation(); tap(b.dataset.k); }));
+    const key = ev => { const k = { ArrowLeft: 'L', a: 'L', A: 'L', ArrowRight: 'R', d: 'R', D: 'R' }[ev.key]; if (k) { ev.preventDefault(); tap(k); } };
+    addEventListener('keydown', key);
+    const loop = now => {
+      if (t0) ri = Math.min(o.goal, (now - t0) / 1000 * o.rivalSpeed);
+      bMe.style.width = Math.min(100, 100 * me / o.goal) + '%'; bRi.style.width = 100 * ri / o.goal + '%';
+      if (!fin && (me >= o.goal || ri >= o.goal)) {
+        fin = true; const win = me >= o.goal; msg.textContent = win ? 'Chegaches primeiro!' : `${o.rival} chega primeiro.`;
+        removeEventListener('keydown', key); setTimeout(() => { el.remove(); done(win); }, 1300);
+      }
+      if (!fin || el.isConnected) raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+  });
+}
+/* avisos: os que empezan por «Pista:» só saen co «Modo axuda» (Opcións); se non, gárdanse para o caderno.
+   Un «Novo obxectivo» fai latexar o botón do caderno. */
+function toast(t) {
+  if (/^Pista:/.test(t)) { E.flags._pista = t.replace(/^Pista:\s*/, ''); if (!E.opts.axuda) return; }
+  if (/^Novo obxectivo/.test(t)) { delete E.flags._pista; const b = $('bCaderno'); if (b) { b.classList.remove('novo'); void b.offsetWidth; b.classList.add('novo'); } }
+  const el = $('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 2200); }
 /* executa un script bloqueando a entrada mentres dura */
 async function run(fn) { if (!fn) return; E.busy++; try { await fn(); } catch (e) { console.error(e); } finally { E.busy--; E.held = null; drawInv(); } }
 
@@ -293,6 +339,8 @@ function wireInput() {
   });
   $('bOllo').onclick = () => { SFX.init(); ollo(); };
   $('bMenu').onclick = () => { if (!E.busy && !E.dlg) openMenu(); };
+  const bc = $('bCaderno'); if (bc) bc.onclick = () => { SFX.init(); if (!E.busy && !E.dlg && !E.paused) run(abrirCaderno); };
+  window.addEventListener('keydown', e => { if (e.code === 'KeyC' && !E.busy && !E.dlg && !E.paused) run(abrirCaderno); });
 }
 function advanceDlg() {
   const D = E.dlg; if (!D || D.choices) return;
@@ -603,22 +651,34 @@ const MUSIC = {
 /* ---------- menú, opcións, actos e créditos ---------- */
 function showPane(id) { for (const p of document.querySelectorAll('#menu .pane')) p.hidden = p.id !== id; }
 /* música do menú: unha pista en bucle (MENU_MUSIC en data.js) que soa mentres o menú está á vista.
-   Os navegadores non deixan soar nada ata o primeiro toque: daquela arrinca soa. */
-const MENU = { el: null, on: false, timer: null };
+   Os navegadores non deixan soar nada ata o primeiro toque: por iso o xogo abre cunha pantalla
+   «Toca para comezar» (mStart) e a música arrinca con ese toque, xa no menú.
+   Se o navegador non pode reproducir a pista co elemento <audio>, descodifícase con WebAudio (MENU.wa). */
+const MENU = { el: null, on: false, timer: null, wa: null, vol: 0 };
+function menuWebAudio() {
+  if (MENU.wa) return; MENU.wa = { g: null, src: null };
+  SFX.init(); const ac = SFX.ctx; if (!ac) return;
+  fetch(res(MENU_MUSIC)).then(r => r.arrayBuffer()).then(b => ac.decodeAudioData(b)).then(buf => {
+    const g = ac.createGain(); g.gain.value = MENU.vol; g.connect(ac.destination);
+    const s = ac.createBufferSource(); s.buffer = buf; s.loop = true; s.connect(g); s.start();
+    MENU.wa = { g, src: s };
+  }).catch(e => console.warn('Música do menú: non se puido cargar', e));
+}
 function menuMusic(on) {
   if (typeof MENU_MUSIC === 'undefined' || !MENU_MUSIC) return;
-  if (!MENU.el) { MENU.el = new Audio(res(MENU_MUSIC)); MENU.el.loop = true; MENU.el.preload = 'auto'; MENU.el.volume = 0; }
+  if (!MENU.el) { MENU.el = new Audio(res(MENU_MUSIC)); MENU.el.loop = true; MENU.el.preload = 'auto'; MENU.el.volume = 0; MENU.el.addEventListener('error', () => { MENU.bad = true; if (MENU.on) menuWebAudio(); }); }
   MENU.on = on; const a = MENU.el; clearInterval(MENU.timer);
   if (SFX.ctx) SFX.mus.gain.value = on ? 0 : E.opts.music * 0.5;      // a música de zona cala mentres o menú está aberto
-  if (on) { const p = a.play(); if (p && p.catch) p.catch(() => { }); }
+  if (on && MENU.bad) menuWebAudio();
+  else if (on) { const p = a.play(); if (p && p.catch) p.catch(e => { if (e && e.name === 'NotSupportedError') { MENU.bad = true; menuWebAudio(); } }); }
   MENU.timer = setInterval(() => {
-    const goal = MENU.on ? E.opts.music : 0, v = a.volume + Math.sign(goal - a.volume) * Math.min(0.06, Math.abs(goal - a.volume));
-    a.volume = Math.max(0, Math.min(1, v));
-    if (Math.abs(a.volume - goal) < 0.001) { clearInterval(MENU.timer); if (!MENU.on) a.pause(); }
+    const goal = MENU.on ? E.opts.music : 0; MENU.vol += Math.sign(goal - MENU.vol) * Math.min(0.06, Math.abs(goal - MENU.vol));
+    MENU.vol = Math.max(0, Math.min(1, MENU.vol)); a.volume = MENU.vol; if (MENU.wa && MENU.wa.g) MENU.wa.g.gain.value = MENU.vol;
+    if (Math.abs(MENU.vol - goal) < 0.001) { clearInterval(MENU.timer); if (!MENU.on) a.pause(); }
   }, 50);
 }
 function setMenu(vis) { $('menu').hidden = !vis; menuMusic(vis); }
-function openMenu() { E.paused = true; setMenu(true); $('btnCont').hidden = !(E.scene || loadGame()); showPane('mMain'); }
+function openMenu() { E.paused = true; setMenu(true); $('btnCont').hidden = !(E.scene || loadGame()); showPane(MENU.started ? 'mMain' : 'mStart'); }
 function closeMenu() { setMenu(false); E.paused = false; }
 function startPreset(P) {
   E.act = P.id; E.inv = [...(P.inv || [])]; E.flags = { ...(P.flags || {}) }; E.held = null; E.dlg = null; $('dlg').hidden = true;
@@ -644,7 +704,8 @@ function buildMenu() {
   const o = E.opts;
   $('optFast').checked = o.fast; $('optMus').value = o.music; $('optSfx').value = o.sfx;
   $('optFast').onchange = e => { o.fast = e.target.checked; saveOpts(); };
-  $('optMus').oninput = e => { o.music = +e.target.value; SFX.volume(); if (MENU.el && MENU.on) { MENU.el.volume = o.music; if (SFX.ctx) SFX.mus.gain.value = 0; } saveOpts(); };
+  const ax = $('optAxuda'); if (ax) { ax.checked = !!o.axuda; ax.onchange = e => { o.axuda = e.target.checked; saveOpts(); }; }
+  $('optMus').oninput = e => { o.music = +e.target.value; SFX.volume(); if (MENU.el && MENU.on) { MENU.vol = o.music; MENU.el.volume = o.music; if (MENU.wa && MENU.wa.g) MENU.wa.g.gain.value = o.music; if (SFX.ctx) SFX.mus.gain.value = 0; } saveOpts(); };
   $('optSfx').oninput = e => { o.sfx = +e.target.value; SFX.volume(); saveOpts(); };
   $('optTest').onclick = () => SFX.whistle();
   const oc = $('optCine'); if (oc) { oc.hidden = !ACTS[0].cine; oc.onclick = async () => { SFX.init(); const m = SFX.want; setMenu(false); SFX.music(null); await ACTS[0].cine({ day: false }); setMenu(true); SFX.music(m); }; }
@@ -671,7 +732,10 @@ window.addEventListener('load', () => {
   for (const S of Object.values(SCENES)) if (S.bg) img(S.bg); img(MARTIN.sheet);
   for (const S of Object.values(SCENES)) for (const n of S.npcs || []) if (n.sheet) img(n.sheet);
   openMenu();
-  const kick = () => { if (MENU.on && MENU.el && MENU.el.paused) menuMusic(true); };
-  window.addEventListener('pointerdown', kick, true); window.addEventListener('keydown', kick, true);
+  // o primeiro toque (pantalla «Toca para comezar») desbloquea o son e pasa ao menú, xa con música
+  $('btnStart').onclick = () => { MENU.started = true; SFX.init(); if (SFX.ctx && SFX.ctx.state === 'suspended') SFX.ctx.resume(); menuMusic(true); showPane('mMain'); };
+  // por se o navegador rexeitou o arranque: reinténtase en calquera toque de verdade (en táctil, pointerdown non vale)
+  const kick = () => { if (MENU.started && MENU.on && MENU.el && MENU.el.paused && !MENU.bad) menuMusic(true); };
+  for (const ev of ['pointerup', 'touchend', 'click', 'keydown']) window.addEventListener(ev, kick, true);
   requestAnimationFrame(frame);
 });
