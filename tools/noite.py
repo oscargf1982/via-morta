@@ -26,3 +26,20 @@ glow = glow.filter(ImageFilter.GaussianBlur(14 * sx))
 from PIL import ImageChops
 ImageChops.add(base, glow).save(os.path.join(ROOT, 'img', 'noite-patio-luz.jpg'), quality=82, optimize=True)
 print('escrito noite-patio-luz.jpg')
+
+# Dormitorio (ilustración de Oscar, de día) → de noite, e outra coa lámpada da mesiña acesa (Martín érguese)
+d = Image.open(os.path.join(ROOT, 'img', 'bg-dormitorio.jpg')).convert('RGB')
+d = ImageEnhance.Color(d).enhance(0.45)
+d = d.point(lambda v: int(255 * (v / 255) ** 1.9 * 0.45))
+d = Image.blend(d, Image.new('RGB', d.size, (20, 34, 78)), 0.36)
+k = d.size[0] / 960
+lua = Image.new('RGB', d.size, (0, 0, 0)); g = ImageDraw.Draw(lua)        # luar azul pola fiestra
+g.rectangle([int(482 * k), int(44 * k), int(552 * k), int(196 * k)], fill=(34, 46, 80))
+d = ImageChops.add(d, lua.filter(ImageFilter.GaussianBlur(26 * k)))
+d.save(os.path.join(ROOT, 'img', 'noite-dormitorio.jpg'), quality=82, optimize=True)
+lamp = Image.new('RGB', d.size, (0, 0, 0)); g = ImageDraw.Draw(lamp)
+g.ellipse([int(20 * k), int(150 * k), int(230 * k), int(360 * k)], fill=(150, 104, 40))   # halo arredor da lámpada
+g.ellipse([int(95 * k), int(224 * k), int(140 * k), int(262 * k)], fill=(255, 210, 120))  # pantalla acesa
+g.polygon([(int(40 * k), int(300 * k)), (int(200 * k), int(300 * k)), (int(330 * k), int(470 * k)), (int(0 * k), int(470 * k))], fill=(90, 62, 26))
+ImageChops.add(d, lamp.filter(ImageFilter.GaussianBlur(22 * k))).save(os.path.join(ROOT, 'img', 'noite-dormitorio-lampada.jpg'), quality=82, optimize=True)
+print('escrito noite-dormitorio.jpg e noite-dormitorio-lampada.jpg')

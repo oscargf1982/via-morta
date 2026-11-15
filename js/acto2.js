@@ -5,7 +5,7 @@
    e Mega Andrés (Club Fluvial), en calquera orde → Champions na Fraternal → segunda noite (o asubío vén do taller).
    Mércores: a chave do taller (Concha, a cambio dun detalle: os ositos) → o taller e as cinco pistas → FIN DO ACTO 2.
    Sen Brais nin a Volta do Castelo. Fichas: docs/05_FICHAS_ESCENARIOS.md, sección «Acto 2».
-   Fondos PROVISIONAIS (tools/fondos-acto2.py): rúa do Cardeal, farmacia e Club Fluvial, ata que cheguen as ilustracións de Oscar.
+   Fondos: rúa do Cardeal, farmacia e Club Fluvial son ilustracións de Oscar (a carretilla e os sacos de carbón do Fluvial píntanse por código).
    Martín fala en castelán; os NPC, en galego; a interface, en galego.
    ========================================================== */
 const VA = t => say('Valerio', t);
@@ -171,45 +171,53 @@ async function conchaChaveTaller() {
     if (!flag('fimActo1') || !flag('objValerio')) return centroA1();
     const o = [{ t: 'A la rúa do Cardeal: la farmacia de Valerio.', k: 'cardeal' }, { t: 'Al Concello.', k: 'concello' }, { t: 'Mejor me quedo en el mapa.', k: 'no' }];
     const k = o[await choose(o)].k;
-    if (k === 'cardeal') return goScene('cardeal', [60, 470]);
+    if (k === 'cardeal') return goScene('cardeal', [740, 520]);
     if (k === 'concello') return goScene('concelloExt', [90, 360]);
   };
   const rioA1 = rio.act;
-  rio.act = () => flag('objAndres') ? goScene('fluvial', [60, 500]) : rioA1();
+  rio.act = () => flag('objAndres') ? goScene('fluvial', [900, 490]) : rioA1();
   const casteloA1 = castelo.act;
   castelo.act = () => flag('fimActo1') ? mapaPechado('El castillo de San Vicente, otro día. Hoy mis gemelos no suben ni a una silla. Y ya sé lo que pasa cuando me subo a una silla.', 'próximo hito') : casteloA1();
 }
 
-/* ---------- B1 · Rúa do Cardeal (fondo provisional) ---------- */
+/* ---------- B1 · Rúa do Cardeal (ilustración de Oscar) ---------- */
 SCENES.cardeal = {
   name: 'Rúa do Cardeal', bg: 'img/bg-cardeal.jpg', music: 'estacion', floor: 'pedra',
-  walk: [[0, 392], [960, 392], [960, 540], [0, 540]],
-  holes: [[[200, 412], [370, 412], [370, 476], [200, 476]]],
-  scale: [392, 0.62, 540, 0.95], actorH: 300, start: [60, 470], minSpeed: 0.5,
+  walk: [[170, 520], [300, 476], [470, 398], [560, 354], [610, 340], [700, 340], [800, 400], [800, 540], [160, 540]],
+  scale: [340, 0.2, 540, 0.92], actorH: 300, start: [740, 520], minSpeed: 0.5,
   draw(c, t) {
-    const a = 0.55 + 0.45 * Math.abs(Math.sin(t * 2.2));   // neón da cruz verde
-    c.save(); c.globalAlpha = a; c.shadowColor = '#2aff8a'; c.shadowBlur = 22; c.fillStyle = '#3aff96'; c.fillRect(604, 180, 20, 56); c.fillRect(586, 198, 56, 20); c.restore();
-    c.fillStyle = '#f4f0e0'; c.fillRect(424, 198, 132, 30); c.strokeStyle = '#1a6a3a'; c.lineWidth = 2; c.strokeRect(424, 198, 132, 30);
-    signText(c, 'FARMACIA', 490, 221, 20, '#1a6a3a', '"Trebuchet MS", sans-serif');
-    for (const x of [95, 855]) { c.fillStyle = '#f4f0e0'; c.fillRect(x - 46, 316, 92, 30); c.strokeStyle = '#c0221c'; c.lineWidth = 2; c.strokeRect(x - 46, 316, 92, 30); signText(c, 'SE ALUGA', x, 337, 14, '#c0221c', '"Trebuchet MS", sans-serif'); }
+    // o neón da cruz verde latexa por riba do debuxo
+    const a = 0.12 + 0.22 * Math.abs(Math.sin(t * 2.2));
+    c.save(); c.globalCompositeOperation = 'lighter'; c.globalAlpha = a; c.shadowColor = '#2aff8a'; c.shadowBlur = 26; c.fillStyle = '#3aff96';
+    c.fillRect(440, 42, 44, 106); c.fillRect(408, 74, 108, 42); c.restore();
+    // «Se aluga» nas portas de máis abaixo
+    for (const [x, y, k] of [[481, 330, 1], [545, 318, 0.8]]) {
+      c.save(); c.translate(x, y); c.scale(k, k); c.fillStyle = '#f4f0e0'; c.fillRect(-15, -8, 30, 16); c.strokeStyle = '#c0221c'; c.lineWidth = 1; c.strokeRect(-15, -8, 30, 16);
+      signText(c, 'SE ALUGA', 0, 3, 6, '#c0221c', '"Trebuchet MS", sans-serif'); c.restore();
+    }
   },
   hotspots: [
-    { name: 'Mapa', key: true, r: [0, 400, 40, 140], at: [30, 480], face: 'L', exit: ['mapa'], hint: 'L',
+    { name: 'Mapa', key: true, r: [700, 470, 100, 70], at: [750, 525], face: 'R', exit: ['mapa'], hint: 'D',
       look: () => MA('Por ahí vuelvo hacia el resto de Monforte. A pie, que el coche se lo llevó Valencia.', 'pensativo') },
-    { name: 'Farmacia', key: true, done: () => flag('valerioFeito'), r: [450, 276, 80, 104], at: [490, 404], face: 'B', exit: ['farmacia', [90, 470]], door: true,
-      look: () => MA('La farmacia del padre de Valerio, número 23. El mismo toldo de rayas de cuando veníamos a por caramelos de eucalipto que no nos tocaban.', 'sonriente') },
-    { name: 'Cruz verde', r: [580, 176, 66, 64], look: () => MA('La cruz verde de neón, parpadeando. De crío pensaba que era una señal de vía libre. En cierto modo lo es: vía libre a la aspirina.', 'risueno') },
-    { name: 'Toldo', r: [392, 228, 196, 36], look: () => MA('Toldo de rayas rojas y blancas. Si lo pintasen de otro color, medio Monforte se perdería buscando la farmacia.', 'sonriente') },
-    { name: 'Locais baleiros', r: [30, 290, 130, 90], look: () => MA('«Se aluga». Y el cartel, tan viejo que ya está para que lo alquilen a él.', 'pensativo') },
-    { name: 'Outro local', r: [790, 290, 130, 90], look: () => MA('Otro «Se aluga». En esta calle había una tienda de discos, una mercería y un videoclub. Ahora hay carteles. Y eco.', 'pensativo') },
-    { name: 'Bar', r: [200, 290, 160, 120], look: () => MA('Un bar con terraza. La calle del Cardeal siempre fue de bares. Algunas cosas en Monforte no cierran: se jubilan detrás de la barra.', 'risueno') },
-    { name: 'Farolas', r: [140, 200, 40, 230], look: () => MA('Farolas de las de bola. A esta hora apagadas, ahorrando para la noche.', 'neutro') },
-    { name: 'Lousas', r: [400, 440, 400, 100], look: () => MA('Losas de calle peatonal, con alguna suelta que hace «clonc». La conozco: la pisaba adrede volviendo del instituto.', 'sonriente') },
-    { name: 'Fachadas', r: [0, 30, 960, 200], look: () => MA('Fachadas de colores con balcones. Alguien me está mirando desde un visillo. Mañana lo sabe Concha. Esta tarde, quizá.', 'esceptico') },
+    { name: 'Farmacia', key: true, done: () => flag('valerioFeito'), r: [158, 196, 124, 300], at: [235, 512], face: 'B', exit: ['farmacia', [900, 515]], door: true,
+      look: () => MA('La farmacia del padre de Valerio. La puerta abierta y el suelo de baldosas de colores, como cuando veníamos a por caramelos de eucalipto que no nos tocaban.', 'sonriente') },
+    { name: 'Cruz verde', r: [404, 38, 116, 112], look: () => MA('La cruz verde de neón, parpadeando. De crío pensaba que era una señal de vía libre. En cierto modo lo es: vía libre a la aspirina.', 'risueno') },
+    { name: 'Letreiro', r: [362, 122, 118, 64], look: () => MA('«FARMACIA», en letras de las de antes. Ni nombre ni apellido: en esta calle no hace falta. Es la de Valerio y punto.', 'sonriente') },
+    { name: 'Escaparate', r: [362, 302, 54, 108], look: () => MA('Un escaparate con cajitas. Ni una oferta, ni un cartel de «2x1». El padre de Valerio decía que la salud no se rebaja.', 'pensativo') },
+    { name: 'Locais baleiros', r: [458, 290, 110, 110], look: () => MA('«Se aluga». Y «se aluga». En esta calle había una tienda de discos y un videoclub. Ahora hay carteles. Y eco.', 'pensativo') },
+    { name: 'Toldo', r: [122, 122, 470, 188], look: () => MA('Toldo de rayas rojas y blancas. Si lo pintasen de otro color, medio Monforte se perdería buscando la farmacia.', 'sonriente') },
+    { name: 'Balcóns', r: [140, 0, 200, 118], look: () => MA('Balcones de hierro con florituras. Alguien me está mirando desde un visillo. Mañana lo sabe Concha. Esta tarde, quizá.', 'esceptico') },
+    { name: 'Farol', r: [528, 140, 32, 62], look: () => MA('Un farol de los de forja. A esta hora apagado, ahorrando para la noche.', 'neutro') },
+    { name: 'Terraza', r: [806, 360, 154, 180], look: () => MA('Una terraza con sombrilla. La calle del Cardeal siempre fue de bares. Algunas cosas en Monforte no cierran: se jubilan detrás de la barra.', 'risueno') },
+    { name: 'Árbores', r: [680, 150, 280, 200], look: () => MA('Una fila de árboles hasta el fondo. En verano dan sombra; en otoño, trabajo al barrendero.', 'neutro') },
+    { name: 'Torre ao fondo', r: [648, 196, 30, 92], look: () => MA('Una torre al fondo de la calle, asomando entre los tejados. En Monforte, mires donde mires, algo de piedra te está mirando a ti.', 'pensativo') },
+    { name: 'Papeleira', r: [0, 420, 30, 90], act: () => MA('No voy a tirar nada. Con la suerte que tengo, mañana me haría falta.', 'esceptico'),
+      look: () => MA('Una papelera. Vacía. O pasa el barrendero muy temprano o en esta calle ya no queda nadie para ensuciar.', 'neutro') },
+    { name: 'Lousas', r: [380, 420, 320, 120], look: () => MA('Losas de calle peatonal, con alguna suelta que hace «clonc». La conozco: la pisaba adrede volviendo del instituto.', 'sonriente') },
   ],
 };
 
-/* ---------- B2 · Farmacia (fondo provisional) ---------- */
+/* ---------- B2 · Farmacia (ilustración de Oscar) ---------- */
 async function valerioTalk() {
   if (!flag('valerioSauda')) {
     await VA('Martín Pardo! Non me digas! O do cross! Pasa, pasa, que dende as once non entra ninguén... agás os de sempre.');
@@ -269,9 +277,8 @@ async function xoanFarmacia() {
 }
 SCENES.farmacia = {
   name: 'Farmacia', bg: 'img/bg-farmacia.jpg', music: 'casa', floor: 'madeira',
-  walk: [[40, 410], [810, 410], [810, 488], [920, 492], [960, 540], [0, 540], [0, 440]],
-  front: [{ y: 400, r: [170, 290, 620, 110] }],
-  scale: [410, 0.86, 540, 1.02], actorH: 300, start: [90, 470], minSpeed: 0.5,
+  walk: [[702, 300], [790, 296], [836, 332], [906, 440], [960, 480], [960, 540], [622, 540], [664, 420], [706, 334]],
+  scale: [296, 0.34, 540, 1.0], actorH: 300, start: [900, 515], minSpeed: 0.5,
   async onEnter() {
     if (flag('pistaCurma')) return;
     await XO('...entón o xarope de Eugenia, a nena da miña curmá. O de morango, que o outro cúspeo.');
@@ -282,17 +289,21 @@ SCENES.farmacia = {
     setFlag('pistaCurma');
   },
   hotspots: [
-    { name: 'Rúa do Cardeal', key: true, r: [0, 150, 40, 320], at: [50, 470], face: 'L', exit: ['cardeal', [490, 410]], door: true,
+    { name: 'Rúa do Cardeal', key: true, r: [906, 470, 54, 70], at: [920, 520], face: 'R', exit: ['cardeal', [235, 512]], door: true, hint: 'D',
       look: () => MA('La puerta a la calle. La campanilla sigue sonando igual que hace veinte años: «tlin», y el padre de Valerio levantaba la vista por encima de las gafas.', 'sonriente') },
-    { name: 'Estantes', r: [40, 40, 400, 250], look: () => MA('Cajitas en fila, por colores. Si las ordenase un maquinista, irían por horario de salida.', 'risueno') },
-    { name: 'Máis estantes', r: [520, 40, 400, 250], look: () => MA('Jarabes, pomadas y cosas que acaban en «-ol». La mitad de Monforte está aquí, en dosis de quinientos miligramos.', 'pensativo') },
-    { name: 'Retrato', r: [452, 70, 56, 70], look: () => MA('El padre de Valerio, con su bata y su bigote. Desde el cuadro sigue vigilando que nadie coja caramelos sin pagar. Yo cogí dos. En 1996. Lo siento, don Valerio.', 'avergonzado') },
-    { name: 'Mostrador', r: [180, 300, 600, 100], look: () => MA('Un mostrador de madera con más años que yo. Tiene muescas de monedas de pesetas. Aquí se pagaba en duros y se esperaba sentado.', 'pensativo') },
-    { name: 'Báscula', r: [826, 250, 88, 236], act: () => MA('Me peso... No. Mejor no. Hay cosas que un hombre con agujetas no necesita saber.', 'avergonzado'),
-      look: () => MA('Una báscula antigua, roja, con su esfera. Te pesa y te juzga. Por veinte céntimos, las dos cosas.', 'risueno') },
+    { name: 'Ortopedia e deporte', r: [24, 40, 292, 72], look: () => MA('«Ortopedia y deporte». Rodilleras, tobilleras y muñequeras. Es la sección de los que vuelven a correr a los cuarenta. Y la de los que vuelven del intento.', 'avergonzado') },
+    { name: 'Pantalla', r: [500, 120, 50, 42], look: () => MA('Una pantalla para los turnos. Pone «0». O no hay nadie esperando o Valerio no se fía de la tecnología.', 'esceptico') },
+    { name: 'Lámpadas', r: [596, 134, 164, 50], look: () => MA('Tres lámparas de bola sobre el mostrador del fondo. Como tres pastillas efervescentes colgando del techo.', 'risueno') },
+    { name: 'Cadeira', r: [782, 256, 52, 70], act: () => MA('Si me siento con estos gemelos, mañana me tienen que levantar con grúa. Y la grúa del depósito está para cosas serias.', 'avergonzado'),
+      look: () => MA('Una butaca para esperar. Blanca y con cara de cómoda. Demasiado cómoda para un hombre con agujetas.', 'pensativo') },
+    { name: 'Mostrador', r: [640, 230, 140, 60], look: () => MA('El mostrador del fondo, de madera con arquitos. Aquí se pagaba en duros y se esperaba sentado.', 'pensativo') },
+    { name: 'Expositor', r: [354, 280, 350, 260], look: () => MA('Un expositor hasta el techo de cremas, champús y vitaminas. Si las ordenase un maquinista, irían por horario de salida.', 'risueno') },
+    { name: 'Estantes de madeira', r: [20, 112, 312, 420], look: () => MA('Estanterías de madera con arcos, como un retablo. Pero en vez de santos, jarabes. Que también hacen milagros, según para qué.', 'risueno') },
+    { name: 'Máis estantes', r: [370, 140, 190, 140], look: () => MA('Jarabes, pomadas y cosas que acaban en «-ol». La mitad de Monforte está aquí, en dosis de quinientos miligramos.', 'pensativo') },
+    { name: 'Estantes do fondo', r: [840, 118, 100, 320], look: () => MA('Más estantes. Valerio tiene más cajas que clientes. Y eso que clientes, de los de siempre, no le faltan.', 'neutro') },
   ],
   npcs: [
-    { id: 'valerio', name: 'Valerio', key: true, x: 560, y: 384, w: 70, h: 300, at: [560, 424], face: 'B', shadow: false,
+    { id: 'valerio', name: 'Valerio', key: true, x: 745, y: 318, w: 70, h: 300, at: [760, 370], face: 'B', shadow: false,
       draw(c, t, talking, s) { figura(c, this.x, this.y, this.h * s, VALERIO_LOOK, talking, t); },
       done: () => flag('valerioFeito'),
       look: () => MA('Valerio, mi compañero de pupitre en el instituto. Con la bata de su padre parece un médico de serie. De serie de sobremesa.', 'sonriente'),
@@ -303,14 +314,14 @@ SCENES.farmacia = {
         xornal: async () => { await VA('Xa o lin. As esquelas primeiro: é deformación profesional.'); },
       } },
     { id: 'xoanF', name: 'Xoán Carballeira', key: false, sheet: 'img/xoan-sprite.png', spec: { cw: 160, ch: 280, cols: 8 }, idle: 1, talkFrames: [1],
-      x: 330, y: 440, w: 70, h: 296, at: [450, 470], face: 'L',
+      x: 812, y: 398, w: 70, h: 296, at: [880, 450], face: 'R',
       look: () => MA('Xoán, el de Renfe, comprando jarabe para la hija de su prima. Hasta en la farmacia lleva el chaleco. Puntualidad suiza, chaleco gallego.', 'sonriente'),
       talk: () => xoanFarmacia(),
       give: { ositos: async () => { await XO('Para Eugenia? Non, non, que logo non quere o xarope. Xa sabes: primeiro o amargo, despois o doce.'); } } },
   ],
 };
 
-/* ---------- C2 · Club Fluvial: piscina e chiringuito «Malo Será» (fondo provisional) ---------- */
+/* ---------- C2 · Club Fluvial: piscina e chiringuito «Malo Será» (ilustración de Oscar) ---------- */
 async function andresTalk() {
   if (!flag('andresSauda')) {
     await AN('Mira quen chega! O de Vilatán! O da saída nula!');
@@ -383,31 +394,42 @@ async function retoNatacion() {
 }
 SCENES.fluvial = {
   name: 'Club Fluvial · Malo Será', bg: 'img/bg-fluvial.jpg', music: 'estacion', floor: 'pedra',
-  walk: [[120, 300], [840, 300], [930, 470], [960, 540], [0, 540], [30, 470]],
-  holes: [[[184, 318], [776, 318], [836, 444], [124, 444]], [[850, 370], [940, 370], [940, 430], [850, 430]], [[356, 474], [564, 474], [564, 508], [356, 508]]],
-  scale: [300, 0.5, 540, 0.95], actorH: 300, start: [60, 500], minSpeed: 0.45,
+  walk: [[370, 400], [400, 362], [800, 358], [960, 366], [960, 540], [196, 540], [200, 446]],
+  holes: [[[380, 372], [578, 372], [578, 442], [380, 442]], [[268, 446], [642, 446], [642, 540], [268, 540]], [[826, 360], [960, 360], [960, 446], [826, 446]], [[630, 412], [826, 412], [826, 488], [630, 488]]],
+  scale: [360, 0.4, 540, 0.9], actorH: 300, start: [900, 490], minSpeed: 0.45,
   draw(c, t) {
-    signText(c, 'MALO SERÁ', 105, 234, 20, '#ffd23a', '"Trebuchet MS", sans-serif');
-    c.fillStyle = '#f2ead8'; c.font = '11px "Trebuchet MS", sans-serif'; c.fillText('mojito 5', 205, 254); c.fillText('tumboa 2', 205, 268); c.fillText('siesta 0', 205, 282);
-    c.fillStyle = 'rgba(255,255,255,.35)'; for (let i = 0; i < 6; i++) { const x = 200 + ((t * 30 + i * 97) % 560); c.fillRect(x, 330 + (i % 3) * 34, 18, 2); }
+    // reflexos na auga da piscina
+    c.fillStyle = 'rgba(255,255,255,.45)'; for (let i = 0; i < 7; i++) { const x = 510 + ((t * 18 + i * 61) % 280); c.fillRect(x, 304 + (i % 3) * 11, 10, 1.5); }
+    // a carretilla azul das tumboas e os sacos de carbón do avó fogoneiro (por código: non están no debuxo)
+    c.save(); c.translate(895, 432); c.scale(1.35, 1.35); c.translate(-895, -432); c.lineWidth = 2.5; c.strokeStyle = '#1a1a1a'; c.lineJoin = 'round';
+    for (const [x, y] of [[884, 392], [906, 396], [928, 390]]) {
+      c.fillStyle = '#4a4036'; c.beginPath(); c.moveTo(x - 11, y + 30); c.lineTo(x - 12, y + 6); c.quadraticCurveTo(x - 6, y - 6, x, y); c.quadraticCurveTo(x + 6, y - 6, x + 12, y + 6); c.lineTo(x + 11, y + 30); c.closePath(); c.fill(); c.stroke();
+      c.fillStyle = '#20201e'; c.beginPath(); c.ellipse(x, y + 2, 7, 3, 0, 0, 7); c.fill();
+    }
+    c.fillStyle = '#2f6bc0'; c.beginPath(); c.moveTo(848, 404); c.lineTo(900, 404); c.lineTo(892, 424); c.lineTo(856, 424); c.closePath(); c.fill(); c.stroke();
+    c.beginPath(); c.moveTo(900, 410); c.lineTo(934, 418); c.stroke(); c.beginPath(); c.moveTo(856, 424); c.lineTo(856, 432); c.stroke(); c.beginPath(); c.moveTo(888, 424); c.lineTo(888, 432); c.stroke();
+    c.fillStyle = '#222'; c.beginPath(); c.arc(872, 430, 7, 0, 7); c.fill(); c.stroke(); c.fillStyle = '#aaa'; c.beginPath(); c.arc(872, 430, 2, 0, 7); c.fill();
+    c.restore();
   },
   hotspots: [
-    { name: 'Mapa', key: true, r: [0, 480, 60, 60], at: [40, 510], face: 'L', exit: ['mapa'], hint: 'L',
+    { name: 'Mapa', key: true, r: [924, 436, 36, 104], at: [930, 490], face: 'R', exit: ['mapa'], hint: 'R',
       look: () => MA('Por ahí vuelvo al Malecón y al resto de Monforte. Seco, a ser posible.', 'pensativo') },
-    { name: 'Piscina', r: [130, 320, 700, 120], act: () => andresTalk(),
+    { name: 'Sacos de carbón', r: [866, 362, 94, 58], look: () => MA('Sacos de carbón... no vegetal: de piedra, del bueno. Para un churrasco es un despilfarro. Para una caldera, sería otra cosa.', 'dudoso') },
+    { name: 'Carretilla', r: [826, 392, 112, 54], look: () => MA('Una carretilla azul, de las de obra, para llevar tumbonas. Con esa rueda se podría mover una vaca. O algo más pesado.', 'pensativo') },
+    { name: 'Salvavidas', r: [528, 298, 40, 42], look: () => MA('Un salvavidas naranja. Lo apunto mentalmente. Por si acaso. Con estos gemelos, nunca se sabe.', 'avergonzado') },
+    { name: 'Piscina', r: [500, 292, 300, 52], act: () => andresTalk(),
       look: () => MA('La piscina del Fluvial. Cerrada desde septiembre, pero con agua. Agua a catorce grados. Agua con opiniones.', 'esceptico') },
-    { name: 'Chiringuito', r: [10, 160, 190, 150], look: () => MA('El «Malo Será». Un nombre que es toda una declaración de principios. Y de finales.', 'risueno') },
-    { name: 'Lousa', r: [200, 236, 44, 76], look: () => MA('Mojito, cinco euros. Tumbona, dos. Siesta, gratis. Es la carta más sincera de Galicia.', 'sonriente') },
-    { name: 'Tumboas', r: [556, 440, 300, 64], look: () => MA('Tumbonas naranjas en fila. La número 4 tiene la marca del cuerpo de Andrés. Es prácticamente un molde.', 'risueno') },
-    { name: 'Carretilla', r: [850, 370, 110, 60], look: () => MA('Una carretilla azul, de las de obra, para llevar tumbonas. Con esa rueda se podría mover una vaca. O algo más pesado.', 'pensativo') },
-    { name: 'Sacos de carbón', r: [856, 296, 90, 60], look: () => MA('Sacos de carbón vegetal... no: de piedra, del bueno. Para un churrasco es un despilfarro. Para una caldera, sería otra cosa.', 'dudoso') },
-    { name: 'Grella', r: [796, 316, 60, 50], look: () => MA('La parrilla del churrasco, con su costra de veranos. Huele a sardina de agosto aunque estemos en otoño.', 'sonriente') },
-    { name: 'Río Cabe', r: [0, 190, 960, 30], look: () => MA('El Cabe, bajando tranquilo. Aquí aprendimos a nadar medio Monforte. La otra mitad, a mirar.', 'pensativo') },
-    { name: 'Ponte Vella', r: [560, 150, 340, 60], look: () => MA('La Ponte Vella al fondo, con sus arcos. Lleva siglos aguantando a Monforte encima. Yo con cuatro largos ya me quejo.', 'pensativo') },
+    { name: 'Letreiro', r: [86, 96, 262, 104], look: () => MA('«Malo Será», con dos palmeras. Palmeras en Monforte. Andrés tiene más optimismo que clima.', 'risueno') },
+    { name: 'Lousa', r: [52, 340, 140, 160], look: () => MA('Refrescos, cerveza, agua, zumos. Ni rastro del mojito. Andrés dice que el mojito es «carta secreta». O sea, que lo hace él cuando le apetece.', 'sonriente') },
+    { name: 'Chiringuito', r: [0, 196, 380, 230], look: () => MA('El «Malo Será». Techo de paja, taburetes de madera y una nevera que zumba como un compresor de locomotora. Un nombre que es toda una declaración de principios. Y de finales.', 'risueno') },
+    { name: 'Mesas', r: [268, 360, 380, 180], act: () => MA('Me sentaría, pero si me siento con estas agujetas, aquí me encuentra Andrés en primavera.', 'avergonzado'),
+      look: () => MA('Mesas de terraza con sombrilla. En otoño, sin nadie. Pagadas para todo el año, que el optimismo no tiene temporada.', 'pensativo') },
+    { name: 'Castelo', r: [570, 60, 240, 90], look: () => MA('El castillo de San Vicente allá arriba, vigilando el río. Desde aquí parece que nos mira nadar. Y que no le impresiona.', 'pensativo') },
+    { name: 'Farolas', r: [560, 180, 30, 170], look: () => MA('Farolas de bola. Para los baños de noche, supongo. Andrés seguro que tiene llave también de eso.', 'esceptico') },
   ],
   npcs: [
-    { id: 'andres', name: 'Mega Andrés', key: true, x: 480, y: 500, w: 220, h: 70, at: [600, 512], face: 'L', shadow: false,
-      draw(c, t, talking, s) { andresDeitado(c, this.x, this.y, 150 * s, talking, t); },
+    { id: 'andres', name: 'Mega Andrés', key: true, x: 760, y: 476, w: 230, h: 80, at: [700, 508], face: 'R', shadow: false,
+      draw(c, t, talking, s) { andresDeitado(c, this.x, this.y, 220 * s, talking, t); },
       done: () => flag('andresFeito'),
       look: () => MA('Mega Andrés, en su tumbona, con camisa de flores y gafas de sol. En otoño. Es un estilo de vida, no una estación del año.', 'risueno'),
       talk: () => andresTalk(),
@@ -511,9 +533,11 @@ async function noite2() {
   await MA('Cama. Silencio. Ni un tren. Esta noche duermo de un tirón...', 'aliviado');
   E.fadeTo = 1; await sleep(900);
   setTimeout(() => SFX.whistle(), 1200);
-  await cine('img/noite-salon.jpg', [
+  await cine('img/noite-dormitorio.jpg', [
     'Esa noite, outra vez...',
     'Martín: «Dos largos y uno corto. Otra vez. Pero esta vez suena... más cerca. Demasiado cerca.»',
+  ]);
+  await cine('img/noite-dormitorio-lampada.jpg', [
     'Martín: «No viene del museo. Viene de atrás. Del patio.»',
   ]);
   const ZOOM_PORTA = { x: 0.86, y: 0.62, z: 1.7 };

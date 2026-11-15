@@ -113,7 +113,7 @@
   - Izquierda → dormitorio. Sin fondo propio todavía: antes del alta del agua, Martín dice que aún no es hora de dormir; con el alta, lanza la noche del fin del Acto 1.
   - Abajo → vuelta a la calle, Doutor Casares (A4). Así nunca hay callejón sin salida.
 - **Vista del balcón (decidido por Oscar):** al usar o mirar las ventanas del balcón salta a pantalla completa `img/vista-salon.jpg`, ilustración de Oscar: la gasolinera, la capillita, el supermercado y, al fondo, el museo del ferrocarril con la Mikado. **Decidido por Oscar el 14-11-2026:** la Mikado se ve a lo lejos (el museo no está delante de la casa), pero es la protagonista: la cámara se acerca despacio hasta ella y se queda ahí, también en la noche del fin del Acto 1. Mecánica general: `cine(src, lines, zoom)` en `engine.js`, con `zoom = { x, y, z }`; aquí `ZOOM_MIKADO` en `acto1.js`.
-- **La noche (fin del Acto 1, propuesta provisional):** al volver con el alta del agua (`aguaAlta`), Martín dice que anochece y que el dormitorio está a la izquierda (pista). En el sofá bromea: «mañana tengo la espalda de un señor de ochenta años». Al entrar al dormitorio: fundido a negro, cinemática con `img/noite-salon.jpg` (el salón a oscuras) y el silbato «dos largos y uno corto»; Martín se levanta y va al balcón: `img/noite-vista.jpg` (la vista del balcón de noche, con la Mikado). El silbato vuelve a sonar y Martín se da cuenta de que no pasa por delante de su casa: «llama a mi casa». Hoja «FIN DO ACTO 1». Marca `noiteActo1` y `fimActo1`. Las dos imágenes de noche salen de las de Oscar con `tools/noite.py` (solo oscurecer y azular); se cambian por arte propio si Oscar lo manda, igual que el dormitorio.
+- **La noche (fin del Acto 1, propuesta provisional):** al volver con el alta del agua (`aguaAlta`), Martín dice que anochece y que el dormitorio está a la izquierda (pista). En el sofá bromea: «mañana tengo la espalda de un señor de ochenta años». Al entrar al dormitorio: fundido a negro, cinemática en el dormitorio de Oscar pasado a noche (`img/noite-dormitorio.jpg` y, al levantarse, `noite-dormitorio-lampada.jpg`) y el silbato «dos largos y uno corto»; Martín se levanta y va al balcón: `img/noite-vista.jpg` (la vista del balcón de noche, con la Mikado). El silbato vuelve a sonar y Martín se da cuenta de que no pasa por delante de su casa: «llama a mi casa». Hoja «FIN DO ACTO 1». Marca `noiteActo1` y `fimActo1`. Las dos imágenes de noche salen de las de Oscar con `tools/noite.py` (solo oscurecer y azular); se cambian por arte propio si Oscar lo manda, igual que el dormitorio.
 - **Hotspots:** ventanas del balcón (la vista), ventana de la izquierda, sofá, cojines, mesitas, aparador, planta, cuadros, mesa y sillas, lámparas, interruptor, tarima.
 - **Tono:** primera impresión de Martín en su casa. Todo parece en orden… salvo detalles que preparan la casa sin agua del M2 (no se resuelve aquí).
 - **Personas reales:** ninguna.
@@ -200,25 +200,25 @@
 - **Río Cabe** se abre con `objAndres` y lleva directo al Club Fluvial (C2).
 - **Castelo de San Vicente** sigue cerrado («otro día; hoy mis gemelos no suben ni a una silla»).
 
-### B1 · Rúa do Cardeal (`cardeal`) · fondo provisional
-- **Fondo:** calle peatonal de bares y tiendas, la farmacia con **toldo de rayas rojas y blancas y cruz verde de neón** (n.º 23), y locales con carteles «Se aluga» (el Monforte que se vacía, tema de Valerio). **Pendiente de ilustración de Oscar.**
-- **Salidas:** farmacia → B2; borde izquierdo → mapa.
-- **Hotspots:** farmacia, cruz verde, toldo, carteles «Se aluga», bares, escaparates, farolas, adoquines.
+### B1 · Rúa do Cardeal (`cardeal`) · ilustración de Oscar
+- **Fondo:** `img/bg-cardeal.jpg` (15-11-2026): calle peatonal con árboles y una torre al fondo, la farmacia con **toldo de rayas rojas y blancas, letrero «FARMACIA» y cruz verde de neón** (el neón late por código), una terraza con sombrilla a la derecha. Los carteles «Se aluga» de dos puertas de más abajo se pintan por código (tema de Valerio).
+- **Salidas:** farmacia → B2; abajo a la derecha → mapa.
+- **Hotspots:** farmacia, letrero, cruz verde, escaparate, locales «Se aluga», toldo, balcones, farol, terraza, árboles, torre al fondo, papelera, losas.
 
-### B2 · Farmacia, interior (`farmacia`) · fondo provisional
-- **Fondo:** mostrador de madera, estanterías de cajitas, báscula antigua, retrato del padre de Valerio. **Pendiente de ilustración de Oscar.**
+### B2 · Farmacia, interior (`farmacia`) · ilustración de Oscar
+- **Fondo:** `img/bg-farmacia.jpg` (15-11-2026): estanterías de madera con arcos y el letrero «Ortopedia y deporte», un expositor central, mostrador del fondo con lámparas de bola, butaca y pantalla de turnos. Se anda por el pasillo de la derecha; la puerta a la calle queda abajo a la derecha (fuera de cuadro). Valerio espera delante del mostrador del fondo; Xoán, en el pasillo.
 - **NPC:** **Valerio** (compañero de instituto de Martín), con la bata de su padre. **Xoán Carballeira** en el mostrador, recogiendo «o xarope de Eugenia, a nena da miña curmá». Martín ata cabos: Eugenia es la hija de Rosario, así que Xoán es primo de Rosario (marca `pistaCurma`).
 - **Crema de agujetas:** Valerio ve andar a Martín y se ríe: «Andas coma un home de oitenta anos». Se la regala, de muestra. Objeto `crema`, marca `valerioFeito`.
-- **Hotspots:** mostrador, estanterías, báscula, retrato del padre, cajón de muestras, calendario, cruz de la puerta.
+- **Hotspots:** letrero «Ortopedia y deporte», estanterías (tres), expositor, mostrador, lámparas, butaca, pantalla de turnos.
 - **Personas reales:** ninguna.
 
-### C2 · Club Fluvial: piscina y chiringuito «Malo Será» (`fluvial`) · fondo provisional
-- **Fondo:** piscina al aire libre junto al Cabe, tumbonas, chiringuito «Malo Será» con su pizarra, la carretilla de las tumbonas, sacos de carbón junto a la barbacoa. Cerrada desde septiembre... salvo para Andrés. **Pendiente de ilustración de Oscar.**
-- **Llegada:** desde el mapa, zona Río Cabe. **Salida:** mapa.
-- **NPC:** **Mega Andrés**, en su tumbona. Filósofo: «a vida, mellor deitado».
+### C2 · Club Fluvial: piscina y chiringuito «Malo Será» (`fluvial`) · ilustración de Oscar
+- **Fondo:** `img/bg-fluvial.jpg` (15-11-2026): chiringuito «Malo Será» de paja con pizarra (refrescos, cerveza, agua, zumos), mesas con sombrilla en el césped, la piscina al fondo tras la valla con salvavidas y el castillo de San Vicente en lo alto. **La carretilla azul y los sacos de carbón se pintan por código** (a la derecha, junto a la valla) porque no salen en el dibujo y hacen falta en el Acto 4. Cerrada desde septiembre... salvo para Andrés.
+- **Llegada:** desde el mapa, zona Río Cabe, por la derecha. **Salida:** borde derecho → mapa.
+- **NPC:** **Mega Andrés**, en su tumbona (dibujada con él, por código) sobre el césped. Filósofo: «a vida, mellor deitado».
 - **Puzzle:** Andrés quiere la revancha de natación (cuatro largos). Sin `crema`, Martín se niega y apunta a la farmacia. Con ella, minijuego de toques alternos (izquierda/derecha, mecánica general `minixogoToques` en engine.js). Si gana Martín: tarde de tumbona. Si pierde dos veces, Andrés propone empate técnico a cambio de un mojito. Siempre se sale con `andresFeito`.
 - **Siembra para el Acto 4:** el abuelo fogonero, los sacos de carbón «para o churrasco» y la carretilla de las tumbonas (hotspots mirables).
-- **Hotspots:** piscina, agua (14 grados), tumbonas, chiringuito, pizarra, carretilla, sacos de carbón, barbacoa, río Cabe, Ponte Vella al fondo.
+- **Hotspots:** piscina, salvavidas, letrero, pizarra, chiringuito, mesas, carretilla, sacos de carbón, farolas, castillo.
 
 ### B3 · A Fraternal de noche (`fraternalNoite`)
 - **Fondo:** `img/bg-fraternal.jpg` oscurecida por código, con la tele encendida (luz azulada) y el reloj. Se entra desde A4b cuando `valerioFeito` y `andresFeito` («Las ocho menos diez. Champions»).
@@ -227,7 +227,7 @@
 - **Salida:** a las 23:00 («ni prórroga ni penaltis») Martín vuelve a casa: marca `champions`.
 
 ### A5 · Segunda noche (dormitorio → patio)
-- Con `champions`, el dormitorio lanza la noche: suena el silbato, Martín baja al patio a oscuras (`img/noite-patio.jpg`, de `tools/noite.py`) y ve **luz por debajo de la puerta del taller**, que se apaga. Ya no viene de la estación: viene de detrás de la casa. Marca `silbato2`.
+- Con `champions`, el dormitorio lanza la noche: suena el silbato en el dormitorio a oscuras (`img/noite-dormitorio.jpg`, la ilustración de Oscar pasada a noche con `tools/noite.py`; luego `noite-dormitorio-lampada.jpg` con la lámpara de la mesilla encendida), Martín baja al patio a oscuras (`img/noite-patio.jpg`, de `tools/noite.py`) y ve **luz por debajo de la puerta del taller**, que se apaga. Ya no viene de la estación: viene de detrás de la casa. Marca `silbato2`.
 - «Mércores, 8:00». Objetivo: la llave del taller (Concha).
 
 ### A6 · O taller vello (`tallerA2`, `vigasA2`), con las fotos de Oscar

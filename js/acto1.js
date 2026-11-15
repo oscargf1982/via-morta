@@ -710,15 +710,17 @@ SCENES.casares = {
 };
 /* ---------- A5 · a noite que pecha o Acto 1 ----------
    Con a alta da auga feita, Martín vai durmir. Soa o asubío (dous longos e un curto), érguese, mira polo balcón
-   cara ao museo... e dáse conta de que o son vén cara á súa casa. Sen fondo do dormitorio aínda: a noite vese no salón. */
+   cara ao museo... e dáse conta de que o son vén cara á súa casa. O dormitorio é a ilustración de Oscar pasada a noite (tools/noite.py). */
 async function noiteActo1() {
   await MA('Agua mañana, luz hoy y cama ya. Para ser lunes, no ha estado mal.', 'aliviado');
   E.fadeTo = 1; await sleep(900);
   setFlag('noiteActo1');
   setTimeout(() => SFX.whistle(), 1400);
-  await cine('img/noite-salon.jpg', [
+  await cine('img/noite-dormitorio.jpg', [
     'Esa noite, na Casa Juana...',
     'Martín: «(Dos largos y uno corto. Un silbato de vapor. A estas horas no pasa ni un regional.)»',
+  ]);
+  await cine('img/noite-dormitorio-lampada.jpg', [
     'Martín: «Vale. Me levanto. Si es el tren fantasma de Concha, que por lo menos me vea en pijama digno.»',
   ]);
   setTimeout(() => SFX.whistle('LLS', 0.3), 600);
