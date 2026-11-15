@@ -30,6 +30,7 @@
 - **Personajes:** Martín Pardo, Xoán Carballeira, Xosé Nogal, Don Anxo Corredoira, Remedios, Pepe do Taller, Dona Concha, Rosario Higueras, Tío Demetrio, Don Eladio, Valerio, Mega Andrés, Brais «o Galgo» y la madre de Martín. Cualquier parecido con vecinos reales debe tratarse con cariño y sin datos privados.
 - **Hechos:** la noche del 14 de enero de 1958, el mercancías sin frenos, el tren de emigrantes, el informe falso y el despido de Xosé.
 - **Lugares y objetos:** la vía muerta de A Barreira (inventada; se puede cambiar por un lugar real si Oscar lo prefiere), la restauración secreta de la Mikado y su salida, y el parte de incidencia y su escondite.
+- **Añadidos el 15-11-2026 (elegidos por Oscar):** los libros de curas del padre de Valerio y la anotación del 14-I-1958 («Curas por queimaduras nas mans. X. Nogal. Non quixo ir ao médico»); la farmacia de la rúa do Cardeal como farmacia de la familia de Valerio; el carbón que le desaparece a Mega Andrés pagado con billetes bajo una piedra; Andrés como fogonero de la Mikado en el Acto 5. No hay ningún hecho real detrás.
 
 ## 4. Reglas para el juego
 1. **Créditos y fuentes** siempre visibles en el menú.

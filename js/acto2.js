@@ -1,11 +1,11 @@
 'use strict';
 /* ==========================================================
    VÍA MORTA · Acto 2 «O reencontro» (versión intermedia elixida por Oscar, 14-11-2026)
-   Martes: primeiro turno (candado novo) → Concha reparte os encargos → Valerio (farmacia do Cardeal)
+   Martes: primeiro turno (candado novo) → Concha reparte os encargos → Valerio (Farmacia de la Estación, rúa Calvo Sotelo)
    e Mega Andrés (Club Fluvial), en calquera orde → Champions na Fraternal → segunda noite (o asubío vén do taller).
    Mércores: a chave do taller (Concha, a cambio dun detalle: os ositos) → o taller e as cinco pistas → FIN DO ACTO 2.
    Sen Brais nin a Volta do Castelo. Fichas: docs/05_FICHAS_ESCENARIOS.md, sección «Acto 2».
-   Fondos: rúa do Cardeal, farmacia e Club Fluvial son ilustracións de Oscar (a carretilla e os sacos de carbón do Fluvial píntanse por código).
+   Fondos: rúa da farmacia (Calvo Sotelo), farmacia e Club Fluvial son ilustracións de Oscar (a carretilla e os sacos de carbón do Fluvial píntanse por código).
    Martín fala en castelán; os NPC, en galego; a interface, en galego.
    ========================================================== */
 const VA = t => say('Valerio', t);
@@ -72,12 +72,12 @@ async function conchaActo2() {
     const k = opts[await choose(opts)].k;
     if (k === 'conto') {
       if (!flag('objValerio')) {
-        await CO('Que se conta? Pois que Valerio, o da farmacia do Cardeal, preguntou por ti. Que se volviches, que pases, que non che cobra.');
+        await CO('Que se conta? Pois que Valerio, o da Farmacia de la Estación, preguntou por ti. Aí arriba, en Calvo Sotelo, saíndo por detrás do meu quiosco. Que pases, que non che cobra.');
         await CO('E Mega Andrés, o do chiringuito do Fluvial, anda dicindo por aí que lle debes unha revancha de natación dende o instituto.');
         await MA('¿Una revancha? Le gané yo. Por una brazada. Él dice que fue salida nula.', 'risueno');
         await CO('Pois arregládeo na auga. Eu dende aquí non vexo a piscina, pero vou saber quen gañou antes ca vós.');
         setFlag('objValerio'); setFlag('objAndres');
-        toast('Novo obxectivo: Valerio (mapa, Rúa do Cardeal) e Andrés (mapa, Club Fluvial)');
+        toast('Novo obxectivo: Valerio (Farmacia de la Estación, rúa Calvo Sotelo, xunto ao quiosco) e Andrés (mapa, Club Fluvial)');
       } else if (flag('silbato2')) {
         await CO('Que se conta? Que onte á noite volveu soar o tren pantasma. E que a ti viuse baixar ao patio en pixama. De raias.');
         await MA('¿Quién me ha visto? ¡Si eran las tantas!', 'avergonzado');
@@ -133,14 +133,14 @@ async function conchaChaveTaller() {
 }
 
 /* ---------- Mapa no Acto 2 ----------
-   Valerio abre a Rúa do Cardeal e Andrés, o Club Fluvial. Antes de que alguén os mencione, Martín dá un motivo para non ir. */
+   Andrés abre o Club Fluvial. A farmacia de Valerio xa non está no Cardeal: está en Calvo Sotelo, saíndo da praza 2 polo
+   noroeste (cambio pedido por Oscar o 15-11-2026). O Cardeal queda pechado no Acto 2 ata que Oscar decida que facer con el. */
 {
   ZONAS.find(z => z.id === 'fluvial').open = () => flag('objAndres');
-  ZONAS.find(z => z.id === 'cardeal').open = () => flag('objValerio');
+  ZONAS.find(z => z.id === 'cardeal').open = () => false;
   const M = SCENES.mapa.hotspots, cardeal = M.find(h => h.name === 'Rúa do Cardeal'), fluvial = M.find(h => h.name === 'Club Fluvial'), castelo = M.find(h => h.name === 'Castelo de San Vicente');
   const cardealA1 = cardeal.act, fluvialA1 = fluvial.act, casteloA1 = castelo.look;
-  cardeal.act = () => flag('objValerio') ? goScene('cardeal', [740, 520])
-    : flag('fimActo1') ? MA('La calle del Cardeal. Sin un motivo, acabo en un bar contándole lo del silbato a un desconocido. Antes, a ver qué se cuenta Concha.', 'pensativo')
+  cardeal.act = () => flag('fimActo1') ? mapaPechado('La calle del Cardeal, la de los bares. Hoy no: lo que busco está en el barrio de la estación. La farmacia de Valerio, en Calvo Sotelo, al lado del quiosco de Concha.', 'próximo hito')
     : cardealA1();
   fluvial.act = () => flag('objAndres') ? goScene('fluvial', [900, 490])
     : flag('fimActo1') ? MA('El Club Fluvial. ¿Bañarme yo solo, un martes, con estas piernas? Sin un buen motivo, no. Concha seguro que tiene uno.', 'esceptico')
@@ -148,9 +148,11 @@ async function conchaChaveTaller() {
   castelo.look = () => flag('fimActo1') ? MA('El castillo de San Vicente, otro día. Hoy mis gemelos no suben ni a una silla. Y ya sé lo que pasa cuando me subo a una silla.', 'frustrado') : casteloA1();
 }
 
-/* ---------- B1 · Rúa do Cardeal (ilustración de Oscar) ---------- */
-SCENES.cardeal = {
-  name: 'Rúa do Cardeal', bg: 'img/bg-cardeal.jpg', music: 'estacion', floor: 'pedra',
+/* ---------- B1 · Rúa Calvo Sotelo: a Farmacia de la Estación (ilustración de Oscar, img/bg-cardeal.jpg) ----------
+   Sáese da praza 2 polo noroeste, xunto ao quiosco de Concha (Oscar, 15-11-2026). O debuxo segue a ser o da rúa
+   da farmacia: o rótulo pintado di só «FARMACIA». */
+SCENES.calvoSotelo = {
+  name: 'Rúa Calvo Sotelo · Farmacia de la Estación', bg: 'img/bg-cardeal.jpg', music: 'estacion', floor: 'pedra',
   walk: [[170, 520], [300, 476], [470, 398], [560, 354], [610, 340], [700, 340], [800, 400], [800, 540], [160, 540]],
   scale: [340, 0.2, 540, 0.92], actorH: 300, start: [740, 520], minSpeed: 0.5,
   draw(c, t) {
@@ -165,18 +167,18 @@ SCENES.cardeal = {
     }
   },
   hotspots: [
-    { name: 'Mapa', key: true, r: [700, 470, 100, 70], at: [750, 525], face: 'R', exit: ['mapa'], hint: 'D',
-      look: () => MA('Por ahí vuelvo hacia el resto de Monforte. A pie, que el coche se lo llevó Valencia.', 'pensativo') },
-    { name: 'Farmacia', key: true, done: () => flag('valerioFeito'), r: [158, 196, 124, 300], at: [235, 512], face: 'B', exit: ['farmacia', [900, 515]], door: true,
-      look: () => MA('La farmacia del padre de Valerio. La puerta abierta y el suelo de baldosas de colores, como cuando veníamos a por caramelos de eucalipto que no nos tocaban.', 'sonriente') },
+    { name: 'Praza da Estación', key: true, r: [700, 470, 100, 70], at: [750, 525], face: 'R', exit: ['praza2', [450, 346]], hint: 'D',
+      look: () => MA('Por ahí bajo a la plaza de la estación, al quiosco de Concha. Dos minutos. En este barrio todo está a dos minutos de un tren.', 'pensativo') },
+    { name: 'Farmacia de la Estación', key: true, done: () => flag('valerioFeito'), r: [158, 196, 124, 300], at: [235, 512], face: 'B', exit: ['farmacia', [900, 515]], door: true,
+      look: () => MA('La Farmacia de la Estación, la del padre de Valerio. La puerta abierta y el suelo de baldosas de colores, como cuando veníamos a por caramelos de eucalipto que no nos tocaban.', 'sonriente') },
     { name: 'Cruz verde', r: [404, 38, 116, 112], look: () => MA('La cruz verde de neón, parpadeando. De crío pensaba que era una señal de vía libre. En cierto modo lo es: vía libre a la aspirina.', 'risueno') },
-    { name: 'Letreiro', r: [362, 122, 118, 64], look: () => MA('«FARMACIA», en letras de las de antes. Ni nombre ni apellido: en esta calle no hace falta. Es la de Valerio y punto.', 'sonriente') },
+    { name: 'Letreiro', r: [362, 122, 118, 64], look: () => MA('«FARMACIA», en letras de las de antes. Todo el mundo la llama la Farmacia de la Estación: está a dos minutos del andén. Los maquinistas venían aquí antes de turno a por pastillas para el estómago.', 'sonriente') },
     { name: 'Escaparate', r: [362, 302, 54, 108], look: () => MA('Un escaparate con cajitas. Ni una oferta, ni un cartel de «2x1». El padre de Valerio decía que la salud no se rebaja.', 'pensativo') },
     { name: 'Locais baleiros', r: [458, 290, 110, 110], look: () => MA('«Se aluga». Y «se aluga». En esta calle había una tienda de discos y un videoclub. Ahora hay carteles. Y eco.', 'pensativo') },
     { name: 'Toldo', r: [122, 122, 470, 188], look: () => MA('Toldo de rayas rojas y blancas. Si lo pintasen de otro color, medio Monforte se perdería buscando la farmacia.', 'sonriente') },
     { name: 'Balcóns', r: [140, 0, 200, 118], look: () => MA('Balcones de hierro con florituras. Alguien me está mirando desde un visillo. Mañana lo sabe Concha. Esta tarde, quizá.', 'esceptico') },
     { name: 'Farol', r: [528, 140, 32, 62], look: () => MA('Un farol de los de forja. A esta hora apagado, ahorrando para la noche.', 'neutro') },
-    { name: 'Terraza', r: [806, 360, 154, 180], look: () => MA('Una terraza con sombrilla. La calle del Cardeal siempre fue de bares. Algunas cosas en Monforte no cierran: se jubilan detrás de la barra.', 'risueno') },
+    { name: 'Terraza', r: [806, 360, 154, 180], look: () => MA('Una terraza con sombrilla. Calvo Sotelo siempre fue de bares de ferroviarios. Algunas cosas en Monforte no cierran: se jubilan detrás de la barra.', 'risueno') },
     { name: 'Árbores', r: [680, 150, 280, 200], look: () => MA('Una fila de árboles hasta el fondo. En verano dan sombra; en otoño, trabajo al barrendero.', 'neutro') },
     { name: 'Torre ao fondo', r: [648, 196, 30, 92], look: () => MA('Una torre al fondo de la calle, asomando entre los tejados. En Monforte, mires donde mires, algo de piedra te está mirando a ti.', 'pensativo') },
     { name: 'Papeleira', r: [0, 420, 30, 90], act: () => MA('No voy a tirar nada. Con la suerte que tengo, mañana me haría falta.', 'esceptico'),
@@ -184,6 +186,7 @@ SCENES.cardeal = {
     { name: 'Lousas', r: [380, 420, 320, 120], look: () => MA('Losas de calle peatonal, con alguna suelta que hace «clonc». La conozco: la pisaba adrede volviendo del instituto.', 'sonriente') },
   ],
 };
+SCENES.cardeal = SCENES.calvoSotelo;   // partidas gardadas antes do cambio
 
 /* ---------- B2 · Farmacia (ilustración de Oscar) ---------- */
 async function valerioTalk() {
@@ -205,6 +208,7 @@ async function valerioTalk() {
     const opts = [
       { t: '¿Qué tal va Monforte?', k: 'monforte' },
       { t: '¿Has oído el silbato de noche?', k: 'asubio' },
+      { t: '¿Guardas todavía las cosas de tu padre?', k: 'libros' },
       ...(!flag('valerioFeito') && hasItem('ositos') ? [{ t: '(Darle los ositos.)', k: 'doce' }] : []),
       ...(!flag('valerioFeito') && !hasItem('ositos') ? [{ t: '¿Y no me puedes fiar la crema?', k: 'fiar' }] : []),
       ...(flag('valerioFeito') && !hasItem('crema') && !flag('cremaPosta') ? [{ t: '¿Me das otra muestra de crema?', k: 'crema' }] : []),
@@ -221,6 +225,13 @@ async function valerioTalk() {
       await VA('Se queres, fágoche prezo. Dous pares, un euro. Para os veciños da casa roxa, dous e medio.');
       await MA('¿Más caro para mí?', 'esceptico');
       await VA('Ti necesítalos máis.');
+    }
+    if (k === 'libros') {   // sementa o libro de 1958 do Acto 3 (ideas de Oscar do 15-11-2026)
+      await VA('Todas. A bata, o mostrador... e os libros. O meu pai apuntaba cada cura, cada receita e cada xarope fiado nuns libros de tapas negras. Dende o cincuenta.');
+      await VA('Están na rebotica, nun estante que xa non aguanta máis. Nin os tiro nin os leo. Son coma el: non ocupan moito, pero se os tiras, quedas sen nada.');
+      await MA('Medio Monforte, apuntado a pluma. Con letra de farmacéutico.', 'pensativo');
+      await VA('Letra de farmacéutico, que é coma a de médico pero entendéndose. Iso si: o que pasou no barrio, alí está.');
+      setFlag('librosValerio');
     }
     if (k === 'doce') return valerioOsitos();
     if (k === 'fiar') {
@@ -262,7 +273,7 @@ async function xoanFarmacia() {
   }
 }
 SCENES.farmacia = {
-  name: 'Farmacia', bg: 'img/bg-farmacia.jpg', music: 'casa', floor: 'madeira',
+  name: 'Farmacia de la Estación', bg: 'img/bg-farmacia.jpg', music: 'casa', floor: 'madeira',
   walk: [[702, 300], [790, 296], [836, 332], [906, 440], [960, 480], [960, 540], [622, 540], [664, 420], [706, 334]],
   scale: [296, 0.34, 540, 1.0], actorH: 300, start: [900, 515], minSpeed: 0.5,
   async onEnter() {
@@ -275,7 +286,7 @@ SCENES.farmacia = {
     setFlag('pistaCurma');
   },
   hotspots: [
-    { name: 'Rúa do Cardeal', key: true, r: [906, 470, 54, 70], at: [920, 520], face: 'R', exit: ['cardeal', [235, 512]], door: true, hint: 'D',
+    { name: 'Rúa Calvo Sotelo', key: true, r: [906, 470, 54, 70], at: [920, 520], face: 'R', exit: ['calvoSotelo', [235, 512]], door: true, hint: 'D',
       look: () => MA('La puerta a la calle. La campanilla sigue sonando igual que hace veinte años: «tlin», y el padre de Valerio levantaba la vista por encima de las gafas.', 'sonriente') },
     { name: 'Ortopedia e deporte', r: [24, 40, 292, 72], look: () => MA('«Ortopedia y deporte». Rodilleras, tobilleras y muñequeras. Es la sección de los que vuelven a correr a los cuarenta. Y la de los que vuelven del intento.', 'avergonzado') },
     { name: 'Pantalla', r: [500, 120, 50, 42], look: () => MA('Una pantalla para los turnos. Pone «0». O no hay nadie esperando o Valerio no se fía de la tecnología.', 'esceptico') },
@@ -322,6 +333,7 @@ async function andresTalk() {
       { t: '¿La piscina no cerraba en septiembre?', k: 'pechada' },
       { t: '¿Qué tal el Malo Será?', k: 'malo' },
       ...(flag('andresFeito') ? [{ t: 'Tu abuelo era fogonero, ¿no?', k: 'avo' }] : []),
+      ...(flag('carbonRoubado') ? [{ t: '¿Te ha vuelto a desaparecer carbón?', k: 'carbon' }] : []),
       { t: 'Hasta luego, Andrés.', k: 'adeus' },
     ];
     const k = opts[await choose(opts)].k;
@@ -339,15 +351,32 @@ async function andresTalk() {
       await AN('Fogoneiro no depósito, si. Dicía que o carbón bo se coñece polo son ao caer na pa. Por iso gardo sacos do bo, para o churrasco.');
       await AN('E aquela carretilla, a das tumboas, era súa. Leva cen quilos sen queixarse. Coma min, pero sen queixarse.');
     }
+    if (k === 'carbon') {
+      await AN('Esta semana inda non. Pero mira: os sacos están aí, á vista. Quen os leva sabe que non hai can, nin cadeado, nin eu esperto.');
+      await MA('¿Y el billete siempre debajo de la misma piedra?', 'dudoso');
+      await AN('Sempre. Coma quen paga a cota do clube. Ordenado. Puntual. Coma un horario de tren.');
+      await MA('(Puntual como un horario de tren. Eso huele a ferroviario. A ferroviario con grasa en las manos.)', 'pensativo');
+    }
     if (k === 'adeus') { await AN(flag('andresFeito') ? 'Vai, vai. A tumboa catro queda reservada para ti.' : 'Ti volve, que a revancha non caduca.'); return; }
   }
+}
+/* pista do misterio (opción 1 elixida por Oscar, 15-11-2026): alguén merca carbón de pedra ás agachadas.
+   Quen é non se di no Acto 2 (é para a Mikado: ver 03_HISTORIA, «O carbón que desaparece»). */
+async function carbonMisterio() {
+  await AN('E xa que es de trens, unha cousa rara: cada dúas ou tres semanas desaparéceme un saco. Do bo, do de pedra, non do vexetal.');
+  await AN('E ao día seguinte, debaixo da pedra grande da entrada, un billete de vinte dobrado en catro. Nin nota, nin nome, nin nada.');
+  await MA('¿Alguien te roba carbón... y te lo paga?', 'sorprendido');
+  await AN('Un ladrón honrado. Inda quedan, en Monforte. Eu non pregunto: vinte euros por saco é mellor prezo do que me fai o almacén.');
+  await MA('(Carbón de piedra, del bueno. Con eso nadie hace un churrasco: eso lo traga una caldera. Una caldera de vapor.)', 'pensativo');
+  await AN('Ti non lle deas voltas, que se che enruga a cara. E se o pillas, dille que a próxima vez deixe tamén para un mojito.');
+  setFlag('carbonRoubado');
 }
 async function retoNatacion() {
   if (!hasItem('crema') && !flag('cremaPosta')) {
     await MA('¿Nadar? ¿Con estos gemelos? Me hundo como un ancla. Necesito algo para las agujetas antes. Una farmacia o un milagro. La farmacia queda más cerca.', 'avergonzado');
-    await AN('Valerio, no Cardeal. Dille que vas da miña parte e cóbrache o dobre.');
+    await AN('Valerio, na Farmacia de la Estación, en Calvo Sotelo, por detrás do quiosco de Concha. Dille que vas da miña parte e cóbrache o dobre.');
     setFlag('faltaCrema');
-    toast('Pista: Valerio ten farmacia na rúa do Cardeal (está no mapa)');
+    toast('Pista: a Farmacia de la Estación está en Calvo Sotelo, saíndo da praza polo quiosco de Concha');
     return false;
   }
   if (!flag('cremaPosta')) {
@@ -375,6 +404,7 @@ async function retoNatacion() {
   }
   await AN('Sabes que o meu avó era fogoneiro no depósito? Dicía que o carbón bo se coñece polo son. Aínda gardo uns sacos, para o churrasco.');
   await MA('Un fogonero en la familia. Andrés, eso tiene más mérito que cuatro largos.', 'sonriente');
+  await carbonMisterio();
   setFlag('andresFeito'); comprobarChampions();
   return true;
 }
@@ -563,6 +593,16 @@ SCENES.fraternalNoite = {
   C.done = () => !queroPilas() && doneA1();
 }
 
+{ // praza 2: a rúa Calvo Sotelo ábrese no Acto 2 (leva á Farmacia de la Estación)
+  const C = SCENES.praza2.hotspots.find(h => h.name === 'Rúa Calvo Sotelo'), actA1 = C.act;
+  C.act = () => flag('fimActo1') ? goScene('calvoSotelo', [740, 520]) : actA1();
+  C.look = () => flag('fimActo1') ? MA('La calle Calvo Sotelo. Ahí arriba está la Farmacia de la Estación, la de Valerio: la de la cruz verde de toda la vida.', 'sonriente') : actA1();
+  Object.defineProperty(C, 'exit', { get: () => flag('fimActo1') ? ['calvoSotelo', [740, 520]] : ['__rua'] });   // no Acto 1 segue pechada
+  Object.defineProperty(C, 'key', { get: () => flag('fimActo1') });
+  C.hint = 'U';
+  C.done = () => flag('valerioFeito');
+}
+
 /* ---------- A5 · a segunda noite: o asubío vén de detrás da casa ---------- */
 async function noite2() {
   await MA('Cama. Silencio. Ni un tren. Esta noche duermo de un tirón...', 'aliviado');
@@ -632,8 +672,10 @@ Object.assign(ITEMS, {
   trapo: { name: 'Trapo con graxa', icon: ico.trapo, look: () => MA('Un trapo empapado de grasa negra, espesa. No es de coche ni de bici: es grasa de locomotora, de la de las bielas. La conozco desde hace veinte años. Esto viene del depósito.', 'dudoso') },
 });
 const PISTAS_TALLER = ['pistaFoto', 'pistaData', 'pistaTrapo', 'pistaSoporte'];
+const pistasCompletas = () => PISTAS_TALLER.every(flag) && !flag('fimActo2');
 async function pistaTaller(k) {
-  if (flag(k)) return; setFlag(k);
+  if (flag(k)) { if (pistasCompletas()) await cadernoMartin(); return; }
+  setFlag(k);
   const n = PISTAS_TALLER.filter(flag).length;
   if (n < PISTAS_TALLER.length) toast(`Pistas do taller: ${n} de ${PISTAS_TALLER.length}`);
   else await cadernoMartin();
@@ -647,6 +689,7 @@ async function cadernoMartin() {
 <p>Alguien entra aquí sin llave, por la ventana del fondo, y va siempre al séptimo soporte. Se dejó un trapo con grasa de locomotora: viene del depósito.</p>
 <p>El séptimo soporte tiene la tapa soldada. Los otros seis, no. Ahí dentro hay algo.</p>
 <p>Y alguien silba, dos largos y uno corto, para que yo lo oiga.</p>
+<p>A Andrés le desaparece, cada pocas semanas, un saco de carbón de piedra. Y aparece pagado, debajo de una piedra. Ese carbón no es para un churrasco: es para una caldera.</p>
 <p>Las cocheras del museo tienen un candado nuevo de cuatro cifras. Y en el pilar hay una fecha. Catorce, uno...</p>
 <p><b>Pregunta:</b> ¿quién era Xosé N.? Y ¿quién, en el depósito, tiene tanto interés en él?</p>`);
   await MA('Un aprendiz que se hizo maquinista. Una fecha. Grasa del depósito. Y un silbato que llama a esta casa.', 'pensativo');
@@ -669,6 +712,7 @@ SCENES.tallerA2 = {
     if (flag('pistaData')) { c.font = 'italic 11px Georgia, serif'; c.fillStyle = 'rgba(240,230,200,.75)'; c.fillText('X.N. 1949', 512, 300); c.fillText('14-I-1958', 512, 316); }
   },
   async onEnter() {
+    if (pistasCompletas()) return cadernoMartin();   // partidas gardadas co fallo do gravado: 4 de 4 sen pechar o acto
     if (flag('tallerA2Visto')) return;
     setFlag('tallerA2Visto');
     await MA('Por fin dentro. Huele a serrín de hace setenta años y a humedad. Y a otra cosa... a grasa de máquina. Reciente.', 'pensativo');
@@ -685,6 +729,7 @@ SCENES.tallerA2 = {
         await pistaTaller('pistaFoto');
       },
       look: () => MA('Una foto vieja clavada al pilar. Gente con mono delante de una sierra. Habrá que verla de cerca.', 'pensativo') },
+    // olloOnly: non usar 'pistaData', que o engine marca o flag olloOnly ao interactuar e entón a pista non contaba (4 de 4 sen pechar o acto)
     { name: 'Gravado no piar', key: true, olloOnly: 'gravadoVisto', done: () => flag('pistaData'), r: [500, 280, 82, 52], at: [452, 484], face: 'R',
       look: async () => {
         await MA('Debajo de donde estaba la foto, algo grabado a navaja en el ladrillo. Hay que acercarse mucho...', 'pensativo');
@@ -731,6 +776,7 @@ SCENES.tallerA2 = {
 SCENES.vigasA2 = {
   ...SCENES.vigas, name: 'O taller vello · as vigas',
   draw(c) { c.fillStyle = '#3d3d42'; c.fillRect(708, 168, 40, 52); c.fillStyle = '#25252a'; c.beginPath(); c.arc(728, 228, 16, 0, 7); c.fill(); c.fillStyle = '#a08850'; c.fillRect(704, 192, 48, 4); },
+  async onEnter() { if (pistasCompletas()) return cadernoMartin(); },
   hotspots: [
     { name: 'Sétimo soporte', key: true, done: () => flag('pistaSoporte'), r: [660, 140, 160, 110],
       look: async () => {
@@ -806,7 +852,7 @@ SCENES.vigasA2 = {
   const A2 = () => flag('fimActo1') && !flag('fimActo2');
   CADERNO.push(
     { when: () => A2() && !flag('objValerio'), t: 'Hablar con Concha, en el quiosco: ella sabe dónde anda todo el mundo. (Y Xoán, en la estación, quizá sepa quién silba.)' },
-    { when: () => A2() && flag('objValerio') && !flag('valerioFeito'), t: () => flag('valerioDoce') ? (hasItem('ositos') ? 'Darle los ositos a Valerio, en la farmacia del Cardeal. Su «peaje» por la crema.' : 'Valerio no suelta la crema sin algo dulce. Ositos de goma, en el quiosco de Concha.') : 'Pasar por la farmacia de Valerio: calle del Cardeal (en el mapa).' },
+    { when: () => A2() && flag('objValerio') && !flag('valerioFeito'), t: () => flag('valerioDoce') ? (hasItem('ositos') ? 'Darle los ositos a Valerio, en la Farmacia de la Estación (calle Calvo Sotelo). Su «peaje» por la crema.' : 'Valerio no suelta la crema sin algo dulce. Ositos de goma, en el quiosco de Concha.') : 'Pasar por la Farmacia de la Estación, la de Valerio: calle Calvo Sotelo, saliendo de la plaza por detrás del quiosco de Concha.' },
     { when: () => A2() && flag('objAndres') && !flag('andresFeito'), t: () => 'La revancha de natación con Mega Andrés, en el Club Fluvial (en el mapa).' + (!hasItem('crema') && !flag('cremaPosta') ? ' Antes, algo para estos gemelos.' : '') },
     { when: () => A2() && flag('avisoChampions') && !flag('champions') && (!flag('faltanPilas') || flag('teleAcesa')), t: 'Champions en la Fraternal, con el tío Demetrio. Hay cosas que no se negocian.' },
     { when: () => A2() && flag('faltanPilas') && !flag('teleAcesa') && !hasItem('pilas'), t: 'Pilas para el mando de la Fraternal: el cajón de la cocina de casa, el de las pilas gastadas.' },
