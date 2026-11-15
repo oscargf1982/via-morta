@@ -43,8 +43,8 @@
 ## A3 · Praza da Estación (`praza`)
 - **Fondo:** `img/bg-praza-estacion.jpg`, ilustración de Oscar, recortada (`crop [300,120,1300,731]`) para dejar fuera el quiosco, que en la realidad está en la segunda pantalla. Hotel, hostal Riosol, la rotonda con su fuente, el árbol, la farola de dos brazos y la fachada de la estación con el rótulo de Adif.
 - **Suelo:** el empedrado. Obstáculos: la rotonda de la fuente, el alcorque del árbol y la base de la farola. Capas delanteras: farola y tronco del árbol.
-- **Salidas:** Estación (A2) por la puerta azul; segunda pantalla de la plaza (A3b) por la calle de la izquierda; la calle del fondo sube al Museo del Ferrocarril (cerrado hasta el Acto 3); el borde de abajo lleva al mapa de Monforte.
-- **Hotspots:** estación (dos puertas), placa, rótulo, otra parte de la plaza (clave), Museo do Ferrocarril (calle del fondo, cerrado hasta el Acto 3), mapa de Monforte (borde de abajo), fuente de la rotonda, hotel, hostal, coches, farola y árbol.
+- **Salidas:** Estación (A2) por la puerta azul; segunda pantalla de la plaza (A3b) por la calle de la izquierda; la calle del fondo sube al exterior de las cocheras del Museo del Ferrocarril (A7); el borde de abajo lleva al mapa de Monforte.
+- **Hotspots:** estación (dos puertas), placa, rótulo, otra parte de la plaza (clave), Museo do Ferrocarril (calle del fondo → A7), mapa de Monforte (borde de abajo), fuente de la rotonda, hotel, hostal, coches, farola y árbol.
 
 ## A3b · Praza da Estación, segunda pantalla (`praza2`)
 - **Fondo:** `img/bg-praza-estacion-2.jpg`, ilustración de Oscar, recortada a 16:9 sin la barra de interfaz. Quiosco negro de Dona Concha, fuente rectangular con chorros, jardinera con la señal de prohibido aparcar, casa amarilla, edificio verde de la esquina y las calles del fondo.
@@ -284,5 +284,13 @@
 
 - **Destinos cerrados:** cartel apagado y «(aínda non)»; al tocarlos Martín da un motivo con su voz (nunca un callejón: siempre quedan Estación y Gasolineira). Los abiertos llevan un aro dorado que late.
 - **Solo para mirar:** castillo de San Vicente, río Cabe, Ponte Vella.
-- **Museo del Ferrocarril:** no está en el mapa (decisión de Oscar, 15 nov). Se llega a pie desde la plaza de la estación por la calle del fondo; hasta el Acto 3 Martín se da la vuelta con un comentario.
+- **Museo del Ferrocarril:** no está en el mapa (decisión de Oscar, 15 nov). Se llega a pie desde la plaza de la estación por la calle del fondo, a A7 (ficha siguiente).
 - **Fuera del mapa nuevo:** Vilatán (casa de la madre), que en el boceto era una zona cerrada de broma; vuelve cuando haga falta.
+
+## A7 · Exterior de las cocheras del Museo do Ferrocarril (jugable)
+
+- **Fondo:** ilustración de Oscar `img/bg-cocheras.jpg` (la misma de la cinemática del primer turno), recortada a 16:9 (`crop: [100, 0, 1571, 884]`).
+- **Llegada:** a pie desde A3 plaza de la estación, por la calle del fondo (flecha arriba). No es destino del mapa. **Salida:** borde de abajo → plaza de la estación.
+- **Candado:** en el Acto 1 (lunes) todavía no está: se tapa por código con un trozo liso de la propia persiana. Desde el Acto 2 (martes, tras la cinemática) se ve y se puede mirar y tocar. Es lo que cierra el paso: sin el código Martín prueba combinaciones y se rinde con una broma; con la fecha del pilar vista (o tras el Acto 2) piensa en «catorce, uno» pero quiere hablar antes con Xoán. El código 1401 abrirá el candado en el Acto 3 (interior A8 con la Mikado, pendiente de dibujos).
+- **Hotspots:** candado, puerta del taller, entrada del museo (cerrada a esas horas), persianas, coche de viajeros, cartel del maquinista, los dos letreros, escudo y reloj.
+- **Sin callejones:** la vuelta a la plaza está siempre abierta.
