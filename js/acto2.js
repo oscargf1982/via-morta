@@ -20,38 +20,8 @@ Object.assign(ITEMS, {
   crema: { name: 'Crema de agulletas', icon: ico.crema, look: () => MA('Crema para las agujetas, «de muestra». Huele a pino, a vestuario de instituto y a derrota digna.', 'risueno') },
 });
 
-/* ---------- personaxes provisionais (debuxados por código ata que Oscar mande as follas) ---------- */
-function figura(c, x, y, h, o, talking, t) {
-  const u = h / 10, bob = Math.sin(t * 2) * u * 0.05;
-  c.save(); c.translate(x, y - bob);
-  c.fillStyle = o.pernas; c.fillRect(-1.1 * u, -3.6 * u, 0.9 * u, 3.6 * u); c.fillRect(0.2 * u, -3.6 * u, 0.9 * u, 3.6 * u);
-  c.fillStyle = '#2a2420'; c.fillRect(-1.3 * u, -0.4 * u, 1.2 * u, 0.4 * u); c.fillRect(0.1 * u, -0.4 * u, 1.2 * u, 0.4 * u);
-  c.fillStyle = o.corpo; c.beginPath(); c.moveTo(-1.8 * u, -3.4 * u); c.lineTo(1.8 * u, -3.4 * u); c.lineTo(1.5 * u, -7.4 * u); c.lineTo(-1.5 * u, -7.4 * u); c.closePath(); c.fill();
-  if (o.detalle) o.detalle(c, u);
-  c.fillStyle = '#e8b896'; c.fillRect(-0.4 * u, -8 * u, 0.8 * u, 0.7 * u);
-  c.beginPath(); c.ellipse(0, -8.8 * u, 1.05 * u, 1.2 * u, 0, 0, 7); c.fill();
-  c.fillStyle = o.pelo; c.beginPath(); c.ellipse(0, -9.5 * u, 1.1 * u, 0.6 * u, 0, Math.PI, 0); c.fill();
-  c.fillStyle = '#222'; c.fillRect(-0.5 * u, -9 * u, 0.2 * u, 0.2 * u); c.fillRect(0.3 * u, -9 * u, 0.2 * u, 0.2 * u);
-  c.fillStyle = '#7a3a2a'; const m = talking ? (Math.floor(t * 8) % 2 ? 0.35 : 0.1) : 0.08; c.fillRect(-0.3 * u, -8.3 * u, 0.6 * u, m * u);
-  c.restore();
-}
-const VALERIO_LOOK = { pernas: '#3a3e52', corpo: '#f4f4f0', pelo: '#3a2a20',
-  detalle(c, u) { c.fillStyle = '#c8ccd0'; c.fillRect(-0.1 * u, -7.4 * u, 0.2 * u, 4 * u); c.fillStyle = '#1aa860'; c.fillRect(0.6 * u, -6.8 * u, 0.6 * u, 0.6 * u); } };
-// Andrés, deitado na súa tumboa: camisa de flores, lentes de sol
-function andresDeitado(c, x, y, h, talking, t) {
-  const u = h / 10; c.save(); c.translate(x, y);
-  c.fillStyle = '#c8701e'; c.fillRect(-7 * u, -0.6 * u, 12.5 * u, 0.5 * u); c.fillRect(-6.5 * u, -0.1 * u, 0.4 * u, 1.4 * u); c.fillRect(4.6 * u, -0.1 * u, 0.4 * u, 1.4 * u);
-  c.fillStyle = '#f09640'; c.fillRect(-7 * u, -1 * u, 12.5 * u, 0.6 * u); c.beginPath(); c.moveTo(-7 * u, -1 * u); c.lineTo(-8.4 * u, -3.4 * u); c.lineTo(-7.6 * u, -3.6 * u); c.lineTo(-6.2 * u, -1 * u); c.fill();
-  c.fillStyle = '#3a6aa8'; c.fillRect(-1 * u, -1.6 * u, 3.6 * u, 1 * u);
-  c.fillStyle = '#e8b896'; c.fillRect(2.6 * u, -1.5 * u, 2.4 * u, 0.7 * u);
-  c.fillStyle = '#e85a3a'; c.beginPath(); c.ellipse(-2.2 * u, -1.6 * u, 2.4 * u, 1.3 * u, -0.25, 0, 7); c.fill();
-  c.fillStyle = '#ffd23a'; for (const [a, b] of [[-3, -1.9], [-1.6, -1.2], [-2.4, -2.4]]) { c.beginPath(); c.arc(a * u, b * u, 0.3 * u, 0, 7); c.fill(); }
-  c.fillStyle = '#e8b896'; c.beginPath(); c.arc(-5 * u, -2.8 * u, 1.05 * u, 0, 7); c.fill();
-  c.fillStyle = '#5a3a20'; c.beginPath(); c.arc(-5.3 * u, -3.4 * u, 0.9 * u, Math.PI, 0); c.fill();
-  c.fillStyle = '#111'; c.fillRect(-5.6 * u, -3.1 * u, 1.3 * u, 0.4 * u);
-  c.fillStyle = '#7a3a2a'; c.fillRect(-5.2 * u, -2.4 * u, 0.6 * u, (talking ? (Math.floor(t * 8) % 2 ? 0.35 : 0.1) : 0.08) * u);
-  c.restore();
-}
+/* Valerio e Mega Andrés: sprites das follas de Oscar (tools/sprite-valerio.py e tools/sprite-andres.py). */
+Object.assign(PORTRAITS, { 'Valerio': 'img/valerio-face.png', 'Mega Andrés': 'img/andres-face.png' });
 
 /* ---------- C2 · cinemática do primeiro turno (martes) ----------
    A Mikado na rotonda e, despois, o exterior das cocheras do Museo do Ferrocarril (ilustración de Oscar,
@@ -303,8 +273,8 @@ SCENES.farmacia = {
     { name: 'Estantes do fondo', r: [840, 118, 100, 320], look: () => MA('Más estantes. Valerio tiene más cajas que clientes. Y eso que clientes, de los de siempre, no le faltan.', 'neutro') },
   ],
   npcs: [
-    { id: 'valerio', name: 'Valerio', key: true, x: 745, y: 318, w: 70, h: 300, at: [760, 370], face: 'B', shadow: false,
-      draw(c, t, talking, s) { figura(c, this.x, this.y, this.h * s, VALERIO_LOOK, talking, t); },
+    { id: 'valerio', name: 'Valerio', key: true, sheet: 'img/valerio-sprite.png', spec: { cw: 160, ch: 280, cols: 8 }, idle: 0, talkFrames: [1, 0],
+      x: 745, y: 320, w: 70, h: 300, at: [760, 370], face: 'B',
       done: () => flag('valerioFeito'),
       look: () => MA('Valerio, mi compañero de pupitre en el instituto. Con la bata de su padre parece un médico de serie. De serie de sobremesa.', 'sonriente'),
       talk: () => valerioTalk(),
@@ -428,8 +398,8 @@ SCENES.fluvial = {
     { name: 'Farolas', r: [560, 180, 30, 170], look: () => MA('Farolas de bola. Para los baños de noche, supongo. Andrés seguro que tiene llave también de eso.', 'esceptico') },
   ],
   npcs: [
-    { id: 'andres', name: 'Mega Andrés', key: true, x: 760, y: 476, w: 230, h: 80, at: [700, 508], face: 'R', shadow: false,
-      draw(c, t, talking, s) { andresDeitado(c, this.x, this.y, 220 * s, talking, t); },
+    { id: 'andres', name: 'Mega Andrés', key: true, sheet: 'img/andres-sprite.png', spec: { cw: 200, ch: 280, cols: 8 }, idle: 0, talkFrames: [1, 0],
+      x: 760, y: 480, w: 150, h: 300, at: [700, 508], face: 'R', shadow: false,
       done: () => flag('andresFeito'),
       look: () => MA('Mega Andrés, en su tumbona, con camisa de flores y gafas de sol. En otoño. Es un estilo de vida, no una estación del año.', 'risueno'),
       talk: () => andresTalk(),
