@@ -208,7 +208,7 @@
 ### B2 · Farmacia, interior (`farmacia`) · ilustración de Oscar
 - **Fondo:** `img/bg-farmacia.jpg` (15-11-2026): estanterías de madera con arcos y el letrero «Ortopedia y deporte», un expositor central, mostrador del fondo con lámparas de bola, butaca y pantalla de turnos. Se anda por el pasillo de la derecha; la puerta a la calle queda abajo a la derecha (fuera de cuadro). Valerio espera delante del mostrador del fondo; Xoán, en el pasillo.
 - **NPC:** **Valerio** (compañero de instituto de Martín), con la bata de su padre. **Xoán Carballeira** en el mostrador, recogiendo «o xarope de Eugenia, a nena da miña curmá». Martín ata cabos: Eugenia es la hija de Rosario, así que Xoán es primo de Rosario (marca `pistaCurma`).
-- **Crema de agujetas:** Valerio ve andar a Martín y se ríe: «Andas coma un home de oitenta anos». Se la regala, de muestra. Objeto `crema`, marca `valerioFeito`.
+- **Crema de agujetas (puzzle del dulce, pedido por Oscar el 15-11-2026):** Valerio ve andar a Martín y se ríe: «Entraches andando coma un home de oitenta anos». Tiene la crema, pero a un amigo no le vende ni le da nada sin su «peaxe»: algo dulce, porque es goloso desde el instituto (era él quien robaba los caramelos de eucalipto de su padre). Marca `valerioDoce`. Martín piensa en los ositos del quiosco de Concha, que se pueden comprar siempre. Al darle los ositos (opción de diálogo o usando el objeto con él), Valerio se los come «un para min, outro para min…» y da la crema. Objeto `crema`, marca `valerioFeito`. Después, Concha vuelve a vender ositos para el detalle de la llave del taller.
 - **Hotspots:** letrero «Ortopedia y deporte», estanterías (tres), expositor, mostrador, lámparas, butaca, pantalla de turnos.
 - **Personas reales:** ninguna.
 
@@ -221,10 +221,11 @@
 - **Hotspots:** piscina, salvavidas, letrero, pizarra, chiringuito, mesas, carretilla, sacos de carbón, farolas, castillo.
 
 ### B3 · A Fraternal de noche (`fraternalNoite`)
-- **Fondo:** `img/bg-fraternal.jpg` oscurecida por código, con la tele encendida (luz azulada) y el reloj. Se entra desde A4b cuando `valerioFeito` y `andresFeito` («Las ocho menos diez. Champions»).
+- **Fondo:** `img/bg-fraternal.jpg` oscurecida por código, con la tele apagada hasta que se arreglan las pilas del mando (luego, luz azulada) y el reloj. Se entra desde A4b cuando `valerioFeito` y `andresFeito` («Las ocho menos diez. Champions»).
 - **NPC:** **tío Demetrio** (en la barra), **Xoán** y **Rosario** (en su mesa).
 - **Escena:** Demetrio cuenta su gol al Ourense «un domingo de sol»; Xoán lo corrige: «Foi en mércores, Demetrio. E chovía». Martín nota la memoria de archivo de Xoán (sospecha suave). Preguntado por el candado nuevo, Xoán cambia de tema.
-- **Salida:** a las 23:00 («ni prórroga ni penaltis») Martín vuelve a casa: marca `champions`.
+- **Puzzle de las pilas (pedido por Oscar el 15-11-2026):** al llegar, la tele está apagada: al mando le faltan pilas y en el bar no quedan («as últimas puxéronse no reloxo da parede»). Martín recuerda el cajón de las pilas gastadas de su cocina (ya mencionado al mirar los cajones en el Acto 1) y explica que, frotándolas con las manos, siempre les queda energía para un par de clics. Marca `faltanPilas`. La salida pasa a ser «Saír · a por pilas» (vuelve a la rúa Concepción Arenal). En la cocina de la Casa Juana, el cajón da el objeto `pilas`. De vuelta, usar las pilas con la tele o dárselas a Demetrio enciende el partido (marca `teleAcesa`).
+- **Salida:** con la tele encendida, a las 23:00 («ni prórroga ni penaltis») Martín vuelve a casa: marca `champions`.
 
 ### A5 · Segunda noche (dormitorio → patio)
 - Con `champions`, el dormitorio lanza la noche: suena el silbato en el dormitorio a oscuras (`img/noite-dormitorio.jpg`, la ilustración de Oscar pasada a noche con `tools/noite.py`; luego `noite-dormitorio-lampada.jpg` con la lámpara de la mesilla encendida), Martín baja al patio a oscuras (`img/noite-patio.jpg`, de `tools/noite.py`) y ve **luz por debajo de la puerta del taller**, que se apaga. Ya no viene de la estación: viene de detrás de la casa. Marca `silbato2`.
