@@ -632,8 +632,10 @@ Object.assign(ITEMS, {
   trapo: { name: 'Trapo con graxa', icon: ico.trapo, look: () => MA('Un trapo empapado de grasa negra, espesa. No es de coche ni de bici: es grasa de locomotora, de la de las bielas. La conozco desde hace veinte años. Esto viene del depósito.', 'dudoso') },
 });
 const PISTAS_TALLER = ['pistaFoto', 'pistaData', 'pistaTrapo', 'pistaSoporte'];
+const pistasCompletas = () => PISTAS_TALLER.every(flag) && !flag('fimActo2');
 async function pistaTaller(k) {
-  if (flag(k)) return; setFlag(k);
+  if (flag(k)) { if (pistasCompletas()) await cadernoMartin(); return; }
+  setFlag(k);
   const n = PISTAS_TALLER.filter(flag).length;
   if (n < PISTAS_TALLER.length) toast(`Pistas do taller: ${n} de ${PISTAS_TALLER.length}`);
   else await cadernoMartin();
@@ -666,6 +668,7 @@ SCENES.tallerA2 = {
     if (flag('pistaData')) { c.strokeStyle = 'rgba(240,230,200,.55)'; c.lineWidth = 1.5; c.font = 'italic 11px Georgia, serif'; c.fillStyle = 'rgba(240,230,200,.6)'; c.fillText('X.N. 1949', 500, 330); c.fillText('14-I-1958', 500, 346); }
   },
   async onEnter() {
+    if (pistasCompletas()) return cadernoMartin();   // partidas gardadas co fallo do gravado: 4 de 4 sen pechar o acto
     if (flag('tallerA2Visto')) return;
     setFlag('tallerA2Visto');
     await MA('Por fin dentro. Huele a serrín de hace setenta años y a humedad. Y a otra cosa... a grasa de máquina. Reciente.', 'pensativo');
@@ -682,7 +685,8 @@ SCENES.tallerA2 = {
         await pistaTaller('pistaFoto');
       },
       look: () => MA('Una foto vieja clavada al pilar. Gente con mono delante de una sierra. Habrá que verla de cerca.', 'pensativo') },
-    { name: 'Gravado no piar', key: true, olloOnly: 'pistaData', done: () => flag('pistaData'), r: [490, 300, 80, 60], at: [525, 480], face: 'B',
+    // olloOnly: non usar 'pistaData', que o engine marca o flag olloOnly ao interactuar e entón a pista non contaba (4 de 4 sen pechar o acto)
+    { name: 'Gravado no piar', key: true, olloOnly: 'gravadoVisto', done: () => flag('pistaData'), r: [490, 300, 80, 60], at: [525, 480], face: 'B',
       look: async () => {
         await MA('Debajo de donde estaba la foto, algo grabado a navaja en el ladrillo. Hay que acercarse mucho...', 'pensativo');
         await showDoc('<h4>Gravado a navalla no piar</h4><p style="font-size:22px;text-align:center">X. N. 1949</p><p style="font-size:22px;text-align:center;font-style:italic">14-I-1958</p><p class="sub">A mesma letra nas dúas liñas. A segunda, máis tremente, coma feita á présa.</p>');
@@ -724,6 +728,7 @@ SCENES.tallerA2 = {
 SCENES.vigasA2 = {
   ...SCENES.vigas, name: 'O taller vello · as vigas',
   draw(c) { c.fillStyle = '#3d3d42'; c.fillRect(708, 168, 40, 52); c.fillStyle = '#25252a'; c.beginPath(); c.arc(728, 228, 16, 0, 7); c.fill(); c.fillStyle = '#a08850'; c.fillRect(704, 192, 48, 4); },
+  async onEnter() { if (pistasCompletas()) return cadernoMartin(); },
   hotspots: [
     { name: 'Sétimo soporte', key: true, done: () => flag('pistaSoporte'), r: [660, 140, 160, 110],
       look: async () => {
