@@ -698,15 +698,18 @@ async function cadernoMartin() {
   await showDoc('<h4>FIN DO ACTO 2 · «O reencontro»</h4><p>Valerio, Andrés, a Champions con Demetrio... e un taller que alguén visita sen chave, cun nome a medias e unha data gravada no piar.</p><p>O Acto 3, «A curiosidade», chegará nun próximo hito.</p>');
 }
 SCENES.tallerA2 = {
-  ...SCENES.taller, name: 'O taller vello', music: 'casa',
-  draw(c, t) {
-    // o mesmo atrezo que a demo (caixón, foto e pegadas), pero a foto desaparece cando Martín a colle
-    c.fillStyle = '#5a3f26'; c.fillRect(76, 452, 132, 64); c.fillStyle = '#6e4e30'; c.fillRect(76, 444, 132, 14); c.fillStyle = '#3a281a'; for (let i = 0; i < 3; i++) c.fillRect(80, 470 + i * 16, 124, 2);
-    if (!hasItem('foto1949') && !flag('pistaFoto')) { c.fillStyle = '#2a2018'; c.fillRect(492, 198, 66, 62); c.fillStyle = '#b9ae94'; c.fillRect(497, 203, 56, 44); c.fillStyle = '#5a5246'; for (let i = 0; i < 4; i++) c.fillRect(503 + i * 12, 220, 7, 24); }
-    else { c.fillStyle = '#2a2018'; c.beginPath(); c.arc(525, 202, 2.5, 0, 7); c.fill(); }   // só queda o cravo
-    for (let i = 0; i < 8; i++) { c.fillStyle = 'rgba(25,20,16,.55)'; c.beginPath(); c.ellipse(276 + i * 23, 524 - i * 6 - (i % 2) * 8, 5, 9, 0.9, 0, 7); c.fill(); }
-    if (!hasItem('trapo') && !flag('pistaTrapo')) { c.fillStyle = '#8a7a62'; c.beginPath(); c.moveTo(560, 500); c.lineTo(588, 492); c.lineTo(600, 506); c.lineTo(570, 514); c.closePath(); c.fill(); c.fillStyle = '#1c1a18'; c.beginPath(); c.ellipse(580, 504, 8, 4, 0.2, 0, 7); c.fill(); }
-    if (flag('pistaData')) { c.strokeStyle = 'rgba(240,230,200,.55)'; c.lineWidth = 1.5; c.font = 'italic 11px Georgia, serif'; c.fillStyle = 'rgba(240,230,200,.6)'; c.fillText('X.N. 1949', 500, 330); c.fillText('14-I-1958', 500, 346); }
+  // interior do taller: ilustración de Oscar (15-11-2026). Caixón á esquerda, pegadas cara ao fondo, piar de ladrillo co trapo ao pé,
+  // marcas circulares no chan á dereita, cinco fiestras e as vigas da transmisión arriba
+  name: 'O taller vello', bg: 'img/bg-taller-interior.jpg', music: 'casa', floor: 'grava',
+  walk: [[196, 386], [490, 380], [960, 374], [960, 540], [0, 540], [0, 448], [196, 448]],
+  holes: [[[486, 474], [596, 474], [596, 506], [486, 506]]],                 // base do piar
+  front: [{ y: 500, r: [490, 0, 102, 500] }],                                // o piar: Martín pasa por detrás
+  scale: [380, 0.55, 540, 0.8], actorH: 300, start: [120, 505], minSpeed: 0.4,
+  drawFront(c, t) {
+    // a foto de 1949 cravada no piar (desaparece cando Martín a colle) e o gravado, unha vez visto co ollo; por riba da capa do piar
+    if (!hasItem('foto1949') && !flag('pistaFoto')) { c.fillStyle = '#2a2018'; c.fillRect(508, 196, 64, 58); c.fillStyle = '#b9ae94'; c.fillRect(513, 201, 54, 42); c.fillStyle = '#5a5246'; for (let i = 0; i < 4; i++) c.fillRect(518 + i * 12, 218, 7, 22); }
+    else { c.fillStyle = '#2a2018'; c.beginPath(); c.arc(540, 200, 2.5, 0, 7); c.fill(); }   // só queda o cravo
+    if (flag('pistaData')) { c.font = 'italic 11px Georgia, serif'; c.fillStyle = 'rgba(240,230,200,.75)'; c.fillText('X.N. 1949', 512, 300); c.fillText('14-I-1958', 512, 316); }
   },
   async onEnter() {
     if (pistasCompletas()) return cadernoMartin();   // partidas gardadas co fallo do gravado: 4 de 4 sen pechar o acto
@@ -716,9 +719,9 @@ SCENES.tallerA2 = {
     toast('Pista: usa o OLLO para ver o que se che escapa');
   },
   hotspots: [
-    { name: 'Viga da transmisión', key: true, done: () => flag('pistaSoporte'), r: [10, 4, 940, 128], at: [600, 490], face: 'B', exit: ['vigasA2'],
+    { name: 'Viga da transmisión', key: true, done: () => flag('pistaSoporte'), r: [0, 0, 960, 82], at: [640, 470], face: 'B', exit: ['vigasA2'],
       look: () => MA('La viga de la transmisión. Diez metros, siete soportes para siete poleas. Desde aquí abajo no se ve bien el último.', 'pensativo') },
-    { name: 'Foto vella', key: true, when: () => !hasItem('foto1949') && !flag('pistaFoto'), r: [484, 192, 82, 76], at: [525, 480], face: 'B',
+    { name: 'Foto vella', key: true, when: () => !hasItem('foto1949') && !flag('pistaFoto'), r: [500, 186, 82, 76], at: [452, 484], face: 'R',
       act: async () => {
         give('foto1949');
         await MA('Una foto clavada al pilar, comida por la humedad. Un señor con bigote y tres chavales con mono delante de una sierra enorme. Me la llevo: aquí se la va a acabar de comer la humedad.', 'pensativo');
@@ -727,7 +730,7 @@ SCENES.tallerA2 = {
       },
       look: () => MA('Una foto vieja clavada al pilar. Gente con mono delante de una sierra. Habrá que verla de cerca.', 'pensativo') },
     // olloOnly: non usar 'pistaData', que o engine marca o flag olloOnly ao interactuar e entón a pista non contaba (4 de 4 sen pechar o acto)
-    { name: 'Gravado no piar', key: true, olloOnly: 'gravadoVisto', done: () => flag('pistaData'), r: [490, 300, 80, 60], at: [525, 480], face: 'B',
+    { name: 'Gravado no piar', key: true, olloOnly: 'gravadoVisto', done: () => flag('pistaData'), r: [500, 280, 82, 52], at: [452, 484], face: 'R',
       look: async () => {
         await MA('Debajo de donde estaba la foto, algo grabado a navaja en el ladrillo. Hay que acercarse mucho...', 'pensativo');
         await showDoc('<h4>Gravado a navalla no piar</h4><p style="font-size:22px;text-align:center">X. N. 1949</p><p style="font-size:22px;text-align:center;font-style:italic">14-I-1958</p><p class="sub">A mesma letra nas dúas liñas. A segunda, máis tremente, coma feita á présa.</p>');
@@ -736,33 +739,37 @@ SCENES.tallerA2 = {
         await MA('Catorce, uno... (¿Por qué me suena a cuatro ruedecitas con números?)', 'pensativo');
         await pistaTaller('pistaData');
       } },
-    { name: 'Pegadas no po', key: true, olloOnly: 'pistaPegadas', done: () => flag('pistaTrapo'), r: [262, 456, 190, 74],
+    { name: 'Pegadas no po', key: true, olloOnly: 'pistaPegadas', done: () => flag('pistaTrapo'), r: [240, 384, 196, 150],
       look: async () => {
         await MA('Huellas en el polvo. Recientes: el polvo de setenta años no tiene estos bordes.', 'sorprendido');
-        await MA('Vienen de la ventana rota del fondo y van hasta el pilar del séptimo soporte. Y vuelven. Alguien ha venido a mirar ahí arriba. Varias veces.', 'dudoso');
+        await MA('Vienen del fondo, de debajo de las ventanas, y llegan hasta el pilar del séptimo soporte. Y vuelven. Alguien ha venido a mirar ahí arriba. Varias veces.', 'dudoso');
         if (flag('chaveTaller')) await MA('Y Concha dice que nadie le ha pedido la llave en años. Claro: este «alguien» entra por la ventana.', 'pensativo');
         setFlag('pistaPegadas');
         if (!flag('pistaTrapo')) await MA('Y donde acaban las huellas, junto al pilar, hay algo tirado. Un trapo.', 'sorprendido');
       } },
-    { name: 'Trapo', key: true, when: () => !hasItem('trapo') && !flag('pistaTrapo'), r: [552, 486, 56, 34], at: [600, 500], face: 'L',
+    { name: 'Trapo', key: true, done: () => flag('pistaTrapo'), r: [546, 462, 150, 50], at: [716, 494], face: 'L',
       act: async () => {
+        if (flag('pistaTrapo')) return MA('El resto del trapo, donde estaba. Si el que viene lo echa en falta, sabrá que alguien ha estado aquí. Mejor que no lo sepa.', 'pensativo');
         give('trapo');
-        await MA('Un trapo empapado de grasa negra y espesa...', 'dudoso');
+        await MA('Un trapo empapado de grasa negra y espesa... Arranco la esquina más sucia y me la llevo. El resto, que se quede donde está.', 'dudoso');
         await ITEMS.trapo.look();
         await MA('Así que el que entra aquí de noche viene del depósito. Y tiene acceso a la grasa buena.', 'pensativo');
         await pistaTaller('pistaTrapo');
       },
       look: () => MA('Un trapo tirado junto al pilar. Sucio de algo negro. No es polvo de setenta años: brilla.', 'dudoso') },
-    { name: 'Caixón de madeira', r: [70, 436, 144, 86], at: [230, 500], face: 'L',
+    { name: 'Caixón de madeira', r: [24, 350, 168, 92], at: [236, 470], face: 'L',
       act: async () => {
         if (!hasItem('escritura')) { give('escritura'); await MA('Entre clavos oxidados, una copia amarillenta de una escritura. 1952.', 'sorprendido'); }
         await ITEMS.escritura.look();
         await MA('La venta de la maquinaria que contó Rosario, por escrito. Treinta mil pesetas. Así se vació este taller.', 'pensativo');
       },
       look: () => MA('Un cajón de madera con herrajes. Parece de la época de las máquinas.', 'neutro') },
-    { name: 'Marcas no chan', olloOnly: 'pistaPernos', r: [640, 452, 260, 78],
-      look: () => MA('Agujeros de pernos en grupos de cuatro. Aquí estuvieron atornilladas las máquinas: sierra, cepilladora, torno... Ahora solo queda la transmisión, allá arriba.', 'pensativo') },
-    { name: 'Patio', key: true, r: [0, 150, 48, 320], at: [70, 505], face: 'L', exit: ['casaPatio', [836, 500]], door: true,
+    { name: 'Marcas no chan', olloOnly: 'pistaPernos', r: [676, 396, 284, 122],
+      look: () => MA('Círculos marcados en el cemento y, al lado, agujeros de pernos. Aquí estuvieron atornilladas las máquinas: la sierra, la cepilladora, el torno... Ahora solo queda la transmisión, allá arriba.', 'pensativo') },
+    { name: 'Fiestras', r: [118, 144, 112, 162], look: () => MA('Cinco ventanas altas, de cuarterones. Por ellas entraba la luz para trabajar la madera sin encender nada. Ahorro de carpintero.', 'pensativo') },
+    { name: 'Hedra', r: [776, 40, 184, 340], look: () => MA('La hiedra se ha metido por la última ventana. Setenta años sin nadie y el jardín ya se ha mudado dentro.', 'risueno') },
+    { name: 'Piar', r: [490, 336, 102, 130], look: () => MA('El pilar de ladrillo que sostiene la viga, justo debajo del séptimo soporte. Ladrillo macizo, de los de antes: este no se cae ni con la Mikado encima.', 'pensativo') },
+    { name: 'Patio', key: true, r: [0, 444, 70, 96], at: [40, 506], face: 'L', exit: ['casaPatio', [836, 500]], door: true, hint: 'L',
       look: () => MA('Por ahí vuelvo al patio. Y cierro, como dijo Concha. Aunque a este taller, por lo visto, se entra por la ventana.', 'esceptico') },
   ],
 };

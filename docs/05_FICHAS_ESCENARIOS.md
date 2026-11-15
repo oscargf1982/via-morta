@@ -43,8 +43,8 @@
 ## A3 · Praza da Estación (`praza`)
 - **Fondo:** `img/bg-praza-estacion.jpg`, ilustración de Oscar, recortada (`crop [300,120,1300,731]`) para dejar fuera el quiosco, que en la realidad está en la segunda pantalla. Hotel, hostal Riosol, la rotonda con su fuente, el árbol, la farola de dos brazos y la fachada de la estación con el rótulo de Adif.
 - **Suelo:** el empedrado. Obstáculos: la rotonda de la fuente, el alcorque del árbol y la base de la farola. Capas delanteras: farola y tronco del árbol.
-- **Salidas:** Estación (A2) por la puerta azul; segunda pantalla de la plaza (A3b) por la calle de la izquierda; la calle del fondo sube al Museo del Ferrocarril (cerrado hasta el Acto 3); el borde de abajo lleva al mapa de Monforte.
-- **Hotspots:** estación (dos puertas), placa, rótulo, otra parte de la plaza (clave), Museo do Ferrocarril (calle del fondo, cerrado hasta el Acto 3), mapa de Monforte (borde de abajo), fuente de la rotonda, hotel, hostal, coches, farola y árbol.
+- **Salidas:** Estación (A2) por la puerta azul; segunda pantalla de la plaza (A3b) por la calle de la izquierda; la calle del fondo sube al exterior de las cocheras del Museo del Ferrocarril (A7); el borde de abajo lleva al mapa de Monforte.
+- **Hotspots:** estación (dos puertas), placa, rótulo, otra parte de la plaza (clave), Museo do Ferrocarril (calle del fondo → A7), mapa de Monforte (borde de abajo), fuente de la rotonda, hotel, hostal, coches, farola y árbol.
 
 ## A3b · Praza da Estación, segunda pantalla (`praza2`)
 - **Fondo:** `img/bg-praza-estacion-2.jpg`, ilustración de Oscar, recortada a 16:9 sin la barra de interfaz. Quiosco negro de Dona Concha, fuente rectangular con chorros, jardinera con la señal de prohibido aparcar, casa amarilla, edificio verde de la esquina y las calles del fondo.
@@ -234,12 +234,14 @@
 - Con `champions`, el dormitorio lanza la noche: suena el silbato en el dormitorio a oscuras (`img/noite-dormitorio.jpg`, la ilustración de Oscar pasada a noche con `tools/noite.py`; luego `noite-dormitorio-lampada.jpg` con la lámpara de la mesilla encendida), Martín baja al patio a oscuras (`img/noite-patio.jpg`, de `tools/noite.py`) y ve **luz por debajo de la puerta del taller**, que se apaga. Ya no viene de la estación: viene de detrás de la casa. Marca `silbato2`.
 - «Mércores, 8:00». Objetivo: la llave del taller (Concha).
 
-### A6 · O taller vello (`tallerA2`, `vigasA2`), con las fotos de Oscar
+### A6 · O taller vello (`tallerA2`, `vigasA2`), con la ilustración de Oscar
+- **Fondo (15-11-2026):** `img/bg-taller-interior.jpg`, ilustración de Oscar del interior: caja de madera a la izquierda, huellas de botas que van hacia el fondo, pilar de ladrillo en el centro con un trapo a sus pies, marcas circulares en el suelo a la derecha, cinco ventanas (la última con hiedra) y las vigas de la transmisión arriba. El pilar es capa delantera: Martín pasa por detrás. La misma imagen sale ahora cuando Martín mira por la rendija en el Acto 1. La vista de las vigas (`vigasA2`) sigue con la foto de Oscar.
+- **Encaje de las pistas con el dibujo:** la foto de 1949 se dibuja clavada en el pilar (desaparece al cogerla) y el grabado, debajo; las huellas son las del dibujo; el trapo es el del dibujo, y Martín se lleva solo una esquina con la grasa (así el trapo sigue en la imagen sin contradicción); el cajón con la escritura es la caja de la izquierda; las marcas de pernos son los círculos del suelo de la derecha; las vigas de arriba llevan a la vista del 7.º soporte. Salida al patio abajo a la izquierda.
 - **Entrada:** desde el patio, usando la **Chave do taller** en la puerta verde (marca `tallerAberto`; después se entra sin más).
 - **Pistas** (rehechas el 15-11-2026: cada una cuenta la ficción y sirve más adelante; contador «Pistas do taller: n de 4»):
   - **foto vieja** del pilar → se coge (`foto1949`): «Pepe, Manolo, Xosé N.» y «Xosé entra en Renfe. Sorte, rapaz» (`pistaFoto`). Uso: Acto 3, enseñársela a Xoán;
   - con el ollo, **grabado en el pilar** bajo la foto: «X. N. 1949 / 14-I-1958» (`pistaData`). Uso: código 1401 del candado de las cocheras (Acto 3);
-  - con el ollo, **huellas** desde la ventana rota del fondo hasta el pilar → al final, un **trapo con grasa de locomotora** (`trapo`, `pistaTrapo`). Uso: Acto 3, la grasa que falta del almacén;
+  - con el ollo, **huellas** desde el fondo, bajo las ventanas, hasta el pilar → al final, un **trapo con grasa de locomotora** (`trapo`, `pistaTrapo`). Uso: Acto 3, la grasa que falta del almacén;
   - en las vigas, el **7.º soporte con la tapa soldada** (`pistaSoporte`). La navaja no puede. Se abre en el Acto 4.
   - Decorado opcional: el cajón con la **escritura n.º 375** y las **marcas de pernos**.
 - **Final:** con las cuatro pistas, el cuaderno de Martín resume lo que sabe y deja la pregunta «¿quién era Xosé N.?». **FIN DO ACTO 2.**
@@ -287,5 +289,13 @@
 
 - **Destinos cerrados:** cartel apagado y «(aínda non)»; al tocarlos Martín da un motivo con su voz (nunca un callejón: siempre quedan Estación y Gasolineira). Los abiertos llevan un aro dorado que late.
 - **Solo para mirar:** castillo de San Vicente, río Cabe, Ponte Vella.
-- **Museo del Ferrocarril:** no está en el mapa (decisión de Oscar, 15 nov). Se llega a pie desde la plaza de la estación por la calle del fondo; hasta el Acto 3 Martín se da la vuelta con un comentario.
+- **Museo del Ferrocarril:** no está en el mapa (decisión de Oscar, 15 nov). Se llega a pie desde la plaza de la estación por la calle del fondo, a A7 (ficha siguiente).
 - **Fuera del mapa nuevo:** Vilatán (casa de la madre), que en el boceto era una zona cerrada de broma; vuelve cuando haga falta.
+
+## A7 · Exterior de las cocheras del Museo do Ferrocarril (jugable)
+
+- **Fondo:** ilustración de Oscar `img/bg-cocheras.jpg` (la misma de la cinemática del primer turno), recortada a 16:9 (`crop: [100, 0, 1571, 884]`).
+- **Llegada:** a pie desde A3 plaza de la estación, por la calle del fondo (flecha arriba). No es destino del mapa. **Salida:** borde de abajo → plaza de la estación.
+- **Candado:** en el Acto 1 (lunes) todavía no está: se tapa por código con un trozo liso de la propia persiana. Desde el Acto 2 (martes, tras la cinemática) se ve y se puede mirar y tocar. Es lo que cierra el paso: sin el código Martín prueba combinaciones y se rinde con una broma; con la fecha del pilar vista (o tras el Acto 2) piensa en «catorce, uno» pero quiere hablar antes con Xoán. El código 1401 abrirá el candado en el Acto 3 (interior A8 con la Mikado, pendiente de dibujos).
+- **Hotspots:** candado, puerta del taller, entrada del museo (cerrada a esas horas), persianas, coche de viajeros, cartel del maquinista, los dos letreros, escudo y reloj.
+- **Sin callejones:** la vuelta a la plaza está siempre abierta.
