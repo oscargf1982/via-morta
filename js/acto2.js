@@ -67,7 +67,8 @@ async function primeiroTurno() {
   await cine('img/bg-cocheras.jpg', [
     'Martín: «Al salir paso por delante del museo. La puerta de la derecha, la del taller, lleva años sin abrirse.»',
     'Martín: «Hoy tiene un candado nuevo. Brillante. De los caros.»',
-    'Martín: «Ni una mota de polvo encima. Este candado no lleva aquí ni una semana.»',
+    'Martín: «Ni una mota de polvo encima. Y no es de llave nada más: debajo de la cerradura tiene cuatro ruedecitas con números. De combinación.»',
+    'Martín: «Quien lo puso no quería llaves que se pierdan. Ni que se copien.»',
     'Martín: «Nadie le pone un candado de cuarenta euros a una puerta que no se abre. A no ser que alguien la abra.»',
     'Martes, 15:10. Fin do turno.',
   ], ZOOM_CANDADO);
