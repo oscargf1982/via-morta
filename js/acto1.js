@@ -759,27 +759,14 @@ SCENES.casares = {
 };
 /* ---------- A5 · a noite que pecha o Acto 1 ----------
    Con a alta da auga feita, Martín vai durmir. Soa o asubío (dous longos e un curto), érguese, mira polo balcón
-   cara ao museo... e dáse conta de que o son vén cara á súa casa. O dormitorio é a ilustración de Oscar pasada a noite (tools/noite.py). */
+   cara ao museo... e dáse conta de que o son vén cara á súa casa. Todo iso cóntao a cinemática C1 (js/cinematica1fin.js). */
 async function noiteActo1() {
   await MA('Agua mañana, luz hoy y cama ya. Para ser lunes, no ha estado mal.', 'aliviado');
   E.fadeTo = 1; await sleep(900);
   setFlag('noiteActo1');
-  setTimeout(() => SFX.whistle(), 1400);
-  await cine('img/noite-dormitorio.jpg', [
-    'Esa noite, na Casa Juana...',
-    'Martín: «(Dos largos y uno corto. Un silbato de vapor. A estas horas no pasa ni un regional.)»',
-  ]);
-  await cine('img/noite-dormitorio-lampada.jpg', [
-    'Martín: «Vale. Me levanto. Si es el tren fantasma de Concha, que por lo menos me vea en pijama digno.»',
-  ]);
-  setTimeout(() => SFX.whistle('LLS', 0.3), 600);
-  await cine('img/noite-vista.jpg', [
-    'Martín: «Desde el balcón: la gasolinera cerrada, la capillita a oscuras, la Mikado quieta en la rotonda.»',
-    'Martín: «Ahí está otra vez. Dos largos, uno corto. No viene de la estación: viene del lado del museo... y viene hacia aquí.»',
-    'Martín: «No pasa por delante de mi casa. Llama a mi casa.»',
-  ], ZOOM_MIKADO);
+  SFX.music(null);
+  await CINEF1.play();   // js/cinematica1fin.js: «O asubío ten enderezo»; remata co rótulo de fin de acto
   setFlag('fimActo1');
-  await showDoc(FIN_ACTO1);
   E.fadeTo = 0; await sleep(400);
   await MA('Mañana, Xoán. Él sabrá quién silba así. O conocerá a alguien que lo sepa.', 'pensativo');
   await primeiroTurno();   // segue o Acto 2 (js/acto2.js)

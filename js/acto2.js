@@ -38,9 +38,6 @@ async function primeiroTurno() {
   toast('Novo obxectivo: falar con Concha, no quiosco da praza');
 }
 
-/* ---------- fin do Acto 1 → comeza o Acto 2 sen pasar polo menú ---------- */
-const FIN_ACTO1 = '<h4>FIN DO ACTO 1 · «O regreso»</h4><p>Martín xa vive na Casa Juana: chaves, contrato, auga para mañá... e un asubío que, polo visto, ten enderezo.</p><p>Segue o Acto 2, «O reencontro».</p>';
-
 /* ---------- A3b · Concha no Acto 2 ---------- */
 async function conchaActo2() {
   if (!flag('a2ConchaSauda')) {
