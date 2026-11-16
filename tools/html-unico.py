@@ -6,8 +6,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 out = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, 'dist', 'via-morta.html')
 def uri(rel):
     ext = rel.rsplit('.', 1)[1].lower()
-    return 'data:%s;base64,%s' % ({'png': 'image/png', 'mp3': 'audio/mpeg'}.get(ext, 'image/jpeg'), base64.b64encode(open(os.path.join(ROOT, rel), 'rb').read()).decode())
-imgs = {os.path.relpath(p, ROOT).replace(os.sep, '/'): None for p in sorted(glob.glob(os.path.join(ROOT, 'img', '*.*')))}
+    return 'data:%s;base64,%s' % ({'png': 'image/png', 'webp': 'image/webp', 'mp3': 'audio/mpeg'}.get(ext, 'image/jpeg'), base64.b64encode(open(os.path.join(ROOT, rel), 'rb').read()).decode())
+imgs = {os.path.relpath(p, ROOT).replace(os.sep, '/'): None for p in sorted(glob.glob(os.path.join(ROOT, 'img', '**', '*.*'), recursive=True))}
 for p in sorted(glob.glob(os.path.join(ROOT, 'audio', '*.mp3'))): imgs[os.path.relpath(p, ROOT).replace(os.sep, '/')] = None   # a música do menú tamén vai dentro
 for k in imgs: imgs[k] = uri(k)
 html = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
