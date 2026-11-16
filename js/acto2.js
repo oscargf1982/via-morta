@@ -295,7 +295,7 @@ SCENES.panaderia = {
     { y: 366, r: [372, 196, 32, 168] },   // a segunda árbore
   ],
   hotspots: [
-    { name: 'Farmacia de la Estación', key: true, r: [640, 510, 320, 30], at: [800, 530], face: 'F', exit: ['calvoSotelo', [740, 520]], hint: 'D',
+    { name: 'Farmacia de la Estación', key: true, r: [640, 510, 320, 30], at: [800, 530], face: 'F', exit: ['calvoSotelo', [880, 505]], hint: 'D',
       look: () => MA('Por aquí, hacia el sur, la Farmacia de la Estación, la de Valerio. La de la cruz verde de toda la vida.', 'pensativo') },
     { name: 'Praza da Estación', key: true, r: [296, 318, 100, 44], at: [346, 350], face: 'B', exit: ['praza2', [450, 346]], hint: 'U',
       look: () => MA('Al fondo de la calle, la plaza de la estación y el quiosco de Concha. Medio minuto, si no me para nadie. En Monforte siempre te para alguien.', 'pensativo') },
@@ -334,42 +334,65 @@ SCENES.panaderia = {
   ],
 };
 
-/* ---------- B1 · Rúa Calvo Sotelo: a Farmacia de la Estación (ilustración de Oscar, img/bg-cardeal.jpg) ----------
-   Sáese da praza 2 polo noroeste, xunto ao quiosco de Concha (Oscar, 15-11-2026). O debuxo segue a ser o da rúa
-   da farmacia: o rótulo pintado di só «FARMACIA». */
+/* ---------- B1 · Rúa Calvo Sotelo: a Farmacia de la Estación (ilustración de Oscar, img/bg-calvo-sotelo.jpg, 16-11-2026) ----------
+   Sáese da praza 2 polo noroeste, xunto ao quiosco de Concha, pasando pola Panadería Estación. Debuxo novo de Oscar:
+   rótulo «FARMACIA DE LA ESTACIÓN», cruz verde de neón, Maderas Somel ao lado (sen papel na trama polo de agora),
+   máquina expendedora azul (dá un preservativo: o seu uso está pendente da idea de Oscar) e o castelo ao fondo. */
+ico.preservativo = c => { c.fillStyle = '#3a6ad8'; c.fillRect(8, 10, 32, 30); c.strokeStyle = '#cfe0ff'; c.lineWidth = 2; c.setLineDash([3, 2]); c.strokeRect(9, 11, 30, 28); c.setLineDash([]);
+  c.strokeStyle = '#ffffff'; c.lineWidth = 2; c.beginPath(); c.arc(24, 25, 8, 0, 7); c.stroke(); };
+// o hilo das pombas (js/pombas.js) define o mesmo obxecto para a cadea do taller; este é o de reserva
+if (!ITEMS.preservativo) ITEMS.preservativo = { name: 'Preservativo', icon: ico.preservativo,
+  look: () => MA('Un preservativo en su sobrecito azul, de la máquina de la farmacia. No sé para qué lo he cogido. Bueno, sé para qué sirve; lo que no sé es para qué me va a servir a mí.', 'avergonzado') };
 SCENES.calvoSotelo = {
-  name: 'Rúa Calvo Sotelo · Farmacia de la Estación', bg: 'img/bg-cardeal.jpg', music: 'estacion', floor: 'pedra',
-  walk: [[170, 520], [300, 476], [470, 398], [560, 354], [610, 340], [700, 340], [800, 400], [800, 540], [160, 540]],
-  scale: [340, 0.2, 540, 0.92], actorH: 300, start: [740, 520], minSpeed: 0.5,
+  name: 'Rúa Calvo Sotelo · Farmacia de la Estación', bg: 'img/bg-calvo-sotelo.jpg', music: 'estacion', floor: 'pedra',
+  walk: [[236, 358], [402, 372], [574, 399], [746, 425], [826, 452], [960, 458], [960, 540], [0, 540], [0, 470], [150, 380]],
+  scale: [358, 0.23, 540, 0.85], actorH: 300, start: [880, 505], minSpeed: 0.5,
   draw(c, t) {
     // o neón da cruz verde latexa por riba do debuxo
-    const a = 0.12 + 0.22 * Math.abs(Math.sin(t * 2.2));
-    c.save(); c.globalCompositeOperation = 'lighter'; c.globalAlpha = a; c.shadowColor = '#2aff8a'; c.shadowBlur = 26; c.fillStyle = '#3aff96';
-    c.fillRect(440, 42, 44, 106); c.fillRect(408, 74, 108, 42); c.restore();
-    // «Se aluga» nas portas de máis abaixo
-    for (const [x, y, k] of [[481, 330, 1], [545, 318, 0.8]]) {
-      c.save(); c.translate(x, y); c.scale(k, k); c.fillStyle = '#f4f0e0'; c.fillRect(-15, -8, 30, 16); c.strokeStyle = '#c0221c'; c.lineWidth = 1; c.strokeRect(-15, -8, 30, 16);
-      signText(c, 'SE ALUGA', 0, 3, 6, '#c0221c', '"Trebuchet MS", sans-serif'); c.restore();
-    }
+    const a = 0.10 + 0.22 * Math.abs(Math.sin(t * 2.2));
+    c.save(); c.globalCompositeOperation = 'lighter'; c.globalAlpha = a; c.shadowColor = '#2aff8a'; c.shadowBlur = 24; c.fillStyle = '#3aff96';
+    c.fillRect(426, 186, 30, 76); c.fillRect(408, 208, 66, 30); c.restore();
   },
+  front: [
+    { y: 459, r: [694, 300, 22, 160] },   // tronco da árbore de diante
+    { y: 422, r: [624, 362, 50, 61] },    // macetón da dereita
+    { y: 397, r: [458, 342, 38, 55] },    // macetón da esquerda
+  ],
   hotspots: [
-    { name: 'Panadería Estación', key: true, r: [700, 470, 100, 70], at: [750, 525], face: 'R', exit: ['panaderia', [820, 522]], hint: 'D',
-      look: () => MA('Calle abajo, la panadería de Genaro, y luego la plaza de la estación. Dos minutos. En este barrio todo está a dos minutos de un tren.', 'pensativo') },
-    { name: 'Farmacia de la Estación', key: true, done: () => flag('valerioFeito'), r: [158, 196, 124, 300], at: [235, 512], face: 'B', exit: ['farmacia', [900, 515]], door: true,
-      look: () => MA('La Farmacia de la Estación, la del padre de Valerio. La puerta abierta y el suelo de baldosas de colores, como cuando veníamos a por caramelos de eucalipto que no nos tocaban.', 'sonriente') },
-    { name: 'Cruz verde', r: [404, 38, 116, 112], look: () => MA('La cruz verde de neón, parpadeando. De crío pensaba que era una señal de vía libre. En cierto modo lo es: vía libre a la aspirina.', 'risueno') },
-    { name: 'Letreiro', r: [362, 122, 118, 64], look: () => MA('«FARMACIA», en letras de las de antes. Todo el mundo la llama la Farmacia de la Estación: está a dos minutos del andén. Los maquinistas venían aquí antes de turno a por pastillas para el estómago.', 'sonriente') },
-    { name: 'Escaparate', r: [362, 302, 54, 108], look: () => MA('Un escaparate con cajitas. Ni una oferta, ni un cartel de «2x1». El padre de Valerio decía que la salud no se rebaja.', 'pensativo') },
-    { name: 'Locais baleiros', r: [458, 290, 110, 110], look: () => MA('«Se aluga». Y «se aluga». En esta calle había una tienda de discos y un videoclub. Ahora hay carteles. Y eco.', 'pensativo') },
-    { name: 'Toldo', r: [122, 122, 470, 188], look: () => MA('Toldo de rayas rojas y blancas. Si lo pintasen de otro color, medio Monforte se perdería buscando la farmacia.', 'sonriente') },
-    { name: 'Balcóns', r: [140, 0, 200, 118], look: () => MA('Balcones de hierro con florituras. Alguien me está mirando desde un visillo. Mañana lo sabe Concha. Esta tarde, quizá.', 'esceptico') },
-    { name: 'Farol', r: [528, 140, 32, 62], look: () => MA('Un farol de los de forja. A esta hora apagado, ahorrando para la noche.', 'neutro') },
-    { name: 'Terraza', r: [806, 360, 154, 180], look: () => MA('Una terraza con sombrilla. Calvo Sotelo siempre fue de bares de ferroviarios. Algunas cosas en Monforte no cierran: se jubilan detrás de la barra.', 'risueno') },
-    { name: 'Árbores', r: [680, 150, 280, 200], look: () => MA('Una fila de árboles hasta el fondo. En verano dan sombra; en otoño, trabajo al barrendero.', 'neutro') },
-    { name: 'Torre ao fondo', r: [648, 196, 30, 92], look: () => MA('Una torre al fondo de la calle, asomando entre los tejados. En Monforte, mires donde mires, algo de piedra te está mirando a ti.', 'pensativo') },
-    { name: 'Papeleira', r: [0, 420, 30, 90], act: () => MA('No voy a tirar nada. Con la suerte que tengo, mañana me haría falta.', 'esceptico'),
-      look: () => MA('Una papelera. Vacía. O pasa el barrendero muy temprano o en esta calle ya no queda nadie para ensuciar.', 'neutro') },
-    { name: 'Lousas', r: [380, 420, 320, 120], look: () => MA('Losas de calle peatonal, con alguna suelta que hace «clonc». La conozco: la pisaba adrede volviendo del instituto.', 'sonriente') },
+    { name: 'Panadería Estación', key: true, r: [868, 476, 92, 64], at: [900, 515], face: 'R', exit: ['panaderia', [800, 530]], hint: 'D',
+      look: () => MA('Por aquí se vuelve a la panadería de Genaro, y luego a la plaza de la estación. Dos minutos. En este barrio todo está a dos minutos de un tren.', 'pensativo') },
+    { name: 'Farmacia de la Estación', key: true, done: () => flag('valerioFeito'), r: [540, 268, 44, 132], at: [563, 412], face: 'B', exit: ['farmacia', [900, 515]], door: true,
+      look: () => MA('La Farmacia de la Estación, la del padre de Valerio. Puerta verde, campanilla y escaparates llenos de botes. Aquí veníamos a por caramelos de eucalipto que no nos tocaban.', 'sonriente') },
+    { name: 'Cruz verde', r: [404, 184, 72, 80], look: () => MA('La cruz verde de neón, parpadeando. De crío pensaba que era una señal de vía libre. En cierto modo lo es: vía libre a la aspirina.', 'risueno') },
+    { name: 'Letreiro', r: [494, 192, 114, 62], look: () => MA('«FARMACIA DE LA ESTACIÓN», con letras de las de antes. A dos minutos del andén: los maquinistas venían aquí antes del turno a por pastillas para el estómago.', 'sonriente') },
+    { name: 'Escaparate', r: [404, 266, 56, 102], look: () => MA('Botes, frascos y cajitas en fila, como soldados. Ni una oferta, ni un «2x1». El padre de Valerio decía que la salud no se rebaja.', 'pensativo') },
+    { name: 'Escaparates', r: [586, 264, 68, 110], look: () => MA('Champús, cremas y jarabes. Hay un bote de colonia de las de abuela que juraría que lleva en ese estante desde que yo iba al instituto.', 'risueno') },
+    { name: 'Máquina expendedora', key: true, done: () => hasItem('preservativo'), r: [716, 306, 48, 82], at: [738, 432], face: 'B',
+      act: async () => {
+        if (hasItem('preservativo')) return MA('Ya llevo uno. Uno es previsión; dos ya sería optimismo.', 'avergonzado');
+        await MA('Pido... rebusco... Ni una moneda suelta. Todo en tarjeta, y esta máquina es de antes de las tarjetas.', 'frustrado');
+        await MA(hasItem('navalla') ? '(Aunque la tapa se ve floja. Con algo que haga palanca, como mi navaja...)' : '(La tapa se ve floja. Con algo que haga palanca... En los cajones de la cocina de casa había de todo.)', 'pensativo');
+      },
+      use: { navalla: async () => {
+        if (hasItem('preservativo')) return MA('Ya llevo uno. No voy a desvalijar la máquina: no soy un ladrón, soy un hombre previsor.', 'avergonzado');
+        await MA('Meto la punta de la navaja en la ranura, un poquito de palanca... «clonc».', 'neutro');
+        const primeira = !flag('preservativoColleito');
+        setFlag('preservativoColleito'); give('preservativo');
+        await MA(primeira ? 'Un preservativo. Robado a punta de navaja, a dos metros de la farmacia de Valerio. Si me ve Concha, mañana lo sabe medio Monforte. Y la otra mitad, pasado.' : 'Otro sobrecito. La máquina ya ni se resiste: creo que me tiene cariño.', 'avergonzado');
+      } },
+      look: () => MA(flag('preservativoColleito') ? 'La máquina azul de la farmacia. La tapa ya cierra regular, por mi culpa. Mejor no quedarme mirándola mucho rato.' : 'Una máquina azul de esas de las farmacias, para cuando están cerradas. Por el dibujo del cartel, vende preservativos. A plena luz del día y a dos metros de la puerta de Valerio. Qué valor.', 'avergonzado') },
+    { name: 'Maderas Somel', r: [270, 184, 102, 64], look: () => MA('«Maderas Somel». Un almacén de madera de los de toda la vida, con el pino apilado en el patio. Huele a serrín desde la acera.', 'pensativo') },
+    { name: 'Portalón verde', r: [286, 248, 88, 118], act: () => MA('No es asunto mío meterme en un almacén ajeno. Además, si piso un tablón, seguro que me cae otro.', 'esceptico'),
+      look: () => MA('El portalón verde del almacén, abierto de par en par. Al fondo, tablones apilados como un tren de mercancías parado.', 'pensativo') },
+    { name: 'Portal', r: [826, 258, 74, 196], act: () => MA('Es un portal de vecinos. No conozco a nadie aquí. Bueno, en Monforte seguro que sí, pero no sé a quién.', 'dudoso'),
+      look: () => MA('Un portal gris con rejilla, en la casa naranja. Los buzones deben de estar llenos de propaganda de la farmacia de al lado.', 'neutro') },
+    { name: 'Galerías', r: [378, 74, 124, 100], look: () => MA('Galerías blancas, de las de cristal. En Galicia se inventaron para mirar la lluvia sin mojarse. Y para mirar quién entra en la farmacia.', 'risueno') },
+    { name: 'Balcón', r: [786, 88, 138, 102], look: () => MA('Un balcón de hierro con florituras. Alguien me está mirando desde el visillo. Mañana lo sabe Concha. Esta tarde, quizá.', 'esceptico') },
+    { name: 'Coches aparcados', r: [72, 300, 126, 58], look: () => MA('Coches aparcados en fila, todos de color «Monforte»: gris, verde gris y gris verde.', 'risueno') },
+    { name: 'Árbores', r: [628, 146, 164, 150], look: () => MA('Árboles en fila hasta el fondo de la calle. En verano dan sombra; en otoño, trabajo al barrendero.', 'neutro') },
+    { name: 'Torre ao fondo', r: [44, 168, 48, 52], look: () => MA('La torre del castillo de San Vicente, asomando al fondo. En Monforte, mires donde mires, algo de piedra te está mirando a ti.', 'pensativo') },
+    { name: 'Rúa', r: [0, 380, 300, 100], act: () => MA('La calle sigue hacia el centro. Por ese lado no se me ha perdido nada. Lo que busco está en esta acera.', 'pensativo'),
+      look: () => MA('Calvo Sotelo, recta, con los coches aparcados a un lado y los árboles al otro. Una calle de ir a la estación sin pensar.', 'neutro') },
   ],
 };
 SCENES.cardeal = SCENES.calvoSotelo;   // partidas gardadas antes do cambio
@@ -413,7 +436,7 @@ async function valerioTalk() {
       await VA('Ti necesítalos máis.');
     }
     if (k === 'libros') {   // sementa o libro de 1958 do Acto 3 (ideas de Oscar do 15-11-2026)
-      await VA('Todas. A bata, o mostrador... e os libros. O meu pai apuntaba cada cura, cada receita e cada xarope fiado nuns libros de tapas negras. Dende o cincuenta.');
+      await VA('Todas. A bata, o mostrador... e os libros. O meu avó, que abriu a botica, apuntaba cada cura, cada receita e cada xarope fiado nuns libros de tapas negras. Dende o cincuenta. E meu pai seguiu co costume.');
       await VA('Están na rebotica, nun estante que xa non aguanta máis. Nin os tiro nin os leo. Son coma el: non ocupan moito, pero se os tiras, quedas sen nada.');
       await MA('Medio Monforte, apuntado a pluma. Con letra de farmacéutico.', 'pensativo');
       await VA('Letra de farmacéutico, que é coma a de médico pero entendéndose. Iso si: o que pasou no barrio, alí está.');
@@ -472,7 +495,7 @@ SCENES.farmacia = {
     setFlag('pistaCurma');
   },
   hotspots: [
-    { name: 'Rúa Calvo Sotelo', key: true, r: [906, 470, 54, 70], at: [920, 520], face: 'R', exit: ['calvoSotelo', [235, 512]], door: true, hint: 'D',
+    { name: 'Rúa Calvo Sotelo', key: true, r: [906, 470, 54, 70], at: [920, 520], face: 'R', exit: ['calvoSotelo', [563, 414]], door: true, hint: 'D',
       look: () => MA('La puerta a la calle. La campanilla sigue sonando igual que hace veinte años: «tlin», y el padre de Valerio levantaba la vista por encima de las gafas.', 'sonriente') },
     { name: 'Ortopedia e deporte', r: [24, 40, 292, 72], look: () => MA('«Ortopedia y deporte». Rodilleras, tobilleras y muñequeras. Es la sección de los que vuelven a correr a los cuarenta. Y la de los que vuelven del intento.', 'avergonzado') },
     { name: 'Pantalla', r: [500, 120, 50, 42], look: () => MA('Una pantalla para los turnos. Pone «0». O no hay nadie esperando o Valerio no se fía de la tecnología.', 'esceptico') },
@@ -541,7 +564,7 @@ async function andresTalk() {
       if (flag('andresInverno')) { await AN('E do inverno aquel, xa cho dixen: no saco e á sombra.'); continue; }
       setFlag('andresInverno');
       await MA('¿Todavía vive? Tiene que tener historias del depósito para dar y tomar.', 'sonriente');
-      await AN('Oitenta e cinco anos e máis teimudo ca unha mula. Cóidoo eu: a pastilla, o caldo e o Dépor, por esa orde.');
+      await AN('Noventa e dous anos e máis teimudo ca unha mula. Cóidoo eu: a pastilla, o caldo e o Dépor, por esa orde.');
       await AN('Historias, todas. Das máquinas, dos turnos, do frío que facía na cabina... Todas menos as dun inverno.');
       await MA('¿Qué invierno?', 'dudoso');
       await AN('Ese. O que non conta. E eu non llo pregunto. Hai cousas que se gardan coma o carbón: no saco, e o saco á sombra.');
@@ -607,7 +630,7 @@ async function retoNatacion() {
     await AN('Mira, deixámolo en empate técnico. Ti convídasme a un mojito e eu non llo conto a Concha.');
     await MA('Un empate pagado. Muy de Monforte. Trato hecho.', 'risueno');
   }
-  await AN('Sabes que o meu avó foi fogoneiro no depósito? Di que o carbón bo se coñece polo son. Oitenta e cinco anos e aínda mo corrixe. Gardo uns sacos dos que lle gustan, para o churrasco.');
+  await AN('Sabes que o meu avó foi fogoneiro no depósito? Di que o carbón bo se coñece polo son. Noventa e dous anos e aínda mo corrixe. Gardo uns sacos dos que lle gustan, para o churrasco.');
   await MA('Un fogonero en la familia. Andrés, eso tiene más mérito que cuatro largos.', 'sonriente');
   await carbonMisterio();
   setFlag('andresFeito'); comprobarChampions();
@@ -654,7 +677,7 @@ SCENES.fluvial = {
       done: () => flag('andresFeito'),
       look: async () => {
         await MA('Mega Andrés, en su tumbona, con camisa de flores y gafas de sol. En otoño. Es un estilo de vida, no una estación del año.', 'risueno');
-        await MA('Andrés Corredoira. En el instituto, el apellido más rápido y el chaval más lento. Hasta que se metía en el agua. Por eso lo de «Mega».', 'sonriente');
+        await MA('Andrés Castiñeira. En el instituto le llamábamos «el Castaño»: grande, fuerte y quieto como un árbol. Hasta que se metía en el agua. Por eso lo de «Mega».', 'sonriente');
       },
       talk: () => andresTalk(),
       give: {
