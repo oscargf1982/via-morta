@@ -26,7 +26,7 @@ Object.assign(PORTRAITS, { 'Valerio': 'img/valerio-face.png', 'Mega Andrés': 'i
 /* ---------- C2 · cinemática da primeira quenda (martes) ----------
    js/cinematica2.js (CINE2), guion A «Primeira quenda»: a Mikado ao amencer, a xornada diante das cocheras,
    o carril engraxado e as pegadas, o candado novo da porta dereita e Xoán, que non quere falar del.
-   Pódese saltar (dous toques). Non di de que tipo é o candado. */
+   Sáltase só co botón «Saltar cinemática». Non di de que tipo é o candado. */
 async function primeiroTurno() {
   E.act = 'acto2';
   SFX.music(null);
@@ -34,7 +34,8 @@ async function primeiroTurno() {
   setFlag('a2Inicio');
   await goScene('praza');
   await MA('Primer turno superado. Y los gemelos, destrozados: lo de subirme ayer a la silla del Concello me ha dejado las piernas de un señor de ochenta años.', 'frustrado');
-  await MA('Lo del candado nuevo de las cocheras y lo del silbato, me lo apunto. Pero para saber dónde anda todo el mundo en Monforte no hace falta GPS: hace falta Concha.', 'sonriente');
+  await MA('Y con tanto trabajo el primer día, se me ha olvidado preguntarle a Xoán por el silbido. Solo le saqué lo del candado, y me despachó. Ya lo haré más tarde, después de ver a los de siempre.', 'avergonzado');
+  await MA('Para saber dónde anda todo el mundo en Monforte no hace falta GPS: hace falta Concha.', 'sonriente');
   toast('Novo obxectivo: falar con Concha, no quiosco da praza');
 }
 
@@ -785,7 +786,7 @@ SCENES.vigasA2 = {
   const F = {};
   for (const k of ['chavesDadas', 'conchaRecoñece', 'davidSauda', 'objetivoContrato', 'davidAmparo', 'amparoMan', 'faltaBoli', 'sabeCrucigrama', 'sabePalabra', 'boliDado',
     'contratoAsinado', 'sabeCasa', 'xoanCoñece', 'muralExplicado', 'trenSaiu', 'salonVisto', 'sinAgua', 'eladioAusente', 'eladioFicha', 'eladioVolveu', 'cadeiraDevolta',
-    'aguaAlta', 'noiteAviso', 'noiteActo1', 'fimActo1', 'vistaSalon', 'sabeChaveTaller', 'navallaCollida', 'eladioNogal', 'cadeiraPosta', 'desapCafe']) F[k] = true;
+    'aguaAlta', 'duchado', 'noiteAviso', 'noiteActo1', 'fimActo1', 'vistaSalon', 'sabeChaveTaller', 'navallaCollida', 'eladioNogal', 'cadeiraPosta', 'desapCafe']) F[k] = true;
   const i = ACTS.findIndex(a => a.id === 'acto2');
   ACTS[i] = { id: 'acto2', name: 'Acto 2 · O reencontro', desc: 'Martes e mércores: o candado novo, Valerio, Mega Andrés, a Champions na Fraternal e o taller da Casa Juana',
     scene: 'praza', at: [780, 420], inv: ['chavesCasa', 'contrato', 'navalla'], flags: F, intro: () => primeiroTurno() };
