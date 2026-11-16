@@ -34,7 +34,7 @@ async function verFoto() {
     return;
   }
   if (flag('fotoPepe')) await MA('El pelirrojo es Pepe, «Pepe da agulla». Me faltan el rubio sentado y el moreno.', 'dudoso');
-  else if (flag('fotoManolo')) await MA('El rubio sentado es Manolo: Don Anxo de chaval. Me faltan el pelirrojo y el moreno.', 'dudoso');
+  else if (flag('fotoManolo')) await MA('El rubio sentado es Manolo: Manuel Anxo, Don Anxo de chaval, cuando todavía usaba su primer nombre. Me faltan el pelirrojo y el moreno.', 'dudoso');
   else await MA('Pepe, Manolo y Xosé N. Las caras ya me las sé de memoria. Los nombres, todavía no. Concha conoce a todo Monforte.', 'dudoso');
 }
 ITEMS.foto1949.look = verFoto;
@@ -92,8 +92,12 @@ ensinarFoto('valerio', async () => {
   if (!flag('fotoManolo')) {
     await VA('A ver... «Pepe, Manolo, Xosé N.».');
     await VA('Manolo? O louro sentado... Mira as orellas. As orellas non envellecen: só medran.');
-    await VA('Ese é Anxo Castiñeira. Manuel Anxo. Meu avó contaba que de rapaz lle chamaban Manolo, e que despois do 58 só quixo ser Anxo. Nunca soubemos por que.');
-    await MA('Don Anxo. El fogonero... de aprendiz en mi taller. Con Xosé N.', 'sorprendido');
+    await VA('Ese é Don Anxo. Ben: Manuel Anxo Castiñeira, que é o seu nome enteiro. Dous nomes, coma tantos aquí: Xosé Manuel, Xosé Luís...');
+    await VA('De rapaz todo o mundo lle chamaba Manolo, que é o que se fai cun Manuel. Meu avó coñeceuno así.');
+    await VA('Pero contaba meu avó que despois do inverno do 58 deixou de responder a Manolo. Nin na barbería. Quedou co segundo nome, Anxo, e así lle chamamos todos dende aquela.');
+    await MA('¿Se quitó el nombre de encima? ¿Por qué?', 'sorprendido');
+    await VA('Iso pregúntallo a el. Eu só che digo que un home non cambia de nome por aburrimento.');
+    await MA('(Manolo, aprendiz en mi taller con Xosé N. Y desde 1958, solo Anxo. Como quien cambia de abrigo para que no le reconozcan.)', 'pensativo');
     setFlag('fotoManolo');
     await fotoDeducir();
   }
@@ -129,7 +133,8 @@ ensinarFoto('anxo', async prev => {
   await MA('El que está sentado es usted, ¿verdad? Manolo.', 'dudoso');
   await AX('...');
   await AX('Hai sesenta e oito anos que ninguén me chama así.');
-  await AX('Ese era outro. Ese aínda durmía ben.');
+  await AX('Manolo quedou alí, no 58. Eu son o que veu despois: Anxo.');
+  await AX('Ese da foto era outro. Ese aínda durmía ben.');
   await MA('(No dice más. No hace falta.)', 'preocupado');
 });
 
