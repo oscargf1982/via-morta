@@ -209,7 +209,7 @@ async function valerioActo3() {
     const k = opts[await choose(opts)].k;
     if (k === 'libro') await valerioLibro();
     if (k === 'anxo') {
-      await VA('Anxo Corredoira. Foi fogoneiro no depósito; ese inverno do 58 tiña dezasete anos.');
+      await VA('Anxo Corredoira. Foi fogoneiro no depósito; ese inverno do 58 tiña vinte e catro anos.');
       await VA('Fala do tempo, do Dépor e da tensión, por esa orde. Do resto, nada. E eu véndolle pastillas dende que teño bata.');
       await MA('Y ahora sale de noche y vuelve oliendo a carbón.', 'pensativo');
       await VA('Iso din as veciñas. O neto non di nada: nesa casa calan por xeracións. Eu só digo que sen pastillas non é el. Se o ves, dállas.');
@@ -239,7 +239,7 @@ async function valerioLibro() {
   give('nota1958'); setFlag('libro1958');
   await VA('Nogal...');
   await VA('Martín, hai un home que estaba no depósito ese inverno. Venlle buscar as pastillas os luns, coma un reloxo.');
-  await VA('Este luns non veu. As veciñas din que sae todas as noites e volve ás tantas cheirando a carbón. Aos oitenta e cinco anos!');
+  await VA('Este luns non veu. As veciñas din que sae todas as noites e volve ás tantas cheirando a carbón. Aos noventa e dous anos!');
   await MA('¿Cómo se llama?', 'pensativo');
   await VA('Don Anxo. Anxo Corredoira. Foi fogoneiro. Pero do 58 non fala, Martín. Nunca.');
   await MA('¿Corredoira? ¿Como Andrés, el del Fluvial?', 'sorprendido');
@@ -248,7 +248,7 @@ async function valerioLibro() {
   setFlag('anxoNetoSabe');
   await VA('Xa que andas tanto pola estación... se o atopas, dálle isto. Que sen elas, el non é el.');
   give('pastillas');
-  await MA('Un fogonero de ochenta y cinco años que sale de noche y vuelve oliendo a carbón. Ya sé dónde buscar. Y a qué hora no.', 'convencido');
+  await MA('Un fogonero de noventa y dos años que sale de noche y vuelve oliendo a carbón. Ya sé dónde buscar. Y a qué hora no.', 'convencido');
   toast(cocherasCompletas() ? 'Novo obxectivo: ás once, ás cocheras. Agardar dentro do coche de viaxeiros' : 'Novo obxectivo: as cocheras do museo (o candado de catro cifras)');
 }
 {
@@ -258,7 +258,7 @@ async function valerioLibro() {
   V.done = () => flag('fimActo2') ? flag('libro1958') : dV();
   V.give.pastillas = () => VA('Non, non: son de Anxo. Eu xa tomo as miñas. E as de medio barrio, se me descoido.');
   V.give.nota1958 = () => VA('Copiáchelo ben. Ata as faltas do meu pai. Ese home escribía «queimaduras» con dúas emes cando estaba canso.');
-  V.give.foto1949 = () => VA('Serrín e rapaces con mono... Iso é antes do meu pai. Pero o señor do bigote ten cara de pagar ao contado.');
+  // V.give.foto1949: en js/foto1949.js
 }
 
 /* ---------- C2 · Mega Andrés no Acto 3 (opcional) ---------- */
@@ -644,7 +644,7 @@ async function anxoTalk() {
     await MA('(No sabe nada. Ya. Y yo soy de Valencia.)', 'esceptico');
     return;
   }
-  if (k === 'fogo') { await AX('Dezasete anos tiña. A pa pesaba máis ca min.'); await AX('E agora pesa outra vez. Pero esta vez non me queixo.'); }
+  if (k === 'fogo') { await AX('Vinte e catro anos tiña, e xa me queixaba da pa.'); await AX('E agora pesa outra vez. Pero esta vez non me queixo.'); }
   if (k === 'adeus') await AX('Ao deitarse. Xa o sei. Valerio escríbeo grande para que o lea sen lentes.');
 }
 async function anxoNota() {
@@ -747,7 +747,7 @@ async function inxector() {
 }
 async function fimActo3() {
   setFlag('fimActo3');
-  await showDoc('<h4>FIN DO ACTO 3 · «A curiosidade»</h4><p>Non había pantasma. Había unha soldadora, un fogoneiro de oitenta e cinco anos en zapatillas, dous xubilados de oficinas e unha Mikado que volve respirar no medio da rotonda.</p><p>E alguén que asubía, e que esta noite non veu.</p><p>O Acto 4, «A implicación», chegará nun próximo hito.</p>');
+  await showDoc('<h4>FIN DO ACTO 3 · «A curiosidade»</h4><p>Non había pantasma. Había unha soldadora, un fogoneiro de noventa e dous anos en zapatillas, dous xubilados de oficinas e unha Mikado que volve respirar no medio da rotonda.</p><p>E alguén que asubía, e que esta noite non veu.</p><p>O Acto 4, «A implicación», chegará nun próximo hito.</p>');
 }
 function pintarCarretilla(c, x, y) {
   c.save(); c.strokeStyle = '#141010'; c.lineWidth = 2;

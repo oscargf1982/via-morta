@@ -71,7 +71,7 @@
 ## Don Eladio (ventanilla del Concello)
 - Funcionario que «naceu pechando». La ventanilla 1 «agora tamén é a 3».
 - En el Acto 1 cierra a las dos y se va al café. En el Acto 4 exige el modelo T-14 y cien firmas para el permiso. Revela sin querer que «un tal Nogal» ya lo pidió el mes pasado.
-- Al final se ablanda: su padre era guardagujas. «Dígalle a Anxo que me garde sitio.»
+- Al final se ablanda: su padre era guardagujas. **Su padre es «Pepe» de la foto de 1949** (el pelirrojo con pecas, el mayor de los aprendices; elegido por Oscar el 16-11-2026): de la carpintería del señor Alfredo pasó a guardagujas del depósito, y la letra azul del reverso («Xosé entra en Renfe. Sorte, rapaz») es suya. En el Acto 4 Eladio la reconoce; en el Acto 5 le da a Martín la llave de guardagujas de su padre con un «Sorte, rapaz». «Dígalle a Anxo que me garde sitio.»
 - **Aspecto (hoja de Oscar, `assets/personajes/don-eladio-hoja.png`):** calvo con cuatro pelos grises a los lados, cejas fruncidas, traje marrón, camisa beige con bolígrafos en el bolsillo y corbata granate.
 - **Recursos gráficos:** `eladio-sprite.png` (celdas de 160×280, 8 columnas: 0 sentado en el taburete, 1 sentado hablando, 8-15 corriendo de espaldas) y retrato `eladio-face.png`. Se regeneran con `python3 tools/sprite-eladio.py`. En la ventanilla se dibuja solo la mitad de arriba de la celda sentada.
 
@@ -107,7 +107,8 @@
 - Tiene el récord de la **Volta do Castelo**: Malecón, praza da Compañía, castillo y vuelta.
 
 ## Don Anxo Corredoira (cocheras del museo)
-- Fue **fogonero** de Xosé Nogal la noche de 1958, con 17 años. Firmó el informe falso para no perder el trabajo y lleva 68 años callado.
+- Fue **fogonero** de Xosé Nogal la noche de 1958, con 24 años (hoy tiene 92; antes ponía 17 y 85, cambiado por Oscar el 16-11-2026 para que salga en la foto de 1949). Firmó el informe falso para no perder el trabajo y lleva 68 años callado.
+- Se llama **Manuel Anxo**: de chaval, en la carpintería del señor Alfredo, todos le llamaban **Manolo**; es el «Manolo» de la foto de 1949 (el rubio sentado), aprendiz con Xosé. Después del 58 solo se deja llamar Anxo. Así, el informe falso lo firmó contra su amigo de aprendiz.
 - **Abuelo de Mega Andrés**, que lo cuida. Cree que su nieto no sabe nada del 58 y le pide a Martín que no le diga que lo vio en las cocheras.
 - Ahora es uno de los jubilados que restauran la Mikado. En la vía muerta lo cuenta delante de todos.
 - **Voz:** «Hai noites que mellor non lembrar.»
@@ -125,6 +126,6 @@
 - «As raíces non son para quedar quieto: son para saber onde volver.»
 
 ## Xosé Nogal (ficción, solo en recuerdos y documentos)
-- Maquinista del depósito en 1958. Antes de entrar en Renfe fue **aprendiz en la carpintería del señor Alfredo**, en la Casa Juana; es el «Xosé N.» de la foto de 1949.
+- Maquinista del depósito en 1958. Antes de entrar en Renfe fue **aprendiz en la carpintería del señor Alfredo**, en la Casa Juana; es el «Xosé N.» de la foto de 1949 (el moreno de los brazos cruzados, con la mano de Alfredo en el hombro).
 - Avisó durante semanas de que los frenos del mercancías fallaban. La noche del 14 de enero de 1958 lo desvió a la vía muerta y lo frenó con su Mikado, y así salvó el tren de emigrantes del andén 1.
 - Le echaron la culpa. Emigró a Suiza. Silbaba «dos largos y uno corto» al pasar por la Casa Juana para saludar al taller donde aprendió el oficio.
