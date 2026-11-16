@@ -367,6 +367,8 @@ function onPointer(e, look) {
   const hit = hitTest(x, y);
   if (e.pointerType === 'touch') { E.mouse.x = x; E.mouse.y = y; E.hover = hit; E.hoverUntil = E.t + 1.3; }
   if (hit) { interact(hit, look); return; }
+  // obxecto usado no chan da escena (scene.use[obxecto](x, y)): p. ex. tirar millo no chan
+  if (E.held && !look && E.scene.use && E.scene.use[E.held]) { const fn = E.scene.use[E.held]; run(async () => { if (E.actor.visible) await walkTo(x, y); await fn(x, y); }); return; }
   if (E.held) { E.held = null; drawInv(); return; }
   if (E.actor.visible && !look) walkTo(x, y);
 }
@@ -563,6 +565,13 @@ function patrolStep(n, dt) {
     const [a, b] = P.pause || [1, 3]; st.wait = a + Math.random() * (b - a); st.i = (st.i + 1) % P.pts.length;
   } else { n.x += dx / d * sp; n.y += dy / d * sp; st.dir = dir8(dx, dy); st.moving = true; st.t += dt; }
 }
+/* NPC animado xenérico: n.anims = { nome: { f: [celas], fps, loop } }; npcAnim(n, 'nome') cambia a animación
+   (loop: false queda no último fotograma). Sen n.anim, o NPC pinta n.idle / patrol coma sempre. */
+function npcAnim(n, name, flip) { n.anim = name; n.animT0 = E.t; if (flip !== undefined) n.flip = flip; }
+function animFrame(n) {
+  const A = n.anims[n.anim], k = Math.floor((E.t - (n.animT0 || 0)) * (A.fps || 8));
+  return A.f[A.loop === false ? Math.min(k, A.f.length - 1) : k % A.f.length];
+}
 /* movemento dun NPC guiado por un script (p. ex. saír correndo): await npcMove(n, x, y, { frames, fps, speed, flip }) */
 function npcMove(n, x, y, o = {}) { return new Promise(r => { n._mv = { x, y, speed: o.speed || 120, frames: o.frames, fps: o.fps || 10, flip: !!o.flip, t: 0, done: r }; }); }
 function moveStep(n, dt) {
@@ -604,6 +613,7 @@ function drawNpc(n) {
   if (n.shadow !== false) drawShadow(n.x, n.y, 30 * s);
   if (n.draw) { n.draw(E.ctx, E.t, talking, s); return; }
   if (n._mv && n._mv.frames) { const M = n._mv; drawSprite(n.sheet, M.frames[Math.floor(M.t * M.fps) % M.frames.length], n.x, n.y, n.h * s, M.flip, n.spec); return; }
+  if (n.anim && n.anims && n.anims[n.anim]) { drawSprite(n.sheet, animFrame(n), n.x, n.y, n.h * s, n.flip, n.spec); return; }
   if (n.patrol) { const [idx, flip] = patrolFrame(n, talking); drawSprite(n.sheet, idx, n.x, n.y, n.h * s, flip, n.spec); return; }
   const idx = talking && n.talkFrames ? n.talkFrames[Math.floor(E.t * 6) % n.talkFrames.length] : n.idle;
   drawSprite(n.sheet, idx, n.x, n.y, n.h * s, n.flip, n.spec);
@@ -654,6 +664,13 @@ const SFX = {
   pick() { this.tone(660, 0.09, 'triangle', 0.18); this.tone(990, 0.14, 'triangle', 0.16, 0.08); },
   door() { this.tone(80, 0.3, 'sine', 0.35); this.noise(0.25, 300, 0.8, 0.15, 0, 'lowpass'); },
   paper() { this.noise(0.28, 3500, 0.7, 0.12, 0, 'highpass'); },
+  /* estoupido seco (globo, petardo) */
+  bang(v = 0.9) { this.noise(0.5, 900, 0.5, v, 0, 'lowpass'); this.tone(55, 0.45, 'sine', v * 0.7); this.noise(0.12, 3000, 0.7, v * 0.6, 0, 'highpass'); },
+  /* aleteo de paxaros: n golpes rápidos de aire */
+  flap(n = 6, v = 0.12) { for (let i = 0; i < n; i++) this.noise(0.06, 700 + Math.random() * 500, 0.8, v, i * 0.07 + Math.random() * 0.03); },
+  /* arrulo de pomba */
+  coo(v = 0.08) { this.init(); if (!this.ctx) return; [0, 0.32].forEach((w, i) => { const t0 = this.ctx.currentTime + w, o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(330, t0); o.frequency.linearRampToValueAtTime(i ? 250 : 300, t0 + 0.26); o.connect(g); g.connect(this.fx); this.env(g, t0, 0.04, 0.24, v); o.start(t0); o.stop(t0 + 0.32); }); },
   ollo() { [523, 659, 784].forEach((f, i) => this.tone(f, 0.25, 'sine', 0.1, i * 0.07)); },
   /* o leitmotiv: asubío de vapor «dous longos e un curto» */
   whistle(pattern = 'LLS', v = 0.22) {
