@@ -16,6 +16,7 @@
    ========================================================== */
 const RE = t => say('Remedios', t);
 const AX = t => say('Don Anxo', t);
+PORTRAITS['Don Anxo'] = 'img/anxo-face.png';
 Object.assign(PORTRAIT_COLORS, { 'Remedios': '#9fc2ff', 'Don Anxo': '#e8c89a' });
 Object.assign(PORTRAITS, { 'Remedios': 'img/remedios-face.png' });
 
@@ -76,7 +77,6 @@ function figura(c, x, y, h, o, t, talking) {
   c.restore();
   c.restore();
 }
-const LOOK_ANXO = { roupa: '#8a6a4a', pernas: '#6a6a70', zapatos: '#7a2a2a', pel: '#e0b898', gorra: '#4a3a2e', bigote: true, botons: true, encorvado: 3, buscando: () => !flag('anxoPastillas') };
 
 /* ---------- apertura do acto ---------- */
 async function inicioActo3() {
@@ -794,8 +794,8 @@ SCENES.rotondaNoite = {
         foto1949: () => RE('Xosé... Iso gárdao, Martín. Hai quen daría un brazo por esa foto. E non son eu.'),
         trapo: () => RE('O meu trapo! Levaba días buscándoo. Non, quédao: xa está feito unha pena.'),
       } },
-    { id: 'anxo', name: 'Don Anxo', key: true, x: 720, y: 508, w: 60, h: 290, at: [640, 514], face: 'R',
-      draw(c, t, talking, s) { figura(c, this.x, this.y, this.h * s, LOOK_ANXO, t, talking); },
+    { id: 'anxo', name: 'Don Anxo', key: true, sheet: 'img/anxo-sprite.png', spec: { cw: 160, ch: 280, cols: 8 }, idle: 0, talkFrames: [1, 0], flip: true,
+      x: 720, y: 508, w: 60, h: 310, at: [640, 514], face: 'R',
       done: () => flag('anxoPastillas'),
       look: () => MA(flag('anxoPastillas') ? 'Don Anxo, con su gorra, mirando el fuego de la cabina como quien mira una tele que solo él entiende.' : 'Un señor mayor con gorra y zapatillas de andar por casa. Se palpa los bolsillos una y otra vez. Busca algo que no lleva.', 'pensativo'),
       talk: () => anxoTalk(),
