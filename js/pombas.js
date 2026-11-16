@@ -8,7 +8,7 @@
      4. Co taller cheo, un ruído de verdade: o preservativo da máquina azul de Calvo Sotelo (forzada coa navalla, fío da farmacia)
         inflado coma un globo e picado coa navalla. ¡PAM!
      5. As pombas saen disparadas cara arriba, tres pétanse contra a tapa e a tapa cae ao chan. Dentro: a lata (→ parte de 1958).
-   Sen atascos: o saco de millo non se acaba, a máquina dá outro preservativo, o globo non se pica se o taller non está cheo.
+   Sen atascos: o millo dá xusto para os catro puñados (o saco queda baleiro ao encher o taller), a máquina dá outro preservativo, o globo non se pica se o taller non está cheo.
    A cadea só se activa co flag `a4Soporte` (Martín decide abrir o soporte). De momento pono o comezo provisional do Acto 4
    ao final do Acto 3; o Acto 4 definitivo só ten que poñer ese flag onde Martín o entenda.
    Sprites: folla de Oscar → tools/sprite-paloma.py → img/paloma-sprite.png (240×160, 8 columnas):
@@ -31,14 +31,18 @@ const A4 = () => flag('a4Soporte');
 
 /* ---------- obxectos ---------- */
 Object.assign(ico, {
-  millo(c) { c.fillStyle = '#c9a66b'; c.beginPath(); c.moveTo(12, 14); c.lineTo(36, 14); c.lineTo(40, 42); c.lineTo(8, 42); c.closePath(); c.fill(); c.strokeStyle = '#7a5a2a'; c.lineWidth = 2; c.stroke();
-    c.fillStyle = '#f2c230'; for (const [x, y] of [[16, 14], [22, 11], [28, 13], [34, 12], [19, 9], [27, 8]]) { c.beginPath(); c.ellipse(x, y, 3, 2.4, 0, 0, 7); c.fill(); } },
   globo(c) { c.fillStyle = '#f3ecd8'; c.beginPath(); c.ellipse(24, 20, 12, 16, 0, 0, 7); c.fill(); c.strokeStyle = '#b8ae94'; c.lineWidth = 2; c.stroke(); c.fillStyle = '#fff'; c.beginPath(); c.ellipse(19, 13, 3, 5, -0.4, 0, 7); c.fill();
     c.strokeStyle = '#8a7a5a'; c.beginPath(); c.moveTo(24, 36); c.quadraticCurveTo(20, 42, 26, 46); c.stroke(); },
 });
+// iconos dos sacos: os do fío da farmacia (acto2.js, debuxo de Oscar) se existen; se non, estes de reserva
+ico.millo = ico.millo || (c => { c.fillStyle = '#efe6d2'; c.beginPath(); c.moveTo(12, 14); c.quadraticCurveTo(8, 42, 24, 42); c.quadraticCurveTo(40, 42, 36, 14); c.closePath(); c.fill(); c.strokeStyle = '#7a5a2a'; c.lineWidth = 2; c.stroke();
+  c.fillStyle = '#f2c230'; c.beginPath(); c.ellipse(24, 29, 4, 8, 0.2, 0, 7); c.fill(); });
+ico.sacoBaleiro = ico.sacoBaleiro || (c => { c.fillStyle = '#c9a66b'; c.strokeStyle = '#6a4a22'; c.lineWidth = 2; for (const y of [30, 24, 18]) { c.beginPath(); c.moveTo(8, y + 8); c.lineTo(14, y); c.lineTo(40, y + 2); c.lineTo(36, y + 10); c.closePath(); c.fill(); c.stroke(); } });
 Object.assign(ITEMS, {
+  sacoBaleiro: ITEMS.sacoBaleiro || { name: 'Saco baleiro', icon: ico.sacoBaleiro,
+    look: () => MA('El saco del maíz de Genaro, vacío y doblado. Diez palomas le han dado buena cuenta. Habrá que devolvérselo... o explicárselo.', 'avergonzado') },
   millo: { name: 'Saco de millo', icon: ico.millo,
-    look: () => MA('Un saco de maíz en grano de la panadería de Genaro. En su sitio dejé uno de serrín: mismo peso, distinta broa. Y para lo que lo quiero, no se va a acabar.', 'avergonzado') },
+    look: () => MA('Un saco de maíz en grano de la panadería de Genaro. En su sitio dejé uno de serrín: mismo peso, distinta broa. Tiene para unos cuantos puñados.', 'avergonzado') },
   preservativo: { name: 'Preservativo', icon: ico.preservativo,
     look: () => MA('Un preservativo de la máquina azul, en su sobrecito. En el instituto los inflábamos como globos en clase de Física. Reventaban como un petardo. El profesor no se reía.', 'avergonzado'),
     combine: { navalla: () => MA('¿Pinchar un preservativo sin inflar? Eso no suena a nada. Primero, globo. Luego, ruido.', 'esceptico') } },
@@ -110,7 +114,8 @@ async function tirarMillo() {
   } else if (nova === 3) await MA('¡Dos más! Han entrado por el agujero del tejado. Han corrido la voz.', 'sorprendido');
   else if (nova === 6) await MA('Seis. Esto ya es una asamblea vecinal. Falta Concha tomando nota.', 'risueno');
   else {
-    await MA('Diez palomas. El taller está lleno. Hay más palomas que en la plaza de la estación un domingo.', 'entusiasmado');
+    take('millo'); give('sacoBaleiro');                // Oscar: ao gastar o millo queda o saco baleiro (xusto ao encher o taller)
+    await MA('...y se acabó el maíz: el saco, vacío. Justo a tiempo. Diez palomas. El taller está lleno. Hay más palomas que en la plaza de la estación un domingo.', 'entusiasmado');
     await MA('Y ahora, si se asustasen todas a la vez... saldrían disparadas hacia arriba. Hacia el tejado. Y hacia el séptimo soporte.', 'pensativo');
   }
 }
