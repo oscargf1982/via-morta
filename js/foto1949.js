@@ -3,7 +3,7 @@
    · Frente: o señor Alfredo cos tres aprendices. Reverso: «O señor Alfredo cos aprendices, 1949.
      Pepe, Manolo, Xosé N.» (a lapis) e «Xosé entra en Renfe. Sorte, rapaz.» (bolígrafo azul, letra de Pepe).
    · Quen é quen (decidido por Oscar): Xosé Nogal = o moreno dos brazos cruzados;
-     Manolo = Don Anxo Corredoira de rapaz (Manuel Anxo), o louro sentado;
+     Manolo = Don Anxo Castiñeira de rapaz (Manuel Anxo), o louro sentado;
      Pepe = o pai de Don Eladio, logo guardagullas, o roxo das pecas.
    · Mecánica: vela en grande (mirala ou usala con Martín) e virala; ensinarlla aos NPC.
      Concha dá a Pepe, Valerio dá a Manolo e Martín deduce a Xosé. Todo opcional.
@@ -86,20 +86,20 @@ ensinarFoto('conchaQ', async () => {
 /* ---------- Valerio: Manolo é Anxo (polas orellas) e as mans de Xosé ---------- */
 ensinarFoto('valerio', async () => {
   if (!flag('fimActo2') || !flag('libro1958')) {
-    await VA('Serrín e rapaces con mono... iso é antes do meu pai. Pero se algún destes se cortou cunha serra, está nos libros.');
+    await VA('Serrín e rapaces con mono... iso é antes da botica do meu avó. Pero se algún destes se cortou cunha serra, está nos libros.');
     return;
   }
   if (!flag('fotoManolo')) {
     await VA('A ver... «Pepe, Manolo, Xosé N.».');
     await VA('Manolo? O louro sentado... Mira as orellas. As orellas non envellecen: só medran.');
-    await VA('Ese é Anxo Corredoira. Manuel Anxo. Meu pai contaba que de rapaz lle chamaban Manolo, e que despois do 58 só quixo ser Anxo. Nunca soubemos por que.');
+    await VA('Ese é Anxo Castiñeira. Manuel Anxo. Meu avó contaba que de rapaz lle chamaban Manolo, e que despois do 58 só quixo ser Anxo. Nunca soubemos por que.');
     await MA('Don Anxo. El fogonero... de aprendiz en mi taller. Con Xosé N.', 'sorprendido');
     setFlag('fotoManolo');
     await fotoDeducir();
   }
   if (flag('fotoXose')) {
     await VA('E se o moreno é o teu Xosé Nogal, mírao: as mans enteiras.');
-    await VA('Nove anos despois, meu pai curáballe esas mesmas mans.');
+    await VA('Nove anos despois, meu avó curáballe esas mesmas mans.');
     await MA('(Y Anxo, a su lado, en el taburete. Luego, fogonero. ¿Fogonero de quién?)', 'preocupado');
   } else await VA('O roxo e o moreno non sei quen son. A Concha, pregúntalle a Concha: ela coñece a xente polo andar.');
 });

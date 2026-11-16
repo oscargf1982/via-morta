@@ -48,8 +48,8 @@
 
 ## Dona Concha (quiosco de la plaza de la Estación)
 - Chismosa entrañable. Se acuerda de Martín de cuando venía cada lunes a por sobres de cromos del Dépor «e nunca lle saía o Djalminha».
-- Tiene las llaves de la Casa Juana que le deja Rosario y conoce la historia del carpintero: «Dende o quiosco oíase o serrón».
-- En el Acto 4 consigue **112 firmas** en una hora. En el Acto 5 reconoce el silbato: es como saludaba Xosé al pasar por la casa.
+- Tiene las llaves de la Casa Juana que le deja Rosario y conoce la historia del carpintero: «Dicía a miña nai que dende o quiosco se oía o serrón». **Tiene unos 60 años** y el quiosco es de familia: la que vivió la carpintería y el silbido de Xosé fue **su madre** (revisión del 16-11-2026, 5A).
+- En el Acto 4 consigue **112 firmas** en una hora. En el Acto 5 reconoce el silbato: su madre se lo silbaba de pequeña contándole lo del maquinista que saludaba a la casa.
 - **Voz:** «Ti es o rapaz de Vilatán! [...] Na túa casa daban ben de comer.»
 - **Aspecto (hoja de Oscar, `assets/personajes/dona-concha-hoja.png`):** pelo castaño claro rizado recogido en coleta, pendientes de perla, sudadera morada con capucha, vaqueros y zapatillas blancas; casi siempre con el periódico en la mano.
 - **Recursos gráficos:** `concha-sprite.png` (celdas de 160×280, 8 columnas: 0 frente leyendo, 1 espalda, 2 perfil derecha, 3 perfil izquierda, 4 tres cuartos derecha, 5 tres cuartos de espalda, 6 y 7 hablando de 4 y de 0, 8-13 andar a la derecha) y retrato `concha-face.png`. Se regeneran con `python3 tools/sprite-concha.py`. Las 4 expresiones y los 2 gestos de medio cuerpo de la hoja quedan como referencia.
@@ -70,15 +70,15 @@
 
 ## Don Eladio (ventanilla del Concello)
 - Funcionario que «naceu pechando». La ventanilla 1 «agora tamén é a 3».
-- En el Acto 1 cierra a las dos y se va al café. En el Acto 4 exige el modelo T-14 y cien firmas para el permiso. Revela sin querer que «un tal Nogal» ya lo pidió el mes pasado.
+- En el Acto 1 cierra a las dos y se va al café. En el Acto 4 exige el modelo T-14 y cien firmas para el permiso. En el Acto 1 menciona que «un tal Nogal» preguntó por la casa; en el Acto 4 saca esa solicitud del mes pasado y pone «**Xoán Carballeira Nogal**» (12A).
 - Al final se ablanda: su padre era guardagujas. **Su padre es «Pepe» de la foto de 1949** (el pelirrojo con pecas, el mayor de los aprendices; elegido por Oscar el 16-11-2026): de la carpintería del señor Alfredo pasó a guardagujas del depósito, y la letra azul del reverso («Xosé entra en Renfe. Sorte, rapaz») es suya. En el Acto 4 Eladio la reconoce; en el Acto 5 le da a Martín la llave de guardagujas de su padre con un «Sorte, rapaz». «Dígalle a Anxo que me garde sitio.»
 - **Aspecto (hoja de Oscar, `assets/personajes/don-eladio-hoja.png`):** calvo con cuatro pelos grises a los lados, cejas fruncidas, traje marrón, camisa beige con bolígrafos en el bolsillo y corbata granate.
 - **Recursos gráficos:** `eladio-sprite.png` (celdas de 160×280, 8 columnas: 0 sentado en el taburete, 1 sentado hablando, 8-15 corriendo de espaldas) y retrato `eladio-face.png`. Se regeneran con `python3 tools/sprite-eladio.py`. En la ventanilla se dibuja solo la mitad de arriba de la celda sentada.
 
 ## Valerio (Farmacia de la Estación, calle Calvo Sotelo)
-- Compañero de instituto de Martín. Está detrás del mostrador de su padre, con la bata de su padre y los clientes de su padre.
+- Compañero de instituto de Martín (unos 36 años). Está detrás del mostrador de su padre, con la bata de su padre y los clientes de su padre. La farmacia la **abrió su abuelo en 1950**.
 - Retrata el Monforte que se vacía: locales con «Se aluga» hasta que el cartel se cae de viejo. Es goloso: le da la crema de agujetas a Martín a cambio de algo dulce: pasteles de crema de la Panadería Estación («crema por crema»; antes eran los ositos de Concha, cambio de Oscar del 16-11-2026).
-- **Los libros de su padre** (ficción): su padre apuntaba cada cura y cada receta en libros de tapas negras desde 1950, guardados en la rebotica. Sembrado en el Acto 2. En el Acto 3, el de enero de 1958 tiene, la noche del 14, «Curas por queimaduras nas mans. X. Nogal. Non quixo ir ao médico» (indicio, no prueba; la prueba es el parte del Acto 4).
+- **Los libros de su abuelo** (ficción; antes «de su padre», cambiado el 16-11-2026, 6A, porque el padre no pudo escribir en 1958): el abuelo apuntaba cada cura y cada receta en libros de tapas negras desde 1950, y el padre siguió la costumbre; guardados en la rebotica. Sembrado en el Acto 2. En el Acto 3, el de enero de 1958 tiene, la noche del 14, «Curas por queimaduras nas mans. X. Nogal. Non quixo ir ao médico» (indicio, no prueba; la prueba es el parte del Acto 4).
 - **Conoce a Don Anxo:** le prepara la medicación cada semana, sabe dónde vive y que «do 58 non fala». Es quien le revela a Martín que Anxo es el abuelo de Andrés («nesa casa calan por xeracións»). Es la puerta para llegar a él en el Acto 3 o 4.
 - **Final (Acto 5):** cierra la farmacia por primera vez en su vida para ver salir la Mikado.
 
@@ -89,12 +89,12 @@
 - Sabe los encargos de todos: Valerio se lleva tres pasteles de crema cada tarde «para os clientes». Vende a Martín los pasteles que pide Valerio.
 - **Recursos gráficos:** hoja de Oscar `assets/personajes/genaro-panadero-hoja.png` → `img/genaro-sprite.png` (celdas 160×280, 8 columnas: 0 parado, 1 hablando, 2 espalda, 3 perfil, 4 señalando, 5 sorprendido, 6 frente, 7 3/4 frente) y retrato `img/genaro-face.png`, con `python3 tools/sprite-genaro.py`. **Expresiones** (hoja de Oscar del 16-11-2026, `assets/personajes/genaro-expresiones-hoja.png`): 24 retratos de medio cuerpo (sonriente, hablando, explicando, brazos cruzados, pensativo, oh, riendo, triste, enfadado, asustado, preocupado, aburrido, gritando enfadado, rascándose, guiño señalando, dudoso, rezando, celebrando, neutro, escéptico, resignado, gritando con las manos en la boca, contento, serio) → `img/genaro/<expresión>.webp` con `python3 tools/expresiones-genaro.py`. El retrato del diálogo cambia con cada frase y la cuarta pared los usa en primer plano.
 
-## Mega Andrés · Andrés Corredoira (Club Fluvial, chiringuito «Malo Será»)
-- Filósofo de tumbona: «a vida, mellor deitado». Compañero de instituto de Martín: «el apellido más rápido y el chaval más lento, hasta que se metía en el agua».
-- **Es nieto de Don Anxo Corredoira** (decisión de Oscar del 16-11-2026), por parte de padre. Vive pendiente de él: «a pastilla, o caldo e o Dépor, por esa orde».
+## Mega Andrés · Andrés Castiñeira (Club Fluvial, chiringuito «Malo Será»)
+- Filósofo de tumbona: «a vida, mellor deitado». Compañero de instituto de Martín: le llamaban «el Castaño», «grande, fuerte y quieto como un árbol, hasta que se metía en el agua». (Apellido cambiado de Corredoira a **Castiñeira** por Oscar el 16-11-2026.)
+- **Es nieto de Don Anxo Castiñeira** (decisión de Oscar del 16-11-2026), por parte de padre. Vive pendiente de él: «a pastilla, o caldo e o Dépor, por esa orde».
 - **Sabe desde siempre que su abuelo fue el fogonero de Xosé Nogal en 1958** (se lo contó la abuela antes de morir; Anxo no sabe que él lo sabe). **Lo calla para protegerlo** (opción 2 de Oscar): no miente, desvía. Su abuelo «conta todas as historias menos as dun inverno, e eu non llo pregunto».
 - **Su tic:** cuando algo le toca de cerca, el hombre más perezoso de Monforte se pone a trabajar sin que nadie se lo pida (a colocar tumbonas). Es la pista visible de que oculta algo; el propio Anxo lo dice en el Acto 3: «cando se preocupa, ponse a traballar».
-- **Pistas finas (relectura):** Acto 2: «Eu non pregunto», «a curiosidade cansa», el invierno que no se cuenta y las tumbonas cuando Martín pregunta quién tiene una caldera de vapor. Acto 3: Valerio dice «Anxo Corredoira» y Martín enlaza el apellido («É o seu avó. Non o sabías?»); Andrés admite solo lo que ya se ve: «calar tamén é coidar».
+- **Pistas finas (relectura):** Acto 2: «Eu non pregunto», «a curiosidade cansa», el invierno que no se cuenta y las tumbonas cuando Martín pregunta quién tiene una caldera de vapor. Acto 3: Valerio dice «Anxo Castiñeira» y Martín enlaza el apellido («É o seu avó. Non o sabías?»); Andrés admite solo lo que ya se ve: «calar tamén é coidar».
 - **El carbón:** se lo lleva Xoán (elegido por Oscar el 16-11-2026). Andrés no sabe quién es, pero sospecha que acaba donde va su abuelo de noche, y por eso no pregunta.
 - Guarda sacos de carbón para el churrasco, que en el Acto 4 hacen falta para la Mikado. Reta a Martín a nadar al estilo *Track & Field*.
 - **Acto 2:** le desaparece cada pocas semanas un saco de carbón de piedra y aparece pagado con un billete bajo una piedra. Él no pregunta («un ladrón honrado»). Es una pista de que alguien prepara la Mikado de noche. **Quién es: Xoán** (elegido por Oscar el 16-11-2026), se descubre en el Acto 5.
@@ -106,21 +106,24 @@
 - Rival de Martín en los cross escolares: «Iso foi un empuxón!». Ahora es fisio y entrena a los del club.
 - Tiene el récord de la **Volta do Castelo**: Malecón, praza da Compañía, castillo y vuelta.
 
-## Don Anxo Corredoira (cocheras del museo)
+## Don Anxo Castiñeira (cocheras del museo)
 - Fue **fogonero** de Xosé Nogal la noche de 1958, con 24 años (hoy tiene 92; antes ponía 17 y 85, cambiado por Oscar el 16-11-2026 para que salga en la foto de 1949). Firmó el informe falso para no perder el trabajo y lleva 68 años callado.
 - Se llama **Manuel Anxo**: de chaval, en la carpintería del señor Alfredo, todos le llamaban **Manolo**; es el «Manolo» de la foto de 1949 (el rubio sentado), aprendiz con Xosé. Después del 58 solo se deja llamar Anxo. Así, el informe falso lo firmó contra su amigo de aprendiz.
 - **Abuelo de Mega Andrés**, que lo cuida. Cree que su nieto no sabe nada del 58 y le pide a Martín que no le diga que lo vio en las cocheras.
-- Ahora es uno de los jubilados que restauran la Mikado. En la vía muerta lo cuenta delante de todos.
+- **Lo sabía, calló y lo tapó** (3A y opción B del 16-11-2026): Xosé le dijo dónde dejaba el parte; nunca fue capaz de sacarlo y hacia 1980 le pidió a Remedios que soldara la tapa, sin decirle qué había dentro. En el Acto 5: «Eu sabía onde estaba. Non tiven valor de sacalo. E fixen que o soldasen para non ter que pensar nel».
+- Ahora es uno de los jubilados que restauran la Mikado. En la vía muerta lo cuenta delante de todos. (Apellido cambiado de Corredoira a **Castiñeira** por Oscar el 16-11-2026.)
 - **Voz:** «Hai noites que mellor non lembrar.»
 - **Aspecto (dibujo de Oscar del 16-11-2026):** gorra de visera azul oscura con botón dorado, pelo y bigote blancos, camisa clara, chaleco verde oscuro, chaqueta y pantalón marrones, zapatos oscuros, bastón de madera en la mano derecha y la izquierda en el bolsillo.
 - **Recursos gráficos:** dibujo de Oscar `assets/personajes/anxo-hoja.png` → `img/anxo-sprite.png` (celdas 160×280, 8 columnas: 0 parado, 1 hablando; mira a la derecha, `flip: true` para que mire a la izquierda) y retrato `img/anxo-face.png`, con `python3 tools/sprite-anxo.py`. Solo hay una vista: faltan espalda, perfil y andar con el bastón (no se inventan).
 
 ## Remedios (cocheras del museo)
 - **Aspecto (dibujo de Oscar, `assets/personajes/remedios-hoja.png`):** pelo gris recogido, gafas de soldar subidas en la frente y gafas de ver redondas, mono azul con las mangas remangadas y camiseta clara debajo, zapatillas de casa de cuadros; gesto serio, una mano en la cadera. Sprite `img/remedios-sprite.png` (0 parada, 1 hablando) y retrato `img/remedios-face.png`, con `tools/sprite-remedios.py`. Solo hay una vista: **faltan de espaldas, perfil y andar** si tiene que moverse (Actos 4 y 5).
-- Jubilada del depósito y soldadora; de joven le enseñó a soldar a Pepe. Lleva la lista de piezas de la restauración.
-- Sabe la frase de la carta de Xosé que cambia el Acto 4: «Deixeino onde se moven as correas, na casa onde aprendín o oficio».
+- Jubilada del depósito y soldadora (unos 70 años; entró en el depósito en 1975); de joven le enseñó a soldar a Suso. Lleva la lista de piezas de la restauración.
+- **Ella soldó los tornillos del 7.º soporte** (Oscar, 16-11-2026), hacia 1980, por encargo de **Don Anxo** y sin saber qué había dentro. En el Acto 4 reconoce su soldadura y entiende que Anxo lo sabía.
+- Sabe la frase de la carta de Xosé que cambia el Acto 4: «Deixeino onde se moven as correas, onde aprendín o oficio» (sin «casa», 2A). Xoán se la enseñó al montar el grupo.
 
-## Pepe do Taller (taller de la Ford)
+## Suso do Taller (taller de la Ford)
+> Antes «Pepe do Taller»; renombrado el 16-11-2026 (7A) para no confundirlo con el Pepe de la foto de 1949.
 - Mecánico y bromista: «Non me digas que é a luz amarela».
 - Guarda desde 1987 la **válvula de seguridad** de la Mikado, de 40 kg. No se la vende a «o suízo ese» porque «fala demasiado ben», pero a Martín sí, porque va de parte de Remedios.
 
@@ -130,5 +133,10 @@
 
 ## Xosé Nogal (ficción, solo en recuerdos y documentos)
 - Maquinista del depósito en 1958. Antes de entrar en Renfe fue **aprendiz en la carpintería del señor Alfredo**, en la Casa Juana; es el «Xosé N.» de la foto de 1949 (el moreno de los brazos cruzados, con la mano de Alfredo en el hombro).
-- Avisó durante semanas de que los frenos del mercancías fallaban. La noche del 14 de enero de 1958 lo desvió a la vía muerta y lo frenó con su Mikado, y así salvó el tren de emigrantes del andén 1.
-- Le echaron la culpa. Emigró a Suiza. Silbaba «dos largos y uno corto» al pasar por la Casa Juana para saludar al taller donde aprendió el oficio.
+- Nace hacia 1932; aprendiz en 1949, entra en Renfe en 1952 y en 1958 ya es maquinista (licencia de ficción).
+- Avisó durante semanas de que los frenos del mercancías fallaban. La noche del 14 de enero de 1958 llevaba la Mikado en cabeza del mercancías, con Anxo de fogonero; Pepe, el guardagujas, lo desvió a la vía muerta de A Barreira y Xosé lo frenó a contravapor, quemándose las manos, y así salvó el tren de emigrantes del andén 1 (versión canónica en `03`, 4A).
+- Le echaron la culpa. Emigró a Suiza (Ginebra). Su última carta, a su hija (la madre de Xoán): «Deixeino onde se moven as correas, onde aprendín o oficio». Silbaba «dos largos y uno corto» al pasar por la Casa Juana para saludar al taller donde aprendió el oficio.
+
+
+## Un perro grande negro (rúa Morín, casa pistacho)
+- La sombra que Martín ve detrás de la puerta de la casa pistacho en el Acto 1 es un perro grande de color negro (Oscar, 16-11-2026). Su papel en la historia está por decidir. (La sombra del muro del patio sigue siendo Xoán.)

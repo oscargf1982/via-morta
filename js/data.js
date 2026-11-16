@@ -139,7 +139,7 @@ async function conchaTalk() {
       { t: 'Nada, Concha. Gracias por las llaves.', k: 'adeus' },
     ];
     const k = opts[await choose(opts)].k;
-    if (k === 'juana') { await MA('¿Casa Juana? ¿Quién es Juana?', 'dudoso'); await CO('A muller do señor Alfredo, o carpinteiro e industrial. Ela deulle o nome á casa. Aquí atrás tiña unha carpintaría que daba gusto: motores, correas... Dende o quiosco oíase o serrón.'); }
+    if (k === 'juana') { await MA('¿Casa Juana? ¿Quién es Juana?', 'dudoso'); await CO('A muller do señor Alfredo, o carpinteiro e industrial. Ela deulle o nome á casa. Aquí atrás tiña unha carpintaría que daba gusto: motores, correas... A miña nai dicía que dende o quiosco se oía o serrón.'); }
     if (k === 'nave') { await MA('¿Y la nave de atrás? Desde la cocina se ven argollas en el techo.', 'pensativo'); await CO('A carpintaría. Vendeuno todo no cincuenta e dous, toda a maquinaria. Dende entón está pechada. A chave... ben, a chave téñoa eu, pero esa non se lle dá a calquera.'); setFlag('naveChave'); }
     if (k === 'chave') { await MA('Concha, soy yo. El de los cromos del Dépor. ¿De verdad soy «cualquiera»?', 'avergonzado'); await CO('Ti es o que nunca me trouxo nada en vinte anos. Un detalle, rapaz, un detalle. Que eu son de costumes.'); }
     if (k === 'adeus') { await CO('Vai, vai. E pecha ben de noite, que din que anda por aí o tren pantasma.'); return; }

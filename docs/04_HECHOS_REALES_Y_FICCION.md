@@ -27,12 +27,14 @@
 - **Ficción:** que Xoán se lo sepa de memoria; el «emigrante que leva setenta anos esperando» como espejo de la familia Nogal; la placa final a Xosé Nogal.
 
 ## 3. Íntegramente ficción
-- **Personajes:** Martín Pardo, Xoán Carballeira, Xosé Nogal, Don Anxo Corredoira, Remedios, Pepe do Taller, Dona Concha, Rosario Higueras, Tío Demetrio, Don Eladio, Valerio, Mega Andrés, Brais «o Galgo» y la madre de Martín. Cualquier parecido con vecinos reales debe tratarse con cariño y sin datos privados.
+- **Personajes:** Martín Pardo, Xoán Carballeira, Xosé Nogal, Don Anxo Castiñeira, Remedios, Suso do Taller, Dona Concha, Rosario Higueras, Tío Demetrio, Don Eladio, Valerio, Mega Andrés, Brais «o Galgo» y la madre de Martín. Cualquier parecido con vecinos reales debe tratarse con cariño y sin datos privados.
 - **Hechos:** la noche del 14 de enero de 1958, el mercancías sin frenos, el tren de emigrantes, el informe falso y el despido de Xosé.
 - **Lugares y objetos:** la vía muerta de A Barreira (inventada; se puede cambiar por un lugar real si Oscar lo prefiere), la restauración secreta de la Mikado y su salida, y el parte de incidencia y su escondite.
-- **Añadido el 16-11-2026 (elegido por Oscar):** la foto de 1949 (ilustración y reverso de Oscar): los aprendices son Xosé Nogal, Manolo (Don Anxo Corredoira de chaval) y Pepe (el padre de Don Eladio, luego guardagujas); la letra azul es de Pepe. Del señor Alfredo, persona real, solo se dice lo que figura en la columna «Real».
+- **Añadido el 16-11-2026 (elegido por Oscar):** la foto de 1949 (ilustración y reverso de Oscar): los aprendices son Xosé Nogal, Manolo (Don Anxo Castiñeira de chaval) y Pepe (el padre de Don Eladio, luego guardagujas); la letra azul es de Pepe. Del señor Alfredo, persona real, solo se dice lo que figura en la columna «Real».
 - **Añadidos el 15-11-2026 (elegidos por Oscar):** los libros de curas del padre de Valerio y la anotación del 14-I-1958 («Curas por queimaduras nas mans. X. Nogal. Non quixo ir ao médico»); la farmacia de la rúa do Cardeal como farmacia de la familia de Valerio; el carbón que le desaparece a Mega Andrés pagado con billetes bajo una piedra; Andrés como fogonero de la Mikado en el Acto 5. No hay ningún hecho real detrás.
-- **Añadido el 16-11-2026 (Oscar):** Mega Andrés (Andrés Corredoira) es nieto de Don Anxo Corredoira y sabe lo del 58. Ficción.
+- **Añadido el 16-11-2026 (Oscar):** Mega Andrés (Andrés Castiñeira) es nieto de Don Anxo Castiñeira y sabe lo del 58. Ficción.
+
+- **Añadido en la revisión del 16-11-2026 (elegido por Oscar):** el silbato original de la Mikado que Xoán hace sonar con aire comprimido; la carta de Xosé a su hija («onde aprendín o oficio»); la versión canónica de la noche de 1958 (la Mikado en cabeza del mercancías, Pepe el guardagujas, el contravapor); que Remedios soldó los tornillos del 7.º soporte por encargo de Don Anxo, que sabía dónde estaba el parte; que la madre de Concha llevaba el quiosco; que los libros de la farmacia son del abuelo de Valerio; Suso do Taller; el apellido Castiñeira de Anxo y Andrés; el perro negro de la casa pistacho; el ramal viejo de A Barreira con paso a nivel, que no es de Adif; que Adif adelanta la góndola al lunes. Todo es ficción.
 
 ## 4. Reglas para el juego
 1. **Créditos y fuentes** siempre visibles en el menú.
