@@ -202,6 +202,37 @@ function minixogoToques(o) {
     raf = requestAnimationFrame(loop);
   });
 }
+/* candado de combinación: n rodas con números. o = { title, n (cifras, 4 por defecto), hint } → a cadea marcada ('1401')
+   ou null se Martín o deixa. Botóns grandes para o dedo; no teclado, números e Intro (Escape para deixalo). */
+function candadoCombinacion(o = {}) {
+  return new Promise(done => {
+    const n = o.n || 4, v = Array(n).fill(0), st = $('stage'), el = document.createElement('div');
+    el.style.cssText = 'position:absolute;inset:0;z-index:15;background:rgba(6,10,16,.84);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#f2ead8;font:700 16px "Trebuchet MS",sans-serif;touch-action:none';
+    const btn = 'width:64px;height:48px;border-radius:12px;border:3px solid #000;background:#ffd23a;font:900 24px sans-serif';
+    el.innerHTML = `<div style="font-size:20px;color:#f2a33a">${o.title || 'Candado'}</div><div style="font-size:14px;opacity:.9;text-align:center;padding:0 12px">${o.hint || 'Xira as rodas e proba.'}</div>
+      <div style="display:flex;gap:12px">${v.map((_, i) => `<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><button data-u="${i}" style="${btn}">▲</button><div data-d="${i}" style="width:64px;height:72px;border-radius:10px;border:3px solid #000;background:linear-gradient(#777,#ddd 40%,#ddd 60%,#777);color:#111;font:900 44px Georgia,serif;display:flex;align-items:center;justify-content:center">0</div><button data-w="${i}" style="${btn}">▼</button></div>`).join('')}</div>
+      <div style="display:flex;gap:14px;margin-top:6px"><button data-ok style="${btn};width:140px;background:#7fd87f">Probar</button><button data-no style="${btn};width:140px;background:#d8d0c0">Deixalo</button></div>`;
+    st.appendChild(el);
+    let cur = 0;
+    const show = () => el.querySelectorAll('[data-d]').forEach((d, i) => { d.textContent = v[i]; d.style.outline = i === cur ? '3px solid #f2a33a' : 'none'; });
+    const fin = r => { removeEventListener('keydown', key); el.remove(); done(r); };
+    const spin = (i, d) => { v[i] = (v[i] + d + 10) % 10; cur = i; SFX.tone(520 + v[i] * 20, 0.04, 'square', 0.03); show(); };
+    el.querySelectorAll('button').forEach(b => b.addEventListener('pointerdown', ev => {
+      ev.preventDefault(); ev.stopPropagation();
+      if (b.dataset.u) spin(+b.dataset.u, 1); else if (b.dataset.w) spin(+b.dataset.w, -1);
+      else if (b.hasAttribute('data-ok')) fin(v.join('')); else fin(null);
+    }));
+    const key = ev => {
+      if (/^[0-9]$/.test(ev.key)) { v[cur] = +ev.key; cur = Math.min(n - 1, cur + 1); show(); }
+      else if (ev.key === 'ArrowUp') spin(cur, 1); else if (ev.key === 'ArrowDown') spin(cur, -1);
+      else if (ev.key === 'ArrowLeft') { cur = Math.max(0, cur - 1); show(); } else if (ev.key === 'ArrowRight') { cur = Math.min(n - 1, cur + 1); show(); }
+      else if (ev.key === 'Enter') fin(v.join('')); else if (ev.key === 'Escape') fin(null); else return;
+      ev.preventDefault();
+    };
+    addEventListener('keydown', key);
+    show();
+  });
+}
 /* avisos: os que empezan por «Pista:» só saen co «Modo axuda» (Opcións); se non, gárdanse para o caderno.
    Un «Novo obxectivo» fai latexar o botón do caderno. */
 function toast(t) {

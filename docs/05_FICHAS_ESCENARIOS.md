@@ -309,3 +309,53 @@
 - **Candado:** en el Acto 1 (lunes) todavía no está: se tapa por código con un trozo liso de la propia persiana. Desde el Acto 2 (martes, tras la cinemática) se ve y se puede mirar y tocar. Es lo que cierra el paso: sin el código Martín prueba combinaciones y se rinde con una broma; con la fecha del pilar vista (o tras el Acto 2) piensa en «catorce, uno» pero quiere hablar antes con Xoán. El código 1401 abrirá el candado en el Acto 3 (interior A8 con la Mikado, pendiente de dibujos).
 - **Hotspots:** candado, puerta del taller, entrada del museo (cerrada a esas horas), persianas, coche de viajeros, cartel del maquinista, los dos letreros, escudo y reloj.
 - **Sin callejones:** la vuelta a la plaza está siempre abierta.
+
+## Acto 3 · «A curiosidade» (jueves) · 16-11-2026
+Código en `js/acto3.js`. Sigue a «FIN DO ACTO 2» y está en «Escoller acto». **Objetivo:** descubrir quién es el fantasma.
+Reglas de Gilbert aplicadas: Martín dice el primer paso (preguntar a Xoán por Xosé N.) y cada personaje apunta al siguiente; dos caminos abiertos a la vez (cocheras y farmacia) que se juntan en la noche; el problema antes que la solución (Anxo busca sus pastillas en los bolsillos antes de que Martín se las dé; el inyector no coge agua antes de que Martín lo arregle); sin muertes ni callejones (fallar el candado o el inyector solo da una broma y una pista); la noche llega cuando el jugador lo tiene todo, no por reloj (tiempo de Hollywood).
+
+### Apertura
+Hoja «ACTO 3 · A curiosidade. Xoves.» → vestíbulo de la estación tras el turno de mañana. Martín: hoy pregunta a Xoán quién era Xosé N. Objetivo en el cuaderno.
+
+### A2 · Xoán en el vestíbulo (cambios en el Acto 3)
+- **«¿Quién era Xosé N.?»**: «Hai Xosés para encher un tren». Si Eladio le habló de «un tal Nogal» (Acto 1), Martín ata la N: «Nogal é un apelido moi común... ou non». Mira al emigrante del mural y suelta: «Pregúntalle a quen garda papeis vellos. Eu só gardo horarios» → **Valerio** (`a3XoseN`).
+- **«Dos largos y uno corto»**: silencio y cambio de tema al regional de las 21:30 de 1958, que salía tarde todos los días «agás un» (`a3Asubio`).
+- **El trapo** (diálogo o darle el objeto): grasa de bielas «da que xa non se fai»; del almacén del depósito falta desde el verano y el jefe cree que se la llevan «os do museo» → **las cocheras** (`a3Graxa`).
+- **La foto de 1949**: «Gárdaa ben. Moi ben.» y se va al mural.
+
+### A3b · Concha (cambios en el Acto 3)
+«Que se conta?»: Valerio anda preocupado porque Don Anxo, «o vello fogoneiro», no bajó el lunes a por las pastillas; y de noche hay luz en las cocheras del museo, «pero iso non cho dixen eu». Apunta a los dos caminos.
+
+### B2 · Farmacia: el libro de 1958 y la puerta a Don Anxo (ideas de Oscar del 15-11-2026, ficción)
+- Xoán ya no está en la farmacia.
+- **«¿Me enseñas el libro de enero de 1958?»** (si no se sembró en el Acto 2, Valerio explica antes lo de los libros). Martín da la fecha del pilar y Valerio va a la rebotica. Hoja del libro (ficción, marcada así): «14-I, noite · Curas por queimaduras nas mans. X. Nogal. Non quixo ir ao médico.» Martín: quemarse las manos un maquinista es agarrar algo al rojo, un freno o una palanca. Es un **indicio**, no la prueba.
+- «Os libros do meu pai non saen da rebotica. Nin para ti.» Martín copia la anotación: objeto **`nota1958`** (`libro1958`).
+- **Don Anxo:** Valerio cuenta que un hombre que estaba en el depósito ese invierno le viene a buscar las pastillas los lunes y este lunes no vino; la hija dice que sale todas las noches y vuelve oliendo a carbón, «aos oitenta e cinco anos». Es Don Anxo Corredoira, fogonero; «do 58 non fala. Nunca». Le da a Martín **las pastillas de Anxo** (objeto `pastillas`) por si lo ve.
+
+### A7 · Exterior de las cocheras (cambios en el Acto 3)
+- **Candado de combinación** con la mecánica general `candadoCombinacion` de `engine.js` (cuatro ruedas, botones grandes para el dedo, flechas o números en el teclado). Código **1401** (14-I, la fecha del pilar). Broma al abrir: «¿Quién pone de contraseña una fecha? Mi madre. Y por lo visto, los jubilados del depósito». Fallar no cuesta nada; tras dos fallos, Martín recuerda «catorce del uno: día y mes, cuatro cifras justas». Con 1958 y 0000 hay frase propia.
+- El dibujo de Oscar muestra un candado de llave: el texto ya dice «cerradura de llave y, debajo, cuatro ruedecitas con números». **Pendiente de Oscar:** retocar el dibujo con las ruedas o dejarlo así.
+- **Coche de viajeros:** cuando Martín tiene las cinco pistas de dentro y las pastillas, es su escondite para esperar a las once (lanza la noche).
+
+### A8 · Interior de las cocheras, de día (`cocherasDentro`) · fondo PROVISIONAL
+- **Fondo:** `img/bg-cocheras-interior.jpg`, generado con `tools/fondos-acto3.py` (paredes de ladrillo, cubierta de madera, la Mikado de frente recortada de la ilustración de Oscar de la cinemática, banco con lona, pizarra, sacos de carbón y pala). **Pendiente: ilustración de Oscar del interior con la Mikado.**
+- **Cinco pistas** (contador «Pistas das cocheras: n de 5»):
+  1. **Pizarra** (`pistaLousa`): «Presión: 9 kg. Probar inxector. Mércores: tubos. Xoves, 23:00: proba de lume.», con muy buena letra. «Jueves a las once... es hoy.» Da la hora de la noche.
+  2. **Motor bajo la lona** (`pistaMotor`): Siemens de 10 CV desmontado polea a polea, con «A.F.G.» grabado a navaja **con la misma letra que el pilar del taller**. Martín: el motor de la carpintería de su casa; cómo llegó aquí, ni idea (hipótesis, nada sobre los compradores reales). Los tornillos de la tapa son nuevos: alguien busca algo dentro (siembra el Acto 4).
+  3. **Carril** (con el ollo, `pistaCarril`): grasa fresca; con el trapo del taller, «la misma grasa».
+  4. **Huellas** (con el ollo, `pistaPegadasC`): botas con carbonilla y zapatillas de andar por casa.
+  5. **Sacos de carbón** (`pistaCarbon`): carbón de piedra; si Andrés lo contó, «aquí acaba el carbón de Andrés».
+- **Mikado:** la caldera está templada; a la cabina no se sube sin permiso.
+- Con las cinco, cuaderno: alguien restaura la Mikado en secreto, esta noche a las once hay prueba de fuego. Si falta el libro de Valerio, Martín recuerda que tiene tiempo hasta las once y que «quien guarda papeles viejos» es Valerio.
+
+### A7 · Cocheras de noche (`cocherasNoite`) · fondo provisional
+`img/noite-cocheras.jpg` (tratamiento de noche del dibujo de Oscar): la persiana del taller subida un palmo, luz dentro y en las ventanas. Martín, escondido tras el coche de viajeros. Se entra por la puerta del taller. No se puede volver a casa hasta terminar.
+
+### A8 · Interior de noche (`cocherasNoiteDentro`) · fondo y personajes PROVISIONALES
+- **Fondo:** `img/noite-cocheras-interior.jpg`: la Mikado con el farol encendido y fuego en la hogar; el humo y el fuego se animan por código.
+- **NPC (dibujados por código hasta tener las hojas de Oscar):** **Remedios** (mono azul, pelo gris recogido, gafas de soldar en la frente), **Don Anxo** (gorra, chaqueta de punto, zapatillas de andar por casa) y dos jubilados de espaldas junto a la máquina.
+- **Cadena:** al entrar, todos se quedan quietos; Remedios: «Quen anda aí?». Martín se presenta. Anxo se busca las pastillas en los bolsillos: este lunes no bajó a por ellas (problema). Martín se las da «de parte de Valerio» (solución) y Anxo le da las gracias; si Martín le enseña la nota de 1958, Anxo: «Hai noites que mellor non lembrar» y vuelve a la hogar. Con Anxo a favor, Remedios habla: Adif se lleva la Mikado en un mes y quieren una última salida. Martín puede contarle lo que sabe (pizarra, motor, carbón, silbato), cada cosa con su respuesta y sin revelar a Xoán. **Puzzle del inyector** (procedimiento de maquinista): «Se es maquinista, cébame ese inxector». Tres opciones: vapor a tope (broma: riega al fogonero), un golpe con la llave inglesa (broma: «iso valía nos Seat 600») o **primero el agua y luego el vapor poco a poco hasta que el rebose deja de escupir** (bien: el inyector canta). Remedios: les falta un maquinista con licencia. **FIN DO ACTO 3.**
+- **El carbón de Andrés:** quién se lo lleva está **pendiente de Oscar** (opciones: Xoán, Remedios o Don Anxo). Hasta que elija, Remedios solo dice que lo trae «un amigo que paga, que é moi seu para as contas» (la opción recomendada, Xoán, que no se descubre hasta el Acto 5).
+
+### Personas reales
+Solo se nombra a Alfredo Fernández Gutiérrez por las iniciales del motor (el motor Siemens de su carpintería es un dato real; que esté en las cocheras con «A.F.G.» es ficción, ver `04`). Nada sobre los compradores de 1952.
