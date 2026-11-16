@@ -1,7 +1,7 @@
 'use strict';
 /* ==========================================================
    VÍA MORTA · Acto 2 «O reencontro» (versión intermedia elixida por Oscar, 14-11-2026)
-   Martes: primeiro turno (candado novo) → Concha reparte os encargos → Valerio (Farmacia de la Estación, rúa Calvo Sotelo)
+   Martes: primeiro turno (candado novo) → Concha reparte os encargos → Valerio (Farmacia de la Estación, rúa Calvo Sotelo, pasando pola Panadería Estación: pasteis de crema de Genaro)
    e Mega Andrés (Club Fluvial), en calquera orde → Champions na Fraternal → segunda noite (o asubío vén do taller).
    Mércores: a chave do taller (Concha, a cambio dun detalle: unha novidade, o carbón do Fluvial) → o taller e as catro pistas → FIN DO ACTO 2.
    Sen Brais nin a Volta do Castelo. Fichas: docs/05_FICHAS_ESCENARIOS.md, sección «Acto 2».
@@ -10,18 +10,21 @@
    ========================================================== */
 const VA = t => say('Valerio', t);
 const AN = t => say('Mega Andrés', t);
-Object.assign(PORTRAIT_COLORS, { 'Valerio': '#9fe0b0', 'Mega Andrés': '#ffd27a' });
+const GE = t => say('Genaro', t);
+Object.assign(PORTRAIT_COLORS, { 'Valerio': '#9fe0b0', 'Mega Andrés': '#ffd27a', 'Genaro': '#f4d9a0' });
 
 /* ---------- obxectos novos ---------- */
 Object.assign(ico, {
+  pasteis(c) { c.fillStyle = '#f2f2ee'; c.fillRect(4, 32, 40, 6); for (const x of [10, 24, 38]) { c.fillStyle = '#d9a050'; c.beginPath(); c.ellipse(x, 28, 7, 6, 0, 0, 7); c.fill(); c.fillStyle = '#fff2b0'; c.beginPath(); c.ellipse(x, 24, 5, 3, 0, 0, 7); c.fill(); } },
   crema(c) { c.fillStyle = '#e8f0f4'; c.beginPath(); c.moveTo(10, 14); c.lineTo(34, 14); c.lineTo(38, 40); c.lineTo(14, 40); c.closePath(); c.fill(); c.fillStyle = '#1aa860'; c.fillRect(18, 22, 12, 4); c.fillRect(22, 18, 4, 12); c.fillStyle = '#3a6aa8'; c.fillRect(34, 8, 8, 10); },
 });
 Object.assign(ITEMS, {
+  pasteis: { name: 'Pasteis de crema', icon: ico.pasteis, look: () => MA('Tres pasteles de crema de la Panadería Estación, en su bandejita de cartón. Huelen a domingo. Son para Valerio. Casi todos.', 'risueno') },
   crema: { name: 'Crema de agulletas', icon: ico.crema, look: () => MA('Crema para las agujetas, «de muestra». Huele a pino, a vestuario de instituto y a derrota digna.', 'risueno') },
 });
 
 /* Valerio e Mega Andrés: sprites das follas de Oscar (tools/sprite-valerio.py e tools/sprite-andres.py). */
-Object.assign(PORTRAITS, { 'Valerio': 'img/valerio-face.png', 'Mega Andrés': 'img/andres-face.png' });
+Object.assign(PORTRAITS, { 'Valerio': 'img/valerio-face.png', 'Mega Andrés': 'img/andres-face.png', 'Genaro': 'img/genaro-face.png' });
 
 /* ---------- C2 · cinemática da primeira quenda (martes) ----------
    js/cinematica2.js (CINE2), guion A «Primeira quenda»: a Mikado ao amencer, a xornada diante das cocheras,
@@ -114,7 +117,7 @@ async function conchaActo2() {
     if (k === 'adeus') { await CO('Vai, vai. E pecha ben de noite.'); return; }
   }
 }
-/* cambio 8 da 3.ª revisión Gilbert: a chave do taller págase cunha novidade, non cos ositos (que xa paga Valerio).
+/* cambio 8 da 3.ª revisión Gilbert: a chave do taller págase cunha novidade, non con doces (Valerio cobra en pasteis).
    A boa é a do carbón que lle desaparece a Andrés (sempre se sabe antes da Champions); as outras teñen a súa broma. */
 async function conchaNovidade() {
   const opts = [
@@ -172,6 +175,108 @@ async function conchaChaveTaller() {
   castelo.look = () => flag('fimActo1') ? MA('El castillo de San Vicente, otro día. Hoy mis gemelos no suben ni a una silla. Y ya sé lo que pasa cuando me subo a una silla.', 'frustrado') : casteloA1();
 }
 
+/* ---------- B0 · Rúa Calvo Sotelo, primeiro tramo: Panadería Estación (ilustración de Oscar, 16-11-2026) ----------
+   Entre a praza da estación e a farmacia: para ir á farmacia pásase antes por aquí. Panadería de ficción.
+   Genaro, o panadeiro (folla de Oscar, tools/sprite-genaro.py), vende os pasteis de crema que Valerio pide pola crema de agulletas. */
+async function genaroTalk() {
+  if (!flag('genaroSauda')) {
+    await GE('Bo día! Ti es o da casa roxa. Non mo digas: Concha. Pasou ás oito a por unha barra e contoume a túa vida en tres minutos. A barra levouna sen cortar, de tanto que falaba.');
+    await MA('En Monforte las noticias llegan antes que el pan.', 'risueno');
+    await GE('O pan sae ás sete. As novidades, ás seis. Eu érguome ás catro: son o primeiro en sabelo todo e o último en contalo.');
+    setFlag('genaroSauda');
+  } else await GE(flag('valerioFeito') ? 'Que, chegaron os pasteis enteiros á farmacia? Non me mintas, que coñezo a Valerio.' : flag('valerioDoce') && !hasItem('pasteis') ? 'Xa sei a que vés. Cheirábache a crema dende a farmacia, eh?' : 'Outra vez por aquí? Iso é que te chamou o cheiro.');
+  for (;;) {
+    const opts = [
+      { t: '¿Qué tienes hoy de bueno?', k: 'bo' },
+      ...(flag('valerioDoce') && !flag('valerioFeito') && !hasItem('pasteis') ? [{ t: 'Tres pasteles de crema, por favor.', k: 'mercar' }] : []),
+      { t: '¿Y esas obras?', k: 'obras' },
+      { t: '¿Y el local de al lado, el de «Se vende»?', k: 'sevende' },
+      { t: 'Si madrugas tanto... ¿no oyes nada raro de noche?', k: 'asubio' },
+      { t: 'Hasta luego, Genaro.', k: 'adeus' },
+    ];
+    const k = opts[await choose(opts)].k;
+    if (k === 'bo') {
+      await GE('Bolla de manteiga, empanada de raxo e pasteis de crema. Os de crema voan: Valerio, o da farmacia, lévame tres cada tarde.');
+      await GE('«Para os clientes», di. Os clientes non os viron nunca.');
+      await MA('Valerio... ya robaba los caramelos de eucalipto de su padre en el instituto. Hay vocaciones que no se pierden.', 'risueno');
+      if (!flag('valerioDoce')) await MA('(Y yo con hambre. Pero si me compro pasteles sin motivo, me los como por el camino.)', 'pensativo');
+      setFlag('genaroPasteis');
+    }
+    if (k === 'mercar') {
+      await GE('Tres de crema... Iso é o pedido de Valerio. Mandoute el, non? Ese home non pide favores: pide peaxes.');
+      await MA('Me cobra la crema de agujetas en crema pastelera.', 'esceptico');
+      await GE('Crema por crema. E logo din que en Monforte non hai economía circular. Tres euros.');
+      await GE('Vanche en bandexa, que se os levas na man chegan á farmacia feitos marmelada.');
+      give('pasteis'); setFlag('genaroPasteis');
+      await MA('Tres euros. El peaje más dulce de toda la calle Calvo Sotelo.', 'sonriente');
+    }
+    if (k === 'obras') {
+      await GE('Tres semanas leva así. Abriron a rúa para cambiar as tubaxes e atoparon debaixo outras tubaxes máis vellas. E debaixo desas, outras.');
+      await GE('Agora non saben se arranxar a rúa ou chamar a un arqueólogo.');
+      await MA('Monforte por capas. Como un milhojas.', 'risueno');
+      await GE('Non me deas ideas, que mañá fago milfollas «da obra» e véndoos ao dobre.');
+    }
+    if (k === 'sevende') {
+      await GE('Foi unha mercería, hai moitos anos. O cartel leva aí tanto tempo que xa non o le ninguén. Algún turista fíxolle unha foto: pensaba que era arte.');
+      await MA('Calle arriba, «Se aluga». Aquí, «Se vende». Monforte está de rebajas.', 'pensativo');
+      await GE('Se o mercas ti, fágoche desconto no pan. Un veciño máis é un cliente máis. E un cliente máis, en Calvo Sotelo, é case unha festa.');
+    }
+    if (k === 'asubio') {
+      await GE('Ás catro da mañá, en Monforte, estamos o forno, eu, os gatos... e ese asubío do que fala todo o mundo. Hai noites que o oio e noites que non.');
+      await MA('¿Y no te pica la curiosidad?', 'dudoso');
+      await GE('A min pícame a masa, se leveda ou non leveda. O demais, se ten que saír, sae coma o pan: á súa hora.');
+    }
+    if (k === 'adeus') { await GE('Vai, e mira por onde pisas: entre as vallas e as tapas, esta rúa é unha carreira de obstáculos.'); return; }
+  }
+}
+SCENES.panaderia = {
+  name: 'Rúa Calvo Sotelo · Panadería Estación', bg: 'img/bg-panaderia.jpg', music: 'estacion', floor: 'pedra',
+  walk: [[660, 540], [960, 540], [960, 524], [800, 480], [700, 454], [600, 430], [520, 406], [440, 378], [360, 350], [326, 340], [352, 356], [412, 386], [470, 420], [512, 450], [570, 490]],
+  scale: [330, 0.03, 540, 0.58], actorH: 300, start: [452, 386], minSpeed: 0.5,
+  front: [
+    { y: 446, r: [466, 222, 46, 222] },   // tronco da árbore de diante
+    { y: 366, r: [372, 196, 32, 168] },   // a segunda árbore
+  ],
+  hotspots: [
+    { name: 'Farmacia de la Estación', key: true, r: [640, 510, 320, 30], at: [800, 530], face: 'F', exit: ['calvoSotelo', [740, 520]], hint: 'D',
+      look: () => MA('Por aquí, hacia el sur, la Farmacia de la Estación, la de Valerio. La de la cruz verde de toda la vida.', 'pensativo') },
+    { name: 'Praza da Estación', key: true, r: [296, 318, 100, 44], at: [346, 350], face: 'B', exit: ['praza2', [450, 346]], hint: 'U',
+      look: () => MA('Al fondo de la calle, la plaza de la estación y el quiosco de Concha. Medio minuto, si no me para nadie. En Monforte siempre te para alguien.', 'pensativo') },
+    { name: 'Panadería Estación', key: true, r: [724, 318, 70, 150], at: [705, 478], face: 'R',
+      act: () => genaroTalk(),
+      look: () => MA('La puerta de la panadería, blanca y con cristales empañados de calor. Huele a pan, a azúcar y a madrugón.', 'sonriente') },
+    { name: 'Escaparate', r: [662, 318, 60, 130], look: () => MA('Bandejas de bollos, empanadas y pasteles detrás del cristal. Es un escaparate peligroso para un hombre que acaba de volver a casa con hambre atrasada.', 'risueno') },
+    { name: 'Rótulo', r: [580, 236, 300, 82], look: () => MA('«PANADERIA ESTACIÓN». Sin tilde en panadería y con tilde en estación. Las prioridades de este barrio, por orden.', 'risueno') },
+    { name: 'Porta do «Se vende»', r: [532, 288, 40, 128], act: () => MA('Cerrada. Y con el precio que no pone, mejor no preguntar.', 'esceptico'),
+      look: () => MA('Una puerta de madera con un «SE VENDE» amarillo. El cartel ya tiene más años que algunos vecinos.', 'pensativo') },
+    { name: 'Portal branco', r: [596, 318, 30, 112], act: () => MA('Es un portal de vecinos. Si llamo a un timbre al azar, mañana lo sabe Concha. Y pasado, Genaro.', 'esceptico'),
+      look: () => MA('Un portal blanco, estrecho, de los de escalera empinada y buzones con nombres escritos a boli.', 'neutro') },
+    { name: 'Contador da luz', r: [886, 222, 44, 46], look: () => MA('La caja del contador de la luz, colgada en la fachada. En esta calle hasta la electricidad toma el sol.', 'neutro') },
+    { name: 'Balcóns', r: [528, 56, 410, 176], look: () => MA('Balcones de piedra calada, como encaje de granito. Los hicieron cuando el ferrocarril daba de comer a medio Monforte y había para florituras.', 'pensativo') },
+    { name: 'Vallas da obra', r: [264, 330, 216, 140], act: () => MA('No pienso mover las vallas de una obra. En mi primera semana ya me he peleado con el Concello. Una vez basta.', 'avergonzado'),
+      look: () => MA('Vallas amarillas de obra a lo largo del bordillo, con sus cintas rojas y blancas. Por debajo, Monforte está cambiando de tuberías. Por encima, sigue igual.', 'esceptico') },
+    { name: 'Árbores', r: [330, 180, 200, 150], look: () => MA('Plátanos podados a muñón, con los brazos en alto. Parecen pidiendo la vez en la panadería.', 'risueno') },
+    { name: 'Coches', r: [0, 330, 210, 110], look: () => MA('Coches aparcados en fila. Uno lleva tanto polvo encima que ya es mobiliario urbano.', 'neutro') },
+    { name: 'Bar', r: [8, 230, 150, 110], act: () => MA('Un café ahora me sentaría bien. Pero la última vez que me senté en un bar acabé subido a un reloj. Mejor otro día.', 'esceptico'),
+      look: () => MA('El bar de enfrente, con toldo rojo y su terraza. En esta calle, entre el pan y el café, uno puede desayunar en diez metros.', 'sonriente') },
+    { name: 'Tapa de sumidoiro', r: [288, 444, 60, 22], look: () => MA('Una tapa de alcantarilla. Con las obras, no sé si debajo hay tuberías, arqueología o las dos cosas.', 'pensativo') },
+    { name: 'Reixa', r: [512, 480, 70, 24], look: () => MA('Una rejilla. Por aquí se cuelan las monedas de los que salen de la panadería contando el cambio.', 'risueno') },
+  ],
+  npcs: [
+    { id: 'genaro', name: 'Genaro', key: true, sheet: 'img/genaro-sprite.png', spec: { cw: 160, ch: 280, cols: 8 }, idle: 0, talkFrames: [1, 0], flip: true,
+      x: 770, y: 476, w: 60, h: 300, at: [705, 478], face: 'R',
+      done: () => flag('genaroSauda') && (!flag('valerioDoce') || hasItem('pasteis') || flag('valerioFeito')),
+      look: () => MA('El panadero, en la puerta, con el gorro, el mandil y harina hasta en las cejas. Tiene cara de haberse levantado a las cuatro y de no arrepentirse.', 'sonriente'),
+      talk: () => genaroTalk(),
+      give: {
+        ositos: () => GE('Ositos? Na miña panadería? Iso é coma levarlle leña ao monte. Gárdaos, rapaz.'),
+        pasteis: () => GE('Non, non: xa están pagados. O que sae pola porta non volve, que despois tráenme pasteis chuchados.'),
+        crema: () => GE('Crema de agulletas? A min dóenme as costas de amasar, non as pernas. Pero grazas polo detalle.'),
+        xornal: () => GE('Xa o lin ás cinco. Antes ca Concha. Non llo digas, que me retira o saúdo.'),
+      } },
+  ],
+};
+
 /* ---------- B1 · Rúa Calvo Sotelo: a Farmacia de la Estación (ilustración de Oscar, img/bg-cardeal.jpg) ----------
    Sáese da praza 2 polo noroeste, xunto ao quiosco de Concha (Oscar, 15-11-2026). O debuxo segue a ser o da rúa
    da farmacia: o rótulo pintado di só «FARMACIA». */
@@ -191,8 +296,8 @@ SCENES.calvoSotelo = {
     }
   },
   hotspots: [
-    { name: 'Praza da Estación', key: true, r: [700, 470, 100, 70], at: [750, 525], face: 'R', exit: ['praza2', [450, 346]], hint: 'D',
-      look: () => MA('Por ahí bajo a la plaza de la estación, al quiosco de Concha. Dos minutos. En este barrio todo está a dos minutos de un tren.', 'pensativo') },
+    { name: 'Panadería Estación', key: true, r: [700, 470, 100, 70], at: [750, 525], face: 'R', exit: ['panaderia', [820, 522]], hint: 'D',
+      look: () => MA('Calle abajo, la panadería de Genaro, y luego la plaza de la estación. Dos minutos. En este barrio todo está a dos minutos de un tren.', 'pensativo') },
     { name: 'Farmacia de la Estación', key: true, done: () => flag('valerioFeito'), r: [158, 196, 124, 300], at: [235, 512], face: 'B', exit: ['farmacia', [900, 515]], door: true,
       look: () => MA('La Farmacia de la Estación, la del padre de Valerio. La puerta abierta y el suelo de baldosas de colores, como cuando veníamos a por caramelos de eucalipto que no nos tocaban.', 'sonriente') },
     { name: 'Cruz verde', r: [404, 38, 116, 112], look: () => MA('La cruz verde de neón, parpadeando. De crío pensaba que era una señal de vía libre. En cierto modo lo es: vía libre a la aspirina.', 'risueno') },
@@ -223,18 +328,18 @@ async function valerioTalk() {
     await VA('Para iso tes crema de agulletas, aí no estante. Pero coñécesme: eu non vendo nin dou nada a un amigo... sen o seu peaxe.');
     await MA('¿Peaje? ¿Qué peaje?', 'dudoso');
     await VA('Algo doce. Son lambón dende o instituto: quen che cres que roubaba os caramelos de eucalipto do meu pai? Ti non, eu.');
-    await VA('Tráeme algo doce e a crema é túa. E non me veñas con caramelos de eucalipto, que eses téñoos eu.');
+    await VA('Pasteis de crema da Panadería Estación, aquí ao lado, a de Genaro. Ti tráesme crema e eu dóuche crema. Troco xusto.');
     setFlag('valerioSauda'); setFlag('valerioDoce');
-    if (hasItem('ositos')) await MA('(Algo dulce... ¡los ositos de Concha! Los llevo encima.)', 'sonriente');
-    else { await MA('(Algo dulce. En el quiosco de Concha hay ositos de goma de los de siempre. Un euro bien invertido.)', 'pensativo'); toast('Pista: Concha vende ositos no quiosco da praza'); }
-  } else await VA(flag('valerioFeito') ? 'Outra vez por aquí? Iso é que che gustou a crema.' : hasItem('ositos') ? 'Iso que asoma do peto... cheira a doce.' : 'Volviches? Sen nada doce? Martín, Martín...');
+    if (hasItem('pasteis')) await MA('(¡Los pasteles de Genaro! Los llevo encima. Este hombre es más previsible que un horario de cercanías.)', 'sonriente');
+    else { await MA(flag('genaroPasteis') ? '(Tres pasteles de crema, como cada tarde. Genaro ya me lo había chivado.)' : '(Pasteles de crema. La panadería por la que acabo de pasar, aquí al lado.)', 'pensativo'); toast('Pista: pasteis de crema na Panadería Estación, entre a praza e a farmacia'); }
+  } else await VA(flag('valerioFeito') ? 'Outra vez por aquí? Iso é que che gustou a crema.' : hasItem('pasteis') ? 'Ese cheiro... iso é de Genaro. Non me enganas.' : 'Volviches? Sen pasteis? Martín, Martín...');
   for (;;) {
     const opts = [
       { t: '¿Qué tal va Monforte?', k: 'monforte' },
       { t: '¿Has oído el silbato de noche?', k: 'asubio' },
       { t: '¿Guardas todavía las cosas de tu padre?', k: 'libros' },
-      ...(!flag('valerioFeito') && hasItem('ositos') ? [{ t: '(Darle los ositos.)', k: 'doce' }] : []),
-      ...(!flag('valerioFeito') && !hasItem('ositos') ? [{ t: '¿Y no me puedes fiar la crema?', k: 'fiar' }] : []),
+      ...(!flag('valerioFeito') && hasItem('pasteis') ? [{ t: '(Darle los pasteles de crema.)', k: 'doce' }] : []),
+      ...(!flag('valerioFeito') && !hasItem('pasteis') ? [{ t: '¿Y no me puedes fiar la crema?', k: 'fiar' }] : []),
       ...(flag('valerioFeito') && !hasItem('crema') && !flag('cremaPosta') ? [{ t: '¿Me das otra muestra de crema?', k: 'crema' }] : []),
       { t: 'Hasta luego, Valerio.', k: 'adeus' },
     ];
@@ -257,21 +362,21 @@ async function valerioTalk() {
       await VA('Letra de farmacéutico, que é coma a de médico pero entendéndose. Iso si: o que pasou no barrio, alí está.');
       setFlag('librosValerio');
     }
-    if (k === 'doce') return valerioOsitos();
+    if (k === 'doce') return valerioPasteis();
     if (k === 'fiar') {
-      await VA('Fiar? A un home que volve a Monforte despois de vinte anos? Fíoche o saúdo. A crema, a cambio de algo doce.');
-      await MA('(Ositos. El quiosco de Concha, en la plaza de la estación.)', 'pensativo');
+      await VA('Fiar? A un home que volve a Monforte despois de vinte anos? Fíoche o saúdo. A crema, a cambio de tres pasteis de Genaro.');
+      await MA('(Pasteles de crema. La Panadería Estación, la de Genaro, aquí al lado.)', 'pensativo');
     }
     if (k === 'crema') { await VA('Xa a perdiches? Ai, Martín. Toma outra. A última, que me quedo sen mostras e teño que traballar.'); give('crema'); }
     if (k === 'adeus') { await VA('Vai, e pon a crema antes de facer o parvo, non despois.'); return; }
   }
 }
-async function valerioOsitos() {
-  take('ositos');
-  await VA('Ositos de goma! Dos de Concha, dos de sempre! Ai, Martín, ti si que sabes.');
+async function valerioPasteis() {
+  take('pasteis');
+  await VA('Pasteis de crema de Genaro! E aínda mornos! Ai, Martín, ti si que sabes.');
   await VA('Un para min... outro para min... e este, para min. Toma, a crema. De mostra, que se a pago eu, fáiseme falta a min.');
   give('crema'); setFlag('valerioFeito');
-  await MA(flag('faltaCrema') ? 'Crema para las agujetas. Pagada en ositos. Andrés, prepárate: el de Vilatán vuelve al agua.' : 'Crema para las agujetas, pagada en ositos. En Monforte aún quedan cosas que funcionan como antes. El trueque, por ejemplo.', 'orgulloso');
+  await MA(flag('faltaCrema') ? 'Crema para las agujetas, pagada en crema pastelera. Andrés, prepárate: el de Vilatán vuelve al agua.' : 'Crema para las agujetas, pagada en crema pastelera. En Monforte aún quedan cosas que funcionan como antes. El trueque, por ejemplo.', 'orgulloso');
   comprobarChampions();
 }
 async function xoanFarmacia() {
@@ -330,7 +435,8 @@ SCENES.farmacia = {
       look: () => MA('Valerio, mi compañero de pupitre en el instituto. Con la bata de su padre parece un médico de serie. De serie de sobremesa.', 'sonriente'),
       talk: () => valerioTalk(),
       give: {
-        ositos: async () => { if (flag('valerioFeito')) await VA('Máis ositos? Martín, levo vinte anos dicindo que o azucre fai mal. Dame un. Só un.'); else await valerioOsitos(); },
+        pasteis: async () => { if (flag('valerioFeito')) await VA('Máis pasteis? Martín, levo vinte anos dicindo que o azucre fai mal. Déixaos no mostrador. Para os clientes.'); else await valerioPasteis(); },
+        ositos: async () => { await VA(flag('valerioFeito') ? 'Máis doce? Martín, levo vinte anos dicindo que o azucre fai mal. Dame un osito. Só un.' : 'Ositos? Iso era no instituto, Martín. Agora son un home serio: pasteis de crema da panadería de Genaro.'); },
         crema: async () => { await VA('Non, non: é para ti. Póñaa ti, que eu non che dou masaxes. Iso é cousa dos fisios.'); },
         xornal: async () => { await VA('Xa o lin. As esquelas primeiro: é deformación profesional.'); },
       } },
@@ -338,7 +444,8 @@ SCENES.farmacia = {
       x: 812, y: 398, w: 70, h: 296, at: [880, 450], face: 'R',
       look: () => MA('Xoán, el de Renfe, comprando jarabe para la hija de su prima. Hasta en la farmacia lleva el chaleco. Puntualidad suiza, chaleco gallego.', 'sonriente'),
       talk: () => xoanFarmacia(),
-      give: { ositos: async () => { await XO('Para Eugenia? Non, non, que logo non quere o xarope. Xa sabes: primeiro o amargo, despois o doce.'); } } },
+      give: { ositos: async () => { await XO('Para Eugenia? Non, non, que logo non quere o xarope. Xa sabes: primeiro o amargo, despois o doce.'); },
+        pasteis: async () => { await XO('De Genaro? Iso son os de Valerio. Non toco eu os pasteis de Valerio nin por todo o ouro do Banco de España.'); } } },
   ],
 };
 
@@ -635,9 +742,9 @@ SCENES.fraternalNoite = {
 
 { // praza 2: a rúa Calvo Sotelo ábrese no Acto 2 (leva á Farmacia de la Estación)
   const C = SCENES.praza2.hotspots.find(h => h.name === 'Rúa Calvo Sotelo'), actA1 = C.act;
-  C.act = () => flag('fimActo1') ? goScene('calvoSotelo', [740, 520]) : actA1();
-  C.look = () => flag('fimActo1') ? MA('La calle Calvo Sotelo. Ahí arriba está la Farmacia de la Estación, la de Valerio: la de la cruz verde de toda la vida.', 'sonriente') : actA1();
-  Object.defineProperty(C, 'exit', { get: () => flag('fimActo1') ? ['calvoSotelo', [740, 520]] : ['__rua'] });   // no Acto 1 segue pechada
+  C.act = () => flag('fimActo1') ? goScene('panaderia', [452, 386]) : actA1();
+  C.look = () => flag('fimActo1') ? MA('La calle Calvo Sotelo. Primero la panadería de la estación y, más arriba, la Farmacia de la Estación, la de Valerio: la de la cruz verde de toda la vida.', 'sonriente') : actA1();
+  Object.defineProperty(C, 'exit', { get: () => flag('fimActo1') ? ['panaderia', [452, 386]] : ['__rua'] });   // no Acto 1 segue pechada
   Object.defineProperty(C, 'key', { get: () => flag('fimActo1') });
   C.hint = 'U';
   C.done = () => flag('valerioFeito');
@@ -894,7 +1001,7 @@ SCENES.vigasA2 = {
   CADERNO.push(
     { when: () => A2() && !flag('a2Inicio'), t: 'Primer turno en el depósito. Salir a la calle por la puerta de abajo del salón.' },
     { when: () => A2() && flag('a2Inicio') && !flag('objValerio'), t: 'Hablar con Concha, en el quiosco: ella sabe dónde anda todo el mundo. (Y Xoán, en la estación, quizá sepa quién silba.)' },
-    { when: () => A2() && flag('objValerio') && !flag('valerioFeito'), t: () => flag('valerioDoce') ? (hasItem('ositos') ? 'Darle los ositos a Valerio, en la Farmacia de la Estación (calle Calvo Sotelo). Su «peaje» por la crema.' : 'Valerio no suelta la crema sin algo dulce. Ositos de goma, en el quiosco de Concha.') : 'Pasar por la Farmacia de la Estación, la de Valerio: calle Calvo Sotelo, saliendo de la plaza por detrás del quiosco de Concha.' },
+    { when: () => A2() && flag('objValerio') && !flag('valerioFeito'), t: () => flag('valerioDoce') ? (hasItem('pasteis') ? 'Darle los pasteles a Valerio, en la Farmacia de la Estación (calle Calvo Sotelo). Su «peaje» por la crema.' : 'Valerio no suelta la crema sin tres pasteles de crema. Se compran en la Panadería Estación, la de Genaro, camino de la farmacia.') : 'Pasar por la Farmacia de la Estación, la de Valerio: calle Calvo Sotelo arriba, pasada la panadería, saliendo de la plaza por detrás del quiosco de Concha.' },
     { when: () => A2() && flag('objAndres') && !flag('andresFeito'), t: () => 'La revancha de natación con Mega Andrés, en el Club Fluvial (en el mapa).' + (!hasItem('crema') && !flag('cremaPosta') ? ' Antes, algo para estos gemelos.' : '') },
     { when: () => A2() && flag('avisoChampions') && !flag('champions') && (!flag('faltanPilas') || flag('teleAcesa')), t: 'Champions en la Fraternal, con el tío Demetrio. Hay cosas que no se negocian.' },
     { when: () => A2() && flag('faltanPilas') && !flag('teleAcesa') && !hasItem('pilas'), t: 'Pilas para el mando de la Fraternal. Demetrio dijo que las últimas del bar acabaron en el reloj de la pared... que está parado. (En casa, el cajón de la cocina también tiene.)' },
