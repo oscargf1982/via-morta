@@ -365,12 +365,14 @@ Hoja «ACTO 3 · A curiosidade. Xoves.» → vestíbulo de la estación tras el 
 - Con las cinco, cuaderno: alguien está poniendo en marcha la Mikado de la rotonda; las piezas se arreglan aquí y se montan fuera; esta noche a las once, prueba de fuego. Si falta el libro de Valerio, Martín recuerda que tiene tiempo hasta las once.
 
 ### A7b · Rotonda do museo, de día (`rotonda`) · opcional
+- **Es la rotonda buena** (Oscar, 16-11-2026): la de la portada, con la **plataforma giratoria** y las cocheras en abanico. La glorieta de tráfico de la vista del balcón se reformará más adelante.
 - **Fondo:** la portada de Oscar `img/portada-rotonda.jpg` (la rotonda con la plataforma giratoria y la Mikado encima), recortada a 16:9. Se llega por la derecha del exterior de las cocheras; se vuelve por abajo.
 - **Hotspots:** Mikado (en el Acto 3, Martín toca la caldera: **tibia**, `a3MikadoTibia`), ténder (carbón de piedra recién echado en el Acto 3), plataforma giratoria y las cocheras en abanico. Subir a la cabina de día: no, «mañana sale en el periódico».
 
-### A7c · Interior del coche de viajeros, de noche (`cocheNoite`) · fondo PROVISIONAL
-- **Fondo:** `img/noite-coche-viaxeiros.jpg` (`tools/fondos-acto3.py`): paneles de madera, portaequipajes con red, asientos de skai azul con reposacabezas de ganchillo, cortinas y, por la ventanilla, la puerta del taller con luz por debajo. **Pendiente: el dibujo de Oscar del interior del coche clásico** (lo sustituye tal cual; la ventanilla debería dejar ver la fachada de las cocheras).
-- **Hotspots:** puerta del coche (salida → exterior de noche), ventanilla, asientos, cortinas, portaequipajes.
+### A7c · Interior del coche de viajeros, de noche (`cocheNoite`)
+- **Fondo:** ilustración de Oscar del coche comedor (`img/bg-coche-viaxeiros.jpg`, 16-11-2026): mesa larga con mantel, sillas de terciopelo azul, lamparitas, apliques de latón, cortinas azules, un retrato de una pareja, una foto de una locomotora y una rueda de latón en la pared del fondo. Pasada a noche por código (`tools/fondos-acto3.py` → `img/noite-coche-viaxeiros.jpg`): lámparas apagadas (Martín está escondido), cielo de noche en las ventanillas y, por la ventanilla grande de la izquierda, la fachada de las cocheras con la luz bajo la persiana (que late por código).
+- **Suelo:** la esquina de abajo a la izquierda, junto a la ventanilla por la que espía Martín.
+- **Hotspots:** puerta del coche (salida abajo a la izquierda → exterior de noche), ventanilla (por donde espía), ventanillas del otro lado, retrato de la pareja, foto de la locomotora, rueda de latón, las dos lamparitas («encenderla sería poner un cartel: Martín, aquí»), apliques, mesa, sillas, cortinas y cortina del fondo.
 - **Cadena:** por un agujerito de la cortina, Martín ve subir la persiana: salen sombras con **la carretilla de carbón, un farol de mano y unas zapatillas de cuadros**, y rodean el museo hacia la rotonda. Luego, un resoplido que hace temblar el cristal. Objetivo: salir del coche y seguirlos.
 
 ### A7 · Cocheras de noche (`cocherasNoite`) · fondo provisional
@@ -385,8 +387,9 @@ Hoja «ACTO 3 · A curiosidade. Xoves.» → vestíbulo de la estación tras el 
 ### Dibujos pendientes para Oscar (Acto 3)
 1. **Interior de las cocheras de día con la maquinaria** (sustituye al provisional): portalón del fondo con un postigo entornado; a la izquierda, pizarra en la pared y banco con el motor bajo una lona verde; sierra de cinta alta, sierra circular, cepilladora tapada con lona gris, torno, dos prensas; en el centro, un banco con una pieza de bronce (inyector); a la derecha, sacos de carbón, pala y carretilla. Zona para caminar: la franja de abajo.
 2. **La rotonda de noche con la Mikado encendida, a pie de suelo** (opcional: ahora se usa la portada pasada a noche, vista desde arriba). Fuego en la cabina, humo, un farol de mano en el suelo y sitio abajo para cuatro personajes y Martín.
-3. **Interior del coche clásico de viajeros** (lo manda Oscar): el escondite de Martín; ventanilla con la fachada de las cocheras de noche.
-4. Hojas de **Remedios** y **Don Anxo**.
+3. ~~Interior del coche de viajeros~~: hecho con el dibujo de Oscar del 16-11-2026.
+4. **Vista del balcón del salón** (Oscar, 16-11-2026): hay que reformarla más adelante para que enseñe la rotonda buena (la de la portada, con plataforma giratoria), no una glorieta de tráfico. De momento no se toca.
+5. Hojas de **Remedios** y **Don Anxo**.
 
 ### Personas reales
 Solo se nombra a Alfredo Fernández Gutiérrez por las iniciales del motor (el motor Siemens y la lista de máquinas de su carpintería son datos reales; que estén guardados en las cocheras del museo es ficción, ver `04`). Nada sobre los compradores de 1952: Martín y Remedios dicen que nadie sabe cómo llegó allí.

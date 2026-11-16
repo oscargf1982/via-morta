@@ -4,7 +4,7 @@
   (serra de cinta, serra circular, cepilladora tapada, torno, prensas), a lousa, o motor tapado cunha lona, unha peza de bronce
   da Mikado no banco, os sacos de carbón, a carretilla e as pegadas cara ao postigo do fondo. Sen Mikado (16-11-2026).
 - img/noite-rotonda.jpg: a portada de Oscar (a rotonda coa Mikado) de noite, co lume da cabina e o farol acesos.
-- img/noite-coche-viaxeiros.jpg: interior do coche de viaxeiros de noite (escondite de Martín), ata ter o debuxo de Oscar.
+- img/noite-coche-viaxeiros.jpg: interior do coche de viaxeiros (ilustración de Oscar, img/bg-coche-viaxeiros.jpg) pasado a noite; pola fiestra da esquerda, a porta do taller acesa.
 - img/noite-cocheras.jpg: o exterior das cocheras (ilustración de Oscar) de noite, coa porta do taller entreaberta e luz dentro.
 O texto da lousa e o «A.F.G.» do motor píntanse no xogo (js/acto3.js), non aquí.
 Uso: python3 tools/fondos-acto3.py"""
@@ -182,36 +182,45 @@ def exterior_noite():
 
 
 def coche_noite():
-    """PROVISIONAL: interior do coche de viaxeiros de noite, ata ter o debuxo de Oscar. Pola fiestra, a porta do taller."""
-    im = Image.new('RGB', (W, H), (30, 26, 30))
-    d = ImageDraw.Draw(im)
-    ink = (16, 12, 12)
-    vista = Image.open(P('noite-cocheras.jpg')).convert('RGB').crop((1000, 380, 1700, 808)).resize(k(360, 220)[0:2], Image.LANCZOS)
-    d.rectangle(k(0, 0, 960, 540), fill=(70, 46, 32))                         # paneis de madeira
-    for x in range(0, 960, 48):
-        d.line(k(x, 100, x, 540), fill=(58, 38, 26), width=2)
-    d.rectangle(k(0, 0, 960, 40), fill=(150, 140, 120))                       # teito
-    d.rectangle(k(110, 40, 850, 100), fill=(60, 40, 28))                      # portaequipaxes
-    for x in range(120, 850, 14):
-        d.line(k(x, 46, x + 10, 96), fill=(120, 100, 70), width=1)
-    d.line(k(110, 98, 850, 98), fill=(180, 150, 80), width=int(4 * K))
-    im.paste(vista, k(300, 110)[0:2])                                         # fiestra
-    d.rectangle(k(300, 110, 660, 330), outline=(180, 150, 80), width=int(6 * K))
-    d.polygon(k(250, 104, 330, 104, 316, 340, 250, 340), fill=(40, 70, 120), outline=ink)   # cortina esquerda
-    d.polygon(k(660, 104, 720, 104, 720, 340, 646, 340), fill=(40, 70, 120), outline=ink)   # cortina dereita
-    d.rectangle(k(0, 120, 110, 520), fill=(52, 34, 24), outline=ink, width=3)              # porta
-    d.rectangle(k(20, 150, 90, 260), fill=(26, 34, 60), outline=ink, width=3)
-    d.ellipse(k(84, 330, 98, 344), fill=(190, 160, 90))
-    for x0, x1 in ((120, 290), (670, 850)):                                   # asentos de skai azul
-        d.rounded_rectangle(k(x0, 300, x1, 420), 14, fill=(40, 66, 110), outline=ink, width=3)
-        d.rounded_rectangle(k(x0 - 6, 410, x1 + 6, 470), 12, fill=(46, 76, 124), outline=ink, width=3)
-        d.rectangle(k((x0 + x1) / 2 - 30, 300, (x0 + x1) / 2 + 30, 330), fill=(232, 226, 210))
-    d.polygon(k(0, 540, 260, 460, 700, 460, 960, 540), fill=(96, 74, 54))   # chan
-    d.rectangle(k(380, 330, 580, 346), fill=(110, 80, 50), outline=ink)      # mesiña
-    im = ImageEnhance.Brightness(im).enhance(0.55)
-    im = Image.blend(im, Image.new('RGB', im.size, (18, 24, 54)), 0.22)
-    im.paste(ImageEnhance.Brightness(vista).enhance(1.1), k(300, 110)[0:2])
-    return im
+    """Interior do coche de viaxeiros (ilustración de Oscar, img/bg-coche-viaxeiros.jpg) pasado a noite.
+    As lámpadas, apagadas (Martín está escondido). Pola fiestra grande da esquerda vese a porta do taller das
+    cocheras coa luz por debaixo; polas outras, ceo de noite."""
+    src = Image.open(P('bg-coche-viaxeiros.jpg')).convert('RGB')
+    sw, sh = src.size
+    px = src.load()
+    # máscara do exterior: o que non é madeira (vermello-marrón) nin cortina (azul escuro)
+    mask = Image.new('L', src.size, 0)
+    pm = mask.load()
+    zonas = [(0, 40, 150, 490), (405, 110, 478, 380), (515, 140, 570, 340), (1100, 140, 1160, 340), (1210, 120, 1275, 380), (1515, 40, 1672, 480)]
+    for (x0, y0, x1, y1) in zonas:
+        for y in range(y0, min(y1, sh)):
+            for x in range(x0, min(x1, sw)):
+                r, g, b = px[x, y]
+                madeira = r - b > 45
+                cortina = b - r > 35 and g < 150
+                if not madeira and not cortina:
+                    pm[x, y] = 255
+    mask = mask.filter(ImageFilter.MaxFilter(3)).filter(ImageFilter.GaussianBlur(1.2))
+    # ceo de noite para todas as fiestras
+    ceo = Image.new('RGB', src.size, (14, 22, 46))
+    g = ImageDraw.Draw(ceo)
+    for y in range(sh):
+        t = y / sh
+        g.line([(0, y), (sw, y)], fill=(int(12 + 14 * t), int(20 + 16 * t), int(44 + 20 * t)))
+    # a fiestra grande da esquerda: a fachada das cocheras de noite, coa porta acesa
+    vista = Image.open(P('noite-cocheras.jpg')).convert('RGB').crop((1090, 330, 1560, 830)).resize((160, 450), Image.LANCZOS)
+    ceo.paste(vista, (-6, 40))
+    noite = ImageEnhance.Brightness(src).enhance(0.38)
+    noite = ImageEnhance.Color(noite).enhance(0.7)
+    noite = Image.blend(noite, Image.new('RGB', src.size, (16, 22, 52)), 0.28)
+    noite.paste(ceo, (0, 0), mask)
+    # luz que entra pola fiestra da esquerda (a da porta do taller) e luar pola dereita
+    luz = Image.new('RGB', src.size, 0)
+    l = ImageDraw.Draw(luz)
+    l.polygon([(0, 300), (150, 330), (520, 941), (0, 941)], fill=(70, 46, 18))
+    l.polygon([(1672, 200), (1520, 240), (1180, 941), (1672, 941)], fill=(14, 20, 40))
+    noite = ImageChops.add(noite, luz.filter(ImageFilter.GaussianBlur(60)))
+    return noite.resize((W, H), Image.LANCZOS)
 
 
 if __name__ == '__main__':

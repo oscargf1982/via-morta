@@ -512,15 +512,15 @@ SCENES.rotonda = {
 }
 
 /* ---------- A7c · A noite: vixilancia dende dentro do coche de viaxeiros ----------
-   Oscar (16-11-2026): Martín escóndese DENTRO do coche clásico, non detrás. Fondo PROVISIONAL (tools/fondos-acto3.py)
-   ata ter o debuxo de Oscar do interior do coche. Dende a fiestra vese a porta do taller. */
+   Oscar (16-11-2026): Martín escóndese DENTRO do coche clásico, non detrás. Fondo: ilustración de Oscar do coche comedor
+   pasada a noite (tools/fondos-acto3.py). Dende a fiestra da esquerda vese a porta do taller. */
 async function vixilia() {
   setFlag('a3Noite');
   await MA('Las once menos cuarto. Llave de cuadradillo, media vuelta... y dentro. Si me pillan, estoy revisando el material. De noche. Sin que nadie me lo pida.', 'avergonzado');
   E.fadeTo = 1; await sleep(500);
-  enterScene('cocheNoite', [480, 500]);
+  enterScene('cocheNoite', [150, 512]);
   await sleep(300); E.fadeTo = 0;
-  await MA('Asientos de skai, olor a tren de los de antes y una cortina con un agujerito justo a la altura del ojo. El escondite perfecto.', 'risueno');
+  await MA('Un coche comedor. Mesa larga, sillas de terciopelo, lamparitas... y unas cortinas con una rendija justo a la altura del ojo. El escondite perfecto.', 'risueno');
   await MA('...', 'pensativo');
   SFX.door(); await sleep(400);
   await MA('Ahí está. La persiana de las cocheras sube un palmo. Salen sombras: una carretilla cargada de carbón, un farol de mano... y unas zapatillas de cuadros.', 'sorprendido');
@@ -532,20 +532,29 @@ async function vixilia() {
 }
 SCENES.cocheNoite = {
   name: 'Coche de viaxeiros · noite', bg: 'img/noite-coche-viaxeiros.jpg', music: null, floor: 'madeira',
-  walk: [[300, 470], [660, 470], [700, 540], [260, 540]],
-  scale: [470, 0.52, 540, 0.6], actorH: 300, start: [480, 500], minSpeed: 0.4,
+  // ilustración de Oscar (img/bg-coche-viaxeiros.jpg) pasada a noite con tools/fondos-acto3.py. Martín, agachado á esquerda, xunto á fiestra.
+  walk: [[16, 482], [292, 482], [250, 540], [0, 540]],
+  scale: [482, 0.5, 540, 0.6], actorH: 300, start: [150, 512], minSpeed: 0.4,
   draw(c, t) {
-    // a luz da persiana, que latexa ao fondo da fiestra
-    c.save(); c.globalAlpha = 0.14 + 0.06 * Math.sin(t * 5); c.fillStyle = '#ffb050'; c.fillRect(445, 238, 85, 16); c.restore();
+    // a luz da persiana do taller, que latexa na fiestra da esquerda
+    c.save(); c.globalAlpha = 0.16 + 0.07 * Math.sin(t * 5); c.fillStyle = '#ffb050'; c.fillRect(26, 236, 52, 16); c.restore();
   },
   hotspots: [
-    { name: 'Porta do coche', key: true, done: () => flag('a3NoiteEntrada'), r: [0, 120, 110, 400], at: [300, 500], face: 'L', exit: ['cocherasNoite', [200, 470]], door: true, hint: 'L',
-      look: () => MA('La puerta del coche. Fuera, el frío de noviembre y una Mikado respirando.', 'pensativo') },
-    { name: 'Fiestra', r: [300, 110, 360, 220], at: [480, 480], face: 'B',
-      look: () => MA(flag('a3Noite') ? 'Por el agujerito de la cortina: la persiana del taller subida un palmo y luz naranja por debajo. Y nadie a la vista. Se han ido todos a la rotonda.' : 'La ventanilla, con su cortina.', 'pensativo') },
-    { name: 'Asentos', r: [120, 300, 170, 200], look: () => MA('Asientos de skai azul, con su reposacabezas de ganchillo. En uno de estos me dormí yo con siete años, camino de Lugo. Y me desperté en Lugo, que era lo importante.', 'sonriente') },
-    { name: 'Cortinas', r: [660, 110, 60, 230], look: () => MA('Cortinas de tren, con su barra de latón. Echadas, como si el coche durmiera. Yo, de mientras, de guardia.', 'pensativo') },
-    { name: 'Portaequipaxes', r: [110, 40, 740, 60], look: () => MA('El portaequipajes, con su red. Vacío. Aquí viajaban maletas de cartón, cestas con chorizos y algún sueño de emigrante.', 'pensativo') },
+    { name: 'Porta do coche', key: true, done: () => flag('a3NoiteEntrada'), r: [0, 470, 60, 70], at: [40, 520], face: 'L', exit: ['cocherasNoite', [200, 470]], door: true, hint: 'L',
+      look: () => MA('La puerta del coche, a mi espalda. Fuera, el frío de noviembre y una Mikado respirando.', 'pensativo') },
+    { name: 'Fiestra', key: true, done: () => true, r: [0, 24, 92, 250], at: [120, 500], face: 'L',
+      look: () => MA(flag('a3Noite') ? 'Por la rendija de la cortina: la persiana del taller subida un palmo y luz naranja por debajo. Y nadie a la vista. Se han ido todos a la rotonda.' : 'La ventanilla, con su cortina. Desde aquí se ve la puerta del taller.', 'pensativo') },
+    { name: 'Fiestras do outro lado', r: [866, 24, 94, 280], look: () => MA('Al otro lado, solo noche y vías. Por ahí no viene nadie. Por eso me he puesto en este.', 'pensativo') },
+    { name: 'Cadro da parella', r: [380, 84, 66, 84], look: () => MA('Una pareja de las de antes, muy tiesa, con sombrero y vestido de domingo. Mirándome como si yo no hubiera pagado billete. Que no lo he pagado.', 'avergonzado') },
+    { name: 'Foto da locomotora', r: [538, 84, 58, 42], look: () => MA('Una foto de una máquina de vapor echando humo. Hasta en la pared de un coche comedor, el protagonista es la locomotora. Como debe ser.', 'sonriente') },
+    { name: 'Roda', r: [538, 130, 58, 60], look: () => MA('Una rueda de latón colgada en la pared, de adorno. Parece un timón de barco. En un tren. Alguien se equivocó de museo, o tenía mucho humor.', 'risueno') },
+    { name: 'Lámpada', r: [348, 166, 38, 46], look: () => MA('Una lamparita de mesa con su pantalla. Apagada. Encenderla ahora sería como poner un cartel: «Martín, aquí».', 'esceptico') },
+    { name: 'Lámpada', r: [594, 166, 38, 46], look: () => MA('La otra lamparita, también apagada. Esta noche aquí se espía a oscuras, como en las películas que daban en la tele los sábados.', 'pensativo') },
+    { name: 'Apliques', r: [164, 36, 44, 74], look: () => MA('Apliques de latón con su pantallita. Con la luz encendida, este coche debía de parecer un salón de baile. A oscuras parece una sala de espera de fantasmas.', 'risueno') },
+    { name: 'Mesa', r: [340, 236, 270, 236], look: () => MA('La mesa larga del coche comedor, con su mantel. Aquí cenaban los que podían, mientras en tercera los demás se comían el bocadillo de pie.', 'pensativo') },
+    { name: 'Cadeiras', r: [190, 290, 140, 190], look: () => MA('Sillas de madera con el asiento de terciopelo azul. Me siento en una y no me levanto en tres días. Pero no he venido a eso.', 'sonriente') },
+    { name: 'Cortinas', r: [84, 0, 78, 270], look: () => MA('Cortinas azules, gordas, de las que tapan de verdad. Por la rendija se ve todo y a mí no me ve nadie.', 'convencido') },
+    { name: 'Cortina do fondo', r: [456, 86, 64, 104], look: () => MA('Al fondo, otra cortina. Detrás debe de estar la cocina o el pasillo. No miro: bastante tengo con vigilar una puerta.', 'pensativo') },
   ],
 };
 SCENES.cocherasNoite = {
@@ -558,7 +567,7 @@ SCENES.cocherasNoite = {
     { name: 'Porta do taller', r: [720, 288, 102, 138], at: [700, 446], face: 'R',
       act: () => MA('Dentro ya no queda nadie: se han llevado el carbón y el inyector. Lo que importa esta noche está en la rotonda.', 'convencido'),
       look: () => MA('La persiana, subida un palmo. Luz naranja por debajo: se la han dejado encendida para volver.', 'pensativo') },
-    { name: 'Coche de viaxeiros', r: [0, 215, 160, 238], at: [200, 470], face: 'L', exit: ['cocheNoite', [480, 500]], door: true,
+    { name: 'Coche de viaxeiros', r: [0, 215, 160, 238], at: [200, 470], face: 'L', exit: ['cocheNoite', [150, 512]], door: true,
       look: () => MA('Mi escondite. Bonito, pero cada vez que pasa un coche de verdad me late el corazón a nueve kilos de presión.', 'avergonzado') },
     { name: 'Praza da Estación', r: [300, 506, 360, 34], at: [480, 528], face: 'F',
       act: () => MA('¿Irme ahora? ¿Con una Mikado respirando a la vuelta de la esquina? Ni loco. Bueno, un poco loco, pero no tanto.', 'convencido'),
