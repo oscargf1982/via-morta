@@ -38,7 +38,7 @@ Object.assign(ico, {
 });
 Object.assign(ITEMS, {
   millo: { name: 'Saco de millo', icon: ico.millo,
-    look: () => MA('Un saco de maíz en grano, de la panadería de Genaro. Para la broa. Pesa como si no se acabase nunca. Y para lo que quiero, no se va a acabar.', 'sonriente') },
+    look: () => MA('Un saco de maíz en grano de la panadería de Genaro. En su sitio dejé uno de serrín: mismo peso, distinta broa. Y para lo que lo quiero, no se va a acabar.', 'avergonzado') },
   preservativo: { name: 'Preservativo', icon: ico.preservativo,
     look: () => MA('Un preservativo de la máquina azul, en su sobrecito. En el instituto los inflábamos como globos en clase de Física. Reventaban como un petardo. El profesor no se reía.', 'avergonzado'),
     combine: { navalla: () => MA('¿Pinchar un preservativo sin inflar? Eso no suena a nada. Primero, globo. Luego, ruido.', 'esceptico') } },
