@@ -214,7 +214,7 @@ async function genaroTalk() {
       { t: '¿Y el local de al lado, el de «Se vende»?', k: 'sevende' },
       { t: 'Si madrugas tanto... ¿no oyes nada raro de noche?', k: 'asubio' },
       { t: '¿Y tú qué haces cuando no estás amasando?', k: 'xogos' },
-      ...(milloPreciso() && flag('milloVisto') && !flag('milloTrocado') ? [{ t: '(Despistarlo.) Oye, Genaro... ¿eso que huele no es la broa quemándose?', k: 'despiste' }] : []),
+      ...(milloAlcance() && flag('milloVisto') && !flag('milloTrocado') && hasItem('trapo') ? [{ t: '(Despistarlo.) Genaro, ¿me sujetas este trapo un segundo?', k: 'despiste' }] : []),
       { t: 'Hasta luego, Genaro.', k: 'adeus' },
     ];
     const k = opts[await choose(opts)].k;
@@ -260,12 +260,7 @@ async function genaroTalk() {
       await MA('Un panadero que platina la vida. Me lo apunto en el cuaderno. Literalmente.', 'risueno');
       if (!flag('genaroCuarta')) { setFlag('genaroCuarta'); await genaroCuartaParede(); }
     }
-    if (k === 'despiste') {
-      await GE('A broa?! Se se me queima a broa, Concha sábeo antes ca min!', 'asustado');
-      await MA('(Ahora o nunca.)', 'pensativo');
-      setFlag('genaroDentro'); SFX.door && SFX.door();
-      return;
-    }
+    if (k === 'despiste') return genaroTrapo();
     if (k === 'adeus') { await GE('Vai, e mira por onde pisas: entre as vallas e as tapas, esta rúa é unha carreira de obstáculos.', 'contento'); return; }
   }
 }
@@ -301,12 +296,14 @@ async function genaroCuartaParede() {
 /* ---------- o cambiazo do serrín polo millo (idea de Oscar, 16-11-2026) ----------
    Debuxos: folla de sacos de Oscar (assets/obxectos/sacos-hoja-oscar.png → tools/sacos.py → img/sacos/).
    Os sacos de serrín están diante de Maderas Somel (rúa da farmacia): ao collelos desaparecen. Os sacos de millo en gran
-   están diante da panadería: con Genaro diante, «iso non se toca». Despístase (a broa queimándose), Genaro entra e Martín
+   están diante da panadería: con Genaro diante, «iso non se toca». Despístase co trapo con graxa (Genaro mánchase e entra a lavar as mans) e Martín
    deixa o serrín no sitio do millo: diante da panadería quedan os sacos de serrín. Tempo de Hollywood: Genaro non volve
    ata que Martín fai algo cos sacos ou sae da rúa. O millo só ten sentido no Acto 4 (as pombas do taller, js/pombas.js);
    antes, a opción de despistar non sae. Ao gastar o millo no taller queda o saco baleiro (`sacoBaleiro`, pombas.js).
    Despois das pombas (marca `estoupido`), diante da panadería está o saco de serrín aberto e Genaro descobre o cambiazo. */
 const milloPreciso = () => flag('pombaVista') || flag('tapaGolpe');
+// o despiste sae se Martín xa sabe para que quere o millo OU se xa leva o serrín (Oscar, 16-11-2026: con serrín na man non pode quedar atascado)
+const milloAlcance = () => milloPreciso() || hasItem('serrin');
 const SACOS = ['serrin-pila', 'millo-pila', 'serrin-aberto', 'ico-serrin', 'ico-millo', 'ico-baleiro'];
 for (const k of SACOS) img(`img/sacos/${k}.png`);   // precarga: as iconas do inventario debúxanse dunha vez
 const icoImg = src => c => { const i = img(src); if (i) { const k = Math.min(48 / i.naturalWidth, 48 / i.naturalHeight); c.drawImage(i, (48 - i.naturalWidth * k) / 2, (48 - i.naturalHeight * k) / 2, i.naturalWidth * k, i.naturalHeight * k); } };
@@ -320,9 +317,23 @@ if (!ITEMS.millo) ITEMS.millo = { name: 'Saco de millo', icon: ico.millo,
 // debuxa un dos sacos de Oscar co pé (centro da base) en x, y e un ancho w
 function sacoImg(c, k, x, y, w) { const i = img(`img/sacos/${k}.png`); if (!i) return; const h = w * i.naturalHeight / i.naturalWidth; c.drawImage(i, x - w / 2, y - h, w, h); }
 const sacoPanaderia = () => !flag('milloTrocado') ? 'millo-pila' : flag('estoupido') ? 'serrin-aberto' : 'serrin-pila';
+/* idea de Oscar (16-11-2026): Martín pídelle a Genaro que lle suxeite o trapo con graxa de locomotora (o do taller, Acto 2).
+   Genaro mánchase as mans e ten que entrar a lavalas: nese momento, o cambiazo. O trapo volve a Martín (non se gasta). */
+async function genaroTrapo() {
+  if (!(milloAlcance() && flag('milloVisto')) || flag('milloTrocado'))
+    return GE('Graxa de locomotora? Iso non entra na miña panadería nin en pintura. Gárdao, rapaz.', 'esceptico');
+  await MA('Genaro, ¿me sujetas esto un segundo? Es que tengo que atarme el zapato.', 'sonriente');
+  await GE('Trae, trae... AI! Pero que é isto?! Graxa! Graxa negra!', 'asustado');
+  await MA('Grasa de locomotora. De la buena. No se va ni con disolvente.', 'avergonzado');
+  await GE('Coas mans así non toco a masa nin morto. Vou lavalas. Ti non te movas e non toques nada!', 'gritando-enfadado');
+  await GE('E o teu trapo, lévao. Non o quero nin para limpar o chan.', 'enfadado');
+  await MA('(Se ha ido dentro, frotándose las manos. Esa grasa no sale ni en diez minutos. Ahora o nunca.)', 'pensativo');
+  setFlag('genaroDentro'); SFX.door();
+}
 async function genaroVolve(trocado) {
   await sleep(500); setFlag('genaroDentro', false);
-  await GE('Falsa alarma: a broa estaba perfecta. Será o forno da veciña, que esa queima ata a auga.', 'resignado');
+  await GE('Tres xabóns e un estropallo, e aínda me cheiran as mans a depósito de máquinas. De onde sacaches ese trapo, rapaz?', 'resignado');
+  await MA('Herencia familiar.', 'avergonzado');
   if (!trocado) return;
   await MA('(Ni se ha fijado en los sacos. Bien.)', 'sonriente');
   E.cuartaT0 = E.t; SFX.music(null);
@@ -353,13 +364,13 @@ SCENES.panaderia = {
       look: () => MA('Por aquí, hacia el sur, la Farmacia de la Estación, la de Valerio. La de la cruz verde de toda la vida.', 'pensativo') },
     { name: 'Praza da Estación', key: true, r: [296, 318, 100, 44], at: [346, 350], face: 'B', exit: ['praza2', [450, 346]], hint: 'U',
       look: () => MA('Al fondo de la calle, la plaza de la estación y el quiosco de Concha. Medio minuto, si no me para nadie. En Monforte siempre te para alguien.', 'pensativo') },
-    { name: 'Sacos de millo', key: true, when: () => !flag('milloTrocado'), done: () => !milloPreciso(), r: [786, 426, 88, 66], at: [780, 505], face: 'R',
-      look: () => MA(flag('genaroDentro') ? 'Los sacos de maíz, solos. Genaro está dentro con la broa. Es el momento.' : 'Sacos de maíz en grano, de los gordos, al pie de la panadería. Genaro lo muele él mismo para la broa y los vigila como si fueran lingotes.', 'pensativo'),
+    { name: 'Sacos de millo', key: true, when: () => !flag('milloTrocado'), done: () => !milloAlcance(), r: [786, 426, 88, 66], at: [780, 505], face: 'R',
+      look: () => MA(flag('genaroDentro') ? 'Los sacos de maíz, solos. Genaro está dentro frotándose las manos. Es el momento.' : 'Sacos de maíz en grano, de los gordos, al pie de la panadería. Genaro lo muele él mismo para la broa y los vigila como si fueran lingotes.', 'pensativo'),
       act: async () => {
         setFlag('milloVisto');
         if (!flag('genaroDentro')) {
           await GE('Eh, eh! Iso non se toca, rapaz. É millo en gran, que moo eu para a broa. Ten máis valor ca o pan que levas na barriga.', 'enfadado');
-          return MA(milloPreciso() ? '(Con él delante, imposible. Tendría que entretenerlo un momento... y no dejar un hueco que se note.)' : 'Perdona, perdona. Solo miraba. Tampoco sabría qué hacer con un saco de maíz.', milloPreciso() ? 'pensativo' : 'avergonzado');
+          return MA(milloAlcance() ? '(Con él delante, imposible. Tendría que hacer que se meta dentro un momento. Con las manos de harina no toca nada sucio: si se las mancho, tendrá que ir a lavárselas.' + (hasItem('trapo') ? ' Y yo llevo encima un trapo con grasa de locomotora...)' : ' Algo con grasa, por ejemplo.)') : 'Perdona, perdona. Solo miraba. Tampoco sabría qué hacer con un saco de maíz.', milloAlcance() ? 'pensativo' : 'avergonzado');
         }
         if (!hasItem('serrin')) {
           await MA('Si me llevo un saco sin más, Genaro verá el hueco en cuanto salga. Necesito algo que ocupe su sitio: otro saco que pese lo mismo.', 'pensativo');
@@ -369,7 +380,7 @@ SCENES.panaderia = {
         return cambiazo();
       },
       use: { serrin: async () => { setFlag('milloVisto');
-        if (!flag('genaroDentro')) { await GE('Que fas cos meus sacos? Iso non se toca!', 'enfadado'); return MA(milloPreciso() ? '(Con él mirando, no. Primero tengo que mandarlo dentro con alguna excusa.)' : 'Nada, nada. Comparaba sacos. Es una afición.', 'avergonzado'); }
+        if (!flag('genaroDentro')) { await GE('Que fas cos meus sacos? Iso non se toca!', 'enfadado'); return MA(milloAlcance() ? '(Con él delante, imposible. Tendría que hacer que se meta dentro un momento. Con las manos de harina no toca nada sucio: si se las mancho, tendrá que ir a lavárselas.' + (hasItem('trapo') ? ' Y yo llevo encima un trapo con grasa de locomotora...)' : ' Algo con grasa, por ejemplo.)') : 'Nada, nada. Comparaba sacos. Es una afición.', 'avergonzado'); }
         return cambiazo(); } } },
     { name: 'Sacos de serrín', when: () => flag('milloTrocado') && !flag('estoupido'), r: [786, 426, 88, 66], at: [780, 505], face: 'R',
       act: () => MA('No los toco. Cuanto menos los mire, menos se nota. Silbando, Martín. Silbando.', 'avergonzado'),
@@ -378,7 +389,7 @@ SCENES.panaderia = {
       act: () => MA('Mejor no acercarme mucho a la escena del crimen. Dicen que el culpable siempre vuelve. Yo ya he vuelto dos veces.', 'avergonzado'),
       look: () => MA('El saco de serrín, abierto. Genaro ya ha descubierto el pastel. Bueno, la broa.', 'avergonzado') },
     { name: 'Panadería Estación', key: true, r: [724, 318, 70, 150], at: [705, 478], face: 'R',
-      act: () => flag('genaroDentro') ? MA('Genaro está dentro, peleándose con el horno. No es momento de pedir bollos.', 'pensativo') : genaroTalk(),
+      act: () => flag('genaroDentro') ? MA('Genaro está dentro, lavándose la grasa de las manos. No es momento de pedir bollos.', 'pensativo') : genaroTalk(),
       look: () => MA('La puerta de la panadería, blanca y con cristales empañados de calor. Huele a pan, a azúcar y a madrugón.', 'sonriente') },
     { name: 'Escaparate', r: [662, 318, 60, 130], look: () => MA('Bandejas de bollos, empanadas y pasteles detrás del cristal. Es un escaparate peligroso para un hombre que acaba de volver a casa con hambre atrasada.', 'risueno') },
     { name: 'Rótulo', r: [580, 236, 300, 82], look: () => MA('«PANADERIA ESTACIÓN». Sin tilde en panadería y con tilde en estación. Las prioridades de este barrio, por orden.', 'risueno') },
@@ -409,6 +420,7 @@ SCENES.panaderia = {
         crema: () => GE('Crema de agulletas? A min dóenme as costas de amasar, non as pernas. Pero grazas polo detalle.', 'aburrido'),
         xornal: () => GE('Xa o lin ás cinco. Antes ca Concha. Non llo digas, que me retira o saúdo.', 'riendo'),
         serrin: () => GE('Serrín? Para que o quero eu? Fago pan, non chourizos de feira. Lévao, lévao.', 'esceptico'),
+        trapo: () => genaroTrapo(),
         millo: () => GE('Ese saco... é igualiño ca os meus. Hoxe todo o mundo leva sacos. Moda nova.', 'dudoso'),
       } },
   ],
