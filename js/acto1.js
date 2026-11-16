@@ -325,10 +325,10 @@ async function davidPichichi() {
   await DA('A ver... sete horizontal: «Oito letras: o máximo goleador dunha liga». Pero isto é para nenos! PICHICHI!');
   await MA('¿Pichichi?', 'dudoso');
   await DA('Pichichi, home! O que máis goles mete na liga. E aquí o tes, diante de ti: o pichichi da liga pirata de Monforte. Vinte e dous goles nunha tempada.');
-  await MA('¿Veintidós? El otro día eran dieciocho.', 'esceptico');
+  await MA('¿Veintidós? Cuando me lo contabas en el instituto eran dieciocho.', 'esceptico');
   await DA('Daquela non contaba os de cabeza. Que tamén valen, eh!');
-  await MA('Y Xoán dirá que fueron doce y que llovía.', 'risueno');
-  await DA('Xoán contábaos cos dedos dunha man, e tiña frío. Cinco euros a que foron vinte e dous.');
+  await MA('¿Y quién llevaba la cuenta?', 'risueno');
+  await DA('Eu. E Xoán, o da estación, que di que foron doce. Xoán contábaos cos dedos dunha man, e tiña frío. Cinco euros a que foron vinte e dous.');
   await MA('Pichichi. Ocho letras. A Concha le va a encantar. Y a ti, contarlo.', 'sonriente');
   setFlag('sabePalabra'); toast('Xa tes a palabra que lle falta a Concha');
 }
@@ -470,8 +470,8 @@ async function davidTalk() {
       await DA('Contei algunha vez o meu gol ao Ourense, en Terceira?');
       await MA('Alguna vez. Alguna que otra.', 'esceptico');
       await DA('Un domingo de sol. Collo o balón, un, dous, tres rivais, o porteiro no chan... e dentro! A grada tolea.');
-      await MA('Xoán dice que fue un miércoles. Y que llovía.', 'risueno');
-      await DA('Xoán! Cinco euros a que era domingo. Cinco euros a que había sol. E outros cinco a que Xoán nin estaba.');
+      await MA('Cada vez que me lo cuentas, el sol pega más fuerte.', 'risueno');
+      await DA('Porque foi así! Aínda que Xoán, o da estación, anda dicindo que foi en mércores e chovendo. Cinco euros a que era domingo. Cinco a que había sol. E outros cinco a que Xoán nin estaba.');
       await MA('No apuesto contra un gol de Tercera. Esos goles crecen con los años, como los peces de los pescadores.', 'sonriente');
     }
     if (k === 'pichichi') await davidPichichi();
@@ -804,6 +804,7 @@ async function ducharse() {
   await MA('A ver si es verdad... Abro...', 'dudoso');
   await sleep(400);
   await MA('¡Agua! Y caliente. Eladio, perdóname todo lo que he pensado de ti.', 'entusiasmado');
+  await MA('Si sale por el grifo, sale por la ducha. Al baño, que está aquí al lado.', 'convencido');
   E.fadeTo = 1; await sleep(900);
   setFlag('duchado');
   E.fadeTo = 0; await sleep(500);
@@ -1053,7 +1054,7 @@ async function ventanilla(n) {
   if (!flag('eladioAusente')) {
     setFlag('eladioAusente');
     await MA('Ventanilla 1. Un cartel escrito a mano, pegado al cristal: «Volvo nun momento. Eladio». El ordenador encendido y la silla vacía.', 'esceptico');
-    await MA('Eladio. Ya nos conocemos. Es como un jefe final de videojuego, pero con sello.', 'risueno');
+    await MA('Eladio. No lo conozco, y ya sé que va a ser como un jefe final de videojuego, pero con sello.', 'risueno');
     await MA('El café de enfrente, seguro. Un «momento» de funcionario dura lo que dura un café con churros.', 'pensativo');
   } else await MA('«Volvo nun momento». El momento sigue siendo largo.', 'esceptico');
   toast('Pista: o café está á dereita da praza do Concello');
@@ -1118,13 +1119,13 @@ async function eladioCafe() {
   }
   for (;;) {
     const opts = [
-      { t: 'Es que sin agua no puedo ni fregar un vaso.', k: 'auga' },
+      { t: 'Es que sin agua no puedo ni ducharme. Y huelo a jabalí.', k: 'auga' },
       { t: '¿A qué hora vuelve, exactamente?', k: 'hora' },
       { t: '¿Qué tal el periódico?', k: 'xornal' },
       { t: 'Nada, que aproveche.', k: 'adeus' },
     ];
     const k = opts[await choose(opts)].k;
-    if (k === 'auga') { await EL('Pois beba auga embotellada, que é máis sa. Eu levo trinta anos neste concello e nunca bebín da billa.'); }
+    if (k === 'auga') { await EL('Xa o notei, xa. Pero un momento é un momento. Eu levo trinta anos neste concello e nunca me duchei antes das dúas.'); }
     if (k === 'hora') {
       await EL('Eu son home de horarios. Ás dúas en punto ficho a saída. Nin un minuto antes, nin un despois.');
       await EL('E antes de fichar, paso pola ventanilla a recoller a chaqueta. Pero agora son as dúas menos dez. Así que... un momento.');
@@ -1247,6 +1248,11 @@ async function eladioVentanilla() {
   await MA('(Un tal Nogal, preguntando por mi casa antes que yo. En Monforte hasta las casas tienen cola.)', 'pensativo');
   setFlag('aguaAlta'); setFlag('eladioNogal');
   await EL('Por certo: o reloxo do café adianta dez minutos. Debería denunciarse. Pero hoxe xa fichei.');
+  if (hasItem('desaparafusador') && flag('desapCafe')) {
+    await EL('E ese desaparafusador é do café de enfronte, que o coñezo eu. Déamo: xa llo devolvo eu, que lle debo un café.');
+    take('desaparafusador');
+    await MA('Devuelto. Bueno, devuelto a medias: de mano de Eladio, igual llega mañana.', 'risueno');
+  }
   await MA('¡Agua! Por hoy, bastante he hecho: llaves, contrato, Concello. A casa, que me espera una ducha.', 'aliviado');
   toast('Novo obxectivo: volver á Casa Juana e ducharse');
 }

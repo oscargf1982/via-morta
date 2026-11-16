@@ -73,11 +73,18 @@ async function conchaActo2() {
       ...(!flag('a2Candado') ? [{ t: '¿Sabes algo del candado nuevo de las cocheras del museo?', k: 'candado' }] : []),
       ...(flag('silbato2') && !hasItem('chave') && !flag('tallerAberto') ? [{ t: '¿Me dejas la llave del taller de atrás?', k: 'chave' }] : []),
       ...(flag('silbato2') && flag('chaveNovidade') && !hasItem('chave') && !flag('tallerAberto') ? [{ t: 'Te traigo una noticia que no sabe nadie.', k: 'detalle' }] : []),
+      ...((flag('sombraPatio') || flag('sombraVista')) && !flag('conchaSombra') ? [{ t: 'El lunes vi una sombra saltar el muro de mi patio.', k: 'sombra' }] : []),
       ...(!hasItem('ositos') ? [{ t: 'Una bolsa de ositos, de los de siempre.', k: 'ositos' }] : []),
       ...(!hasItem('xornal') ? [{ t: 'El periódico de hoy, por favor.', k: 'xornal' }] : []),
       { t: 'Hasta luego, Concha.', k: 'adeus' },
     ];
     const k = opts[await choose(opts)].k;
+    if (k === 'sombra') {
+      setFlag('conchaSombra');
+      await CO('Unha sombra? No muro da casa roxa? Ai, iso non o sabía.');
+      await CO('Pero unha sombra non é unha novidade, Martiño: é media. A novidade é de quen é a sombra. Cando o saibas, vés e cóntasmo.');
+      await MA('Concha no quiere rumores: quiere nombres. Y yo, de momento, solo tengo un muro.', 'pensativo');
+    }
     if (k === 'conto') {
       if (!flag('objValerio')) {
         await CO('Que se conta? Pois que Valerio, o da Farmacia de la Estación, preguntou por ti. Aí arriba, en Calvo Sotelo, saíndo por detrás do meu quiosco. Que pases, que non che cobra.');
@@ -91,7 +98,7 @@ async function conchaActo2() {
         await MA('¿Quién me ha visto? ¡Si eran las tantas!', 'avergonzado');
         await CO('En Monforte sempre hai alguén mirando. Eu non. Eu só escoito.');
       } else {
-        await CO('Que se conta? Que o martes hai Champions e Demetrio xa anda contando o gol ao Ourense para quentar.');
+        await CO('Que se conta? Que esta noite hai Champions e Demetrio xa anda contando o gol ao Ourense para quentar.');
         await CO(flag('valerioFeito') && flag('andresFeito') ? 'Xa viches a Valerio e a Andrés? Ben. Agora á Fraternal, que Demetrio gárdache o tamborete.' : 'E non te esquezas de Valerio e de Andrés, que despois a culpa é miña.');
       }
     }
@@ -673,11 +680,14 @@ async function xoanChampions() {
     const opts = [
       ...(!flag('xoanCandado') ? [{ t: 'Esta mañana había un candado nuevo en las cocheras del museo.', k: 'candado' }] : []),
       { t: '¿Cómo te acuerdas de la fecha de un gol de Tercera?', k: 'memoria' },
+      ...(flag('carbonRoubado') && !flag('xoanCarbon') ? [{ t: 'En el Fluvial alguien le roba carbón a Andrés... y se lo paga.', k: 'carbon' }] : []),
+      ...((flag('sombraPatio') || flag('sombraVista')) && !flag('xoanSombra') ? [{ t: 'El lunes vi una sombra saltar el muro de mi patio.', k: 'sombra' }] : []),
       { t: 'Nada, Xoán. A ver el partido.', k: 'adeus' },
     ];
     const k = opts[await choose(opts)].k;
     if (k === 'candado') {
-      await XO('Un candado? Nas cocheras? Cousas de Adif, ou do museo. Eu son de Renfe: de candados sei o xusto para non perder o tren.');
+      if (flag('xoanCandadoV')) await XO('Xa mo preguntaches esta mañá, Martín. E esta mañá tampouco sabía nada. Os candados non me deixan durmir... digo, non me quitan o sono.');
+      else await XO('Un candado? Nas cocheras? Cousas de Adif, ou do museo. Eu son de Renfe: de candados sei o xusto para non perder o tren.');
       await XO('Por certo: ese gol de Demetrio foi de rebote. Non llo digas, que me cobra os cinco euros igual.');
       await MA('(Ha cambiado de tema más rápido que un cambio de agujas.)', 'dudoso');
       setFlag('xoanCandado');
@@ -686,8 +696,24 @@ async function xoanChampions() {
       await XO('As datas son coma os horarios: se as aprendes ben unha vez, xa non marchan.');
       await XO('Ademais, chovía. Os días de choiva acórdanse mellor. Pregúntalle a calquera galego.');
     }
+    if (k === 'carbon') {
+      setFlag('xoanCarbon');
+      await XO('Carbón? Do de pedra?');
+      await MA('(Se le ha ido el mosto por el otro lado. Tose como una locomotora con el tiro sucio.)', 'dudoso');
+      await XO('Iso... será para unha cociña de leña. Ou para un afiador. Hai xente moi antiga en Monforte. E moi honrada.');
+      await MA('Nadie ha dicho que fuera honrado, Xoán. Lo he dicho yo, y tú lo has adivinado.', 'esceptico');
+      await XO('Gol! Ai, non. Era a repetición.');
+    }
+    if (k === 'sombra') { setFlag('xoanSombra'); await xoanSombra(); }
     if (k === 'adeus') { await XO('Iso. E non apostes con Demetrio, que paga en goles.'); return; }
   }
+}
+/* a sombra do muro (Acto 1: «Mañana pregunto»): Xoán é a sombra, e ponse nervioso */
+async function xoanSombra() {
+  await XO('Unha sombra? Serán os gatos da gasolineira. Son moi grandes. Moi... altos.');
+  await MA('¿Gatos altos? ¿Con zapatos?', 'esceptico');
+  await XO('En Monforte os gatos van ben calzados. Hai moita humidade.');
+  await MA('(Y se ha mirado los zapatos. Dos veces.)', 'pensativo');
 }
 async function sairChampions() {
   if (flag('teleAcesa')) return fimChampions();
@@ -884,7 +910,7 @@ async function cadernoMartin() {
 <p><b>Pregunta:</b> ¿quién era Xosé N.? Y ¿quién, en el depósito, tiene tanto interés en él?</p>`);
   await MA('Un aprendiz que se hizo maquinista. Una fecha. Grasa del depósito. Y un silbato que llama a esta casa.', 'pensativo');
   await MA('Mañana, Xoán. Él se sabe todas las fechas de Monforte. A ver si se sabe esta.', 'dudoso');
-  setFlag('fimActo2');
+  delete E.flags._pista; setFlag('fimActo2');   // a nota de pista do taller xa non serve no Acto 3
   await showDoc('<h4>FIN DO ACTO 2 · «O reencontro»</h4><p>Valerio, Andrés, a Champions con Demetrio... e un taller que alguén visita sen chave, cun nome a medias e unha data gravada no piar.</p>');
   if (typeof inicioActo3 === 'function') await inicioActo3();   // js/acto3.js
 }
@@ -1015,13 +1041,14 @@ SCENES.vigasA2 = {
       const opts = [
         { t: '¿De verdad no has oído el silbato?', k: 'asubio' },
         ...(!flag('xoanCandadoV') ? [{ t: 'En las cocheras del museo hay un candado nuevo.', k: 'candado' }] : []),
+        ...((flag('sombraPatio') || flag('sombraVista')) && !flag('xoanSombra') ? [{ t: 'El lunes vi una sombra saltar el muro de mi patio.', k: 'sombra' }] : []),
         { t: '¿Qué cuenta ese mural?', k: 'mural' },
         { t: 'Me voy, que tengo cosas que hacer.', k: 'adeus' },
       ];
       const k = opts[await choose(opts)].k;
       if (k === 'asubio') {
         await XO('Oíno. Coma todo o barrio. Pero eu durmo con tapóns, e cos tapóns todo soa a vento.');
-        await MA('Valerio vende tapones. Qué casualidad, otra vez.', 'esceptico');
+        await MA(flag('valerioSauda') ? 'Tapones. Como los que vende Valerio en la farmacia. Qué casualidad.' : 'Con tapones. Qué casualidad: justo hoy.', 'esceptico');
         await XO('Monforte é pequeno. As casualidades veñen en fila.');
       }
       if (k === 'candado') {
@@ -1029,6 +1056,7 @@ SCENES.vigasA2 = {
         await MA('(Para alguien que se sabe el ancho del vestíbulo en baldosas, hoy sabe muy poco.)', 'dudoso');
         setFlag('xoanCandadoV');
       }
+      if (k === 'sombra') { setFlag('xoanSombra'); await xoanSombra(); }
       if (k === 'mural') await XO('O mural? 1954, Inchaurbe, Monforte no medio. Ese si que non cambia. Por iso me gusta.');
       if (k === 'adeus') { await XO('Vai, vai. E de noite, pecha ben a fiestra. Polo vento.'); return; }
     }
