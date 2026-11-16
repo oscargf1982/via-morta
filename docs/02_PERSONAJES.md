@@ -114,6 +114,7 @@
 - **Voz:** «Hai noites que mellor non lembrar.»
 
 ## Remedios (cocheras del museo)
+- **Aspecto (dibujo de Oscar, `assets/personajes/remedios-hoja.png`):** pelo gris recogido, gafas de soldar subidas en la frente y gafas de ver redondas, mono azul con las mangas remangadas y camiseta clara debajo, zapatillas de casa de cuadros; gesto serio, una mano en la cadera. Sprite `img/remedios-sprite.png` (0 parada, 1 hablando) y retrato `img/remedios-face.png`, con `tools/sprite-remedios.py`. Solo hay una vista: **faltan de espaldas, perfil y andar** si tiene que moverse (Actos 4 y 5).
 - Jubilada del depósito y soldadora; de joven le enseñó a soldar a Pepe. Lleva la lista de piezas de la restauración.
 - Sabe la frase de la carta de Xosé que cambia el Acto 4: «Deixeino onde se moven as correas, na casa onde aprendín o oficio».
 
