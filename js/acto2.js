@@ -10,8 +10,8 @@
    ========================================================== */
 const VA = t => say('Valerio', t);
 const AN = t => say('Mega Andrés', t);
-const GE = t => say('Genaro', t);
-const GE4 = t => say('Genaro (a ti)', t);   // cuarta parede: fala ao xogador, non a Martín
+const GE = (t, m) => say('Genaro', t, m);
+const GE4 = (t, m) => say('Genaro (a ti)', t, m);   // cuarta parede: fala ao xogador, non a Martín
 Object.assign(PORTRAIT_COLORS, { 'Valerio': '#9fe0b0', 'Mega Andrés': '#ffd27a', 'Genaro': '#f4d9a0', 'Genaro (a ti)': '#f4d9a0' });
 
 /* ---------- obxectos novos ---------- */
@@ -25,7 +25,11 @@ Object.assign(ITEMS, {
 });
 
 /* Valerio e Mega Andrés: sprites das follas de Oscar (tools/sprite-valerio.py e tools/sprite-andres.py). */
-Object.assign(PORTRAITS, { 'Valerio': 'img/valerio-face.png', 'Mega Andrés': 'img/andres-face.png', 'Genaro': 'img/genaro-face.png', 'Genaro (a ti)': 'img/genaro-face.png' });
+Object.assign(PORTRAITS, { 'Valerio': 'img/valerio-face.png', 'Mega Andrés': 'img/andres-face.png', 'Genaro': 'img/genaro/sonriente.webp', 'Genaro (a ti)': 'img/genaro/guino.webp' });
+/* expresións de Genaro (folla de Oscar, tools/expresiones-genaro.py): o retrato cambia segundo a frase */
+const GENARO_EXP = ['sonriente', 'hablando', 'explicando', 'brazos-cruzados', 'pensativo', 'oh', 'riendo', 'triste', 'enfadado', 'asustado', 'preocupado', 'aburrido',
+  'gritando-enfadado', 'rascandose', 'guino', 'dudoso', 'rezando', 'celebrando', 'neutro', 'esceptico', 'resignado', 'gritando', 'contento', 'serio'];
+PORTRAIT_MOODS['Genaro'] = PORTRAIT_MOODS['Genaro (a ti)'] = Object.fromEntries(GENARO_EXP.map(e => [e, `img/genaro/${e}.webp`]));
 
 /* ---------- C2 · cinemática da primeira quenda (martes) ----------
    js/cinematica2.js (CINE2), guion A «Primeira quenda»: a Mikado ao amencer, a xornada diante das cocheras,
@@ -181,16 +185,16 @@ async function conchaChaveTaller() {
    Genaro, o panadeiro (folla de Oscar, tools/sprite-genaro.py), vende os pasteis de crema que Valerio pide pola crema de agulletas. */
 async function genaroTalk() {
   if (!flag('genaroSauda')) {
-    await GE('Bo día! Ti es o da casa roxa. Non mo digas: Concha. Pasou ás oito a por unha barra e contoume a túa vida en tres minutos. A barra levouna sen cortar, de tanto que falaba.');
+    await GE('Bo día! Ti es o da casa roxa. Non mo digas: Concha. Pasou ás oito a por unha barra e contoume a túa vida en tres minutos. A barra levouna sen cortar, de tanto que falaba.', 'hablando');
     await MA('En Monforte las noticias llegan antes que el pan.', 'risueno');
-    await GE('O pan sae ás sete. As novidades, ás seis. Eu érguome ás catro: son o primeiro en sabelo todo e o último en contalo.');
+    await GE('O pan sae ás sete. As novidades, ás seis. Eu érguome ás catro: son o primeiro en sabelo todo e o último en contalo.', 'sonriente');
     setFlag('genaroSauda');
-  } else await GE(flag('valerioFeito') ? 'Que, chegaron os pasteis enteiros á farmacia? Non me mintas, que coñezo a Valerio.' : flag('valerioDoce') && !hasItem('pasteis') ? 'Xa sei a que vés. Cheirábache a crema dende a farmacia, eh?' : 'Outra vez por aquí? Iso é que te chamou o cheiro.');
+  } else await GE(flag('valerioFeito') ? 'Que, chegaron os pasteis enteiros á farmacia? Non me mintas, que coñezo a Valerio.' : flag('valerioDoce') && !hasItem('pasteis') ? 'Xa sei a que vés. Cheirábache a crema dende a farmacia, eh?' : 'Outra vez por aquí? Iso é que te chamou o cheiro.', 'brazos-cruzados');
   if (flag('genaroCuarta') && flag('valerioDoce') && !flag('valerioFeito') && !hasItem('pasteis') && !flag('genaroCuarta2')) {   // segunda e última chiscadela ao xogador
     setFlag('genaroCuarta2'); E.cuartaT0 = E.t; SFX.music(null);
     try {
-      await GE4('Psst. Ti outra vez. Martín vén a por pasteis e aínda non sabe como pedilos. Ti si.');
-      await GE4('Non lle digas que cho dixen. Os protagonistas son moi susceptibles.');
+      await GE4('Psst. Ti outra vez. Martín vén a por pasteis e aínda non sabe como pedilos. Ti si.', 'gritando');
+      await GE4('Non lle digas que cho dixen. Os protagonistas son moi susceptibles.', 'guino');
     } finally { E.cuartaT0 = null; SFX.music(E.scene.music); }
   }
   for (;;) {
@@ -205,48 +209,48 @@ async function genaroTalk() {
     ];
     const k = opts[await choose(opts)].k;
     if (k === 'bo') {
-      await GE('Bolla de manteiga, empanada de raxo e pasteis de crema. Os de crema voan: Valerio, o da farmacia, lévame tres cada tarde.');
-      await GE('«Para os clientes», di. Os clientes non os viron nunca.');
+      await GE('Bolla de manteiga, empanada de raxo e pasteis de crema. Os de crema voan: Valerio, o da farmacia, lévame tres cada tarde.', 'explicando');
+      await GE('«Para os clientes», di. Os clientes non os viron nunca.', 'esceptico');
       await MA('Valerio... ya robaba los caramelos de eucalipto de su padre en el instituto. Hay vocaciones que no se pierden.', 'risueno');
       if (!flag('valerioDoce')) await MA('(Y yo con hambre. Pero si me compro pasteles sin motivo, me los como por el camino.)', 'pensativo');
       setFlag('genaroPasteis');
     }
     if (k === 'mercar') {
-      await GE('Tres de crema... Iso é o pedido de Valerio. Mandoute el, non? Ese home non pide favores: pide peaxes.');
+      await GE('Tres de crema... Iso é o pedido de Valerio. Mandoute el, non? Ese home non pide favores: pide peaxes.', 'dudoso');
       await MA('Me cobra la crema de agujetas en crema pastelera.', 'esceptico');
-      await GE('Crema por crema. E logo din que en Monforte non hai economía circular. Tres euros.');
-      await GE('Vanche en bandexa, que se os levas na man chegan á farmacia feitos marmelada.');
+      await GE('Crema por crema. E logo din que en Monforte non hai economía circular. Tres euros.', 'riendo');
+      await GE('Vanche en bandexa, que se os levas na man chegan á farmacia feitos marmelada.', 'hablando');
       give('pasteis'); setFlag('genaroPasteis');
       await MA('Tres euros. El peaje más dulce de toda la calle Calvo Sotelo.', 'sonriente');
-      await GE('Obxecto conseguido: «Pasteis de Valerio». Agora lévallos antes de que se che crucen pola cabeza. Hai xogos nos que comerte o obxecto da misión é o final malo.');
+      await GE('Obxecto conseguido: «Pasteis de Valerio». Agora lévallos antes de que se che crucen pola cabeza. Hai xogos nos que comerte o obxecto da misión é o final malo.', 'celebrando');
     }
     if (k === 'obras') {
-      await GE('Tres semanas leva así. Abriron a rúa para cambiar as tubaxes e atoparon debaixo outras tubaxes máis vellas. E debaixo desas, outras.');
-      await GE('Agora non saben se arranxar a rúa ou chamar a un arqueólogo.');
+      await GE('Tres semanas leva así. Abriron a rúa para cambiar as tubaxes e atoparon debaixo outras tubaxes máis vellas. E debaixo desas, outras.', 'aburrido');
+      await GE('Agora non saben se arranxar a rúa ou chamar a un arqueólogo.', 'resignado');
       await MA('Monforte por capas. Como un milhojas.', 'risueno');
-      await GE('Non me deas ideas, que mañá fago milfollas «da obra» e véndoos ao dobre.');
+      await GE('Non me deas ideas, que mañá fago milfollas «da obra» e véndoos ao dobre.', 'riendo');
     }
     if (k === 'sevende') {
-      await GE('Foi unha mercería, hai moitos anos. O cartel leva aí tanto tempo que xa non o le ninguén. Algún turista fíxolle unha foto: pensaba que era arte.');
+      await GE('Foi unha mercería, hai moitos anos. O cartel leva aí tanto tempo que xa non o le ninguén. Algún turista fíxolle unha foto: pensaba que era arte.', 'triste');
       await MA('Calle arriba, «Se aluga». Aquí, «Se vende». Monforte está de rebajas.', 'pensativo');
-      await GE('Se o mercas ti, fágoche desconto no pan. Un veciño máis é un cliente máis. E un cliente máis, en Calvo Sotelo, é case unha festa.');
+      await GE('Se o mercas ti, fágoche desconto no pan. Un veciño máis é un cliente máis. E un cliente máis, en Calvo Sotelo, é case unha festa.', 'contento');
     }
     if (k === 'asubio') {
-      await GE('Ás catro da mañá, en Monforte, estamos o forno, eu, os gatos... e ese asubío do que fala todo o mundo. Hai noites que o oio e noites que non.');
+      await GE('Ás catro da mañá, en Monforte, estamos o forno, eu, os gatos... e ese asubío do que fala todo o mundo. Hai noites que o oio e noites que non.', 'serio');
       await MA('¿Y no te pica la curiosidad?', 'dudoso');
-      await GE('A min pícame a masa, se leveda ou non leveda. O demais, se ten que saír, sae coma o pan: á súa hora.');
+      await GE('A min pícame a masa, se leveda ou non leveda. O demais, se ten que saír, sae coma o pan: á súa hora.', 'pensativo');
     }
     if (k === 'xogos') {   // dato de Oscar (16-11-2026): Genaro é moi afeccionado aos videoxogos e platina todo
-      await GE('Xogar. Aventuras gráficas, sobre todo: das de apuntar e premer. E platínoas todas. Todas. Ata as que non teñen platino: póñoo eu.');
+      await GE('Xogar. Aventuras gráficas, sobre todo: das de apuntar e premer. E platínoas todas. Todas. Ata as que non teñen platino: póñoo eu.', 'celebrando');
       await MA('¿Platinar? ¿Eso no es cosa de joyeros?', 'dudoso');
-      await GE('É conseguilo todo, rapaz. Mirar cada cousa, falar con cada un, probar cada obxecto con cada porta. Coma ti, que entraches nesta rúa mirando ata a tapa do sumidoiro.');
+      await GE('É conseguilo todo, rapaz. Mirar cada cousa, falar con cada un, probar cada obxecto con cada porta. Coma ti, que entraches nesta rúa mirando ata a tapa do sumidoiro.', 'explicando');
       await MA('Es que en esta calle cada cosa tiene su historia.', 'pensativo');
-      await GE('Iso din todos os protagonistas. Consello de xogador vello: se alguén che pide algo raro, é que xa o viches noutra pantalla. Os bos xogos non fan trampas.');
-      await GE('E se te atascas, nada de mirar a solución no móbil. Vés aquí, mércasme unha bolla e pensamos xuntos. A bolla axuda.');
+      await GE('Iso din todos os protagonistas. Consello de xogador vello: se alguén che pide algo raro, é que xa o viches noutra pantalla. Os bos xogos non fan trampas.', 'hablando');
+      await GE('E se te atascas, nada de mirar a solución no móbil. Vés aquí, mércasme unha bolla e pensamos xuntos. A bolla axuda.', 'sonriente');
       await MA('Un panadero que platina la vida. Me lo apunto en el cuaderno. Literalmente.', 'risueno');
       if (!flag('genaroCuarta')) { setFlag('genaroCuarta'); await genaroCuartaParede(); }
     }
-    if (k === 'adeus') { await GE('Vai, e mira por onde pisas: entre as vallas e as tapas, esta rúa é unha carreira de obstáculos.'); return; }
+    if (k === 'adeus') { await GE('Vai, e mira por onde pisas: entre as vallas e as tapas, esta rúa é unha carreira de obstáculos.', 'contento'); return; }
   }
 }
 /* idea de Oscar (16-11-2026): Genaro rompe a cuarta parede unha vez. Vira a cara ao xogador (cela 6, de fronte)
@@ -255,25 +259,27 @@ async function genaroCuartaParede() {
   const G = SCENES.panaderia.npcs.find(n => n.id === 'genaro'), idle = G.idle, tf = G.talkFrames, fl = G.flip;
   G.idle = 6; G.talkFrames = [6, 7]; G.flip = false; SFX.music(null); E.cuartaT0 = E.t;
   try {
-    await GE4('...');
-    await GE4('Ti. Si, ti. O do outro lado da pantalla. Martín non me oe: está moi ocupado cos seus xemelgos.');
-    await GE4('Se estás falando cun panadeiro en vez de ir á farmacia, xa sei que es dos meus: dos que platinan.');
-    await GE4('Un consello entre nós: mantén o dedo premido sobre as cousas, ou dálles co botón dereito. Aquí todo ten algo que dicir. Ata a reixa.');
-    await GE4('E cando remates o xogo, volve a esta rúa. Non hai trofeo. Pero eu sabereino.');
+    await GE4('...', 'serio');
+    await GE4('Ti. Si, ti. O do outro lado da pantalla. Martín non me oe: está moi ocupado cos seus xemelgos.', 'guino');
+    await GE4('Se estás falando cun panadeiro en vez de ir á farmacia, xa sei que es dos meus: dos que platinan.', 'riendo');
+    await GE4('Un consello entre nós: mantén o dedo premido sobre as cousas, ou dálles co botón dereito. Aquí todo ten algo que dicir. Ata a reixa.', 'explicando');
+    await GE4('E cando remates o xogo, volve a esta rúa. Non hai trofeo. Pero eu sabereino.', 'esceptico');
   } finally { G.idle = idle; G.talkFrames = tf; G.flip = fl; E.cuartaT0 = null; SFX.music(E.scene.music); }
   await MA('¿Con quién hablas, Genaro?', 'dudoso');
-  await GE('Cos gatos. Ás catro da mañá fálolles moito. Hoxe adianteime.');
+  await GE('Cos gatos. Ás catro da mañá fálolles moito. Hoxe adianteime.', 'rascandose');
 }
 SCENES.panaderia = {
   name: 'Rúa Calvo Sotelo · Panadería Estación', bg: 'img/bg-panaderia.jpg', music: 'estacion', floor: 'pedra',
   walk: [[660, 540], [960, 540], [960, 524], [800, 480], [700, 454], [600, 430], [520, 406], [440, 378], [360, 350], [326, 340], [352, 356], [412, 386], [470, 420], [512, 450], [570, 490]],
   scale: [330, 0.03, 540, 0.58], actorH: 300, start: [452, 386], minSpeed: 0.5,
+  onEnter() { for (const e of GENARO_EXP) img(`img/genaro/${e}.webp`); },   // precarga as expresións (24 × ~15 KB)
   // cuarta parede: a rúa escurece e Genaro aparece en primeiro plano, de fronte, mirando ao xogador
   drawFront(c, t) {
     if (E.cuartaT0 == null) return;
     const k = Math.min(1, (t - E.cuartaT0) / 0.6), talking = E.dlg && E.dlg.who === 'Genaro (a ti)' && E.dlg.shown < E.dlg.text.length;
     c.save(); c.fillStyle = `rgba(10,8,6,${0.72 * k})`; c.fillRect(0, 0, W, H); c.globalAlpha = k;
-    drawSprite('img/genaro-sprite.png', talking && Math.floor(t * 6) % 2 ? 7 : 6, 480, 890 + (1 - k) * 60, 920, false, { cw: 160, ch: 280, cols: 8 });
+    const mood = (E.dlg && E.dlg.who === 'Genaro (a ti)' && E.dlg.mood) || 'serio', im = img(`img/genaro/${mood}.webp`), sz = 430;
+    if (im) c.drawImage(im, 480 - sz / 2, 395 - sz + (1 - k) * 40 + (talking ? Math.abs(Math.sin(t * 9)) * 3 : 0), sz, sz);
     c.restore();
   },
   front: [
@@ -312,10 +318,10 @@ SCENES.panaderia = {
       look: () => MA('El panadero, en la puerta, con el gorro, el mandil y harina hasta en las cejas. Tiene cara de haberse levantado a las cuatro y de no arrepentirse.', 'sonriente'),
       talk: () => genaroTalk(),
       give: {
-        ositos: () => GE('Ositos? Na miña panadería? Iso é coma levarlle leña ao monte. Gárdaos, rapaz.'),
-        pasteis: () => GE('Non, non: xa están pagados. O que sae pola porta non volve, que despois tráenme pasteis chuchados.'),
-        crema: () => GE('Crema de agulletas? A min dóenme as costas de amasar, non as pernas. Pero grazas polo detalle.'),
-        xornal: () => GE('Xa o lin ás cinco. Antes ca Concha. Non llo digas, que me retira o saúdo.'),
+        ositos: () => GE('Ositos? Na miña panadería? Iso é coma levarlle leña ao monte. Gárdaos, rapaz.', 'oh'),
+        pasteis: () => GE('Non, non: xa están pagados. O que sae pola porta non volve, que despois tráenme pasteis chuchados.', 'brazos-cruzados'),
+        crema: () => GE('Crema de agulletas? A min dóenme as costas de amasar, non as pernas. Pero grazas polo detalle.', 'aburrido'),
+        xornal: () => GE('Xa o lin ás cinco. Antes ca Concha. Non llo digas, que me retira o saúdo.', 'riendo'),
       } },
   ],
 };
