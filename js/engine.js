@@ -593,7 +593,7 @@ function renderDlg() {
   const D = E.dlg, el = $('dlg');
   if (!D) { el.hidden = true; el._k = null; el._d = null; return; }
   el.hidden = false;
-  const who = D.choices ? 'Martín' : D.who, por = PORTRAITS[who] ? (who === 'Martín' ? `img/mf-${D.mood || 'neutro'}.png` : PORTRAITS[who]) : null;
+  const who = D.choices ? 'Martín' : D.who, por = PORTRAITS[who] ? (who === 'Martín' ? `img/mf-${D.mood || 'neutro'}.png` : (D.mood && PORTRAIT_MOODS[who] && PORTRAIT_MOODS[who][D.mood]) || PORTRAITS[who]) : null;
   const key = who + '|' + (D.mood || '') + '|' + (D.choices ? 'C' : '') + '|' + Math.floor(D.shown) + '|' + D.text.length;
   // _d: dous menús seguidos poden dar a mesma clave; sen isto quedaban os botóns do menú anterior
   if (el._k === key && el._d === D) return; el._k = key; el._d = D;
