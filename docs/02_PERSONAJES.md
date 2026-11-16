@@ -111,6 +111,8 @@
 - **Abuelo de Mega Andrés**, que lo cuida. Cree que su nieto no sabe nada del 58 y le pide a Martín que no le diga que lo vio en las cocheras.
 - Ahora es uno de los jubilados que restauran la Mikado. En la vía muerta lo cuenta delante de todos.
 - **Voz:** «Hai noites que mellor non lembrar.»
+- **Aspecto (dibujo de Oscar del 16-11-2026):** gorra de visera azul oscura con botón dorado, pelo y bigote blancos, camisa clara, chaleco verde oscuro, chaqueta y pantalón marrones, zapatos oscuros, bastón de madera en la mano derecha y la izquierda en el bolsillo.
+- **Recursos gráficos:** dibujo de Oscar `assets/personajes/anxo-hoja.png` → `img/anxo-sprite.png` (celdas 160×280, 8 columnas: 0 parado, 1 hablando; mira a la derecha, `flip: true` para que mire a la izquierda) y retrato `img/anxo-face.png`, con `python3 tools/sprite-anxo.py`. Solo hay una vista: faltan espalda, perfil y andar con el bastón (no se inventan).
 
 ## Remedios (cocheras del museo)
 - Jubilada del depósito y soldadora; de joven le enseñó a soldar a Pepe. Lleva la lista de piezas de la restauración.
