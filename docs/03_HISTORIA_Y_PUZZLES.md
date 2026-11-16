@@ -22,8 +22,8 @@ Todo es ficción sobre personajes inventados. De la venta de 1952 y de sus prota
 2. **1952.** Se vende la maquinaria (dato real). Xosé se queda sin oficio y entra en Renfe, en el depósito («Xosé entra en Renfe. Sorte, rapaz»).
 3. **Años 50.** En el depósito reconoce un motor Siemens viejo: el de su taller. Le graba «A.F.G.» a navaja. **Cómo llegó el motor al depósito no se cuenta nunca**: nadie lo sabe, y Martín no se lo inventa.
 4. **14-I-1958.** La noche del mercancías sin frenos. Le echan la culpa.
-5. **Antes de emigrar a Suiza**, esconde el parte en el 7.º soporte de la transmisión de la casa (los soportes siguen anclados a las vigas aunque las poleas se vendieran), suelda la tapa y graba «14-I-1958» bajo su «X. N. 1949», con la misma letra, temblando. Al pasar en tren por delante de la casa, silbaba dos largos y uno corto para saludar a su taller.
-6. **Su carta** («Deixeino onde se moven as correas, na casa onde aprendín o oficio») confunde a Xoán: cree que se refiere al motor del depósito y lleva meses buscando allí. Entra en el taller de la casa por la ventana (la sombra negra) porque allí aprendió su abuelo, pero no cae en el soporte soldado. Por eso le consigue la casa al maquinista nuevo y le silba.
+5. **Antes de emigrar a Suiza**, esconde el parte en el 7.º soporte de la transmisión de la casa (los soportes siguen anclados a las vigas aunque las poleas se vendieran), atornilla la tapa, suelda la cabeza de los cuatro tornillos y graba «14-I-1958» bajo su «X. N. 1949», con la misma letra, temblando. Al pasar en tren por delante de la casa, silbaba dos largos y uno corto para saludar a su taller.
+6. **Su carta** («Deixeino onde se moven as correas, na casa onde aprendín o oficio») confunde a Xoán: cree que se refiere al motor del depósito y lleva meses buscando allí. Entra en el taller de la casa por la ventana (la sombra negra) porque allí aprendió su abuelo, pero no cae en el soporte de los tornillos soldados. Por eso le consigue la casa al maquinista nuevo y le silba.
 7. **Lo que va descubriendo el jugador:** Acto 2, Xosé, la fecha, el intruso del depósito y el soporte; Acto 3, el motor «A.F.G.» («el motor del taller de Xosé... aquí, donde trabajaba él») y el candado 1401; Acto 4, Martín entiende que «onde se moven as correas» es su casa y saca el parte; Acto 5, Xoán cuenta quién es y Concha reconoce el silbido de Xosé.
 
 ## 2. Mapa de escenarios (Monforte real)
@@ -38,7 +38,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 | A3 Praza da Estación | A2, A4, A7, mapa | **Quiosco de Dona Concha** |
 | A4 Rúa Doutor Casares (exterior de la Casa Juana, gasolinera) | A3, A5 | La casa roja, el n.º 211 |
 | A5 Casa Juana: salón, cocina, dormitorio | A4, A6 | Interiores (fondos de la demo). El balcón mira al depósito |
-| A6 Patio y taller viejo (2 vistas: nave y vigas) | A5 | Fotos reales del taller. El 7.º soporte |
+| A6 Patio y taller viejo (2 vistas: nave y vigas) | A5 | Ilustraciones de Oscar (interior y parte de arriba). El 7.º soporte |
 | A7 Depósito: exterior de las cocheras del museo | A3, A8, A9 | Carril engrasado, huellas, candado nuevo |
 | A8 Cocheras: interior con la Mikado y el motor Siemens tapado | A7 | Pizarra, motor «A.F.G.», cabina |
 | A9 A Barreira, la vía muerta (ficción) | A7 (en tren) | Final del Acto 5 |
@@ -104,7 +104,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
    - **Foto de 1949** (objeto `foto1949`): «O señor Alfredo cos aprendices, 1949. Pepe, Manolo, Xosé N.» y, con otra letra, «Xosé entra en Renfe. Sorte, rapaz». El aprendiz de la carpintería se hizo ferroviario. *Uso:* en el Acto 3 se le enseña a Xoán.
    - **Grabado a navaja en el pilar** (con el ollo): «X. N. 1949» y, con la misma letra pero temblando (Xosé, nueve años después), «14-I-1958», la fecha de la cinemática. *Uso:* el **candado nuevo de las cocheras es de combinación: 1401** (Acto 3).
    - **Huellas** (con el ollo) que vienen del muro del patio, por donde salta la sombra, hasta el pilar del 7.º soporte, y al final un **trapo con grasa de locomotora** (objeto `trapo`): quien entra viene del depósito. Es Xoán, la sombra negra que salta el muro (decidido por Oscar): mira la transmisión sin entender la frase de su abuelo. *Uso:* en el Acto 3, la grasa que falta del almacén.
-   - **El 7.º soporte, con la tapa soldada.** Ni la navaja puede. Se abre en el Acto 4.
+   - **El 7.º soporte: tapa de cuatro tornillos con un punto de soldadura en cada cabeza.** Ni la navaja ni el destornillador pueden. Se abre en el Acto 4.
    - La **escritura n.º 375 (1952)** (datos reales) y las marcas de pernos quedan como decorado opcional: ya no hacen falta para terminar el acto.
    - Con las cuatro pistas, Martín escribe en su cuaderno lo que sabe (Xosé N., la fecha, alguien del depósito, el soporte) y la pregunta: ¿quién era Xosé N.? **Fin del acto.**
 
@@ -142,7 +142,7 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 4. **El parte.**
    - Al entregar la válvula, Remedios recuerda la frase de la carta de Xosé: «**Deixeino onde se moven as correas, na casa onde aprendín o oficio**». Xoán lleva meses buscando en el motor del depósito sin encontrar nada.
    - Martín lo entiende: las correas se movían primero **en su casa**.
-   - De vuelta al taller (A6), usa la herramienta que le presta Remedios (o la navaja) sobre el 7.º soporte y saca la **lata de tabaco**. Al combinarla con la navaja sale el **parte del 14 de enero de 1958**: freno automático a 3 kg (el mínimo es 5), «Reparación denegada», «Para quen veña buscar. X. N.».
+   - De vuelta al taller (A6), salta los puntos de soldadura de los tornillos con la **piqueta de soldador** que le presta Remedios, desatornilla la tapa del 7.º soporte y saca la **lata de tabaco**. Al combinarla con la navaja sale el **parte del 14 de enero de 1958**: freno automático a 3 kg (el mínimo es 5), «Reparación denegada», «Para quen veña buscar. X. N.».
    - **Xoán llega.** «Esa letra...». Promete contarlo todo el sábado.
 5. **La cuarta cosa.** Martín le enseña el parte a **Don Anxo**. Él promete hablar delante de todos. **Fin del acto.**
 
@@ -178,7 +178,8 @@ Las zonas se recorren a pie por salidas entre escenarios. Para ir de una zona a 
 | Llave del taller | Concha | Patio y nave de atrás |
 | Copia de la escritura n.º 375 | Taller | Pista: venta de 1952 |
 | Foto de 1949 | Taller (se examina) | Pista: Xosé N. |
-| Navaja / herramienta | Cocina / Remedios | Abrir el soporte y la lata |
+| Piqueta de soldador + destornillador | Remedios / cocina | Saltar los puntos de soldadura y desatornillar la tapa del 7.º soporte |
+| Navaja | Cocina | Abrir la lata |
 | Válvula de seguridad + carretilla | Pepe + Andrés | Primer encargo de Remedios |
 | Sacos de carbón | Andrés | Segundo encargo |
 | Impreso T-14, firmas, permiso | Eladio + Concha | Tercer encargo |

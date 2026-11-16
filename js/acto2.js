@@ -894,7 +894,7 @@ async function abrirTaller() {
    · foto de 1949 (obxecto): «Xosé entra en Renfe» → no Acto 3 ensínaselle a Xoán;
    · gravado no piar (co ollo): «X. N. 1949 / 14-I-1958» → código 1401 do candado novo das cocheras (Acto 3);
    · pegadas (co ollo) → trapo con graxa de locomotora: quen entra vén do depósito (Acto 3: a graxa que falta do almacén);
-   · 7.º soporte soldado: non se abre neste acto (ábrese no Acto 4 coa ferramenta de Remedios).
+   · 7.º soporte: tapa de catro parafusos con puntos de soldadura; non se abre neste acto (ábrese no Acto 4 coa piqueta de Remedios).
    A escritura de 1952 (datos reais) e as marcas de pernos quedan como decorado opcional. */
 Object.assign(ico, {
   foto(c) { c.fillStyle = '#e8dcc0'; c.fillRect(8, 10, 32, 28); c.fillStyle = '#6a5a44'; c.fillRect(11, 13, 26, 18); c.fillStyle = '#c8b898'; for (const x of [15, 22, 29]) { c.beginPath(); c.arc(x + 2, 19, 2.5, 0, 7); c.fill(); c.fillRect(x, 22, 5, 8); } },
@@ -922,7 +922,7 @@ async function cadernoMartin() {
 <p>1949: Xosé N. aprendía el oficio en esta carpintería. Luego entró en Renfe.</p>
 <p>Alguien grabó en el pilar «X. N. 1949» y, debajo, con la misma letra pero temblando, «14-I-1958». El 14 de enero de 1958 pasó algo. Y tiene que ver con él.</p>
 <p>Alguien entra aquí sin llave, por la ventana del fondo, y va siempre al séptimo soporte. Se dejó un trapo con grasa de locomotora: viene del depósito.</p>
-<p>El séptimo soporte tiene la tapa soldada. Los otros seis, no. Ahí dentro hay algo.</p>
+<p>El séptimo soporte tiene los cuatro tornillos de la tapa soldados. Los otros seis se abren con la mano. Ahí dentro hay algo.</p>
 <p>Y alguien silba, dos largos y uno corto, para que yo lo oiga.</p>
 <p>A Andrés le desaparece, cada pocas semanas, un saco de carbón de piedra. Y aparece pagado, debajo de una piedra. Ese carbón no es para un churrasco: es para una caldera.</p>
 <p>Las cocheras del museo tienen un candado nuevo de cuatro cifras. Y en el pilar hay una fecha. Catorce, uno...</p>
@@ -1009,24 +1009,113 @@ SCENES.tallerA2 = {
       look: () => MA('Por ahí vuelvo al patio. Y cierro, como dijo Concha. Aunque a este taller, por lo visto, se entra por la ventana.', 'esceptico') },
   ],
 };
+/* ---------- A6b · O taller vello, mirando arriba (ilustración de Oscar, 16-11-2026) ----------
+   Eixo da transmisión, o 7.º soporte (caixa de ferro con tapa de catro parafusos, cada un cun punto de soldadura na cabeza),
+   o piar de ladrillo de dous buratos (fan de chanzos), o burato do tellado e un niño (oco para o paxaro NPC futuro).
+   Acto 4 (preparado): piqueta de soldador de Remedios → salta os puntos (puntosPicados) → desaparafusador → lata (soporteAberto). */
+Object.assign(ico, {
+  piqueta(c) { c.strokeStyle = '#6a4a2a'; c.lineWidth = 5; c.beginPath(); c.moveTo(12, 40); c.lineTo(30, 16); c.stroke(); c.fillStyle = '#8a8f96'; c.save(); c.translate(30, 15); c.rotate(-0.65); c.fillRect(-14, -4, 28, 8); c.beginPath(); c.moveTo(14, -4); c.lineTo(22, 0); c.lineTo(14, 4); c.fill(); c.restore(); },
+});
+Object.assign(ITEMS, {
+  piqueta: { name: 'Piqueta de soldador', icon: ico.piqueta, look: () => MA('La piqueta de Remedios: martillo por un lado, cincel por el otro. Para quitar la escoria de una soldadura. O los puntos de alguien que no quería visitas.', 'pensativo') },
+});
+const PARAFUSOS_SOPORTE = [[687, 150], [766, 160], [694, 260], [775, 269]];
+async function soporteAbrir(con) {
+  if (flag('soporteAberto')) return MA('Ya está abierto. Dentro solo queda el hueco donde estaba la lata.', 'neutro');
+  if (!flag('puntosPicados')) {
+    setFlag('puntosPicados');
+    await MA('Subo por los agujeros del ladrillo, me agarro al eje... y pico. Un punto. Dos. Tres. Cuatro. Saltan como pipas.', 'convencido');
+    if (!hasItem('desaparafusador')) return MA('Ahora los tornillos ya tienen ranura. Me falta un destornillador. En el cajón de la cocina hay uno, como en todas las cocinas de España.', 'pensativo');
+    if (con !== 'desaparafusador') await MA('Y ahora, el destornillador de la cocina. Para algo lo llevo encima.', 'risueno');
+  }
+  setFlag('soporteAberto'); setFlag('lataCollida');
+  await MA('Cuatro tornillos, setenta años de óxido... crac, crac, crac, crac. La tapa se suelta y casi me la como.', 'sorprendido');
+  give('lata');
+  await MA('Dentro no hay grasa. Hay una lata de tabaco. Escondida, encima de un pilar, debajo de cuatro tornillos soldados. Xosé, eres un artista.', 'sorprendido');
+}
+const usosSoporte = {
+  navalla: async () => { await MA(flag('puntosPicados') ? 'La navaja en la ranura... se dobla. Para esto está el destornillador.' : 'Meto la punta de la navaja en la ranura del tornillo... no hay ranura: la llena una gota de soldadura. La navaja se mella y el tornillo ni se entera.', 'frustrado'); if (!flag('fimActo2')) await pistaTaller('pistaSoporte'); },
+  desaparafusador: async () => {
+    if (flag('puntosPicados')) return soporteAbrir('desaparafusador');
+    await MA('Pongo el destornillador... y no entra. La ranura de cada tornillo está llena de soldadura. Es como parar una Mikado con un paraguas.', 'risueno');
+    if (!flag('fimActo2')) await pistaTaller('pistaSoporte');
+  },
+  piqueta: () => soporteAbrir('piqueta'),
+};
 SCENES.vigasA2 = {
-  ...SCENES.vigas, name: 'O taller vello · as vigas',
-  draw(c) { c.fillStyle = '#3d3d42'; c.fillRect(708, 168, 40, 52); c.fillStyle = '#25252a'; c.beginPath(); c.arc(728, 228, 16, 0, 7); c.fill(); c.fillStyle = '#a08850'; c.fillRect(704, 192, 48, 4); },
-  async onEnter() { if (pistasCompletas()) return cadernoMartin(); },
+  name: 'O taller vello · arriba', bg: 'img/bg-taller-arriba.jpg', noActor: true, music: 'casa',
+  draw(c, t) {
+    // escena sen Martín: o engine non pinta as frechas de saída, así que «Baixar a mirada» leva a súa
+    if (!E.dlg && !E.busy && !(E.olloT > 0)) { c.save(); c.translate(480, 512); c.rotate(Math.PI / 2); c.globalAlpha = 0.75 + 0.25 * Math.sin(t * 3); c.lineJoin = c.lineCap = 'round';
+      c.beginPath(); c.moveTo(-11, -19); c.lineTo(11, 0); c.lineTo(-11, 19); c.lineWidth = 13; c.strokeStyle = '#0b0c0e'; c.stroke(); c.lineWidth = 6; c.strokeStyle = '#9fe0ff'; c.stroke(); c.restore(); }
+    if (flag('soporteAberto')) {
+      // a caixa aberta: oco escuro e a tapa colgada dun parafuso
+      const g = c.createLinearGradient(0, 140, 0, 282); g.addColorStop(0, '#0e0b09'); g.addColorStop(1, '#2a211a');
+      c.fillStyle = g; c.fillRect(676, 142, 104, 136); c.strokeStyle = '#4a3a2c'; c.lineWidth = 3; c.strokeRect(676, 142, 104, 136);
+      c.fillStyle = 'rgba(160,120,70,.25)'; c.fillRect(690, 250, 76, 22);                                  // a marca da lata no po
+      c.save(); c.translate(694, 266); c.rotate(0.32);                                                       // tapa colgada dun parafuso, ferruxenta
+      c.fillStyle = '#5a5550'; c.fillRect(-14, -6, 116, 132); c.fillStyle = 'rgba(140,80,40,.35)'; c.fillRect(-14, 60, 116, 66);
+      c.strokeStyle = '#151414'; c.lineWidth = 3; c.strokeRect(-14, -6, 116, 132);
+      c.fillStyle = '#151414'; for (const [x, y] of [[0, 6], [88, 6], [88, 112]]) { c.beginPath(); c.arc(x, y, 4, 0, 7); c.fill(); }
+      c.fillStyle = '#8a8580'; c.beginPath(); c.arc(0, 0, 5, 0, 7); c.fill(); c.restore();
+      return;
+    }
+    if (!flag('puntosPicados')) {
+      // un punto de soldadura brillante en cada cabeza (a tapa do debuxo é atornillada: o que a «solda» son estes puntos)
+      for (const [x, y] of PARAFUSOS_SOPORTE) { const g = c.createRadialGradient(x - 1.5, y - 1.5, 0.5, x, y, 6); g.addColorStop(0, '#f2efe6'); g.addColorStop(0.5, '#a9a59c'); g.addColorStop(1, 'rgba(90,86,80,0)'); c.fillStyle = g; c.beginPath(); c.arc(x, y, 6, 0, 7); c.fill(); }
+    }
+  },
+  async onEnter() {
+    if (pistasCompletas()) return cadernoMartin();
+    if (flag('vigasArribaVisto')) return;
+    setFlag('vigasArribaVisto');
+    await MA('Me pongo al pie del pilar y miro arriba. El eje de la transmisión, de punta a punta... y encima del pilar, el séptimo soporte.', 'pensativo');
+  },
   hotspots: [
-    { name: 'Sétimo soporte', key: true, done: () => flag('pistaSoporte'), r: [660, 140, 160, 110],
+    // os parafusos: franxa de arriba, columna dereita e franxa de abaixo da tapa (sen key, para que o resaltado marque só a tapa)
+    { name: 'Parafusos da tapa',
+      when: () => !flag('soporteAberto'),
+      poly: [[666, 132], [794, 132], [794, 290], [666, 290], [666, 245], [752, 245], [752, 172], [666, 172]],
       look: async () => {
-        await MA('El séptimo soporte, encima del pilar. Los otros seis se abren con la mano. Este tiene la tapa soldada.', 'dudoso');
-        await MA('¿Quién suelda la tapa de una polea? Alguien que no quería que nadie la abriese. O alguien muy aburrido.', 'pensativo');
-        await pistaTaller('pistaSoporte');
+        if (flag('puntosPicados')) return MA('Los cuatro tornillos, ya sin los puntos. Ahora sí tienen ranura.', 'convencido');
+        await MA('Cuatro tornillos, uno en cada esquina. Y en la cabeza de cada uno, una gota de soldadura brillante. Eso no es óxido: es a propósito.', 'sorprendido');
+        await MA('Quien cerró esto no quería que lo abriera cualquiera con un destornillador. Ni con una navaja.', 'pensativo');
+        if (!flag('fimActo2')) await pistaTaller('pistaSoporte');
       },
-      act: async () => { await MA('Con las manos no puedo. La soldadura aguanta como el primer día.', 'frustrado'); await pistaTaller('pistaSoporte'); },
-      use: {
-        navalla: async () => { await MA('Meto la navaja en la soldadura... y se dobla antes la navaja que la soldadura. Esto lo soldó alguien que sabía.', 'frustrado'); await pistaTaller('pistaSoporte'); },
-        desaparafusador: async () => { await MA('¿Un destornillador contra una soldadura? Es como parar una Mikado con un paraguas.', 'risueno'); await pistaTaller('pistaSoporte'); },
-      } },
-    { name: 'Luz do tellado', r: [60, 40, 500, 300], look: () => MA('El tejado está roto y entra la luz a chorros. Bonito para una foto. Peligroso para una siesta.', 'esceptico') },
-    { name: 'Baixar a mirada', r: [0, 470, 960, 70], exit: ['tallerA2', [620, 500]] },
+      act: async () => { await MA('Subo por los agujeros del ladrillo y pruebo a girar uno con los dedos. Ni un milímetro. Están soldados.', 'frustrado'); if (!flag('fimActo2')) await pistaTaller('pistaSoporte'); },
+      use: usosSoporte },
+    { name: 'Tapa do sétimo soporte', key: true, done: () => flag('soporteAberto') || (flag('pistaSoporte') && !hasItem('piqueta')), r: [666, 172, 86, 73],
+      look: async () => {
+        if (flag('soporteAberto')) return MA('La tapa, colgando de un tornillo. Y el soporte, vacío. Setenta años guardando una lata.', 'pensativo');
+        await MA('El séptimo soporte, encima del pilar. Una caja de hierro con su tapa. Los otros seis se abren con una palometa y la mano. Este tiene cuatro tornillos... soldados.', 'dudoso');
+        await MA('¿Quién suelda los tornillos de una polea? Alguien que no quería que nadie la abriese. O alguien muy aburrido.', 'pensativo');
+        if (!flag('fimActo2')) await pistaTaller('pistaSoporte');
+      },
+      act: async () => {
+        if (flag('soporteAberto')) return MA('Ya está abierto.', 'neutro');
+        if (flag('puntosPicados')) return hasItem('desaparafusador') ? soporteAbrir('desaparafusador') : MA('Sin los puntos, los tornillos ya giran... con un destornillador. Con los dedos, no. El de la cocina me haría falta.', 'pensativo');
+        await MA('Subo apoyando la punta del pie en los agujeros del ladrillo, me cuelgo del eje y tiro de la tapa. Nada. La soldadura aguanta como el primer día.', 'frustrado');
+        if (!flag('fimActo2')) await pistaTaller('pistaSoporte');
+      },
+      use: usosSoporte },
+    { name: 'Caixa do soporte', r: [628, 128, 170, 182],
+      look: () => MA(flag('soporteAberto') ? 'El soporte del cojinete, abierto. Por dentro, ni grasa: solo el hueco cuadrado de una lata.' : 'La caja de hierro del cojinete: por ahí entra el eje y gira. Le doy con los nudillos... suena hueco. Ahí dentro hay algo que no es grasa.', 'pensativo') },
+    { name: 'Eixo da transmisión', r: [0, 146, 668, 110],
+      look: () => MA('El eje de la transmisión, de lado a lado de la nave. El motor lo hacía girar y de él bajaban las correas a cada máquina. Aquí arriba es donde se movían las correas.', 'pensativo') },
+    { name: 'Piar de ladrillo', r: [617, 300, 196, 186],
+      look: () => MA('El pilar de ladrillo, de los de dos agujeros. Puestos así, los agujeros hacen de peldaños. Alguien lo sabía... y alguien lo sigue sabiendo: las huellas acaban justo aquí abajo.', 'dudoso'),
+      act: () => MA('Pongo la punta del pie en un agujero, luego en otro... Sí: se sube. Como una escalera de mano, pero de ladrillo y sin seguro.', 'risueno') },
+    { name: 'Columna de formigón', r: [646, 0, 108, 132],
+      look: () => MA('Encima del ladrillo, una columna de hormigón hasta el tejado. Un remiendo de otra época. El soporte quedó en medio, como el relleno de un bocadillo.', 'esceptico') },
+    { name: 'Niño', r: [756, 78, 142, 86],
+      look: () => MA('Un nido de paja en la viga, bien hecho, redondo. Ahora está vacío. Alguien tiene aquí mejor casa que yo en Valencia.', 'sonriente'),
+      act: () => MA('No toco. Si vuelve la dueña y lo encuentra revuelto, me denuncia en el Concello. Y Eladio le da cita.', 'risueno') },
+    { name: 'Burato do tellado', r: [14, 84, 290, 242],
+      look: () => MA('El tejado está roto y entra la luz a chorros. Cielo azul entre las tablas. Bonito para una foto. Peligroso para una siesta.', 'esceptico') },
+    { name: 'Vigas', r: [0, 0, 960, 486],
+      look: () => MA('Vigas de castaño, gordas como troncos. Las pusieron para aguantar una transmisión entera girando todo el día. Y aguantan.', 'pensativo') },
+    { name: 'Baixar a mirada', r: [0, 486, 960, 54], exit: ['tallerA2', [620, 500]], hint: 'D',
+      look: () => MA('Abajo, el taller y mis huellas mezcladas con las del otro. Ya me duele el cuello de mirar arriba.', 'risueno') },
   ],
 };
 
