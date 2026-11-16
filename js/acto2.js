@@ -296,7 +296,7 @@ if (!ITEMS.serrin) ITEMS.serrin = { name: 'Saco de serrín', icon: ico.serrin,
 ico.millo = ico.millo || (c => { c.fillStyle = '#d9c08a'; c.beginPath(); c.moveTo(12, 14); c.quadraticCurveTo(8, 42, 24, 42); c.quadraticCurveTo(40, 42, 36, 14); c.closePath(); c.fill();
   c.strokeStyle = '#7a5a2a'; c.lineWidth = 2; c.stroke(); c.fillStyle = '#f2c020'; for (let i = 0; i < 9; i++) { c.beginPath(); c.arc(16 + (i * 7) % 16, 22 + (i * 5) % 16, 2, 0, 7); c.fill(); } c.fillStyle = '#7a5a2a'; c.fillRect(18, 10, 12, 5); });
 if (!ITEMS.millo) ITEMS.millo = { name: 'Saco de millo', icon: ico.millo,
-  look: () => MA('Un saco de maíz de la panadería de Genaro. En su sitio dejé uno de serrín. Mismo peso, mismo saco... distinta broa.', 'avergonzado') };
+  look: () => MA('Un saco de maíz en grano de la panadería de Genaro. En su sitio dejé uno de serrín. Mismo peso, mismo saco... distinta broa.', 'avergonzado') };
 function sacoDraw(c, x, y, k, cor, gran) {
   c.save(); c.translate(x, y); c.scale(k, k);
   c.fillStyle = 'rgba(0,0,0,0.25)'; c.beginPath(); c.ellipse(0, 0, 20, 5, 0, 0, 7); c.fill();
@@ -339,12 +339,12 @@ SCENES.panaderia = {
     { name: 'Praza da Estación', key: true, r: [296, 318, 100, 44], at: [346, 350], face: 'B', exit: ['praza2', [450, 346]], hint: 'U',
       look: () => MA('Al fondo de la calle, la plaza de la estación y el quiosco de Concha. Medio minuto, si no me para nadie. En Monforte siempre te para alguien.', 'pensativo') },
     { name: 'Sacos de millo', key: true, done: () => hasItem('millo') || !milloPreciso(), r: [788, 432, 80, 58], at: [780, 505], face: 'R',
-      look: () => MA(flag('genaroDentro') ? 'Los sacos de maíz, solos. Genaro está dentro con la broa. Es el momento.' : 'Sacos de harina de maíz, de los gordos, al pie de la panadería. Para la broa. Genaro los vigila como si fueran lingotes.', 'pensativo'),
+      look: () => MA(flag('genaroDentro') ? 'Los sacos de maíz, solos. Genaro está dentro con la broa. Es el momento.' : 'Sacos de maíz en grano, de los gordos, al pie de la panadería. Genaro lo muele él mismo para la broa. Genaro los vigila como si fueran lingotes.', 'pensativo'),
       act: async () => {
         setFlag('milloVisto');
         if (hasItem('millo')) return MA('Ya tengo uno. Dos sería abusar, y Genaro acabaría haciendo broa de serrín de verdad.', 'avergonzado');
         if (!flag('genaroDentro')) {
-          await GE('Eh, eh! Iso non se toca, rapaz. É fariña de millo para a broa. Ten máis valor ca o pan que levas na barriga.', 'enfadado');
+          await GE('Eh, eh! Iso non se toca, rapaz. É millo en gran, que moo eu para a broa. Ten máis valor ca o pan que levas na barriga.', 'enfadado');
           return MA(milloPreciso() ? '(Con él delante, imposible. Tendría que entretenerlo un momento... y no dejar un hueco que se note.)' : 'Perdona, perdona. Solo miraba. Tampoco sabría qué hacer con un saco de maíz.', milloPreciso() ? 'pensativo' : 'avergonzado');
         }
         if (!hasItem('serrin')) {
