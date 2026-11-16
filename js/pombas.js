@@ -3,7 +3,7 @@
    ----------------------------------------------------------------------------
    Substitúe ao puzzle vello da piqueta de Remedios. Cadea:
      1. A tapa do 7.º soporte ten os catro parafusos soldados e Martín, colgado do eixo, non ten forza para darlle un bo golpe.
-     2. No niño das vigas hai unha pomba. Millo da Panadería Estación (Genaro, millo en gran para a broa).
+     2. No niño das vigas hai unha pomba. Millo da Panadería Estación (cambiazo polos sacos de serrín do taller, noutro fío).
      3. Tirar millo no chan do taller: baixa a pomba do niño. Máis millo: máis pombas polo burato do tellado (1 → 3 → 6 → 10).
      4. Co taller cheo, un ruído de verdade: o preservativo da máquina azul de Calvo Sotelo (forzada coa navalla, fío da farmacia)
         inflado coma un globo e picado coa navalla. ¡PAM!
@@ -33,13 +33,12 @@ const A4 = () => flag('a4Soporte');
 Object.assign(ico, {
   millo(c) { c.fillStyle = '#c9a66b'; c.beginPath(); c.moveTo(12, 14); c.lineTo(36, 14); c.lineTo(40, 42); c.lineTo(8, 42); c.closePath(); c.fill(); c.strokeStyle = '#7a5a2a'; c.lineWidth = 2; c.stroke();
     c.fillStyle = '#f2c230'; for (const [x, y] of [[16, 14], [22, 11], [28, 13], [34, 12], [19, 9], [27, 8]]) { c.beginPath(); c.ellipse(x, y, 3, 2.4, 0, 0, 7); c.fill(); } },
-  preservativo(c) { c.fillStyle = '#2f6fd0'; c.fillRect(8, 12, 32, 26); c.fillStyle = '#fff'; c.beginPath(); c.arc(24, 25, 8, 0, 7); c.fill(); c.strokeStyle = '#2f6fd0'; c.lineWidth = 2; c.beginPath(); c.arc(24, 25, 5, 0, 7); c.stroke(); },
   globo(c) { c.fillStyle = '#f3ecd8'; c.beginPath(); c.ellipse(24, 20, 12, 16, 0, 0, 7); c.fill(); c.strokeStyle = '#b8ae94'; c.lineWidth = 2; c.stroke(); c.fillStyle = '#fff'; c.beginPath(); c.ellipse(19, 13, 3, 5, -0.4, 0, 7); c.fill();
     c.strokeStyle = '#8a7a5a'; c.beginPath(); c.moveTo(24, 36); c.quadraticCurveTo(20, 42, 26, 46); c.stroke(); },
 });
 Object.assign(ITEMS, {
   millo: { name: 'Saco de millo', icon: ico.millo,
-    look: () => MA('Un saco de maíz en grano, de Genaro. Para la broa, dice. Pesa como si no se acabase nunca. Y según Genaro, no se acaba.', 'sonriente') },
+    look: () => MA('Un saco de maíz en grano, de la panadería de Genaro. Para la broa. Pesa como si no se acabase nunca. Y para lo que quiero, no se va a acabar.', 'sonriente') },
   preservativo: { name: 'Preservativo', icon: ico.preservativo,
     look: () => MA('Un preservativo de la máquina azul, en su sobrecito. En el instituto los inflábamos como globos en clase de Física. Reventaban como un petardo. El profesor no se reía.', 'avergonzado'),
     combine: { navalla: () => MA('¿Pinchar un preservativo sin inflar? Eso no suena a nada. Primero, globo. Luego, ruido.', 'esceptico') } },
@@ -199,6 +198,10 @@ const VOO = [
 ];
 function pintarVoo(c, t) {
   const k = t - E.vooT0;
+  // a tapa: treme cos golpes e cae ao 1,9 s
+  const [x, y, w, h] = TAPA_DST, cx = x + w / 2, cy = y + h / 2;
+  if (k < 1.9) { const sh = VOO.some(v => v.golpe && k > v.t1 && k < v.t1 + 0.2) ? 3 : 0; pintarSoporteAberto(c); pintarTapa(c, cx + (Math.random() - 0.5) * sh, cy, w, h, 0); }
+  else { pintarSoporteAberto(c); const f = k - 1.9; pintarTapa(c, cx + f * 60, cy + f * f * 700, w, h, f * 2.4); }
   for (const v of VOO) {
     if (k < v.t0) continue;
     const u = Math.min(1, (k - v.t0) / (v.t1 - v.t0));
@@ -213,10 +216,7 @@ function pintarVoo(c, t) {
       }
     }
   }
-  // a tapa: treme cos golpes e cae ao 1,9 s
-  const [x, y, w, h] = TAPA_DST, cx = x + w / 2, cy = y + h / 2;
-  if (k < 1.9) { const sh = VOO.some(v => v.golpe && k > v.t1 && k < v.t1 + 0.2) ? 3 : 0; pintarSoporteAberto(c); pintarTapa(c, cx + (Math.random() - 0.5) * sh, cy, w, h, 0); }
-  else { pintarSoporteAberto(c); const f = k - 1.9; pintarTapa(c, cx + f * 60, cy + f * f * 700, w, h, f * 2.4); }
+
 }
 
 /* ---------- escenas: taller (chan) e vigas ---------- */
@@ -314,28 +314,8 @@ function pintarVoo(c, t) {
   ITEMS.lata.combine = { ...(ITEMS.lata.combine || {}), navalla: () => ITEMS.navalla.combine.lata() };
 }
 
-/* ---------- Genaro: o millo ---------- */
-{
-  const gT = genaroTalk;
-  genaroTalk = async () => {
-    if (!A4() || hasItem('millo') && flag('genaroMillo')) return gT();
-    if (!flag('pombaVista') && !flag('tapaGolpe')) return gT();
-    if (!flag('genaroMillo')) {
-      await GE('Bo día! Que, hoxe que buscas? Tes cara de ter un problema que non se arranxa con pan.', 'sonriente');
-      await MA('Genaro, ¿tú qué les echas a las palomas para que vengan?', 'dudoso');
-      await GE('Ás pombas? Millo. Millo en gran, do que me trae un curmán de Sober para a broa. Botas un puñado na praza e veñen de tres concellos.', 'explicando');
-      await GE('E se botas máis, veñen máis. As pombas son coma os de Monforte nunha inauguración: aparecen de onde non sabías que había.', 'riendo');
-      await GE('O malo é cando estoupa o primeiro foguete do San Lucas: saen todas disparadas cara arriba á vez. Sempre hai algunha que se pega coa torre.', 'oh');
-      await MA('(Todas a la vez. Hacia arriba. Y alguna se pega...)', 'pensativo');
-      await GE('Toma, lévate un saco. Non mo pagues: págamo contándome para que o queres.', 'contento');
-      give('millo'); setFlag('genaroMillo');
-      await GE('Obxecto conseguido: «Saco de millo». E tranquilo, que non se acaba. Nos xogos iso chámase recurso infinito. Aquí chámase o meu curmán de Sober.', 'celebrando');
-      return;
-    }
-    await GE('Outro saco? Xa che dixen que ese non se acaba. Se se che acaba, é que o estás comendo ti.', 'esceptico');
-    give('millo');
-  };
-}
+/* O millo conséguese na Panadería Estación (cambiazo de sacos de serrín por millo, fío «Montar nuevo exterior de la farmacia»):
+   aquí só se usa o obxecto 'millo'. */
 
 /* ---------- comezo provisional do Acto 4 (só o soporte) ---------- */
 async function inicioActo4Pombas() {
