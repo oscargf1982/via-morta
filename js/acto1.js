@@ -247,9 +247,9 @@ async function conchaQuiosco() {
     }
     if (k === 'casa') {
       await CO('A casa do señor Alfredo, o carpinteiro. Juana era a súa muller, e deulle o nome á casa.');
-      await CO('Atrás tiña unha carpintaría que daba gusto. Dende o quiosco oíase o serrón.');
+      await CO('Atrás tiña unha carpintaría que daba gusto. Dicía a miña nai que dende o quiosco se oía o serrón.');
       await MA('¿Desde aquí? Pues sí que serraba fuerte el señor Alfredo.', 'sorprendido');
-      await CO('Ou eu tiña bo oído. As dúas cousas. Pregúntalle a Rosario, que lle encanta contalo.');
+      await CO('Ou a miña nai tiña bo oído. As dúas cousas: eu saín a ela. Pregúntalle a Rosario, que lle encanta contalo.');
       if (!flag('sabeChaveTaller')) await chaveTallerConcha();
     }
     if (k === 'adeus') { await CO('Vai, e come algo, que estás chupado.'); return; }
@@ -368,7 +368,7 @@ SCENES.cocheras = {
           await MA('Pero antes de abrirle la puerta a nadie, quiero saber de quién es esa letra. Xoán sabrá quién era Xosé N.', 'convencido');
           return MA('Y si no lo sabe, lo sabrá Concha. Y si no lo sabe Concha... es que no ha pasado.', 'risueno');
         }
-        await MA('Pruebo: cero, cero, cero, cero. Uno, dos, tres, cuatro. Mil novecientos cincuenta y ocho. Nada.', 'frustrado');
+        await MA('Pruebo: cero, cero, cero, cero. Uno, dos, tres, cuatro. Y mil novecientos noventa, el año del primer Monkey Island: si el del candado es de los míos, cae. Nada.', 'frustrado');
         await MA('Cuatro cifras son diez mil combinaciones. A mi ritmo, salgo de aquí jubilado. Y con artritis.', 'esceptico');
       },
       look: () => MA('Un candado nuevo, brillante, de los caros. Cerradura de llave y, debajo, cuatro ruedecitas con números. En una puerta que llevaba años sin abrirse.', 'dudoso') },

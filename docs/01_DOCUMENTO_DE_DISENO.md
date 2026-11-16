@@ -120,7 +120,9 @@ Hay tres heredados del juego de mundo abierto, todos opcionales o con alternativ
 | Mural de la estación (foto real) y escena Xoán + Martín ante el mural | ✅ existe |
 | Xoán Carballeira: retrato y sprite (6 vistas, sin animación de andar) | ✅ existe (hoja de Oscar) |
 | Concha, Demetrio, Andrés: sprites chibi | ⚠️ existen, pero hay que adaptar el estilo |
-| Resto de NPC (Rosario, Eladio, Valerio, Brais, Anxo, Remedios, Pepe, Nai) | ❌ faltan sprites y retratos dibujados (en el juego anterior eran caras generadas por código) |
+| Remedios: sprite (parada y hablando) y retrato | ✅ existe (dibujo de Oscar); faltan espaldas, perfil y andar |
+| Don Anxo | ✅ sprite (parado y hablando) y retrato del dibujo de Oscar; faltan espalda, perfil y andar |
+| Resto de NPC (Brais, Pepe, Nai) | ❌ faltan sprites y retratos dibujados (en el juego anterior eran caras generadas por código) |
 | Resto de fondos | ❌ faltan (ver lista de escenarios en `03_HISTORIA_Y_PUZZLES.md`) |
 
 ## 6. Sonido

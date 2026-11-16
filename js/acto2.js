@@ -507,7 +507,7 @@ async function valerioTalk() {
       await VA('Ti necesítalos máis.');
     }
     if (k === 'libros') {   // sementa o libro de 1958 do Acto 3 (ideas de Oscar do 15-11-2026)
-      await VA('Todas. A bata, o mostrador... e os libros. O meu pai apuntaba cada cura, cada receita e cada xarope fiado nuns libros de tapas negras. Dende o cincuenta.');
+      await VA('Todas. A bata, o mostrador... e os libros. O meu avó, que abriu a botica, apuntaba cada cura, cada receita e cada xarope fiado nuns libros de tapas negras. Dende o cincuenta. E meu pai seguiu co costume.');
       await VA('Están na rebotica, nun estante que xa non aguanta máis. Nin os tiro nin os leo. Son coma el: non ocupan moito, pero se os tiras, quedas sen nada.');
       await MA('Medio Monforte, apuntado a pluma. Con letra de farmacéutico.', 'pensativo');
       await VA('Letra de farmacéutico, que é coma a de médico pero entendéndose. Iso si: o que pasou no barrio, alí está.');
@@ -635,7 +635,7 @@ async function andresTalk() {
       if (flag('andresInverno')) { await AN('E do inverno aquel, xa cho dixen: no saco e á sombra.'); continue; }
       setFlag('andresInverno');
       await MA('¿Todavía vive? Tiene que tener historias del depósito para dar y tomar.', 'sonriente');
-      await AN('Oitenta e cinco anos e máis teimudo ca unha mula. Cóidoo eu: a pastilla, o caldo e o Dépor, por esa orde.');
+      await AN('Noventa e dous anos e máis teimudo ca unha mula. Cóidoo eu: a pastilla, o caldo e o Dépor, por esa orde.');
       await AN('Historias, todas. Das máquinas, dos turnos, do frío que facía na cabina... Todas menos as dun inverno.');
       await MA('¿Qué invierno?', 'dudoso');
       await AN('Ese. O que non conta. E eu non llo pregunto. Hai cousas que se gardan coma o carbón: no saco, e o saco á sombra.');
@@ -701,7 +701,7 @@ async function retoNatacion() {
     await AN('Mira, deixámolo en empate técnico. Ti convídasme a un mojito e eu non llo conto a Concha.');
     await MA('Un empate pagado. Muy de Monforte. Trato hecho.', 'risueno');
   }
-  await AN('Sabes que o meu avó foi fogoneiro no depósito? Di que o carbón bo se coñece polo son. Oitenta e cinco anos e aínda mo corrixe. Gardo uns sacos dos que lle gustan, para o churrasco.');
+  await AN('Sabes que o meu avó foi fogoneiro no depósito? Di que o carbón bo se coñece polo son. Noventa e dous anos e aínda mo corrixe. Gardo uns sacos dos que lle gustan, para o churrasco.');
   await MA('Un fogonero en la familia. Andrés, eso tiene más mérito que cuatro largos.', 'sonriente');
   await carbonMisterio();
   setFlag('andresFeito'); comprobarChampions();
@@ -748,7 +748,7 @@ SCENES.fluvial = {
       done: () => flag('andresFeito'),
       look: async () => {
         await MA('Mega Andrés, en su tumbona, con camisa de flores y gafas de sol. En otoño. Es un estilo de vida, no una estación del año.', 'risueno');
-        await MA('Andrés Corredoira. En el instituto, el apellido más rápido y el chaval más lento. Hasta que se metía en el agua. Por eso lo de «Mega».', 'sonriente');
+        await MA('Andrés Castiñeira. En el instituto le llamábamos «el Castaño»: grande, fuerte y quieto como un árbol. Hasta que se metía en el agua. Por eso lo de «Mega».', 'sonriente');
       },
       talk: () => andresTalk(),
       give: {
