@@ -60,7 +60,7 @@
 - **Recursos gráficos:** `rosario-sprite.png` (celdas de 160×280, 8 columnas: 0 frente, 1 perfil derecha, 2 espalda, 3 mano en el bolsillo, 4-6 andar a la derecha, 8 sentada con las manos en el regazo, 9 sentada gesticulando, 10 piernas cruzadas gesticulando, 11 brazos cruzados, 12 y 13 boca abierta de 8 y de 9; las sentadas llevan su silla; a la izquierda, `flip: true`) y retrato `rosario-face.png`. Se regeneran con `python3 tools/sprite-rosario.py`.
 - **Quién es:** tiene 40 años, está casada con un profesor de matemáticas y tienen una hija de 9 años, **Eugenia**. Martín la tutea: no es «doña» de nadie.
 - Juega a la brisca en la Fraternal: «Copas! E arrastro!». Gestiona las llaves y el alquiler de la Casa Juana para sus dueños y le firma el contrato a Martín.
-- Le encanta contar la historia de la casa: el señor Alfredo, Juana, el motor Siemens, la venta de 1952. Es **prima de Xoán** por parte de padre (los Carballeira), sin sangre Nogal; pendiente de que Oscar lo confirme. Antes era su tía, pero con 40 años y él con 46 no encajaba.
+- Le encanta contar la historia de la casa: el señor Alfredo, Juana, el motor Siemens, la venta de 1952. Es **prima de Xoán** por parte de padre (los Carballeira), sin sangre Nogal. Ya no es su tía (con 40 años y él con 46 no encajaba).
 
 ## Tío Demetrio (la Fraternal)
 - Compañero de Champions de Martín. Cuenta mil veces su gol al Ourense en Tercera, «un domingo de sol».
@@ -79,7 +79,7 @@
 - Compañero de instituto de Martín. Está detrás del mostrador de su padre, con la bata de su padre y los clientes de su padre.
 - Retrata el Monforte que se vacía: locales con «Se aluga» hasta que el cartel se cae de viejo. Es goloso: le da la crema de agujetas a Martín a cambio de algo dulce: pasteles de crema de la Panadería Estación («crema por crema»; antes eran los ositos de Concha, cambio de Oscar del 16-11-2026).
 - **Los libros de su padre** (ficción): su padre apuntaba cada cura y cada receta en libros de tapas negras desde 1950, guardados en la rebotica. Sembrado en el Acto 2. En el Acto 3, el de enero de 1958 tiene, la noche del 14, «Curas por queimaduras nas mans. X. Nogal. Non quixo ir ao médico» (indicio, no prueba; la prueba es el parte del Acto 4).
-- **Conoce a Don Anxo:** le prepara la medicación cada semana, sabe dónde vive y que «do 58 non fala». Es la puerta para llegar a él en el Acto 3 o 4.
+- **Conoce a Don Anxo:** le prepara la medicación cada semana, sabe dónde vive y que «do 58 non fala». Es quien le revela a Martín que Anxo es el abuelo de Andrés («nesa casa calan por xeracións»). Es la puerta para llegar a él en el Acto 3 o 4.
 - **Final (Acto 5):** cierra la farmacia por primera vez en su vida para ver salir la Mikado.
 
 ## Genaro, o panadeiro (Panadería Estación, calle Calvo Sotelo) · ficción
@@ -89,11 +89,16 @@
 - Sabe los encargos de todos: Valerio se lleva tres pasteles de crema cada tarde «para os clientes». Vende a Martín los pasteles que pide Valerio.
 - **Recursos gráficos:** hoja de Oscar `assets/personajes/genaro-panadero-hoja.png` → `img/genaro-sprite.png` (celdas 160×280, 8 columnas: 0 parado, 1 hablando, 2 espalda, 3 perfil, 4 señalando, 5 sorprendido, 6 frente, 7 3/4 frente) y retrato `img/genaro-face.png`, con `python3 tools/sprite-genaro.py`. **Expresiones** (hoja de Oscar del 16-11-2026, `assets/personajes/genaro-expresiones-hoja.png`): 24 retratos de medio cuerpo (sonriente, hablando, explicando, brazos cruzados, pensativo, oh, riendo, triste, enfadado, asustado, preocupado, aburrido, gritando enfadado, rascándose, guiño señalando, dudoso, rezando, celebrando, neutro, escéptico, resignado, gritando con las manos en la boca, contento, serio) → `img/genaro/<expresión>.webp` con `python3 tools/expresiones-genaro.py`. El retrato del diálogo cambia con cada frase y la cuarta pared los usa en primer plano.
 
-## Mega Andrés (Club Fluvial, chiringuito «Malo Será»)
-- Filósofo de tumbona: «a vida, mellor deitado». Su abuelo era fogonero.
+## Mega Andrés · Andrés Corredoira (Club Fluvial, chiringuito «Malo Será»)
+- Filósofo de tumbona: «a vida, mellor deitado». Compañero de instituto de Martín: «el apellido más rápido y el chaval más lento, hasta que se metía en el agua».
+- **Es nieto de Don Anxo Corredoira** (decisión de Oscar del 16-11-2026), por parte de padre. Vive pendiente de él: «a pastilla, o caldo e o Dépor, por esa orde».
+- **Sabe desde siempre que su abuelo fue el fogonero de Xosé Nogal en 1958** (se lo contó la abuela antes de morir; Anxo no sabe que él lo sabe). **Lo calla para protegerlo** (opción 2 de Oscar): no miente, desvía. Su abuelo «conta todas as historias menos as dun inverno, e eu non llo pregunto».
+- **Su tic:** cuando algo le toca de cerca, el hombre más perezoso de Monforte se pone a trabajar sin que nadie se lo pida (a colocar tumbonas). Es la pista visible de que oculta algo; el propio Anxo lo dice en el Acto 3: «cando se preocupa, ponse a traballar».
+- **Pistas finas (relectura):** Acto 2: «Eu non pregunto», «a curiosidade cansa», el invierno que no se cuenta y las tumbonas cuando Martín pregunta quién tiene una caldera de vapor. Acto 3: Valerio dice «Anxo Corredoira» y Martín enlaza el apellido («É o seu avó. Non o sabías?»); Andrés admite solo lo que ya se ve: «calar tamén é coidar».
+- **El carbón:** se lo lleva Xoán (elegido por Oscar el 16-11-2026). Andrés no sabe quién es, pero sospecha que acaba donde va su abuelo de noche, y por eso no pregunta.
 - Guarda sacos de carbón para el churrasco, que en el Acto 4 hacen falta para la Mikado. Reta a Martín a nadar al estilo *Track & Field*.
 - **Acto 2:** le desaparece cada pocas semanas un saco de carbón de piedra y aparece pagado con un billete bajo una piedra. Él no pregunta («un ladrón honrado»). Es una pista de que alguien prepara la Mikado de noche. **Quién es: Xoán** (elegido por Oscar el 16-11-2026), se descubre en el Acto 5.
-- **Acto 5 (elegido por Oscar):** es el **fogonero** de la Mikado en la salida a A Barreira: pala el carbón en la cabina como su abuelo. Es su cierre emotivo y forma parte del puzzle de la cabina.
+- **Acto 5 (elegido por Oscar):** es el **fogonero** de la Mikado en la salida a A Barreira: pala el carbón en la cabina como su abuelo, **delante de él**. Cuando Anxo rompe 68 años de silencio, Andrés deja la pala un momento y le dice que ya lo sabía (momento breve, sin discurso); Anxo le pide que siga paleando: «O carbón bo, polo son».
 - **Recursos gráficos:** `andres.png` y `andres-face.png` en el juego anterior; cópialos de allí si hacen falta.
 
 ## Brais «o Galgo» (Malecón)
@@ -103,6 +108,7 @@
 
 ## Don Anxo Corredoira (cocheras del museo)
 - Fue **fogonero** de Xosé Nogal la noche de 1958, con 17 años. Firmó el informe falso para no perder el trabajo y lleva 68 años callado.
+- **Abuelo de Mega Andrés**, que lo cuida. Cree que su nieto no sabe nada del 58 y le pide a Martín que no le diga que lo vio en las cocheras.
 - Ahora es uno de los jubilados que restauran la Mikado. En la vía muerta lo cuenta delante de todos.
 - **Voz:** «Hai noites que mellor non lembrar.»
 

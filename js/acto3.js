@@ -210,7 +210,7 @@ async function valerioActo3() {
       await VA('Anxo Corredoira. Foi fogoneiro no depósito; ese inverno do 58 tiña dezasete anos.');
       await VA('Fala do tempo, do Dépor e da tensión, por esa orde. Do resto, nada. E eu véndolle pastillas dende que teño bata.');
       await MA('Y ahora sale de noche y vuelve oliendo a carbón.', 'pensativo');
-      await VA('Iso di a filla. Eu só digo que sen pastillas non é el. Se o ves, dállas.');
+      await VA('Iso din as veciñas. O neto non di nada: nesa casa calan por xeracións. Eu só digo que sen pastillas non é el. Se o ves, dállas.');
     }
     if (k === 'pastillas') { await VA('Perdíchelas? Ai, Martín. Toma, a caixa de reserva. E esta vai fiada.'); give('pastillas'); }
     if (k === 'monforte') { await VA('Coma sempre: tres «Se aluga», dous vellos na porta e un maquinista que volve. Iso último é novidade.'); }
@@ -237,9 +237,13 @@ async function valerioLibro() {
   give('nota1958'); setFlag('libro1958');
   await VA('Nogal...');
   await VA('Martín, hai un home que estaba no depósito ese inverno. Venlle buscar as pastillas os luns, coma un reloxo.');
-  await VA('Este luns non veu. A filla di que sae todas as noites e volve ás tantas cheirando a carbón. Aos oitenta e cinco anos!');
+  await VA('Este luns non veu. As veciñas din que sae todas as noites e volve ás tantas cheirando a carbón. Aos oitenta e cinco anos!');
   await MA('¿Cómo se llama?', 'pensativo');
   await VA('Don Anxo. Anxo Corredoira. Foi fogoneiro. Pero do 58 non fala, Martín. Nunca.');
+  await MA('¿Corredoira? ¿Como Andrés, el del Fluvial?', 'sorprendido');
+  await VA('É o seu avó. Non o sabías? Andrés cóidao coma quen coida unha máquina vella: a pastilla, o caldo, o Dépor... e nin unha pregunta.');
+  await MA(flag('andresInverno') ? '(«Todas las historias menos las de un invierno. Y yo no se lo pregunto.» Andrés no pregunta por el carbón... ni por su abuelo.)' : '(«Eu non pregunto», dijo Andrés del carbón. Por lo visto, tampoco pregunta por su abuelo.)', 'pensativo');
+  setFlag('anxoNetoSabe');
   await VA('Xa que andas tanto pola estación... se o atopas, dálle isto. Que sen elas, el non é el.');
   give('pastillas');
   await MA('Un fogonero de ochenta y cinco años que sale de noche y vuelve oliendo a carbón. Ya sé dónde buscar. Y a qué hora no.', 'convencido');
@@ -259,16 +263,40 @@ async function valerioLibro() {
 {
   const andresA2 = andresTalk;
   andresTalk = async () => {
+    if (flag('fimActo2') && flag('anxoNetoSabe') && !flag('a3AndresAvo')) return andresAvoActo3();
     if (flag('fimActo2') && flag('pistaCarbon') && !flag('a3AndresCarbon')) {
       setFlag('a3AndresCarbon');
       await MA('Andrés, tu carbón. Sé dónde acaba: en las cocheras del museo. Al lado de una Mikado.', 'pensativo');
       await AN('Nas cocheras? Nunha Mikado?');
-      await AN('...O meu avó estaría contento. Toda a vida dicindo que o bo carbón acaba nunha caldeira, non nunha grella.');
-      await AN('Que lle aproveite. E que sigan pagando, eh. Que filosofía si, pero tonto non.');
+      await AN('...Pois que lle aproveite á Mikado. Mellor nunha caldeira ca nunha grella: iso dío sempre o meu avó.');
+      await AN('E agora, se me desculpas, as tumboas. Que están tortas.');
+      await MA('(Las tumbonas están perfectas. Andrés las mueve un centímetro y las vuelve a poner donde estaban. Ahí hay algo que no me quiere contar.)', 'esceptico');
       return;
     }
     return andresA2();
   };
+  SCENES.fluvial.npcs.find(n => n.id === 'andres').give.pastillas = async () => {
+    if (flag('anxoNetoSabe')) await AN('As do avó? Non, non. Valerio deuchas a ti: algo verá en ti. Ti sabes onde anda de noite. Eu prefiro non sabelo.');
+    else await AN('Pastillas? Eu só tomo o sol. E en novembro, nin iso.');
+  };
+  /* Andrés sabe dende sempre que o avó foi o fogoneiro de Xosé Nogal (decisión de Oscar do 16-11-2026, opción 2):
+     cala para protexelo, porque o coida. Non mente: desvía. Ao saber Martín o apelido, admite só o que xa se ve. */
+  async function andresAvoActo3() {
+    setFlag('a3AndresAvo');
+    await MA('Andrés. Anxo Corredoira es tu abuelo.', 'pensativo');
+    await AN('Ti es de Vilatán ou da Garda Civil?');
+    await MA('Fogonero en el 58. Sale de noche y vuelve oliendo a carbón. A tu carbón.', 'dudoso');
+    await AN('...');
+    await AN('Mira, Martín. Oitenta e cinco anos, a tensión polo teito e un inverno que leva no peito coma un saco.');
+    await AN('Se sae de noite e volve cheirando a carbón... e volve contento, contento coma non o vin nunca... eu non pregunto.');
+    await MA('Lo sabías.', 'sorprendido');
+    await AN('Sei que o meu avó foi o fogoneiro de Nogal. Contoumo a avoa, antes de morrer. El non sabe que o sei.');
+    await AN('E así vai seguir. Cóidoo eu: a pastilla, o caldo, o Dépor. E calar tamén é coidar.');
+    await MA(flag('andresTumboas') || flag('a3AndresCarbon') ? '(Y por eso el «ladrón honrado», y las tumbonas, y «la curiosidad cansa». No era pereza: era cariño.)' : '(Y por eso el «ladrón honrado» y «la curiosidad cansa». No era pereza: era cariño.)', 'pensativo');
+    await AN('Unha cousa, maquinista. Se o ves alá... que tome a pastilla. E que non saiba que fun eu quen cho dixo.');
+    await MA('Tú no me has dicho nada, Andrés. Me lo ha dicho Valerio. Y Valerio en los frascos guarda pastillas, no secretos.', 'sonriente');
+    await AN('Iso é verdade. Iso é moi verdade.');
+  }
 }
 
 /* ---------- A7 · Exterior das cocheras no Acto 3: o candado (1401) ---------- */
@@ -495,11 +523,20 @@ async function anxoTalk() {
   }
   const opts = [
     ...(hasItem('nota1958') && !flag('anxoNota') ? [{ t: 'Catorce de enero de 1958. X. Nogal. (Enseñarle la nota.)', k: 'nota' }] : []),
+    ...(flag('anxoNetoSabe') && !flag('anxoNeto') ? [{ t: 'Conozco a su nieto. Andrés, el del Fluvial.', k: 'neto' }] : []),
     { t: '¿Usted fue fogonero aquí?', k: 'fogo' },
     { t: 'Nada, Don Anxo. Que se tome la pastilla.', k: 'adeus' },
   ];
   const k = opts[await choose(opts)].k;
   if (k === 'nota') return anxoNota();
+  if (k === 'neto') {
+    setFlag('anxoNeto');
+    await AX('Andrés...');
+    await AX('Non lle digas que me viches aquí. Ese rapaz xa carga bastante comigo. E cando se preocupa, ponse a traballar. E iso non é natural nel.');
+    await RE('O neto non sabe nada, Martín. Que siga así.');
+    await MA('(No sabe nada. Ya. Y yo soy de Valencia.)', 'esceptico');
+    return;
+  }
   if (k === 'fogo') { await AX('Dezasete anos tiña. A pa pesaba máis ca min.'); await AX('E agora pesa outra vez. Pero esta vez non me queixo.'); }
   if (k === 'adeus') await AX('Ao deitarse. Xa o sei. Valerio escríbeo grande para que o lea sen lentes.');
 }
@@ -549,7 +586,7 @@ async function remediosTalk() {
     if (k === 'carbon') {
       setFlag('reCarbon');
       if (CARBON_QUEN === 'remedios') { await RE('Pillada. Son eu. Un saco cada dúas semanas, e vinte euros baixo a pedra. Da miña pensión, que conste.'); await MA('Un robo con factura. Andrés va a querer darte de alta como socia.', 'risueno'); }
-      else if (CARBON_QUEN === 'anxo') { await RE('Iso pregúntallo a Anxo. El escolle o carbón polo son ao caer na pa. Coma o avó dese rapaz do Fluvial.'); await AX('O bo carbón soa a campá. O malo, a lata.'); }
+      else if (CARBON_QUEN === 'anxo') { await RE('Iso pregúntallo a Anxo. El escolle o carbón polo son ao caer na pa.'); await AX('O bo carbón soa a campá. O malo, a lata.'); }
       else { await RE('O carbón tráeo un amigo. E págao, que é moi seu para as contas. Máis non che digo.'); await MA('(Puntual con las cuentas. Como un horario de tren. Otra vez.)', 'pensativo'); }
     }
     if (k === 'asubio') { setFlag('reAsubio'); await RE('O asubío ten dono. E esta noite non veu.'); await MA('¿Y quién es?', 'dudoso'); await RE('Un que asubía mellor do que fala. Que xa é dicir.'); }
