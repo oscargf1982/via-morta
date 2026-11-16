@@ -162,6 +162,20 @@ async function abrirCaderno() {
   if (E.flags._pista && !E.opts.axuda) h += `<p class="sub">Última nota ao marxe: ${esc(E.flags._pista)}</p>`;
   await showDoc(h);
 }
+/* foto a pantalla completa que se vira (frente e reverso). `marks`: notas a lapis sobre o frente, [{x, y, t}] en % da imaxe.
+   Tocar a foto ou «Dar a volta» vírana; «Pechar» (ou Escape) devolve o control. */
+function showPhoto(front, back, marks = []) {
+  SFX.paper(); const el = $('foto');
+  el.innerHTML = `<div class="ft-card"><div class="ft-in"><div class="ft-f"><img src="${res(front)}" alt="">${marks.map(m => `<span class="ft-m" style="left:${m.x}%;top:${m.y}%">${m.t}</span>`).join('')}</div><div class="ft-b"><img src="${res(back)}" alt=""></div></div></div><div class="ft-bar"><button type="button" class="ft-v">Dar a volta</button><button type="button" class="ft-x">Pechar</button></div>`;
+  el.hidden = false;
+  const card = el.querySelector('.ft-in'), flip = () => { card.classList.toggle('back'); SFX.paper(); };
+  el.querySelector('.ft-card').onclick = flip; el.querySelector('.ft-v').onclick = flip;
+  return new Promise(r => {
+    const close = () => { el.hidden = true; document.removeEventListener('keydown', key); r(); };
+    const key = e => { if (e.key === 'Escape') close(); else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); } };
+    el.querySelector('.ft-x').onclick = close; document.addEventListener('keydown', key);
+  });
+}
 function showDoc(html) { SFX.paper(); const el = $('doc'); el.innerHTML = html.replace(/img\/[\w-]+\.(png|jpg)/g, res) + '<p class="doc-x">(toca para pechar)</p>'; el.hidden = false; return new Promise(r => { el.onclick = () => { el.hidden = true; r(); }; }); }
 /* imaxe a pantalla completa con liñas de texto. zoom = { x, y, z } (opcional): a cámara achégase amodo
    ao punto (x, y) da imaxe (fraccións 0..1) ata z aumentos e queda alí. */
@@ -256,6 +270,9 @@ function olloOn() { return E.olloT > 0; }
 function visibleHots() { return (E.scene.hotspots || []).filter(h => (!h.when || h.when()) && (!h.olloOnly || olloOn() || flag(h.olloOnly))); }
 function visibleNpcs() { return (E.scene.npcs || []).filter(n => !n.when || n.when()); }
 function npcBox(n) { const s = npcScale(n), w = n.w * s, h = n.h * s; return [n.x - w / 2, n.y - h, w, h]; }
+/* Martín como destino dun obxecto: tocalo co obxecto na man usa ITEMS[id].self (se non hai, mírao) */
+function actorBox() { const A = E.actor, h = (E.scene.actorH || 330) * scaleAt(A.y), w = h * 0.36; return [A.x - w / 2, A.y - h, w, h]; }
+function onActor(x, y) { return !!E.held && E.actor.visible && !E.scene.noActor && inRect(x, y, actorBox()); }
 function hitTest(x, y) {
   for (const n of visibleNpcs()) if (inRect(x, y, npcBox(n))) return { kind: 'npc', o: n };
   const hots = visibleHots(), exact = hots.filter(h => h.poly ? inPoly(x, y, h.poly) : inRect(x, y, h.r));
@@ -345,7 +362,9 @@ function onPointer(e, look) {
   if (E.dlg) { advanceDlg(); return; }
   if (E.rushExit && !look && !E.paused) { const [x, y] = toLogic(e), h = hitTest(x, y); if (h && h.o === E.rushExit) { skipWalk(); return; } }
   if (E.busy || E.paused) return;
-  const [x, y] = toLogic(e), hit = hitTest(x, y);
+  const [x, y] = toLogic(e);
+  if (!look && onActor(x, y)) { const it = ITEMS[E.held]; E.held = null; drawInv(); run(it.self || it.look); return; }
+  const hit = hitTest(x, y);
   if (e.pointerType === 'touch') { E.mouse.x = x; E.mouse.y = y; E.hover = hit; E.hoverUntil = E.t + 1.3; }
   if (hit) { interact(hit, look); return; }
   // obxecto usado no chan da escena (scene.use[obxecto](x, y)): p. ex. tirar millo no chan
@@ -481,9 +500,10 @@ function render() {
   drawBarks();
   // etiqueta do cursor
   const hv = E.hover; let label = '';
-  if (hv && (!hv.o.when || hv.o.when())) { const n = hv.o.name; label = E.held ? `${hv.kind === 'npc' ? 'Dar' : 'Usar'} ${ITEMS[E.held].name} ${hv.kind === 'npc' ? 'a' : 'con'} ${n}` : (hv.o.exit ? `→ ${n}` : n); }
+  if (E.held && onActor(E.mouse.x, E.mouse.y)) label = `Usar ${ITEMS[E.held].name} con Martín`;
+  else if (hv && (!hv.o.when || hv.o.when())) { const n = hv.o.name; label = E.held ? `${hv.kind === 'npc' ? 'Dar' : 'Usar'} ${ITEMS[E.held].name} ${hv.kind === 'npc' ? 'a' : 'con'} ${n}` : (hv.o.exit ? `→ ${n}` : n); }
   else if (E.held) label = `Usar ${ITEMS[E.held].name} con...`;
-  if (label && !E.dlg) { c.font = '700 22px "Trebuchet MS", sans-serif'; c.textAlign = 'center'; c.lineWidth = 5; c.lineJoin = 'round'; c.strokeStyle = '#000'; const lx = Math.max(120, Math.min(W - 120, E.mouse.x)), ly = Math.max(30, E.mouse.y - 26); c.strokeText(label, lx, ly); c.fillStyle = hv && hv.o.exit && !E.held ? '#9fe0ff' : '#ffe38a'; c.fillText(label, lx, ly); c.textAlign = 'left'; }
+  if (label && !E.dlg) { c.font = '700 22px "Trebuchet MS", sans-serif'; c.textAlign = 'center'; c.lineWidth = 5; c.lineJoin = 'round'; c.strokeStyle = '#000'; const hw = c.measureText(label).width / 2 + 8, lx = Math.max(hw, Math.min(W - hw, E.mouse.x)), ly = Math.max(30, E.mouse.y - 26); c.strokeText(label, lx, ly); c.fillStyle = hv && hv.o.exit && !E.held ? '#9fe0ff' : '#ffe38a'; c.fillText(label, lx, ly); c.textAlign = 'left'; }
   if (E.fade > 0.01) { c.fillStyle = `rgba(0,0,0,${E.fade})`; c.fillRect(0, 0, W, H); }
 }
 function boxOf(o) {
