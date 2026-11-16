@@ -9,6 +9,8 @@
    ========================================================== */
 const PORTRAITS = { 'Martín': 'img/martin-face.png', 'Dona Concha': 'img/concha-face.png', 'Xoán Carballeira': 'img/xoan.png', 'Tío Demetrio': 'img/david-face.png', 'Rosario Higueras': 'img/rosario-face.png', 'Don Eladio': 'img/eladio-face.png' };
 // cor dos bocadillos de cada personaxe
+/* retratos que cambian coa frase: PORTRAIT_MOODS[quen][humor] = imaxe (se non hai, úsase PORTRAITS) */
+const PORTRAIT_MOODS = {};
 const PORTRAIT_COLORS = { 'Dona Concha': '#e6a8ff', 'Tío Demetrio': '#ffb36b', 'Rosario Higueras': '#8fd0ff', 'Xoán Carballeira': '#d8ec2a', 'Don Eladio': '#c8d0dc' };
 const MA = (t, mood) => say('Martín', t, mood);
 const CO = t => say('Dona Concha', t);
