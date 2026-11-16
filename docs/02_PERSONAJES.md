@@ -92,7 +92,7 @@
 ## Mega Andrés (Club Fluvial, chiringuito «Malo Será»)
 - Filósofo de tumbona: «a vida, mellor deitado». Su abuelo era fogonero.
 - Guarda sacos de carbón para el churrasco, que en el Acto 4 hacen falta para la Mikado. Reta a Martín a nadar al estilo *Track & Field*.
-- **Acto 2:** le desaparece cada pocas semanas un saco de carbón de piedra y aparece pagado con un billete bajo una piedra. Él no pregunta («un ladrón honrado»). Es una pista de que alguien prepara la Mikado de noche.
+- **Acto 2:** le desaparece cada pocas semanas un saco de carbón de piedra y aparece pagado con un billete bajo una piedra. Él no pregunta («un ladrón honrado»). Es una pista de que alguien prepara la Mikado de noche. **Quién es: Xoán** (elegido por Oscar el 16-11-2026), se descubre en el Acto 5.
 - **Acto 5 (elegido por Oscar):** es el **fogonero** de la Mikado en la salida a A Barreira: pala el carbón en la cabina como su abuelo. Es su cierre emotivo y forma parte del puzzle de la cabina.
 - **Recursos gráficos:** `andres.png` y `andres-face.png` en el juego anterior; cópialos de allí si hacen falta.
 

@@ -16,7 +16,7 @@ const RE = t => say('Remedios', t);
 const AX = t => say('Don Anxo', t);
 Object.assign(PORTRAIT_COLORS, { 'Remedios': '#9fc2ff', 'Don Anxo': '#e8c89a' });
 
-/* Quen leva o carbón de Andrés: pendente de que Oscar escolla ('xoan' recomendado, 'remedios' ou 'anxo').
+/* Quen leva o carbón de Andrés: Xoán (escollido por Oscar o 16-11-2026; as outras opcións eran 'remedios' e 'anxo').
    No Acto 3 só cambia o que responde Remedios na noite. */
 const CARBON_QUEN = 'xoan';
 
@@ -542,6 +542,9 @@ async function remediosTalk() {
       await RE('Iso é cousa doutro. Dese motor sabe máis outro que non está aquí esta noite. Leva meses abríndoo e pechándoo.');
       await MA('¿Buscando qué?', 'dudoso');
       await RE('Pregúntallo a el. Cando chegue o momento, xa cho dirá. Eu non lle conto as cousas a ninguén. Para iso está Concha.');
+      await MA('¿Y cómo llegó aquí? Rosario dice que en el cincuenta y dos se vendió todo a un ingeniero de Caminos y a un contratista.', 'pensativo');
+      await RE('Iso non o sabe ninguén, rapaz. Cando entrei eu no depósito, no setenta e cinco, xa estaba aí, nun recuncho, cunha lona enriba.');
+      await MA('Pues no me lo invento. Lo que no se sabe, se queda en pregunta. Y esta se queda aquí, con el motor.', 'convencido');
     }
     if (k === 'carbon') {
       setFlag('reCarbon');
