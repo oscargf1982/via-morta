@@ -761,7 +761,7 @@ SCENES.casares = {
    Con a alta da auga feita, Martín vai durmir. Soa o asubío (dous longos e un curto), érguese, mira polo balcón
    cara ao museo... e dáse conta de que o son vén cara á súa casa. Todo iso cóntao a cinemática C1 (js/cinematica1fin.js). */
 async function noiteActo1() {
-  await MA('Agua mañana, luz hoy y cama ya. Para ser lunes, no ha estado mal.', 'aliviado');
+  await MA('Agua, ducha, luz y cama. Para ser lunes, no ha estado mal.', 'aliviado');
   E.fadeTo = 1; await sleep(900);
   setFlag('noiteActo1');
   SFX.music(null);
@@ -777,10 +777,22 @@ async function estanciaPechada(linea, mood) { await MA(linea, mood || 'pensativo
    Ao entrar na casa Martín quere ducharse e vai probar a billa da cociña. Ata probala non fai nada máis;
    despois, ata ter a alta da auga, só fai o que leva á auga (o contrato e o Concello). Mirar funciona sempre. */
 const antesBilla = () => !flag('fimActo1') && flag('salonVisto') && !flag('sinAgua');
-const senDucha = () => !flag('fimActo1') && flag('salonVisto') && !flag('aguaAlta');
+const senDucha = () => !flag('fimActo1') && flag('salonVisto') && !flag('duchado');
 async function primeiroDucha(que) {
   if (antesBilla()) return MA(`¿${que}? ¿Oliendo así? Ni hablar. Primero, la ducha: a ver si el grifo de la cocina da agua caliente.`, 'avergonzado');
+  if (flag('aguaAlta')) return MA(`¿${que}? Primero, la ducha. Ya hay agua: el grifo de la cocina.`, 'avergonzado');
   return MA(`¿${que}? Sin ducharme no hago nada que no sea conseguir agua. Se lo he prometido a mi nariz. Primero, el Concello.`, 'avergonzado');
+}
+// co alta feita, a billa xa dá auga: a ducha pecha a misión e desbloquea o balcón, o patio e a cama
+async function ducharse() {
+  await MA('A ver si es verdad... Abro...', 'dudoso');
+  await sleep(400);
+  await MA('¡Agua! Y caliente. Eladio, perdóname todo lo que he pensado de ti.', 'entusiasmado');
+  E.fadeTo = 1; await sleep(900);
+  setFlag('duchado');
+  E.fadeTo = 0; await sleep(500);
+  await MA('Duchado. Ya no huelo a jabalí; como mucho, a jabato. Ahora sí: la casa entera es mía.', 'orgulloso');
+  toast('Misión cumprida: auga e ducha');
 }
 
 /* ---------- A5 · Casa Juana: salón comedor ----------
@@ -790,10 +802,14 @@ SCENES.casaSalon = {
   walk: [[120, 540], [120, 462], [170, 444], [300, 430], [495, 414], [502, 362], [600, 372], [700, 382], [780, 394], [822, 372], [880, 368], [936, 392], [936, 540]],
   scale: [300, 0.55, 540, 0.98], actorH: 300, start: [470, 500], minSpeed: 0.5,
   async onEnter() {
-    if (flag('aguaAlta') && !flag('noiteAviso')) {
+    if (flag('aguaAlta') && !flag('duchado') && !flag('fimActo1')) {
+      await MA('Hola, casa. Ahora sí que tenemos agua. Antes que nada, la ducha: el grifo de la cocina.', 'sonriente');
+      toast('Novo obxectivo: abre a billa da cociña e dúchate');
+      return;
+    }
+    if (flag('duchado') && !flag('noiteAviso')) {
       setFlag('noiteAviso');
       await MA('Ya anochece. Cena de supermercado, maleta sin deshacer y un dormitorio por estrenar. A la izquierda.', 'aliviado');
-      await MA('La ducha, mañana por la mañana. Esta noche el jabalí duerme conmigo.', 'risueno');
       toast('Pista: o dormitorio está á esquerda do salón');
       return;
     }
@@ -810,7 +826,8 @@ SCENES.casaSalon = {
     { name: 'Dormitorio', key: true, done: () => flag('fimActo1'), r: [0, 300, 110, 240], at: [140, 490], face: 'L', exit: ['__dormitorio'], hint: 'L',
       act: async () => {
         if (flag('fimActo1')) return estanciaPechada('El dormitorio. La cama aún está deshecha del susto de anoche.', 'risueno');
-        if (flag('aguaAlta')) return noiteActo1();
+        if (flag('duchado')) return noiteActo1();
+        if (flag('aguaAlta')) return primeiroDucha('A la cama');
         if (antesBilla()) return MA('¿Dormir así? Las sábanas no tienen la culpa de nada. Primero, la ducha: el grifo de la cocina.', 'avergonzado');
         if (flag('sinAgua')) return MA('Todavía es de día, no hay agua y huelo a jabalí. Dormir ahora sería rendirse. Primero, el Concello.', 'convencido');
         return MA('El dormitorio. Ya lo estrenaré esta noche... si el silbato me deja dormir. Antes, a ver qué tal está el resto de la casa.', 'dudoso');
@@ -828,7 +845,7 @@ SCENES.casaSalon = {
     { name: 'Aparador', r: [384, 232, 128, 76], look: () => MA('Un aparador de madera tallada, de los de antes. En la Casa Juana, de un carpintero, los muebles tienen que estar a la altura.', 'pensativo') },
     { name: 'Mesa e cadeiras', r: [514, 220, 298, 150], look: () => MA('Mesa para seis. Yo solo soy uno, pero tengo mucha familia en Vilatán. Y todos opinan.', 'risueno') },
     { name: 'Sofá', r: [100, 232, 396, 196], look: () => MA('Un sofá rinconera, gris y mullido. Peligroso: me siento ahí y no me levanto hasta el Acto 3.', 'risueno'),
-      act: () => flag('aguaAlta') && !flag('fimActo1') ? MA('Si me tumbo aquí, mañana tengo la espalda de un señor de ochenta años. Mejor la cama: a la izquierda.', 'risueno') : MA('Un sofá rinconera, gris y mullido. Peligroso: me siento ahí y no me levanto hasta el Acto 3.', 'risueno') },
+      act: () => flag('duchado') && !flag('fimActo1') ? MA('Si me tumbo aquí, mañana tengo la espalda de un señor de ochenta años. Mejor la cama: a la izquierda.', 'risueno') : MA('Un sofá rinconera, gris y mullido. Peligroso: me siento ahí y no me levanto hasta el Acto 3.', 'risueno') },
     { name: 'Coxíns', r: [318, 240, 100, 82], look: () => MA('Cojines verdes y crema, colocados con escuadra y cartabón. Aquí ha pasado una casera concienzuda.', 'sonriente') },
     { name: 'Mesiñas', r: [80, 316, 72, 124], look: () => MA('Dos mesitas nido. Una dentro de la otra, como las muñecas rusas, pero en serio.', 'risueno') },
   ],
@@ -851,14 +868,15 @@ async function vistaSalon() {
 /* ---------- A5b · Casa Juana: cociña ----------
    Desde o balcón vense o supermercado e a Torre da Homenaxe. Na billa descóbrese que non hai auga (gancho do M2). */
 async function billaSenAuga() {
-  if (flag('aguaAlta')) { await MA('Nada todavía. Eladio dijo «mañana por la mañana». En horario de funcionario, eso es una previsión, no una promesa.', 'esceptico'); return; }
+  if (flag('duchado')) { await MA('Agua fría, agua caliente, y un grifo que por fin hace su trabajo. Como yo hoy.', 'sonriente'); return; }
+  if (flag('aguaAlta')) return ducharse();
   if (flag('sinAgua')) { await MA('Lo vuelvo a intentar, por si acaso... Nada. El grifo sigue en huelga.', 'esceptico'); return; }
   setFlag('sinAgua');
   await MA('A ver ese agua caliente. Abro...', 'sonriente');
   await sleep(500);
   await MA('...', 'dudoso');
   await MA('Ni una gota. Ni un gorgoteo. Ni un triste suspiro de tubería.', 'sorprendido');
-  await MA('¿Sin agua? Ni que esto fuera una corredoira de aldea, de las de cántaro y fuente.', 'esceptico');
+  await MA('¿Sin agua? Ni que esto fuera la calle Corredoira.', 'esceptico');
   await MA('Pues yo, oliendo a jabalí, no hago nada más. Ni balcón, ni patio, ni cama. Hasta que no me duche, solo me ocupo del agua.', 'enfadado');
   if (flag('contratoAsinado')) {
     await MA('Claro: el contrato está firmado, pero el agua hay que darla de alta en el Concello. Con el contrato en la mano, como todo en esta vida.', 'pensativo');
@@ -884,7 +902,7 @@ SCENES.casaCocina = {
     { name: 'Patio', key: true, r: [400, 516, 460, 24], at: [620, 530], face: 'F', exit: ['casaPatio', [140, 420]], hint: 'D',
       act: () => senDucha() ? primeiroDucha('El patio') : goScene('casaPatio', [140, 420]),
       look: () => MA('Detrás de mí, la puerta de atrás: da al patio. Y del patio, al taller viejo del señor Alfredo.', 'pensativo') },
-    { name: 'Billa', key: true, done: () => flag('sinAgua'), r: [604, 196, 92, 60], at: [650, 404], face: 'B', act: () => billaSenAuga(),
+    { name: 'Billa', key: true, done: () => flag('sinAgua') && (!flag('aguaAlta') || flag('duchado')), r: [604, 196, 92, 60], at: [650, 404], face: 'B', act: () => billaSenAuga(),
       look: () => MA(flag('sinAgua') ? 'Un grifo precioso, de diseño. Decorativo, de momento. Muy decorativo.' : 'Un grifo moderno, de los que suben y bajan. Seguro que da gusto fregar aquí.', flag('sinAgua') ? 'esceptico' : 'sonriente') },
     { name: 'Torre da Homenaxe', r: [234, 70, 34, 44], look: () => MA('La Torre del Homenaje, allá arriba, en el monte de San Vicente. Monforte te vigila desde la cocina. Y yo sin fregar.', 'sonriente') },
     { name: 'Supermercado', r: [210, 226, 72, 34], look: () => MA(flag('sinAgua') ? 'El supermercado de enfrente. Bendito sea: hoy cenaré agua embotellada, como los ricos.' : 'Un supermercado justo enfrente. Esta casa tiene todo a mano: la estación, la gasolinera y el pan.', 'risueno') },
@@ -1202,19 +1220,19 @@ async function eladioVentanilla() {
     toast('Pista: deixa a cadeira coas outras, á esquerda');
     return;
   }
-  if (flag('aguaAlta')) { await EL('Xa ten a alta. Mañá pola mañá, auga. E agora, se me permite, estou fóra de horario. Desde fai dez minutos.'); return; }
+  if (flag('aguaAlta')) { await EL('Xa ten a alta. Xa ten auga na casa. E agora, se me permite, estou fóra de horario. Desde fai dez minutos.'); return; }
   await EL('Xa que estou aquí... pero rápido, que estou fóra de horario.');
   await MA('El alta del agua de la Casa Juana, Doctor Casares, 211. Aquí está el contrato.', 'convencido');
   await EL('A ver... Rosario Higueras, a dona... asinado... con bolígrafo azul. Ben.');
-  await EL('(selo, selo, selo) Alta feita. Mañá pola mañá ten auga. Se non hai ningunha incidencia. E sempre hai algunha.');
+  await EL('(selo, selo, selo) Alta feita. Xa pode abrir a billa, que a auga chega antes ca vostede. Se non hai ningunha incidencia. E sempre hai algunha.');
   await EL('Casa Juana... Esa casa ten moito público. O mes pasado xa veu preguntar por ela un tal Nogal.');
   await MA('¿Nogal? ¿Preguntar qué?', 'dudoso');
   await EL('Iso é protección de datos, rapaz. Nogal: apelido de aquí. Hai moitos. Ou non tantos.');
   await MA('(Un tal Nogal, preguntando por mi casa antes que yo. En Monforte hasta las casas tienen cola.)', 'pensativo');
   setFlag('aguaAlta'); setFlag('eladioNogal');
   await EL('Por certo: o reloxo do café adianta dez minutos. Debería denunciarse. Pero hoxe xa fichei.');
-  await MA('Agua, mañana. Por hoy, bastante he hecho: llaves, contrato, Concello. A casa, a descansar.', 'aliviado');
-  toast('Novo obxectivo: volver á Casa Juana e descansar');
+  await MA('¡Agua! Por hoy, bastante he hecho: llaves, contrato, Concello. A casa, que me espera una ducha.', 'aliviado');
+  toast('Novo obxectivo: volver á Casa Juana e ducharse');
 }
 SCENES.cafeEladio = {
   name: 'Café', bg: 'img/bg-cafe-eladio.jpg', music: 'casa', floor: 'pedra',
@@ -1356,6 +1374,7 @@ async function mapaPechado(linea, hito) { await MA(linea, 'pensativo'); toast(`A
     { when: () => A1() && hasItem('cadeira') && !flag('eladioVolveu'), t: 'Poner la silla debajo del reloj del café y subirme.' },
     { when: () => A1() && flag('eladioVolveu') && !flag('cadeiraDevolta'), t: 'Devolver la silla a su sitio, con las otras del Concello.' },
     { when: () => A1() && flag('eladioVolveu') && flag('cadeiraDevolta') && !flag('aguaAlta'), t: 'Ventanilla 1: el alta del agua.' },
-    { when: () => A1() && flag('aguaAlta'), t: 'Volver a casa y dormir. El dormitorio está a la izquierda del salón.' },
+    { when: () => A1() && flag('aguaAlta') && !flag('duchado'), t: 'Ya hay agua. Volver a casa y ducharme: el grifo de la cocina.' },
+    { when: () => A1() && flag('duchado'), t: 'Duchado. Ahora, a dormir: el dormitorio está a la izquierda del salón.' },
   );
 }

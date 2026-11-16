@@ -566,14 +566,14 @@ const CINE = (() => {
   }
 
   /* ================= REPRODUCIÓN ================= */
-  let el = null, cv = null, playing = false;
+  let el = null, cv = null, playing = false, pechada = Promise.resolve();
   function mount() {
     if (el) return;
     const st = document.createElement('style');
     st.textContent = '#cineIntro{position:fixed;inset:0;z-index:35;background:#000;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity 1.3s;touch-action:manipulation}#cineIntro[hidden]{display:none}#cineIntro canvas{width:min(100vw,calc(100dvh * 16 / 9));aspect-ratio:16/9;display:block}#cineSkip{position:absolute;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));font:700 17px "Trebuchet MS",sans-serif;padding:12px 20px;min-height:48px;border-radius:8px;border:2px solid #f2a33a;background:rgba(14,16,20,.88);color:#f2a33a;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .25s}#cineSkip.on{opacity:1;pointer-events:auto}#cineDay{position:absolute;left:0;right:0;bottom:18%;text-align:center;font:italic 700 clamp(22px,4.5vw,40px) Georgia,serif;color:#f2ead8;text-shadow:0 2px 10px #000;opacity:0;transition:opacity .6s;pointer-events:none}#cineDay.on{opacity:1}';
     document.head.appendChild(st);
     el = document.createElement('div'); el.id = 'cineIntro'; el.hidden = true;
-    el.innerHTML = '<canvas></canvas><div id="cineDay">Luns, 7:52</div><button id="cineSkip" type="button">Saltar ▸</button>';
+    el.innerHTML = '<canvas></canvas><div id="cineDay">Luns, 7:52</div><button id="cineSkip" type="button">Saltar cinemática ▸</button>';
     document.body.appendChild(el); cv = el.querySelector('canvas');
   }
   function fit() {
@@ -584,21 +584,26 @@ const CINE = (() => {
   function drawFrame(t, F) { const c = cv.getContext('2d'), s = fit(); c.setTransform(s, 0, 0, s, 0, 0); render(c, t, F); }
   /* Reproduce a cinemática. A promesa resólvese cando remata ou cando se salta
      (coa pantalla aínda en negro); despois o fundido descobre o xogo. */
+  /* Só se salta co botón «Saltar cinemática» (pedido por Oscar, 16-11-2026): tocar a pantalla ou premer teclas non fai nada.
+     Se unha cinemática empeza mentres a anterior aínda se esvae, espera a que se peche: saltar unha nunca salta a seguinte. */
   async function play(opts = {}) {
-    if (playing) return; playing = true; mount();
+    while (playing) await pechada;
+    playing = true; mount();
+    let pechar; pechada = new Promise(r => { pechar = r; });
     const F = opts.film || MAIN; el.querySelector('#cineDay').textContent = F.day || '';
     el.style.transition = 'none'; el.style.opacity = 1; el.hidden = false; void el.offsetWidth; el.style.transition = '';
     const skipB = el.querySelector('#cineSkip'), day = el.querySelector('#cineDay'); skipB.classList.remove('on'); day.classList.remove('on');
     { const c = cv.getContext('2d'); fit(); c.setTransform(1, 0, 0, 1, 0, 0); c.fillStyle = '#000'; c.fillRect(0, 0, cv.width, cv.height); }
     await prepare(); if (F !== MAIN) await F.prepare();
     AU = audioStart(F);
-    const p0 = performance.now(), au = AU; let skipped = false, raf = 0, hideT = 0;
+    const p0 = performance.now(), au = AU; let skipped = false, raf = 0;
     const now = () => (au && au.ac.state === 'running' ? Math.max(0, au.ac.currentTime - au.t0) : (performance.now() - p0) / 1000);
     await new Promise(done => {
-      const finish = sk => { if (!playing) return; skipped = sk; cancelAnimationFrame(raf); clearTimeout(hideT); el.onclick = null; skipB.onclick = null; window.removeEventListener('keydown', key, true); done(); };
-      const ask = () => { skipB.classList.add('on'); clearTimeout(hideT); hideT = setTimeout(() => skipB.classList.remove('on'), 3500); };
-      const key = ev => { ev.stopPropagation(); if (ev.key === 'Escape' || ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); if (skipB.classList.contains('on')) finish(true); else ask(); } };
-      el.onclick = ev => { if (ev.target === skipB) return; ask(); };
+      let fin = false;
+      const finish = sk => { if (fin) return; fin = true; skipped = sk; cancelAnimationFrame(raf); el.onclick = null; skipB.onclick = null; window.removeEventListener('keydown', key, true); done(); };
+      const key = ev => { ev.stopPropagation(); if (ev.key === 'Escape' || ev.key === 'Enter' || ev.key === ' ') ev.preventDefault(); };
+      el.onclick = ev => { ev.stopPropagation(); };
+      skipB.classList.add('on');
       skipB.onclick = ev => { ev.stopPropagation(); finish(true); };
       window.addEventListener('keydown', key, true);
       const loop = () => { const t = now(); if (t >= F.T.end) return finish(false); drawFrame(t, F); raf = requestAnimationFrame(loop); };
@@ -610,7 +615,7 @@ const CINE = (() => {
     if (opts.day !== false) day.classList.add('on');
     setTimeout(() => { el.style.opacity = 0; }, opts.day !== false ? 500 : 0);
     setTimeout(() => { day.classList.remove('on'); }, 1500);
-    setTimeout(() => { el.hidden = true; playing = false; }, opts.day !== false ? 1900 : 1400);
+    setTimeout(() => { el.hidden = true; playing = false; pechar(); }, opts.day !== false ? 1900 : 1400);
   }
   /* para probas: debuxa o fotograma do segundo t, sen son */
   async function frame(t, F = MAIN) { mount(); el.style.opacity = 1; el.hidden = false; await prepare(); if (F !== MAIN) await F.prepare(); drawFrame(t, F); }

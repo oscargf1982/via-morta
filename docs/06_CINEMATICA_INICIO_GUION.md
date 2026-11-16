@@ -49,7 +49,7 @@ Niebla, lluvia, vapor, chispas, temblor de cámara y versiones nocturnas por có
 - Solo ficción del juego (noche de 1958, mercancías, informe falso). Ninguna persona real aparece ni recibe hechos inventados.
 - Nada de «basado en hechos reales». Rótulo opcional: «Unha ficción inspirada en lugares reais de Monforte».
 - Textos en gallego. Móvil primero (vertical: escena arriba, textos grandes debajo).
-- Saltar: un toque muestra «Saltar ▸», segundo toque salta al andén. Se puede volver a ver desde Opcións.
+- Saltar: solo con el botón «Saltar cinemática ▸», siempre visible abajo a la derecha (Oscar, 16-11-2026); tocar la pantalla o pulsar teclas no salta. Si una cinemática empieza mientras la anterior se cierra, espera: saltar una nunca salta la siguiente. Se puede volver a ver desde Opcións.
 - Va al pulsar «Nova partida», antes del andén del Acto 1.
 
 **Actualización 14-11-2026:** el andén de 1958 usa ya la ilustración de Oscar (`img/cine-anden-1958.jpg`), animada por código.

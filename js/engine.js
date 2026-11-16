@@ -169,7 +169,8 @@ async function cine(src, lines, zoom) {
   const el = $('cine'); el.style.backgroundImage = `url(${res(src)})`; el.hidden = false; el.classList.remove('on', 'zoom'); void el.offsetWidth;
   if (zoom) { const f = v => (100 * (0.5 - zoom.z * v) / (1 - zoom.z)).toFixed(2) + '%'; el.style.setProperty('--zp', f(zoom.x) + ' ' + f(zoom.y)); el.style.setProperty('--zs', zoom.z * 100 + '%'); }
   el.classList.add(zoom ? 'zoom' : 'on');
-  for (const l of lines) { $('cineTxt').textContent = l; await new Promise(r => { el.onclick = r; }); }
+  // cada liña agarda o seu toque; os toques dos primeiros 400 ms non contan, para que un dobre toque non se coma a seguinte
+  for (const l of lines) { $('cineTxt').textContent = l; const t0 = performance.now(); await new Promise(r => { el.onclick = () => { if (performance.now() - t0 > 400) r(); }; }); }
   el.hidden = true;
 }
 /* minixogo de toques alternos (estilo Track & Field): hai que premer esquerda e dereita por quendas.
