@@ -304,7 +304,7 @@ async function valerioLibro() {
 /* ---------- A7 · Exterior das cocheras no Acto 3: o candado (1401) ---------- */
 let fallosCandado = 0;
 async function abrirCandado() {
-  if (flag('candadoAberto')) { SFX.door(); return goScene('cocherasDentro', [480, 520]); }
+  if (flag('candadoAberto')) { SFX.door(); return goScene('cocherasDentro', [500, 520]); }
   if (!fallosCandado) await MA(flag('a3Graxa') || flag('pistaData') ? 'Cuatro ruedecitas. Y una fecha grabada en mi pilar que no se me va de la cabeza.' : 'Cuatro ruedecitas con números. Vamos a ver qué tengo en la cabeza.', 'pensativo');
   const c = await candadoCombinacion({ title: 'Candado das cocheras', n: 4, hint: 'Xira as rodas (ou escribe os números) e preme «Probar».' });
   if (c === null) return MA('Lo dejo. Por ahora. Este candado y yo tenemos una conversación pendiente.', 'esceptico');
@@ -314,7 +314,7 @@ async function abrirCandado() {
     await MA('Uno, cuatro, cero, uno. Catorce del uno... ¡Clac!', 'sorprendido');
     await MA('¿Quién pone de contraseña una fecha? Mi madre. Y por lo visto, los jubilados del depósito.', 'risueno');
     toast('Abriches o candado das cocheras');
-    SFX.door(); return goScene('cocherasDentro', [480, 520]);
+    SFX.door(); return goScene('cocherasDentro', [500, 520]);
   }
   fallosCandado++;
   if (c === '1958') await MA('Mil novecientos cincuenta y ocho. Ya lo probé el martes. El año no: el día y el mes.', 'frustrado');
@@ -364,113 +364,130 @@ async function pistaCocheras(k) {
   await MA('Vale. Lo junto todo antes de que me pillen aquí dentro.', 'pensativo');
   await showDoc(`<h4>Caderno de Martín · xoves</h4><p class="sub">Lo que sé</p>
 <p>Alguien está poniendo en marcha la Mikado de la rotonda: presión de trabajo de 9 kilos, tubos, inyector. Las piezas se arreglan aquí dentro y se montan ahí fuera.</p>
-<p>Un inyector de bronce con la grasa de mi taller. Carbón de piedra, el de Andrés. Huellas de botas y de zapatillas de andar por casa, del carbón al postigo que da a la rotonda.</p>
-<p>La carpintería de mi casa, o una gemela, aquí guardada bajo lonas. Y el motor con «A.F.G.» grabado con la misma letra que el pilar. Alguien lo ha abierto buscando algo.</p>
+<p>Un inyector de bronce con la grasa de mi taller. Carbón de piedra, el de Andrés. Huellas de botas y de zapatillas de andar por casa, del carbón a la puerta de carga que da a la rotonda.</p>
+<p>La carpintería de mi casa, o una gemela, aquí guardada. Y el motor con «A.F.G.» grabado con la misma letra que el pilar. Alguien lo ha abierto buscando algo.</p>
 <p><b>Hoy, a las once: «proba de lume».</b></p>`);
   if (flag('libro1958')) await MA('Esta noche, a las once, aquí. Escondido dentro del coche de viajeros, a ver quién sale con la carretilla. Y con las pastillas de Don Anxo en el bolsillo.', 'convencido');
   else await MA('Hasta las once tengo tiempo. Y Xoán me dijo que preguntara a quien guarda papeles viejos: Valerio y los libros de su padre.', 'convencido');
   toast(flag('libro1958') ? 'Novo obxectivo: ás once, agardar dentro do coche de viaxeiros' : 'Novo obxectivo: o libro de 1958 de Valerio (Farmacia de la Estación)');
 }
-const LOUSA = ['Presión: 9 kg', 'Probar inxector', 'Mércores: tubos ✓', 'Xoves 23:00:', 'proba de lume'];
+/* nota da proba de lume: un papel pegado na esquina da lousa (o debuxo de Oscar só ten as tres primeiras liñas) */
 function pintarLousa(c, a) {
-  c.save(); c.globalAlpha = a; c.fillStyle = '#e8ecdf'; c.font = 'italic 12px Georgia, serif';
-  LOUSA.forEach((l, i) => c.fillText(l, 76, 210 + i * 17 - i * 1.2)); c.restore();
-}
-function pintarMotor(c) {
-  if (!flag('pistaMotor')) return;
-  // a lona retirada deixa ver o motor Siemens desmontado e as iniciais
-  c.save();
-  c.fillStyle = '#4a5a6a'; c.strokeStyle = '#141010'; c.lineWidth = 2;
-  c.beginPath(); c.roundRect(80, 362, 110, 62, 10); c.fill(); c.stroke();
-  c.fillStyle = '#3a4a58'; for (let x = 92; x < 184; x += 12) c.fillRect(x, 366, 5, 54);
-  c.fillStyle = '#7a7a80'; c.beginPath(); c.arc(198, 392, 18, 0, 7); c.fill(); c.stroke();
-  c.fillStyle = '#2a2a2e'; c.beginPath(); c.arc(198, 392, 5, 0, 7); c.fill();
-  c.fillStyle = '#6a7a50'; c.beginPath(); c.moveTo(40, 440); c.lineTo(70, 400); c.lineTo(84, 436); c.closePath(); c.fill(); c.stroke();   // lona dobrada
-  c.fillStyle = '#e8d8b0'; c.font = 'bold 13px Georgia, serif'; c.fillText('A.F.G.', 108, 400);
+  c.save(); c.translate(503, 199); c.rotate(0.06);
+  c.fillStyle = '#f2ecd8'; c.strokeStyle = '#6a5a3a'; c.lineWidth = 1; c.fillRect(0, 0, 52, 30); c.strokeRect(0, 0, 52, 30);
+  c.fillStyle = 'rgba(220,200,120,.8)'; c.fillRect(18, -3, 16, 6);
+  c.fillStyle = flag('pistaLousa') ? '#a01810' : '#3a2a1a'; c.font = 'italic bold 8.5px Georgia, serif';
+  c.fillText('Xoves 23:00', 4, 13); c.fillText('proba de lume', 3, 24);
   c.restore();
 }
-SCENES.cocherasDentro = {
-  name: 'Cocheras do museo', bg: 'img/bg-cocheras-interior.jpg', music: null, floor: 'pedra',
-  walk: [[0, 540], [0, 512], [236, 492], [330, 478], [630, 478], [730, 500], [960, 514], [960, 540]],
-  scale: [470, 0.46, 540, 0.56], actorH: 300, start: [480, 520], minSpeed: 0.4,
-  draw(c, t) {
-    pintarLousa(c, flag('pistaLousa') ? 0.9 : 0.55);
-    pintarMotor(c);
-    // po no raio de luz do postigo
-    c.save(); c.globalAlpha = 0.18; c.fillStyle = '#f0e6c8';
-    for (let i = 0; i < 5; i++) { const k = (t * 0.06 + i / 5) % 1; c.beginPath(); c.arc(572 + Math.sin(t * 0.7 + i * 2) * 10, 350 - k * 60, 1.4, 0, 7); c.fill(); }
-    c.restore();
+const motorPista = () => ({ name: 'Motor A.F.G.', key: true, done: () => flag('pistaMotor'),
+  act: async () => {
+    if (flag('pistaMotor')) return motorLook();
+    await MA('Un motor enorme, medio tapado con una lona que alguien ha dejado caer. Esta lona no tiene polvo: la quitan y la ponen a menudo. La levanto del todo...', 'pensativo');
+    setFlag('pistaMotorAberto');
+    await motorLook();
+    await pistaCocheras('pistaMotor');
   },
+  look: () => flag('pistaMotor') ? motorLook() : MA('Un motor eléctrico enorme, medio tapado con una lona. En la carcasa, en relieve, unas letras: A.F.G. Eso hay que mirarlo de cerca.', 'sorprendido') });
+const COCHERAS_COMUNS = {
+  lampada: { name: 'Lámpada', look: () => MA('Una lámpara de taller, de las de pantalla verde. Encendida de día: aquí alguien no paga la luz. O la paga el museo sin saberlo.', 'esceptico') },
+  transmision: { name: 'Transmisión', look: () => MA('Poleas y correas colgando del techo, como en mi taller. Aquí también se movía todo con un solo motor. Con ese motor, apostaría.', 'pensativo') },
+  porta: { name: 'Porta de carga', look: () => MA('La puerta de carga del fondo, entreabierta. Se ven las vías y una farola. Por ahí se sale a la rotonda de la Mikado sin pasar por la plaza.', 'pensativo'),
+    act: () => MA('Salir por la puerta de atrás de un museo, de día y con uniforme de Renfe... No. Salgo por donde entré, como las personas decentes. Y los cerrajeros.', 'risueno') },
+};
+SCENES.cocherasDentro = {
+  name: 'Cocheras do museo', bg: 'img/bg-cocheras-interior-esq.jpg', music: null, floor: 'pedra',
+  // ilustración de Oscar (16-11-2026), metade esquerda da panorámica: as máquinas da carpintería e o motor
+  walk: [[330, 540], [330, 450], [470, 420], [600, 420], [570, 500], [960, 500], [960, 540]],
+  scale: [420, 0.5, 540, 0.66], actorH: 300, start: [480, 520], minSpeed: 0.4,
   async onEnter() {
     if (flag('a3DentroVisto')) return;
     setFlag('a3DentroVisto');
-    await MA('Madre mía. Ni una locomotora. Máquinas de carpintería: una sierra de cinta, una sierra circular, un torno... Todo bajo lonas, como los muebles de una casa cerrada.', 'sorprendido');
+    await MA('Madre mía. Ni una locomotora. Máquinas de carpintería: una sierra de cinta, una sierra circular, un torno... y poleas colgando del techo, como en mi taller.', 'sorprendido');
     await MA('Es lo que Rosario me contó del taller de mi casa. La escritura de 1952 dice a quién se vendió, no dónde acabó. Igual es otra carpintería. O igual no.', 'pensativo');
     await MA('Y esto no huele a almacén. Huele a aceite, a carbón... y a alguien que ha estado aquí hace nada.', 'pensativo');
-    toast('Pista: usa o OLLO, que o chan tamén fala');
+    toast('Pista: a nave segue á dereita. E usa o OLLO, que o chan tamén fala');
   },
   hotspots: [
-    { name: 'Saír ás cocheras', key: true, r: [300, 512, 360, 28], at: [480, 528], face: 'F', exit: ['cocheras', [700, 446]], hint: 'D',
-      look: () => MA('La salida. Antes de irme, dejo todo como estaba. Un maquinista sabe dejar las cosas como estaban: es lo que más le piden.', 'pensativo') },
-    { name: 'Lousa', key: true, done: () => flag('pistaLousa'), r: [60, 186, 138, 120], at: [150, 500], face: 'L',
+    { name: 'Saír ás cocheras', key: true, r: [400, 512, 300, 28], at: [500, 530], face: 'F', exit: ['cocheras', [700, 446]], hint: 'D',
+      look: () => MA('La salida a la plaza del museo. Antes de irme, dejo todo como estaba. Un maquinista sabe dejar las cosas como estaban: es lo que más le piden.', 'pensativo') },
+    { name: 'Resto da nave', key: true, r: [924, 300, 36, 200], at: [948, 520], face: 'R', exit: ['cocherasDentroD', [40, 515]], hint: 'R',
+      look: () => MA('La nave sigue hacia la derecha: bancos, una pizarra, sacos...', 'pensativo') },
+    { ...motorPista(), r: [570, 291, 360, 200], at: [700, 510], face: 'B' },
+    { name: 'Serra de cinta', r: [18, 99, 147, 237],
+      look: () => MA(hasItem('foto1949') ? 'Una sierra de cinta de las de antes: volantes de hierro y una cinta que ya no corta nada. Se parece muchísimo a la de la foto de 1949.' : 'Una sierra de cinta de las de antes: volantes de hierro y una cinta que ya no corta nada. Como un reloj de pared, pero para madera.', 'pensativo'),
+      use: { foto1949: async () => {
+        await MA('Pongo la foto delante. El mismo bastidor, la misma mesa... y la misma muesca en el brazo, a la altura de la mano.', 'sorprendido');
+        await MA('O es ella, o tiene una gemela muy bien conservada. La sierra donde posaban Alfredo y los aprendices. Aquí, en las cocheras del museo.', 'pensativo');
+        await MA('No lo puedo demostrar. Pero el motor de la lona, con «A.F.G.», piensa lo mismo que yo.', 'convencido');
+        setFlag('serraFoto');
+      } } },
+    { name: 'Serra circular', r: [0, 360, 324, 180], look: () => MA('Un banco con su sierra circular. El disco, sin un diente roto. Esto lo ha engrasado alguien que sabe que las máquinas se oxidan de tristeza.', 'pensativo') },
+    { name: 'Máquina tapada', r: [198, 186, 120, 150], look: () => MA('Algo tapado con una sábana vieja. Por la forma, una cepilladora. Esta no la ha destapado nadie en años: el polvo encima hace dunas.', 'pensativo') },
+    { name: 'Regruesadora', r: [318, 252, 135, 174], look: () => MA('Una regruesadora de hierro verde, de las que pesan como un vagón. En la escritura de 1952 venía en la lista. «Cepilladora/regruesadora, una». Pues aquí hay una.', 'pensativo') },
+    { name: 'Torno', r: [456, 249, 150, 147], look: () => MA('Un torno para madera, con la bancada lisa de tanto trabajar. Aquí se hicieron patas de mesa para medio Monforte. O eso me gusta pensar.', 'pensativo') },
+    { name: 'Escaleira', r: [603, 150, 63, 198], look: () => MA('Una escalera de madera apoyada en la pared. Para llegar a las poleas del techo. O para huir por una ventana, si te pillan. No es mi caso. Todavía.', 'risueno') },
+    { ...COCHERAS_COMUNS.porta, r: [672, 156, 252, 130] },
+    { ...COCHERAS_COMUNS.lampada, r: [759, 57, 81, 60] },
+    { ...COCHERAS_COMUNS.transmision, r: [282, 0, 174, 240] },
+    { name: 'Fiestras', r: [36, 0, 240, 156], look: () => MA('Ventanas altas, de arco. De noche, desde fuera, se tiene que ver si hay alguien. Por eso la gente lo sabe. Por eso Concha lo sabe.', 'pensativo') },
+  ],
+};
+SCENES.cocherasDentroD = {
+  name: 'Cocheras do museo', bg: 'img/bg-cocheras-interior-der.jpg', music: null, floor: 'pedra',
+  // ilustración de Oscar (16-11-2026), metade dereita: a lousa, o banco do inxector, a carretilla e o carbón
+  walk: [[0, 540], [0, 494], [250, 490], [270, 390], [480, 380], [520, 470], [520, 540]],
+  scale: [380, 0.48, 540, 0.66], actorH: 300, start: [40, 515], minSpeed: 0.4,
+  draw(c) { pintarLousa(c); },
+  hotspots: [
+    { name: 'Saír ás cocheras', key: true, r: [280, 512, 200, 28], at: [380, 530], face: 'F', exit: ['cocheras', [700, 446]], hint: 'D',
+      look: () => MA('La salida a la plaza del museo.', 'pensativo') },
+    { name: 'As máquinas', key: true, r: [0, 494, 30, 46], at: [14, 520], face: 'L', exit: ['cocherasDentro', [930, 520]], hint: 'L',
+      look: () => MA('Por ahí, las sierras, el torno y el motor.', 'pensativo') },
+    { name: 'Lousa', key: true, done: () => flag('pistaLousa'), r: [378, 192, 180, 120], at: [440, 400], face: 'B',
       look: async () => {
-        await showDoc('<h4>A lousa</h4><p style="font-size:20px;font-style:italic;line-height:1.5">Presión: 9 kg<br>Probar inxector<br>Mércores: tubos ✓<br><b>Xoves 23:00: proba de lume</b></p><p class="sub">Letra de xiz, moi coidada. Letra de quen aprendeu a escribir con pluma.</p>');
+        await showDoc('<h4>A lousa</h4><p style="font-size:20px;font-style:italic;line-height:1.5">Presión: 9 kg.<br>Probar inxector.<br>Mércores: tubos</p><p class="sub">E nun papel pegado na esquina, coa mesma letra:</p><p style="font-size:20px;font-style:italic"><b>Xoves 23:00: proba de lume</b></p><p class="sub">Letra de xiz, moi coidada. Letra de quen aprendeu a escribir con pluma.</p>');
         await MA('Nueve kilos de presión: presión de trabajo de verdad. Pero aquí dentro no hay nada con caldera. Sierras, un torno... madera y hierro frío.', 'dudoso');
         await MA('La única caldera en cien metros es la de la Mikado de la rotonda. «Jueves, a las once: prueba de fuego». Jueves... es hoy.', 'convencido');
         await pistaCocheras('pistaLousa');
       } },
-    { name: 'Motor baixo a lona', key: true, done: () => flag('pistaMotor'), r: [60, 336, 160, 100], at: [236, 500], face: 'L',
-      act: async () => {
-        if (flag('pistaMotor')) return motorLook();
-        await MA('Una lona sobre algo grande, encima del banco. Esta no tiene polvo: alguien la quita y la pone a menudo. Levanto una esquina...', 'pensativo');
-        setFlag('pistaMotorAberto');
-        await motorLook();
-        await pistaCocheras('pistaMotor');
-      },
-      look: () => flag('pistaMotor') ? motorLook() : MA('Algo grande tapado con una lona verde, encima del banco de trabajo. La única lona de aquí sin polvo. Con forma de motor. O de cerdo muy cuadrado.', 'dudoso') },
-    { name: 'Peza de bronce', key: true, done: () => flag('pistaPeza'), r: [450, 392, 126, 44], at: [512, 486], face: 'B',
+    { name: 'Peza de bronce', key: true, done: () => flag('pistaPeza'), r: [564, 288, 138, 60], at: [500, 420], face: 'R',
       look: async () => {
-        await MA('Una pieza de bronce encima del banco, pulida como un trofeo. La conozco: es un inyector de locomotora de vapor. Lo que mete el agua en la caldera.', 'sorprendido');
+        await MA('Piezas de bronce encima del banco, pulidas como trofeos: válvulas, racores... y un inyector de locomotora de vapor. Lo que mete el agua en la caldera.', 'sorprendido');
         await MA('Lleva el sello de Renfe, y grasa de bielas fresca hasta en las roscas. Esto no es para una vitrina: es para montarlo esta noche.', 'pensativo');
         if (hasItem('trapo')) await MA('Y es la misma grasa que la del trapo de mi taller. Negra, espesa, de bielas. Idéntica.', 'convencido');
         await pistaCocheras('pistaPeza');
       },
       act: () => MA('No lo toco. Un inyector recién ajustado es como un reloj suizo: si lo mueves, alguien lo nota. Y alguien va a venir a por él.', 'pensativo'),
       use: { trapo: async () => { await MA('Comparo el trapo con el inyector... La misma grasa. El que entra en mi taller sale de aquí. O entra aquí saliendo de mi taller.', 'convencido'); await pistaCocheras('pistaPeza'); } } },
-    { name: 'Pegadas', key: true, olloOnly: 'pegadasCVistas', done: () => flag('pistaPegadasC'), r: [590, 366, 150, 140],
+    { name: 'Pegadas', key: true, olloOnly: 'pegadasCVistas', done: () => flag('pistaPegadasC'), r: [150, 360, 330, 120],
       look: async () => {
         await MA('Huellas en el polvo de carbón. Unas de botas, con la suela marcada de carbonilla: alguien que trabaja de pie. Muchas horas.', 'pensativo');
         await MA('Y otras... de zapatillas de andar por casa. Con cuadros, si no me engaña el polvo. ¿Quién viene a una cochera en zapatillas?', 'sorprendido');
-        await MA('Y todas van y vienen de los sacos al postigo del fondo. El que da a las vías... y a la rotonda.', 'convencido');
+        await MA('Y todas van y vienen de los sacos a la puerta de carga del fondo. La que está entreabierta y da a las vías... y a la rotonda.', 'convencido');
         await pistaCocheras('pistaPegadasC');
       } },
-    { name: 'Sacos de carbón', key: true, done: () => flag('pistaCarbon'), r: [700, 400, 220, 110], at: [740, 512], face: 'R',
+    { name: 'Sacos de carbón', key: true, done: () => flag('pistaCarbon'), r: [663, 426, 135, 110], at: [520, 500], face: 'R',
       look: async () => {
-        await MA('Sacos de carbón de piedra. Del bueno: brilla y casi no mancha. Y una carretilla con las ruedas negras de ir y venir.', 'pensativo');
+        await MA('Sacos de carbón de piedra. Del bueno: brilla y casi no mancha. Y al lado, una carretilla con las ruedas negras de ir y venir.', 'pensativo');
         if (flag('carbonRoubado')) await MA('Carbón de piedra, que según Concha no compra nadie en Monforte desde hace años... Aquí acaba el carbón de Andrés. Saco a saco, y pagado.', 'convencido');
         else await MA('Carbón de piedra. Eso no se compra en el súper. Alguien lo trae de algún sitio, saco a saco.', 'dudoso');
         await pistaCocheras('pistaCarbon');
       },
       act: () => MA('No toco nada. Ya tengo bastante con que me pillen dentro; como encima me pillen con carbón en las manos, no hay excusa que valga.', 'avergonzado') },
-    { name: 'Postigo', r: [556, 280, 54, 82],
-      look: () => MA('Un postigo en el portalón del fondo, entornado. Por ahí se sale a las vías y, más allá, a la rotonda de la Mikado. Lo han dejado abierto para volver.', 'pensativo'),
-      act: () => MA('Salir por la puerta de atrás de un museo, de día y con uniforme de Renfe... No. Salgo por donde entré, como las personas decentes. Y los cerrajeros.', 'risueno') },
-    { name: 'Serra de cinta', r: [258, 166, 76, 272], at: [300, 486], face: 'B',
-      look: () => MA(hasItem('foto1949') ? 'Una sierra de cinta de las de antes: dos volantes de hierro y una cinta que ya no corta nada. Se parece muchísimo a la de la foto de 1949.' : 'Una sierra de cinta de las de antes: dos volantes de hierro y una cinta que ya no corta nada. Como un reloj de pared, pero para madera.', 'pensativo'),
-      use: { foto1949: async () => {
-        await MA('Pongo la foto delante. Mismos volantes, la misma mesa... y la misma muesca en el bastidor, a la altura de la mano.', 'sorprendido');
-        await MA('O es ella, o tiene una gemela muy bien conservada. La sierra donde posaban Alfredo y los aprendices. Aquí, bajo una lona del museo.', 'pensativo');
-        await MA('No lo puedo demostrar. Pero el motor de la lona, con «A.F.G.», piensa lo mismo que yo.', 'convencido');
-        setFlag('serraFoto');
-      } } },
-    { name: 'Serra circular', r: [330, 366, 112, 88], look: () => MA('Una sierra circular con el disco medio tapado. Debajo de la mesa, con tiza: «Non tocar. R.». R de quien sea. Yo, por si acaso, no toco.', 'risueno') },
-    { name: 'Cepilladora tapada', r: [436, 318, 112, 76], look: () => MA('Otra lona, gris. Por la forma, una cepilladora. Esta no la ha destapado nadie en años: el polvo encima hace dunas.', 'pensativo') },
-    { name: 'Torno', r: [598, 350, 122, 92], look: () => MA('Un torno para madera, con la bancada lisa de tanto pasar el formón. Aquí se hicieron patas de mesa para medio Monforte. O eso me gusta pensar.', 'pensativo') },
-    { name: 'Prensas', r: [720, 280, 52, 120], look: () => MA('Prensas de carpintero, en fila, como soldados de hierro. La escritura de 1952 dice cuatro. Aquí hay dos. Las otras estarán apretando algo en otra parte.', 'risueno') },
-    { name: 'Bidóns', r: [636, 312, 56, 48], look: () => MA('Bidones azules de aceite. Etiquetas nuevas. Aquí alguien hace la compra con lista.', 'pensativo') },
-    { name: 'Pa', r: [870, 350, 60, 160], look: () => MA('Una pala de fogonero, con el mango gastado justo donde se agarra. En una carpintería no pinta nada. Al lado de una Mikado, todo.', 'pensativo') },
-    { name: 'Fiestras', r: [740, 50, 220, 200], look: () => MA('Ventanas altas, con la luz de la tarde. De noche, desde fuera, se tiene que ver si hay alguien. Por eso la gente lo sabe. Por eso Concha lo sabe.', 'pensativo') },
-    { name: 'Cuberta', r: [250, 0, 460, 60], look: () => MA('Vigas de madera, como las de mi taller. Aquí también hubo correas y poleas, seguro. Todo Monforte se movía con correas.', 'pensativo') },
+    { name: 'Carretilla', r: [537, 384, 126, 114], look: () => MA('Una carretilla de obra con las ruedas negras de carbón. Ha hecho más viajes esta semana que el regional de Ourense.', 'risueno') },
+    { ...motorPista(), r: [0, 288, 252, 198], at: [200, 500], face: 'L' },
+    { name: 'Postigo', r: [279, 192, 69, 159], look: () => MA('Una puerta pequeña con ventanuco. Cerrada con llave. La que usan es la de al lado, la de carga, entreabierta.', 'pensativo'),
+      act: () => MA('Cerrada. Y no tengo la combinación de esta. Ni ganas: la de carga ya está abierta.', 'esceptico') },
+    { ...COCHERAS_COMUNS.porta, r: [0, 156, 246, 130] },
+    { name: 'Plano', r: [816, 126, 114, 111], look: () => MA('Un plano de locomotora clavado con chinchetas. Una Mikado, de perfil. Con anotaciones a lápiz en los tubos y en el inyector. Esto es el manual de instrucciones de esta noche.', 'sorprendido') },
+    { name: 'Chaves', r: [816, 237, 120, 80], look: () => MA('Llaves fijas en fila, de la más grande a la más pequeña. Ni una fuera de su sitio. Aquí trabaja alguien con alma de jefe de depósito.', 'pensativo') },
+    { name: 'Taladro', r: [672, 171, 78, 120], look: () => MA('Un taladro de columna. Este no viene de una carpintería: es de taller de ferrocarril. Aquí se juntan dos oficios. Como en mi familia.', 'pensativo') },
+    { name: 'Esmeriladoras', r: [768, 296, 192, 80], look: () => MA('Dos esmeriladoras al final del banco. Con chispas de hace nada en la pared. Aquí se ha afilado algo hoy.', 'pensativo') },
+    { name: 'Armario', r: [423, 318, 81, 54], look: () => MA('Un armario metálico verde, con candado de los de llave. Los secretos de verdad no se escriben en la pizarra.', 'esceptico') },
+    { name: 'Poleas do chan', r: [240, 414, 144, 72], look: () => MA('Poleas sueltas en el suelo, de las que iban en el eje del techo. Alguien está montando o desmontando la transmisión. O buscando algo dentro.', 'pensativo') },
+    { ...COCHERAS_COMUNS.lampada, r: [84, 60, 78, 57] },
+    { ...COCHERAS_COMUNS.transmision, r: [339, 18, 81, 90] },
   ],
 };
 async function motorLook() {
@@ -512,15 +529,15 @@ SCENES.rotonda = {
 }
 
 /* ---------- A7c · A noite: vixilancia dende dentro do coche de viaxeiros ----------
-   Oscar (16-11-2026): Martín escóndese DENTRO do coche clásico, non detrás. Fondo PROVISIONAL (tools/fondos-acto3.py)
-   ata ter o debuxo de Oscar do interior do coche. Dende a fiestra vese a porta do taller. */
+   Oscar (16-11-2026): Martín escóndese DENTRO do coche clásico, non detrás. Fondo: ilustración de Oscar do coche comedor
+   pasada a noite (tools/fondos-acto3.py). Dende a fiestra da esquerda vese a porta do taller. */
 async function vixilia() {
   setFlag('a3Noite');
   await MA('Las once menos cuarto. Llave de cuadradillo, media vuelta... y dentro. Si me pillan, estoy revisando el material. De noche. Sin que nadie me lo pida.', 'avergonzado');
   E.fadeTo = 1; await sleep(500);
-  enterScene('cocheNoite', [480, 500]);
+  enterScene('cocheNoite', [150, 512]);
   await sleep(300); E.fadeTo = 0;
-  await MA('Asientos de skai, olor a tren de los de antes y una cortina con un agujerito justo a la altura del ojo. El escondite perfecto.', 'risueno');
+  await MA('Un coche comedor. Mesa larga, sillas de terciopelo, lamparitas... y unas cortinas con una rendija justo a la altura del ojo. El escondite perfecto.', 'risueno');
   await MA('...', 'pensativo');
   SFX.door(); await sleep(400);
   await MA('Ahí está. La persiana de las cocheras sube un palmo. Salen sombras: una carretilla cargada de carbón, un farol de mano... y unas zapatillas de cuadros.', 'sorprendido');
@@ -532,20 +549,29 @@ async function vixilia() {
 }
 SCENES.cocheNoite = {
   name: 'Coche de viaxeiros · noite', bg: 'img/noite-coche-viaxeiros.jpg', music: null, floor: 'madeira',
-  walk: [[300, 470], [660, 470], [700, 540], [260, 540]],
-  scale: [470, 0.52, 540, 0.6], actorH: 300, start: [480, 500], minSpeed: 0.4,
+  // ilustración de Oscar (img/bg-coche-viaxeiros.jpg) pasada a noite con tools/fondos-acto3.py. Martín, agachado á esquerda, xunto á fiestra.
+  walk: [[16, 482], [292, 482], [250, 540], [0, 540]],
+  scale: [482, 0.5, 540, 0.6], actorH: 300, start: [150, 512], minSpeed: 0.4,
   draw(c, t) {
-    // a luz da persiana, que latexa ao fondo da fiestra
-    c.save(); c.globalAlpha = 0.14 + 0.06 * Math.sin(t * 5); c.fillStyle = '#ffb050'; c.fillRect(445, 238, 85, 16); c.restore();
+    // a luz da persiana do taller, que latexa na fiestra da esquerda
+    c.save(); c.globalAlpha = 0.16 + 0.07 * Math.sin(t * 5); c.fillStyle = '#ffb050'; c.fillRect(26, 236, 52, 16); c.restore();
   },
   hotspots: [
-    { name: 'Porta do coche', key: true, done: () => flag('a3NoiteEntrada'), r: [0, 120, 110, 400], at: [300, 500], face: 'L', exit: ['cocherasNoite', [200, 470]], door: true, hint: 'L',
-      look: () => MA('La puerta del coche. Fuera, el frío de noviembre y una Mikado respirando.', 'pensativo') },
-    { name: 'Fiestra', r: [300, 110, 360, 220], at: [480, 480], face: 'B',
-      look: () => MA(flag('a3Noite') ? 'Por el agujerito de la cortina: la persiana del taller subida un palmo y luz naranja por debajo. Y nadie a la vista. Se han ido todos a la rotonda.' : 'La ventanilla, con su cortina.', 'pensativo') },
-    { name: 'Asentos', r: [120, 300, 170, 200], look: () => MA('Asientos de skai azul, con su reposacabezas de ganchillo. En uno de estos me dormí yo con siete años, camino de Lugo. Y me desperté en Lugo, que era lo importante.', 'sonriente') },
-    { name: 'Cortinas', r: [660, 110, 60, 230], look: () => MA('Cortinas de tren, con su barra de latón. Echadas, como si el coche durmiera. Yo, de mientras, de guardia.', 'pensativo') },
-    { name: 'Portaequipaxes', r: [110, 40, 740, 60], look: () => MA('El portaequipajes, con su red. Vacío. Aquí viajaban maletas de cartón, cestas con chorizos y algún sueño de emigrante.', 'pensativo') },
+    { name: 'Porta do coche', key: true, done: () => flag('a3NoiteEntrada'), r: [0, 470, 60, 70], at: [40, 520], face: 'L', exit: ['cocherasNoite', [200, 470]], door: true, hint: 'L',
+      look: () => MA('La puerta del coche, a mi espalda. Fuera, el frío de noviembre y una Mikado respirando.', 'pensativo') },
+    { name: 'Fiestra', key: true, done: () => true, r: [0, 24, 92, 250], at: [120, 500], face: 'L',
+      look: () => MA(flag('a3Noite') ? 'Por la rendija de la cortina: la persiana del taller subida un palmo y luz naranja por debajo. Y nadie a la vista. Se han ido todos a la rotonda.' : 'La ventanilla, con su cortina. Desde aquí se ve la puerta del taller.', 'pensativo') },
+    { name: 'Fiestras do outro lado', r: [866, 24, 94, 280], look: () => MA('Al otro lado, solo noche y vías. Por ahí no viene nadie. Por eso me he puesto en este.', 'pensativo') },
+    { name: 'Cadro da parella', r: [380, 84, 66, 84], look: () => MA('Una pareja de las de antes, muy tiesa, con sombrero y vestido de domingo. Mirándome como si yo no hubiera pagado billete. Que no lo he pagado.', 'avergonzado') },
+    { name: 'Foto da locomotora', r: [538, 84, 58, 42], look: () => MA('Una foto de una máquina de vapor echando humo. Hasta en la pared de un coche comedor, el protagonista es la locomotora. Como debe ser.', 'sonriente') },
+    { name: 'Roda', r: [538, 130, 58, 60], look: () => MA('Una rueda de latón colgada en la pared, de adorno. Parece un timón de barco. En un tren. Alguien se equivocó de museo, o tenía mucho humor.', 'risueno') },
+    { name: 'Lámpada', r: [348, 166, 38, 46], look: () => MA('Una lamparita de mesa con su pantalla. Apagada. Encenderla ahora sería como poner un cartel: «Martín, aquí».', 'esceptico') },
+    { name: 'Lámpada', r: [594, 166, 38, 46], look: () => MA('La otra lamparita, también apagada. Esta noche aquí se espía a oscuras, como en las películas que daban en la tele los sábados.', 'pensativo') },
+    { name: 'Apliques', r: [164, 36, 44, 74], look: () => MA('Apliques de latón con su pantallita. Con la luz encendida, este coche debía de parecer un salón de baile. A oscuras parece una sala de espera de fantasmas.', 'risueno') },
+    { name: 'Mesa', r: [340, 236, 270, 236], look: () => MA('La mesa larga del coche comedor, con su mantel. Aquí cenaban los que podían, mientras en tercera los demás se comían el bocadillo de pie.', 'pensativo') },
+    { name: 'Cadeiras', r: [190, 290, 140, 190], look: () => MA('Sillas de madera con el asiento de terciopelo azul. Me siento en una y no me levanto en tres días. Pero no he venido a eso.', 'sonriente') },
+    { name: 'Cortinas', r: [84, 0, 78, 270], look: () => MA('Cortinas azules, gordas, de las que tapan de verdad. Por la rendija se ve todo y a mí no me ve nadie.', 'convencido') },
+    { name: 'Cortina do fondo', r: [456, 86, 64, 104], look: () => MA('Al fondo, otra cortina. Detrás debe de estar la cocina o el pasillo. No miro: bastante tengo con vigilar una puerta.', 'pensativo') },
   ],
 };
 SCENES.cocherasNoite = {
@@ -558,7 +584,7 @@ SCENES.cocherasNoite = {
     { name: 'Porta do taller', r: [720, 288, 102, 138], at: [700, 446], face: 'R',
       act: () => MA('Dentro ya no queda nadie: se han llevado el carbón y el inyector. Lo que importa esta noche está en la rotonda.', 'convencido'),
       look: () => MA('La persiana, subida un palmo. Luz naranja por debajo: se la han dejado encendida para volver.', 'pensativo') },
-    { name: 'Coche de viaxeiros', r: [0, 215, 160, 238], at: [200, 470], face: 'L', exit: ['cocheNoite', [480, 500]], door: true,
+    { name: 'Coche de viaxeiros', r: [0, 215, 160, 238], at: [200, 470], face: 'L', exit: ['cocheNoite', [150, 512]], door: true,
       look: () => MA('Mi escondite. Bonito, pero cada vez que pasa un coche de verdad me late el corazón a nueve kilos de presión.', 'avergonzado') },
     { name: 'Praza da Estación', r: [300, 506, 360, 34], at: [480, 528], face: 'F',
       act: () => MA('¿Irme ahora? ¿Con una Mikado respirando a la vuelta de la esquina? Ni loco. Bueno, un poco loco, pero no tanto.', 'convencido'),

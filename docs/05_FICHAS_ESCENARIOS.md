@@ -369,26 +369,29 @@ Hoja «ACTO 3 · A curiosidade. Xoves.» → vestíbulo de la estación tras el 
 - El dibujo de Oscar muestra un candado de llave: el texto ya dice «cerradura de llave y, debajo, cuatro ruedecitas con números». **Pendiente de Oscar:** retocar el dibujo con las ruedas o dejarlo así.
 - **Coche de viajeros:** cuando Martín tiene las cinco pistas de dentro y las pastillas, es su escondite para esperar a las once (lanza la noche). **Se esconde dentro** (Oscar, 16-11-2026): lo abre con la **llave de cuadradillo** que lleva todo maquinista. Antes de tiempo, Martín ya lo dice al tocarlo («sin nada que vigilar, entrar sería allanamiento con vistas»), así que el jugador sabe dónde esconderse cuando llegue la hora.
 
-### A8 · Interior de las cocheras, de día (`cocherasDentro`) · fondo PROVISIONAL
-- **Qué es:** el almacén donde está guardada, bajo lonas, **la maquinaria de la carpintería de la Casa Juana** (decisión de Oscar del 16-11-2026): sierra de cinta, sierra circular, cepilladora tapada, torno para madera, dos prensas, bancos y el motor Siemens. **No hay Mikado.** Cómo llegó allí no lo sabe nadie (ficción; la escritura de 1952 dice a quién se vendió, no dónde acabó).
-- **Fondo:** `img/bg-cocheras-interior.jpg`, generado con `tools/fondos-acto3.py`: paredes de ladrillo, cubierta de madera, portalón del fondo cerrado con un **postigo entornado** que da a las vías y a la rotonda, pizarra, banco con el motor tapado, las máquinas, un banco con una pieza de bronce, bidones, sacos de carbón, pala y carretilla, y huellas de carbonilla hacia el postigo. **Pendiente: ilustración de Oscar del interior con la maquinaria** (ver «Dibujos pendientes»).
-- **Al entrar:** «Ni una locomotora. Máquinas de carpintería...». Martín recuerda lo que contó Rosario y lo deja en hipótesis: «Igual es otra carpintería. O igual no».
+### A8 · Interior de las cocheras, de día (`cocherasDentro` + `cocherasDentroD`) · ilustración de Oscar
+- **Qué es:** el almacén donde está guardada **la maquinaria de la carpintería de la Casa Juana** (decisión de Oscar del 16-11-2026): sierra de cinta, sierra circular, una cepilladora tapada con una sábana, regruesadora, torno, transmisión con poleas en el techo y el motor Siemens «A.F.G.». **No hay Mikado.** Cómo llegó allí no lo sabe nadie (ficción; la escritura de 1952 dice a quién se vendió, no dónde acabó). Al fondo, la puerta de carga entreabierta da a las vías y a la rotonda.
+- **Fondo:** ilustración panorámica de Oscar (16-11-2026), muy ancha (unos 3:1). Se parte en **dos pantallas 16:9** que se solapan en el centro, sin deformarla: `img/bg-cocheras-interior-esq.jpg` (las máquinas y el motor) y `img/bg-cocheras-interior-der.jpg` (la pizarra, el banco del inyector, la carretilla y el carbón). Se pasa de una a otra por los bordes (flechas izquierda/derecha). La toma de noche que mandó Oscar está cortada por abajo y **no hace falta ahora** (la noche pasa en la rotonda); queda guardada en la carpeta del proyecto (`via-morta/cocheras-interior-noite-oscar.jpg`) por si se usa en el Acto 4 o 5.
+- **Pantalla izquierda (entrada desde la plaza):** salida abajo → exterior; borde derecho → pantalla derecha. Hotspots: **motor «A.F.G.»** (pista), sierra de cinta (con la **foto de 1949**: «o es ella, o tiene una gemela», `serraFoto`), sierra circular, máquina tapada (cepilladora), regruesadora, torno, escalera, puerta de carga, lámpara, transmisión y ventanas.
+- **Pantalla derecha:** salida abajo → exterior; borde izquierdo → pantalla izquierda. Hotspots: **pizarra** (pista), **piezas de bronce/inyector** (pista), **huellas** (pista, con el ollo), **sacos de carbón** (pista), carretilla, motor (otra vez la pista, se ve en el borde), puerta pequeña cerrada, puerta de carga, **plano de una Mikado** con anotaciones a lápiz, llaves fijas, taladro de columna, esmeriladoras, armario, poleas en el suelo, lámpara y transmisión.
+- **La pizarra:** el dibujo trae «Presión: 9 kg. / Probar inxector. / Mércores: tubos». La línea clave, **«Xoves 23:00: proba de lume»**, va en un papel pegado en la esquina de la pizarra, pintado por código (si Oscar prefiere, puede dibujarlo él).
 - **Cinco pistas** (contador «Pistas das cocheras: n de 5»):
-  1. **Pizarra** (`pistaLousa`): «Presión: 9 kg. Probar inxector. Mércores: tubos. Xoves, 23:00: proba de lume.» Martín: aquí no hay nada con caldera; la única en cien metros es la de la **Mikado de la rotonda**. «Jueves a las once... es hoy.»
-  2. **Motor bajo la lona** (`pistaMotor`): la única lona sin polvo. Siemens de 10 CV desmontado polea a polea, con «A.F.G.» grabado a navaja **con la misma letra que el pilar del taller**. Los tornillos de la tapa son nuevos: alguien busca algo dentro (siembra el Acto 4).
-  3. **Pieza de bronce** (`pistaPeza`, sustituye a la grasa del carril): un **inyector** de locomotora con el sello de Renfe y grasa de bielas fresca, «para montarlo esta noche». Con el trapo del taller: «la misma grasa». Siembra el puzzle del inyector de la noche.
-  4. **Huellas** (con el ollo, `pistaPegadasC`): botas con carbonilla y zapatillas de andar por casa, que van y vienen **de los sacos al postigo que da a la rotonda**.
-  5. **Sacos de carbón** (`pistaCarbon`) y la carretilla con las ruedas negras; si Andrés lo contó, «aquí acaba el carbón de Andrés».
-- **Opcionales:** sierra de cinta (con la **foto de 1949**: «o es ella, o tiene una gemela», flag `serraFoto`), sierra circular («Non tocar. R.»), cepilladora tapada, torno, prensas («la escritura dice cuatro; aquí hay dos»), postigo, bidones, pala, ventanas y cubierta.
+  1. **Pizarra** (`pistaLousa`): Martín: aquí no hay nada con caldera; la única en cien metros es la de la **Mikado de la rotonda**. «Jueves a las once... es hoy.»
+  2. **Motor «A.F.G.»** (`pistaMotor`): Siemens de 10 CV medio tapado con una lona sin polvo, con las iniciales **con la misma letra que el pilar del taller**. Alguien busca algo dentro (siembra el Acto 4).
+  3. **Inyector de bronce** (`pistaPeza`): con el sello de Renfe y grasa de bielas fresca, «para montarlo esta noche». Con el trapo del taller: «la misma grasa».
+  4. **Huellas** (con el ollo, `pistaPegadasC`): botas con carbonilla y zapatillas de andar por casa, de los sacos a la puerta de carga que da a la rotonda.
+  5. **Sacos de carbón** (`pistaCarbon`); si Andrés lo contó, «aquí acaba el carbón de Andrés».
 - Con las cinco, cuaderno: alguien está poniendo en marcha la Mikado de la rotonda; las piezas se arreglan aquí y se montan fuera; esta noche a las once, prueba de fuego. Si falta el libro de Valerio, Martín recuerda que tiene tiempo hasta las once.
 
 ### A7b · Rotonda do museo, de día (`rotonda`) · opcional
+- **Es la rotonda buena** (Oscar, 16-11-2026): la de la portada, con la **plataforma giratoria** y las cocheras en abanico. La glorieta de tráfico de la vista del balcón se reformará más adelante.
 - **Fondo:** la portada de Oscar `img/portada-rotonda.jpg` (la rotonda con la plataforma giratoria y la Mikado encima), recortada a 16:9. Se llega por la derecha del exterior de las cocheras; se vuelve por abajo.
 - **Hotspots:** Mikado (en el Acto 3, Martín toca la caldera: **tibia**, `a3MikadoTibia`), ténder (carbón de piedra recién echado en el Acto 3), plataforma giratoria y las cocheras en abanico. Subir a la cabina de día: no, «mañana sale en el periódico».
 
-### A7c · Interior del coche de viajeros, de noche (`cocheNoite`) · fondo PROVISIONAL
-- **Fondo:** `img/noite-coche-viaxeiros.jpg` (`tools/fondos-acto3.py`): paneles de madera, portaequipajes con red, asientos de skai azul con reposacabezas de ganchillo, cortinas y, por la ventanilla, la puerta del taller con luz por debajo. **Pendiente: el dibujo de Oscar del interior del coche clásico** (lo sustituye tal cual; la ventanilla debería dejar ver la fachada de las cocheras).
-- **Hotspots:** puerta del coche (salida → exterior de noche), ventanilla, asientos, cortinas, portaequipajes.
+### A7c · Interior del coche de viajeros, de noche (`cocheNoite`)
+- **Fondo:** ilustración de Oscar del coche comedor (`img/bg-coche-viaxeiros.jpg`, 16-11-2026): mesa larga con mantel, sillas de terciopelo azul, lamparitas, apliques de latón, cortinas azules, un retrato de una pareja, una foto de una locomotora y una rueda de latón en la pared del fondo. Pasada a noche por código (`tools/fondos-acto3.py` → `img/noite-coche-viaxeiros.jpg`): lámparas apagadas (Martín está escondido), cielo de noche en las ventanillas y, por la ventanilla grande de la izquierda, la fachada de las cocheras con la luz bajo la persiana (que late por código).
+- **Suelo:** la esquina de abajo a la izquierda, junto a la ventanilla por la que espía Martín.
+- **Hotspots:** puerta del coche (salida abajo a la izquierda → exterior de noche), ventanilla (por donde espía), ventanillas del otro lado, retrato de la pareja, foto de la locomotora, rueda de latón, las dos lamparitas («encenderla sería poner un cartel: Martín, aquí»), apliques, mesa, sillas, cortinas y cortina del fondo.
 - **Cadena:** por un agujerito de la cortina, Martín ve subir la persiana: salen sombras con **la carretilla de carbón, un farol de mano y unas zapatillas de cuadros**, y rodean el museo hacia la rotonda. Luego, un resoplido que hace temblar el cristal. Objetivo: salir del coche y seguirlos.
 
 ### A7 · Cocheras de noche (`cocherasNoite`) · fondo provisional
@@ -401,10 +404,11 @@ Hoja «ACTO 3 · A curiosidade. Xoves.» → vestíbulo de la estación tras el 
 - **El carbón de Andrés:** se lo lleva **Xoán** (elegido por Oscar el 16-11-2026). Remedios no lo delata: «un amigo que paga» (se descubre en el Acto 5).
 
 ### Dibujos pendientes para Oscar (Acto 3)
-1. **Interior de las cocheras de día con la maquinaria** (sustituye al provisional): portalón del fondo con un postigo entornado; a la izquierda, pizarra en la pared y banco con el motor bajo una lona verde; sierra de cinta alta, sierra circular, cepilladora tapada con lona gris, torno, dos prensas; en el centro, un banco con una pieza de bronce (inyector); a la derecha, sacos de carbón, pala y carretilla. Zona para caminar: la franja de abajo.
+1. ~~Interior de las cocheras con la maquinaria~~: hecho con el dibujo de Oscar del 16-11-2026.
 2. **La rotonda de noche con la Mikado encendida, a pie de suelo** (opcional: ahora se usa la portada pasada a noche, vista desde arriba). Fuego en la cabina, humo, un farol de mano en el suelo y sitio abajo para cuatro personajes y Martín.
-3. **Interior del coche clásico de viajeros** (lo manda Oscar): el escondite de Martín; ventanilla con la fachada de las cocheras de noche.
-4. Hojas de **Remedios** y **Don Anxo**.
+3. ~~Interior del coche de viajeros~~: hecho con el dibujo de Oscar del 16-11-2026.
+4. **Vista del balcón del salón** (Oscar, 16-11-2026): hay que reformarla más adelante para que enseñe la rotonda buena (la de la portada, con plataforma giratoria), no una glorieta de tráfico. De momento no se toca.
+5. Hojas de **Remedios** y **Don Anxo**.
 
 ### Personas reales
 Solo se nombra a Alfredo Fernández Gutiérrez por las iniciales del motor (el motor Siemens y la lista de máquinas de su carpintería son datos reales; que estén guardados en las cocheras del museo es ficción, ver `04`). Nada sobre los compradores de 1952: Martín y Remedios dicen que nadie sabe cómo llegó allí.
