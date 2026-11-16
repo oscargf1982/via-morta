@@ -25,10 +25,11 @@ Object.assign(ITEMS, {
 });
 
 /* Valerio e Mega Andrés: sprites das follas de Oscar (tools/sprite-valerio.py e tools/sprite-andres.py). */
-Object.assign(PORTRAITS, { 'Valerio': 'img/valerio-face.png', 'Mega Andrés': 'img/andres-face.png', 'Genaro': 'img/genaro/sonriente.webp', 'Genaro (a ti)': 'img/genaro/guino.webp' });
+Object.assign(PORTRAITS, { 'Valerio': 'img/valerio-face.png', 'Mega Andrés': 'img/andres-face.png', 'Genaro': 'img/genaro/sonriente.webp', 'Genaro (a ti)': 'img/genaro/apelando.webp' });
 /* expresións de Genaro (folla de Oscar, tools/expresiones-genaro.py): o retrato cambia segundo a frase */
 const GENARO_EXP = ['sonriente', 'hablando', 'explicando', 'brazos-cruzados', 'pensativo', 'oh', 'riendo', 'triste', 'enfadado', 'asustado', 'preocupado', 'aburrido',
-  'gritando-enfadado', 'rascandose', 'guino', 'dudoso', 'rezando', 'celebrando', 'neutro', 'esceptico', 'resignado', 'gritando', 'contento', 'serio'];
+  'gritando-enfadado', 'rascandose', 'guino', 'dudoso', 'rezando', 'celebrando', 'neutro', 'esceptico', 'resignado', 'gritando', 'contento', 'serio',
+  'apelando'];   // apelando: o debuxo grande de Oscar, falando ao xogador (cuarta parede)
 PORTRAIT_MOODS['Genaro'] = PORTRAIT_MOODS['Genaro (a ti)'] = Object.fromEntries(GENARO_EXP.map(e => [e, `img/genaro/${e}.webp`]));
 
 /* ---------- C2 · cinemática da primeira quenda (martes) ----------
@@ -267,10 +268,10 @@ async function genaroCuartaParede() {
   G.idle = 6; G.talkFrames = [6, 7]; G.flip = false; SFX.music(null); E.cuartaT0 = E.t;
   try {
     await GE4('...', 'serio');
-    await GE4('Ti. Si, ti. O do outro lado da pantalla. Martín non me oe: está moi ocupado cos seus xemelgos.', 'guino');
+    await GE4('Ti. Si, ti. O do outro lado da pantalla. Martín non me oe: está moi ocupado cos seus xemelgos.', 'apelando');
     await GE4('Se estás falando cun panadeiro en vez de ir á farmacia, xa sei que es dos meus: dos que platinan.', 'riendo');
-    await GE4('Un consello entre nós: mantén o dedo premido sobre as cousas, ou dálles co botón dereito. Aquí todo ten algo que dicir. Ata a reixa.', 'explicando');
-    await GE4('E cando remates o xogo, volve a esta rúa. Non hai trofeo. Pero eu sabereino.', 'esceptico');
+    await GE4('Un consello entre nós: mantén o dedo premido sobre as cousas, ou dálles co botón dereito. Aquí todo ten algo que dicir. Ata a reixa.', 'apelando');
+    await GE4('E cando remates o xogo, volve a esta rúa. Non hai trofeo. Pero eu sabereino.', 'guino');
   } finally { G.idle = idle; G.talkFrames = tf; G.flip = fl; E.cuartaT0 = null; SFX.music(E.scene.music); }
   await MA('¿Con quién hablas, Genaro?', 'dudoso');
   await GE('Cos gatos. Ás catro da mañá fálolles moito. Hoxe adianteime.', 'rascandose');
@@ -285,8 +286,8 @@ SCENES.panaderia = {
     if (E.cuartaT0 == null) return;
     const k = Math.min(1, (t - E.cuartaT0) / 0.6), talking = E.dlg && E.dlg.who === 'Genaro (a ti)' && E.dlg.shown < E.dlg.text.length;
     c.save(); c.fillStyle = `rgba(10,8,6,${0.72 * k})`; c.fillRect(0, 0, W, H); c.globalAlpha = k;
-    const mood = (E.dlg && E.dlg.who === 'Genaro (a ti)' && E.dlg.mood) || 'serio', im = img(`img/genaro/${mood}.webp`), sz = 430;
-    if (im) c.drawImage(im, 480 - sz / 2, 395 - sz + (1 - k) * 40 + (talking ? Math.abs(Math.sin(t * 9)) * 3 : 0), sz, sz);
+    const mood = (E.dlg && E.dlg.who === 'Genaro (a ti)' && E.dlg.mood) || 'serio', im = img(`img/genaro/${mood}.webp`), sz = mood === 'apelando' ? 400 : 430, base = mood === 'apelando' ? 412 : 395;
+    if (im) c.drawImage(im, 480 - sz / 2, base - sz + (1 - k) * 40 + (talking ? Math.abs(Math.sin(t * 9)) * 3 : 0), sz, sz);
     c.restore();
   },
   front: [
