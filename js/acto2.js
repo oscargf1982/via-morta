@@ -529,14 +529,28 @@ async function andresTalk() {
       await MA('Es la teoría más perezosa que he oído. Y tiene sentido. Me preocupa.', 'risueno');
     }
     if (k === 'avo') {
-      await AN('Fogoneiro no depósito, si. Dicía que o carbón bo se coñece polo son ao caer na pa. Por iso gardo sacos do bo, para o churrasco.');
-      await AN('E aquela carretilla, a das tumboas, era súa. Leva cen quilos sen queixarse. Coma min, pero sen queixarse.');
+      await AN('Fogoneiro no depósito, si. Di que o carbón bo se coñece polo son ao caer na pa. Por iso gardo sacos do bo, para o churrasco.');
+      await AN('E aquela carretilla, a das tumboas, é súa. Leva cen quilos sen queixarse. Coma min, pero sen queixarse.');
+      if (flag('andresInverno')) { await AN('E do inverno aquel, xa cho dixen: no saco e á sombra.'); continue; }
+      setFlag('andresInverno');
+      await MA('¿Todavía vive? Tiene que tener historias del depósito para dar y tomar.', 'sonriente');
+      await AN('Oitenta e cinco anos e máis teimudo ca unha mula. Cóidoo eu: a pastilla, o caldo e o Dépor, por esa orde.');
+      await AN('Historias, todas. Das máquinas, dos turnos, do frío que facía na cabina... Todas menos as dun inverno.');
+      await MA('¿Qué invierno?', 'dudoso');
+      await AN('Ese. O que non conta. E eu non llo pregunto. Hai cousas que se gardan coma o carbón: no saco, e o saco á sombra.');
+      await MA('(Andrés, el de la vida mejor tumbado, hablando en serio. Dos frases seguidas. Me lo apunto.)', 'pensativo');
     }
     if (k === 'carbon') {
       await AN('Esta semana inda non. Pero mira: os sacos están aí, á vista. Quen os leva sabe que non hai can, nin cadeado, nin eu esperto.');
       await MA('¿Y el billete siempre debajo de la misma piedra?', 'dudoso');
       await AN('Sempre. Coma quen paga a cota do clube. Ordenado. Puntual. Coma un horario de tren.');
       await MA('(Puntual como un horario de tren. Eso huele a ferroviario. A ferroviario con grasa en las manos.)', 'pensativo');
+      if (flag('andresTumboas')) { await AN('E non me fagas máis preguntas de caldeiras, que me poño a traballar. Xa sabes o que pasa.'); continue; }
+      setFlag('andresTumboas');
+      await MA('Andrés, ¿quién en Monforte tiene todavía una caldera de vapor?', 'dudoso');
+      await AN('Unha caldeira? Pois... o hospital. Ou un panadeiro antigo. Ou un tolo. Hai moito tolo con caldeira.');
+      await AN('E agora, se me desculpas, teño que pór as tumboas en fila. Que logo vén xente.');
+      await MA('(¿Gente? ¿En noviembre? Andrés levantándose a colocar tumbonas sin que nadie se lo pida. Eso es más raro que el carbón.)', 'esceptico');
     }
     if (k === 'adeus') { await AN(flag('andresFeito') ? 'Vai, vai. A tumboa catro queda reservada para ti.' : 'Ti volve, que a revancha non caduca.'); return; }
   }
@@ -548,6 +562,8 @@ async function carbonMisterio() {
   await AN('E ao día seguinte, debaixo da pedra grande da entrada, un billete de vinte dobrado en catro. Nin nota, nin nome, nin nada.');
   await MA('¿Alguien te roba carbón... y te lo paga?', 'sorprendido');
   await AN('Un ladrón honrado. Inda quedan, en Monforte. Eu non pregunto: vinte euros por saco é mellor prezo do que me fai o almacén.');
+  await MA('¿Y no te pica la curiosidad? ¿Ni un poco?', 'dudoso');
+  await AN('A curiosidade cansa. E eu son de tumboa.');
   await MA('(Carbón de piedra, del bueno. Con eso nadie hace un churrasco: eso lo traga una caldera. Una caldera de vapor.)', 'pensativo');
   await AN('Ti non lle deas voltas, que se che enruga a cara. E se o pillas, dille que a próxima vez deixe tamén para un mojito.');
   setFlag('carbonRoubado');
@@ -584,7 +600,7 @@ async function retoNatacion() {
     await AN('Mira, deixámolo en empate técnico. Ti convídasme a un mojito e eu non llo conto a Concha.');
     await MA('Un empate pagado. Muy de Monforte. Trato hecho.', 'risueno');
   }
-  await AN('Sabes que o meu avó era fogoneiro no depósito? Dicía que o carbón bo se coñece polo son. Aínda gardo uns sacos, para o churrasco.');
+  await AN('Sabes que o meu avó foi fogoneiro no depósito? Di que o carbón bo se coñece polo son. Oitenta e cinco anos e aínda mo corrixe. Gardo uns sacos dos que lle gustan, para o churrasco.');
   await MA('Un fogonero en la familia. Andrés, eso tiene más mérito que cuatro largos.', 'sonriente');
   await carbonMisterio();
   setFlag('andresFeito'); comprobarChampions();
@@ -598,7 +614,7 @@ SCENES.fluvial = {
   draw(c, t) {
     // reflexos na auga da piscina
     c.fillStyle = 'rgba(255,255,255,.45)'; for (let i = 0; i < 7; i++) { const x = 510 + ((t * 18 + i * 61) % 280); c.fillRect(x, 304 + (i % 3) * 11, 10, 1.5); }
-    // a carretilla azul das tumboas e os sacos de carbón do avó fogoneiro (por código: non están no debuxo)
+    // a carretilla azul das tumboas e os sacos de carbón do avó fogoneiro (Don Anxo) (por código: non están no debuxo)
     c.save(); c.translate(895, 432); c.scale(1.35, 1.35); c.translate(-895, -432); c.lineWidth = 2.5; c.strokeStyle = '#1a1a1a'; c.lineJoin = 'round';
     for (const [x, y] of [[884, 392], [906, 396], [928, 390]]) {
       c.fillStyle = '#4a4036'; c.beginPath(); c.moveTo(x - 11, y + 30); c.lineTo(x - 12, y + 6); c.quadraticCurveTo(x - 6, y - 6, x, y); c.quadraticCurveTo(x + 6, y - 6, x + 12, y + 6); c.lineTo(x + 11, y + 30); c.closePath(); c.fill(); c.stroke();
@@ -629,7 +645,10 @@ SCENES.fluvial = {
     { id: 'andres', name: 'Mega Andrés', key: true, sheet: 'img/andres-sprite.png', spec: { cw: 200, ch: 280, cols: 8 }, idle: 0, talkFrames: [1, 0],
       x: 760, y: 480, w: 150, h: 300, at: [700, 508], face: 'R', shadow: false,
       done: () => flag('andresFeito'),
-      look: () => MA('Mega Andrés, en su tumbona, con camisa de flores y gafas de sol. En otoño. Es un estilo de vida, no una estación del año.', 'risueno'),
+      look: async () => {
+        await MA('Mega Andrés, en su tumbona, con camisa de flores y gafas de sol. En otoño. Es un estilo de vida, no una estación del año.', 'risueno');
+        await MA('Andrés Corredoira. En el instituto, el apellido más rápido y el chaval más lento. Hasta que se metía en el agua. Por eso lo de «Mega».', 'sonriente');
+      },
       talk: () => andresTalk(),
       give: {
         crema: async () => { await AN('Crema? Para min? Eu non teño agulletas: para ter agulletas hai que moverse.'); },
