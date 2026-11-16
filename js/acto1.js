@@ -259,7 +259,8 @@ async function conchaQuiosco() {
 async function chaveTallerConcha() {
   await CO('Ah, e tamén teño a chave da nave de atrás, a do taller do señor Alfredo. Esa non lla dou a calquera.');
   await CO(flag('chavesDadas') ? 'A esa chave hai que lle ter un detalle. E hoxe xa che dei bastante: primeiro instálate.' : 'A esa chave hai que lle ter un detalle. E ti aínda nin colliches a da casa.');
-  await MA('Un detalle. Con Concha, los detalles se compran en su propio quiosco. Lo apunto.', 'risueno');
+  await CO('E non me traias doces, que deses teño o quiosco cheo. A min os detalles non se me compran: cóntanseme.');
+  await MA('Un detalle que se cuenta. Una noticia que no sepa ni Concha. En Monforte, eso es más difícil que encontrar oro. Lo apunto.', 'risueno');
   setFlag('sabeChaveTaller');
 }
 
@@ -365,7 +366,7 @@ SCENES.cocheras = {
         if (flag('fimActo2') || flag('pistaData')) {
           await MA('Catorce, uno... Tengo cuatro cifras en la cabeza desde que vi el pilar del taller. Y me pican los dedos.', 'pensativo');
           await MA('Pero antes de abrirle la puerta a nadie, quiero saber de quién es esa letra. Xoán sabrá quién era Xosé N.', 'convencido');
-          return toast('O candado ábrese no Acto 3');
+          return MA('Y si no lo sabe, lo sabrá Concha. Y si no lo sabe Concha... es que no ha pasado.', 'risueno');
         }
         await MA('Pruebo: cero, cero, cero, cero. Uno, dos, tres, cuatro. Mil novecientos cincuenta y ocho. Nada.', 'frustrado');
         await MA('Cuatro cifras son diez mil combinaciones. A mi ritmo, salgo de aquí jubilado. Y con artritis.', 'esceptico');
@@ -429,7 +430,7 @@ SCENES.praza2 = {
       look: () => MA('Doña Concha, a la puerta de su quiosco desde que tengo memoria. Lee el periódico antes de venderlo: dice que es para comprobar que no trae erratas.', 'sonriente'),
       talk: () => conchaQuiosco(),
       give: {
-        ositos: async () => { await CO('Ositos? Pero se os acabas de mercar aquí! Gárdaos, rapaz, que xa haberá ocasión de ter un detalle.'); },
+        ositos: async () => { await CO('Ositos? Pero se os acabas de mercar aquí! Gárdaos, rapaz. Os meus detalles non se mercan: cóntanse.'); },
         xornal: async () => { if (flag('sabePalabra') && !flag('boliDado')) return crucigramaResolto(); await CO(flag('sabeCrucigrama') ? 'O xornal xa o teño, rapaz. O que me falta é a palabra. Pregúntalle a alguén que saiba de balón.' : 'Non, non, quédao. Eu xa o lin. Dúas veces.'); },
         boli: async () => { await CO('Xa mo devolves? Non, non: lévao á Fraternal, que Rosario non ten con que asinar. Despois xa mo traerás.'); },
         chavesCasa: async () => { await CO('Non mas devolvas, home! Que mo vexo: xa te arrepentiches de volver.'); await MA('No, no. Solo quería ver tu cara.', 'risueno'); },
@@ -589,6 +590,21 @@ async function asinarContrato() {
     toast('Novo obxectivo: ir á Casa Juana (rúa Doutor Casares)');
   }
 }
+// o reloxo da parede da Fraternal (por código sobre a ilustración): parado ás nove e cuarto; no Acto 2 dá as pilas do mando
+function reloxoFraternal(c) { reloxoDebuxo(c, flag('reloxoSenPilas')); }
+function reloxoDebuxo(c, aberto) {
+  const x = 258, y = 84, r = 13;
+  c.save();
+  c.fillStyle = 'rgba(0,0,0,.22)'; c.beginPath(); c.arc(x + 2, y + 3, r + 2, 0, Math.PI * 2); c.fill();
+  c.fillStyle = '#6b4424'; c.beginPath(); c.arc(x, y, r + 2, 0, Math.PI * 2); c.fill();
+  c.fillStyle = '#f3ead2'; c.beginPath(); c.arc(x, y, r - 1, 0, Math.PI * 2); c.fill();
+  c.fillStyle = '#3a2a1a'; for (let i = 0; i < 12; i++) { const a = i * Math.PI / 6; c.fillRect(x + Math.cos(a) * (r - 4) - 0.8, y + Math.sin(a) * (r - 4) - 0.8, 1.6, 1.6); }
+  c.strokeStyle = '#1d1712'; c.lineCap = 'round';
+  c.lineWidth = 2; c.beginPath(); c.moveTo(x, y); c.lineTo(x - 6, y + 1); c.stroke();   // agulla curta: as nove (e algo)
+  c.lineWidth = 1.4; c.beginPath(); c.moveTo(x, y); c.lineTo(x + 9, y); c.stroke();   // agulla longa: e cuarto
+  if (aberto) { c.fillStyle = 'rgba(30,22,14,.55)'; c.fillRect(x - 5, y + r + 1, 10, 3); }
+  c.restore();
+}
 SCENES.fraternal = {
   name: 'A Fraternal', bg: 'img/bg-fraternal.jpg', music: 'casa', floor: 'pedra',
   walk: [[222, 250], [430, 236], [520, 212], [610, 212], [860, 222], [880, 260], [830, 330], [820, 540], [160, 540], [172, 470], [222, 350]],
@@ -607,6 +623,7 @@ SCENES.fraternal = {
     { y: 308, r: [212, 200, 170, 110] },                 // mesas da esquerda
   ],
   scale: [212, 0.18, 540, 0.85], actorH: 300, start: [590, 266], minSpeed: 0.4,
+  draw(c) { reloxoFraternal(c); },
   hotspots: [
     { name: 'Rúa Concepción Arenal', key: true, r: [520, 82, 76, 128], at: [590, 262], face: 'B', exit: ['arenal', [672, 446]], door: true,
       look: () => MA('La puerta a la calle. Fuera, el tío Demetrio seguirá metiendo el gol al Ourense. Ya va por el décimo.', 'risueno') },
@@ -621,6 +638,7 @@ SCENES.fraternal = {
       act: () => xornalFraternal(),
       look: () => MA('Un periódico y una baraja en la misma mesa. El kit completo de la tarde gallega. Solo falta quien se queje del tiempo.', 'sonriente') },
     { name: 'Aviso', r: [494, 140, 24, 40], look: () => MA('Un aviso en la columna, en letra pequeña. Desde aquí solo leo «prohibido». Para un bar, me basta.', 'esceptico') },
+    { name: 'Reloxo da parede', r: [242, 68, 32, 32], look: () => MA('Un reloj de pared, parado a las nueve y cuarto. De la mañana o de la noche, según a quién preguntes. En la Fraternal, hasta el tiempo juega a la brisca.', 'risueno') },
     { name: 'Cadros', r: [94, 80, 330, 60], look: () => MA('Cuadros de montes y castillos. Uno se parece a Monforte, si lo miras con cariño y sin gafas.', 'pensativo') },
     { name: 'Lousa', r: [108, 158, 34, 46], look: () => MA('Otra pizarra con letra de tiza. Aquí todo se escribe a mano, como debe ser.', 'sonriente') },
     { name: 'Planta', r: [232, 120, 46, 90], look: () => MA('Una planta que ha sobrevivido a cientos de goles cantados a gritos. Es la socia más dura del bar.', 'risueno') },
@@ -767,9 +785,7 @@ async function noiteActo1() {
   SFX.music(null);
   await CINEF1.play();   // js/cinematica1fin.js: «O asubío ten enderezo»; remata co rótulo de fin de acto
   setFlag('fimActo1');
-  E.fadeTo = 0; await sleep(400);
-  await MA('Mañana, Xoán. Él sabrá quién silba así. O conocerá a alguien que lo sepa.', 'pensativo');
-  await primeiroTurno();   // segue o Acto 2 (js/acto2.js)
+  await espertarMartes();   // a mañá do martes, xogable, e despois a cinemática do turno (js/acto2.js)
 }
 async function estanciaPechada(linea, mood) { await MA(linea, mood || 'pensativo'); toast('Estancia en construción · chega nun próximo hito'); }
 
@@ -961,7 +977,7 @@ async function espiarTaller() {
   ]);
   if (!flag('tallerEspiado')) {
     setFlag('tallerEspiado');
-    await MA(flag('sabeChaveTaller') ? 'La llave la tiene Concha, y quiere un detalle. Hoy no: hoy bastante tengo con instalarme.' : 'Y el candado, sin llave. Alguien la tendrá. En Monforte, alguien siempre tiene la llave de todo.', 'pensativo');
+    await MA(flag('sabeChaveTaller') ? 'La llave la tiene Concha, y quiere un detalle: una noticia que no sepa nadie. Hoy no: hoy bastante tengo con instalarme.' : 'Y el candado, sin llave. Alguien la tendrá. En Monforte, alguien siempre tiene la llave de todo.', 'pensativo');
   }
 }
 SCENES.casaPatio = {
@@ -1342,7 +1358,7 @@ SCENES.mapa = {
       look: () => MA('El Concello, en el Campo de San Antonio. Donde se arregla todo, en ventanilla y con paciencia.', 'esceptico') },
     { name: 'Rúa do Cardeal', key: true, r: ZONAS[4].r, exit: ['__cardeal'], noHint: true,
       act: () => mapaPechado('La calle del Cardeal, la de los bares. Para ir de bares hay que tener a alguien con quien ir. Todavía no he avisado a nadie de que he vuelto.', 'Acto 2'),
-      look: () => MA('La calle del Cardeal: bares, tiendas y la farmacia del padre de Valerio. El centro del centro.', 'sonriente') },
+      look: () => MA('La calle del Cardeal: bares, tiendas y terrazas. El centro del centro. De crío, aquí se iba a por pipas y se volvía con noticias.', 'sonriente') },
     { name: 'Club Fluvial', key: true, r: ZONAS[0].r, exit: ['__fluvial'], noHint: true,
       act: () => mapaPechado('El Club Fluvial, las piscinas del Cabe. Para un baño hace falta tener casa a la que volver a secarse. Primero, instalarse.', 'Acto 2'),
       look: () => MA('Las piscinas del río Cabe. Aquí aprendí a nadar. Bueno, a no ahogarme, que es parecido.', 'risueno') },
@@ -1351,7 +1367,8 @@ SCENES.mapa = {
     { name: 'Ponte Vella', r: [394, 326, 50, 30], look: () => MA('La Ponte Vella. Romana, dicen. Yo sólo sé que de crío la cruzaba corriendo para no pagar peaje a los mayores.', 'risueno') },
   ],
 };
-async function mapaPechado(linea, hito) { await MA(linea, 'pensativo'); toast(`Aínda non · ábrese no ${hito}`); }
+// destino aínda pechado: só a razón de Martín, sen avisos de fóra do xogo (revisión Gilbert 3, cambio 5)
+async function mapaPechado(linea) { await MA(linea, 'pensativo'); }
 
 /* ---------- caderno de Martín · Acto 1 (cambio 1 da revisión Gilbert) ---------- */
 {

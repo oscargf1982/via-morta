@@ -3,7 +3,7 @@
    VÍA MORTA · Acto 2 «O reencontro» (versión intermedia elixida por Oscar, 14-11-2026)
    Martes: primeiro turno (candado novo) → Concha reparte os encargos → Valerio (Farmacia de la Estación, rúa Calvo Sotelo)
    e Mega Andrés (Club Fluvial), en calquera orde → Champions na Fraternal → segunda noite (o asubío vén do taller).
-   Mércores: a chave do taller (Concha, a cambio dun detalle: os ositos) → o taller e as cinco pistas → FIN DO ACTO 2.
+   Mércores: a chave do taller (Concha, a cambio dun detalle: unha novidade, o carbón do Fluvial) → o taller e as catro pistas → FIN DO ACTO 2.
    Sen Brais nin a Volta do Castelo. Fichas: docs/05_FICHAS_ESCENARIOS.md, sección «Acto 2».
    Fondos: rúa da farmacia (Calvo Sotelo), farmacia e Club Fluvial son ilustracións de Oscar (a carretilla e os sacos de carbón do Fluvial píntanse por código).
    Martín fala en castelán; os NPC, en galego; a interface, en galego.
@@ -39,6 +39,23 @@ async function primeiroTurno() {
   toast('Novo obxectivo: falar con Concha, no quiosco da praza');
 }
 
+/* ---------- a mañá do martes (cambio 2 da 3.ª revisión Gilbert) ----------
+   Entre a cinemática do final do Acto 1 e a do primeiro turno, un respiro xogable: Martín esperta no salón
+   e é o xogador quen sae á rúa. A porta lanza «Primeira quenda». */
+async function espertarMartes() {
+  E.act = 'acto2';
+  await goScene('casaSalon', [170, 492]);
+  E.fadeTo = 0;
+  await MA('Martes, seis de la mañana. He dormido cuatro horas, y tres eran de silbato.', 'esceptico');
+  await MA('Primer turno en el depósito. Y hoy, Xoán: él sabrá quién silba así. O conocerá a alguien que lo sepa.', 'pensativo');
+  toast('Novo obxectivo: primeiro turno no depósito (sae á rúa pola porta de abaixo)');
+}
+{
+  const S = SCENES.casaSalon.hotspots.find(h => h.name === 'Saír á rúa'), actA1 = S.act, lookA1 = S.look;
+  S.act = () => flag('fimActo1') && !flag('a2Inicio') ? primeiroTurno() : actA1();
+  S.look = () => flag('fimActo1') && !flag('a2Inicio') ? MA('La puerta de la calle. Detrás, el primer turno. Delante, un hombre que ha dormido cuatro horas.', 'esceptico') : lookA1();
+}
+
 /* ---------- A3b · Concha no Acto 2 ---------- */
 async function conchaActo2() {
   if (!flag('a2ConchaSauda')) {
@@ -51,7 +68,7 @@ async function conchaActo2() {
       { t: flag('objValerio') ? '¿Algo más que contar?' : '¿Qué se cuenta hoy?', k: 'conto' },
       ...(!flag('a2Candado') ? [{ t: '¿Sabes algo del candado nuevo de las cocheras del museo?', k: 'candado' }] : []),
       ...(flag('silbato2') && !hasItem('chave') && !flag('tallerAberto') ? [{ t: '¿Me dejas la llave del taller de atrás?', k: 'chave' }] : []),
-      ...(flag('silbato2') && hasItem('ositos') && !hasItem('chave') && !flag('tallerAberto') ? [{ t: '(Darle los ositos.)', k: 'detalle' }] : []),
+      ...(flag('silbato2') && flag('chaveNovidade') && !hasItem('chave') && !flag('tallerAberto') ? [{ t: 'Te traigo una noticia que no sabe nadie.', k: 'detalle' }] : []),
       ...(!hasItem('ositos') ? [{ t: 'Una bolsa de ositos, de los de siempre.', k: 'ositos' }] : []),
       ...(!hasItem('xornal') ? [{ t: 'El periódico de hoy, por favor.', k: 'xornal' }] : []),
       { t: 'Hasta luego, Concha.', k: 'adeus' },
@@ -83,10 +100,11 @@ async function conchaActo2() {
     }
     if (k === 'chave') {
       await CO('A chave da nave? Xa cho dixen: esa non se lle dá a calquera. A esa chave hai que lle ter un detalle.');
-      await MA('Un detalle. Para Concha. Algo dulce... que se venda en un quiosco...', 'pensativo');
-      if (!hasItem('ositos')) await CO('E non me mires así, que eu non che vou dicir o que me gusta. Pero vendo moitas cousas.');
+      await CO('E nada de doces nin de flores. A min págaseme en novidades: algo que non saiba ninguén en Monforte. Ninguén é ninguén. Nin eu.');
+      await MA('(Una noticia que no sepa ni Concha. Algo que me hayan contado a mí... y a nadie más.)', 'pensativo');
+      setFlag('chaveNovidade');
     }
-    if (k === 'detalle') return conchaChaveTaller();
+    if (k === 'detalle') { if (await conchaNovidade()) return; }
     if (k === 'ositos') {
       await CO('Os de sempre! Un euro.');
       give('ositos');
@@ -96,11 +114,30 @@ async function conchaActo2() {
     if (k === 'adeus') { await CO('Vai, vai. E pecha ben de noite.'); return; }
   }
 }
+/* cambio 8 da 3.ª revisión Gilbert: a chave do taller págase cunha novidade, non cos ositos (que xa paga Valerio).
+   A boa é a do carbón que lle desaparece a Andrés (sempre se sabe antes da Champions); as outras teñen a súa broma. */
+async function conchaNovidade() {
+  const opts = [
+    { t: 'Que anoche volvió a sonar el silbato.', k: 'asubio' },
+    { t: flag('natacionGanada') ? 'Que le gané la revancha a Andrés.' : 'Que Andrés y yo empatamos la revancha.', k: 'andres' },
+    ...(!flag('a2Candado') ? [{ t: 'Que hay un candado nuevo en las cocheras del museo.', k: 'candado' }] : []),
+    { t: 'Que en el Fluvial alguien roba carbón... y lo paga.', k: 'carbon' },
+    { t: 'Mejor me lo pienso.', k: 'nada' },
+  ];
+  const k = opts[await choose(opts)].k;
+  if (k === 'asubio') { await CO('Iso? Contéicho eu esta mañá, rapaz. Non me vendas o meu propio xornal.'); return false; }
+  if (k === 'andres') { await CO(flag('natacionGanada') ? 'Por unha brazada. Andrés di que foi saída nula. Contoumo antes de secarse.' : 'Empate técnico e un mojito. Andrés contoumo antes de secarse. Dixo que non mo contaba, e contoumo dúas veces.'); return false; }
+  if (k === 'candado') { await CO('Un candado novo? Iso vese dende a rúa, rapaz. Iso non é unha novidade: é unha paisaxe. Pero grazas.'); setFlag('a2Candado'); return false; }
+  if (k === 'nada') { await CO('Pensa, pensa. Eu aquí sigo. Sempre sigo aquí.'); return false; }
+  await conchaChaveTaller();
+  return true;
+}
 async function conchaChaveTaller() {
-  take('ositos');
-  await CO('Ositos! Para min? Ai, rapaz, que detalle...');
-  await CO('...Mercados aquí. Co meu cambio. Pero o detalle é o detalle.');
-  await MA('Técnicamente te estoy devolviendo tus propios ositos. Con intereses: me he comido uno.', 'risueno');
+  await MA('En el Fluvial, cada dos o tres semanas, a Andrés le desaparece un saco de carbón. Del de piedra. Y al día siguiente, debajo de una piedra, veinte euros.', 'pensativo');
+  await CO('...');
+  await CO('Un ladrón que paga?! E eu sen sabelo?! Iso non o sabe ninguén. Ata agora.');
+  await CO('Carbón de pedra... Iso hai anos que non o merca ninguén en Monforte. Ninguén que eu saiba. E eu sei todo.');
+  await MA('Por eso te lo cuento. Dos cabezas piensan más que una. Y una de ellas tiene quiosco.', 'risueno');
   await CO('Toma a chave da nave. É de ferro, das de antes. Ti es o primeiro que ma pide en anos.');
   await CO('E pecha ao saír, que ese taller ten moita historia e pouca porta.');
   give('chave'); setFlag('chaveTaller');
@@ -115,7 +152,7 @@ async function conchaChaveTaller() {
   const d1 = N.done; N.done = () => flag('fimActo1') ? feitoA2() : d1();
   const d2 = H.done; H.done = () => flag('fimActo1') ? feitoA2() : d2();
   const ositosA1 = N.give.ositos;
-  N.give.ositos = () => flag('fimActo1') && flag('silbato2') && !hasItem('chave') && !flag('tallerAberto') ? conchaChaveTaller()
+  N.give.ositos = () => flag('fimActo1') && flag('silbato2') && !hasItem('chave') && !flag('tallerAberto') ? CO('Ositos? Que detalle... pero non. A esa chave non se lle paga en doce: págase en novidades.')
     : flag('fimActo1') ? CO(flag('silbato2') ? 'Ositos para min? Agora non, rapaz. Gárdaos para cando me pidas algo.' : 'Os ositos? Gárdaos, que aínda non me pediches nada. E eu sei esperar.') : ositosA1();
 }
 
@@ -127,7 +164,7 @@ async function conchaChaveTaller() {
   ZONAS.find(z => z.id === 'cardeal').open = () => false;
   const M = SCENES.mapa.hotspots, cardeal = M.find(h => h.name === 'Rúa do Cardeal'), fluvial = M.find(h => h.name === 'Club Fluvial'), castelo = M.find(h => h.name === 'Castelo de San Vicente');
   const cardealA1 = cardeal.act, fluvialA1 = fluvial.act, casteloA1 = castelo.look;
-  cardeal.act = () => flag('fimActo1') ? mapaPechado('La calle del Cardeal, la de los bares. Hoy no: lo que busco está en el barrio de la estación. La farmacia de Valerio, en Calvo Sotelo, al lado del quiosco de Concha.', 'próximo hito')
+  cardeal.act = () => flag('fimActo1') ? mapaPechado('La calle del Cardeal, la de los bares. Hoy no: lo que busco está en el barrio de la estación. La farmacia de Valerio, en Calvo Sotelo, al lado del quiosco de Concha.', '')
     : cardealA1();
   fluvial.act = () => flag('objAndres') ? goScene('fluvial', [900, 490])
     : flag('fimActo1') ? MA('El Club Fluvial. ¿Bañarme yo solo, un martes, con estas piernas? Sin un buen motivo, no. Concha seguro que tiene uno.', 'esceptico')
@@ -375,6 +412,7 @@ async function retoNatacion() {
   const gana = await minixogoToques({ title: 'Catro largos no Fluvial', me: 'Martín', rival: 'Mega Andrés', goal: 40, rivalSpeed: intento === 1 ? 5.6 : 4.8,
     hint: 'Toca ◀ e ▶ por quendas (ou as frechas do teclado). Cada brazada conta!' });
   if (gana) {
+    setFlag('natacionGanada');
     await AN('...Saída rápida outra vez?');
     await MA('Brazada limpia. Veinte años después, y sigues sin saber perder.', 'orgulloso');
     await AN('Vale, vale. Gañaches. O premio: unha tarde de tumboa por conta da casa. É o meu maior premio. Non llo dou a calquera.');
@@ -468,11 +506,10 @@ async function championsNoite() {
   await MA('(¿Copia del acta de un partido de Tercera de hace treinta años? Este hombre no tiene memoria: tiene archivo.)', 'pensativo');
   await RO('Xoán ten copia de todo. Ata das miñas notas do colexio. Por iso non o deixo entrar na casa.');
   await DA('E mentres, o partido empezando e nós mirando unha tele apagada. Coma na posguerra, pero sen radio.');
-  await MA('Pilas... En casa hay un cajón en la cocina con pilas gastadas. Todas las casas tienen uno: nadie las tira, nadie las usa.', 'pensativo');
-  await DA('Gastadas? E para que queres ti pilas gastadas?');
-  await MA('Si las frotas un poco con las manos, siempre les queda energía para un par de clics. Ciencia de maquinista. Vuelvo en nada.', 'convencido');
+  await MA('Pilas... Alguna habrá en este bar. Aunque sea gastada: si las frotas un poco con las manos, siempre les queda energía para un par de clics. Ciencia de maquinista.', 'pensativo');
+  await DA('Pilas gastadas? Ti estudaches en Valencia ou en Lourdes?');
   setFlag('champSauda'); setFlag('faltanPilas');
-  toast('Novo obxectivo: pilas para o mando (caixón da cociña, Casa Juana)');
+  toast('Novo obxectivo: pilas para o mando (Demetrio dixo onde foron parar as últimas)');
 }
 async function acenderTele() {
   take('pilas'); setFlag('teleAcesa');
@@ -505,9 +542,22 @@ async function xoanChampions() {
 async function sairChampions() {
   if (flag('teleAcesa')) return fimChampions();
   if (hasItem('pilas')) return MA('Llevo las pilas en el bolsillo. Primero, la tele; después, ya veremos.', 'convencido');
-  await MA('A por las pilas: el cajón de la cocina de casa. Demetrio, guárdame el taburete.', 'convencido');
+  await MA('Podría ir a casa a por pilas... o mirar un poco mejor este bar, que Demetrio ya ha dicho dónde fueron a parar las últimas.', 'pensativo');
+  const o = [{ t: 'Me quedo y busco aquí.', k: 'fica' }, { t: 'Voy a casa, al cajón de la cocina.', k: 'casa' }];
+  if (o[await choose(o)].k === 'fica') return;
   await DA('Vai, vai. Eu vou contando o partido de memoria.');
   SFX.door(); await goScene('arenal', [672, 446]);
+}
+// cambio 7 da 3.ª revisión Gilbert: as pilas saen do reloxo parado da Fraternal (sen viaxe á casa; o caixón segue valendo)
+async function pilasReloxo() {
+  if (flag('reloxoSenPilas') || hasItem('pilas')) return MA('El reloj, sin pilas y tan tranquilo. Total, iba a seguir marcando las nueve y cuarto igual.', 'risueno');
+  if (!flag('faltanPilas')) return MA('Las nueve y cuarto. Desde hace años, a juzgar por el polvo. No se lo voy a recordar a nadie.', 'risueno');
+  await MA('Demetrio, ¿desde cuándo está parado este reloj?', 'dudoso');
+  await DA('Dende o Mundial do 82. Ou do 86. Dende que lle puxemos as últimas pilas do bar, iso seguro.');
+  await MA('Pues ya ha descansado bastante. Con permiso... de puntillas... ¡ya está!', 'convencido');
+  setFlag('reloxoSenPilas'); give('pilas');
+  await MA('Dos pilas gastadas. Las froto un poco con las manos... Para un par de clics, dan.', 'sonriente');
+  await RO('Deixádeo. Nese reloxo eran sempre as nove e cuarto. Era a hora máis tranquila do mundo.');
 }
 async function fimChampions() {
   await MA('Las once. Ni prórroga ni penaltis: a dormir, que mañana madrugo.', 'convencido');
@@ -520,6 +570,7 @@ SCENES.fraternalNoite = {
   ...SCENES.fraternal, name: 'A Fraternal · Champions',
   front: SCENES.fraternal.front.map(L => ({ ...L, withDraw: true })),
   draw(c, t) {
+    reloxoFraternal(c);
     c.fillStyle = 'rgba(8,12,36,.46)'; c.fillRect(0, 0, 960, 540);
     if (!flag('teleAcesa')) { c.fillStyle = '#0b0d12'; c.fillRect(726, 80, 66, 42); c.fillStyle = 'rgba(255,255,255,.08)'; c.fillRect(730, 84, 20, 4); return; }
     const f = 0.6 + 0.4 * Math.sin(t * 9) * Math.sin(t * 2.3);
@@ -532,10 +583,12 @@ SCENES.fraternalNoite = {
     { name: 'Saír · ás once, á cama', key: true, when: () => flag('teleAcesa'), r: [520, 82, 76, 128], at: [590, 262], face: 'B', exit: ['__casa'], door: true, act: () => fimChampions(),
       look: () => MA('La puerta. A las once en punto, por ahí salgo. Es la única regla de mi vida que nunca me he saltado.', 'convencido') },
     { name: 'Saír · a por pilas', key: true, when: () => !flag('teleAcesa'), r: [520, 82, 76, 128], at: [590, 262], face: 'B', exit: ['arenal'], door: true, act: () => sairChampions(),
-      look: () => MA('La puerta. Sin pilas para el mando, aquí no hay partido. Y las pilas están en mi cocina.', 'pensativo') },
+      look: () => MA('La puerta. Sin pilas para el mando, aquí no hay partido. En mi cocina hay pilas... pero a lo mejor no hace falta ir tan lejos.', 'pensativo') },
+    { name: 'Reloxo da parede', key: true, when: () => flag('faltanPilas') && !flag('teleAcesa'), done: () => flag('reloxoSenPilas') || hasItem('pilas'), r: [238, 64, 40, 40], at: [300, 250], face: 'B',
+      act: () => pilasReloxo(), look: () => MA('El reloj de la pared, parado a las nueve y cuarto. «As últimas pilas puxéronse no reloxo», dijo Demetrio. Y el reloj no las está usando.', 'pensativo') },
     ...SCENES.fraternal.hotspots.filter(h => !h.exit && h.name !== 'Tele' && h.name !== 'Xornal e baralla'),
     { name: 'Tele', key: true, done: () => flag('teleAcesa'), r: [724, 76, 70, 50],
-      act: () => flag('teleAcesa') ? MA('Ni la toco. Dos clics, dijo Xoán. Uno ya lo hemos gastado.', 'risueno') : hasItem('pilas') ? acenderTele() : MA('Sin mando no hay tele, y sin pilas no hay mando. Las pilas gastadas del cajón de mi cocina: ese es el plan.', 'pensativo'),
+      act: () => flag('teleAcesa') ? MA('Ni la toco. Dos clics, dijo Xoán. Uno ya lo hemos gastado.', 'risueno') : hasItem('pilas') ? acenderTele() : MA('Sin mando no hay tele, y sin pilas no hay mando. Demetrio dijo dónde acabaron las últimas pilas del bar. Y ese sitio no está dando la hora.', 'pensativo'),
       use: { pilas: () => acenderTele() },
       look: () => flag('teleAcesa') ? MA('Champions. Corre uno, se cae otro, el árbitro pita algo que nadie entiende. Lo mismo que en la Tercera de Demetrio, pero con mejor césped.', 'risueno') : MA('La tele, apagada. Negra como la carbonilla. Y Demetrio mirándola igual, por si acaso.', 'esceptico') },
   ],
@@ -838,14 +891,15 @@ SCENES.vigasA2 = {
 {
   const A2 = () => flag('fimActo1') && !flag('fimActo2');
   CADERNO.push(
-    { when: () => A2() && !flag('objValerio'), t: 'Hablar con Concha, en el quiosco: ella sabe dónde anda todo el mundo. (Y Xoán, en la estación, quizá sepa quién silba.)' },
+    { when: () => A2() && !flag('a2Inicio'), t: 'Primer turno en el depósito. Salir a la calle por la puerta de abajo del salón.' },
+    { when: () => A2() && flag('a2Inicio') && !flag('objValerio'), t: 'Hablar con Concha, en el quiosco: ella sabe dónde anda todo el mundo. (Y Xoán, en la estación, quizá sepa quién silba.)' },
     { when: () => A2() && flag('objValerio') && !flag('valerioFeito'), t: () => flag('valerioDoce') ? (hasItem('ositos') ? 'Darle los ositos a Valerio, en la Farmacia de la Estación (calle Calvo Sotelo). Su «peaje» por la crema.' : 'Valerio no suelta la crema sin algo dulce. Ositos de goma, en el quiosco de Concha.') : 'Pasar por la Farmacia de la Estación, la de Valerio: calle Calvo Sotelo, saliendo de la plaza por detrás del quiosco de Concha.' },
     { when: () => A2() && flag('objAndres') && !flag('andresFeito'), t: () => 'La revancha de natación con Mega Andrés, en el Club Fluvial (en el mapa).' + (!hasItem('crema') && !flag('cremaPosta') ? ' Antes, algo para estos gemelos.' : '') },
     { when: () => A2() && flag('avisoChampions') && !flag('champions') && (!flag('faltanPilas') || flag('teleAcesa')), t: 'Champions en la Fraternal, con el tío Demetrio. Hay cosas que no se negocian.' },
-    { when: () => A2() && flag('faltanPilas') && !flag('teleAcesa') && !hasItem('pilas'), t: 'Pilas para el mando de la Fraternal: el cajón de la cocina de casa, el de las pilas gastadas.' },
+    { when: () => A2() && flag('faltanPilas') && !flag('teleAcesa') && !hasItem('pilas'), t: 'Pilas para el mando de la Fraternal. Demetrio dijo que las últimas del bar acabaron en el reloj de la pared... que está parado. (En casa, el cajón de la cocina también tiene.)' },
     { when: () => A2() && hasItem('pilas') && !flag('teleAcesa'), t: 'Volver a la Fraternal y darle vida al mando con las pilas frotadas.' },
     { when: () => A2() && flag('champions') && !flag('silbato2'), t: 'A dormir. El dormitorio, a la izquierda del salón.' },
-    { when: () => A2() && flag('silbato2') && !hasItem('chave') && !flag('tallerAberto'), t: 'La llave del taller: la tiene Concha. Quiere un detalle... algo dulce de su propio quiosco.' },
+    { when: () => A2() && flag('silbato2') && !hasItem('chave') && !flag('tallerAberto'), t: () => flag('chaveNovidade') ? 'La llave del taller: Concha quiere una noticia que no sepa nadie. ¿Qué me han contado a mí y a nadie más?' : 'La llave del taller: la tiene Concha. Quiere un detalle.' },
     { when: () => A2() && hasItem('chave') && !flag('tallerAberto'), t: 'Abrir el taller, al fondo del patio de casa.' },
     { when: () => A2() && flag('tallerAberto'), t: () => `Revisar el taller con calma. Con el OLLO se ve lo que se escapa, y las vigas de arriba también cuentan. Pistas: ${PISTAS_TALLER.filter(flag).length} de ${PISTAS_TALLER.length}.` },
     { when: () => flag('fimActo2'), t: 'Preguntarle a Xoán quién era Xosé N. Y probar ese candado nuevo de las cocheras. (Acto 3, próximamente.)' },
