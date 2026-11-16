@@ -85,6 +85,7 @@
 ## Genaro, o panadeiro (Panadería Estación, calle Calvo Sotelo) · ficción
 - Personaje de ficción (16-11-2026). Panadero de la Panadería Estación, entre la plaza de la estación y la farmacia. Gorro y mandil llenos de harina, vaqueros y botas; siempre en la puerta de su tienda.
 - Se levanta a las cuatro para el horno: a esa hora en Monforte «estamos o forno, eu, os gatos... e ese asubío». Retranca seca: las obras de su calle, que levantan tuberías y encuentran tuberías más viejas debajo; el «Se vende» de al lado, que lleva tanto tiempo que el cartel ya es del barrio.
+- **Gran aficionado a los videojuegos** (dato de Oscar, 16-11-2026): le encantan las aventuras gráficas y platina todos los juegos («ata os que non teñen platino: póñoo eu»). Habla de la vida como de un juego: «obxecto conseguido», consejos de jugador viejo («se alguén che pide algo raro, é que xa o viches noutra pantalla»), y si Martín se atasca, que vaya a comprarle una bolla y piensan juntos.
 - Sabe los encargos de todos: Valerio se lleva tres pasteles de crema cada tarde «para os clientes». Vende a Martín los pasteles que pide Valerio.
 - **Recursos gráficos:** hoja de Oscar `assets/personajes/genaro-panadero-hoja.png` → `img/genaro-sprite.png` (celdas 160×280, 8 columnas: 0 parado, 1 hablando, 2 espalda, 3 perfil, 4 señalando, 5 sorprendido, 6 frente, 7 3/4 frente) y retrato `img/genaro-face.png`, con `python3 tools/sprite-genaro.py`.
 
