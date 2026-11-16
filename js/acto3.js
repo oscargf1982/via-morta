@@ -4,11 +4,13 @@
    Obxectivo: descubrir quen é o pantasma. Dous camiños abertos á vez que se xuntan na noite:
    · Xoán (vestíbulo) → «pregúntalle a quen garda papeis vellos» → Valerio: o libro de xaneiro de 1958 (ficción)
      e as pastillas de Don Anxo, que este luns non baixou buscalas;
-   · o trapo con graxa → «os do museo» → o candado das cocheras (1401, a data do piar) → cinco pistas dentro
-     (lousa coa proba de lume de hoxe ás 23:00, o motor «A.F.G.», graxa no carril, pegadas e o carbón de Andrés).
-   Coas dúas cousas, á noite: escondido tras o coche de viaxeiros → dentro, a Mikado acesa, Remedios, Don Anxo e os xubilados.
+   · o trapo con graxa → «os do museo» → o candado das cocheras (1401, a data do piar) → cinco pistas dentro.
+     As cocheras son un almacén coa maquinaria da carpintería da Casa Juana (decisión de Oscar do 16-11-2026; ficción):
+     lousa coa proba de lume de hoxe ás 23:00, o motor «A.F.G.», unha peza da Mikado con graxa, pegadas cara á rotonda e o carbón de Andrés.
+   A Mikado NON está dentro: está fóra, na rotonda do museo. Coas dúas cousas, á noite: escondido dentro do coche de viaxeiros (decisión de Oscar do 16-11-2026),
+     Martín ve saír os xubilados coa carretilla cara á rotonda e séguelos → a Mikado acesa na rotonda, Remedios, Don Anxo e os xubilados.
    Anxo busca as pastillas (problema) → Martín dállas (solución) → Remedios fala → puzzle do inxector → FIN DO ACTO 3.
-   Fichas: docs/05_FICHAS_ESCENARIOS.md, sección «Acto 3». Fondos do interior PROVISIONAIS (tools/fondos-acto3.py);
+   Fichas: docs/05_FICHAS_ESCENARIOS.md, sección «Acto 3». Fondos do interior e da rotonda de noite PROVISIONAIS (tools/fondos-acto3.py);
    Remedios, Don Anxo e os xubilados, debuxados por código ata ter as follas de Oscar.
    Martín fala en castelán; os NPC, en galego; a interface, en galego.
    ========================================================== */
@@ -173,8 +175,8 @@ async function conchaActo3() {
     const k = opts[await choose(opts)].k;
     if (k === 'conto') {
       await CO('Que se conta? Que Valerio anda preocupado: Don Anxo, o vello fogoneiro do depósito, non baixou o luns polas pastillas. En cincuenta anos, nunca fallara.');
-      await CO('E que de noite, nas cocheras do museo, hai luz. Pero iso non cho dixen eu.');
-      await MA('¿Luz? ¿Quién lo ha visto?', 'sorprendido');
+      await CO('E que de noite, nas cocheras do museo, hai luz. E na rotonda, a Mikado bota fume coma un cura fumador. Pero iso non cho dixen eu.');
+      await MA('¿Humo? ¿La Mikado? ¿Quién lo ha visto?', 'sorprendido');
       await CO('O de sempre: ninguén. Pero todo o mundo o sabe.');
       setFlag('a3ConchaConto');
     }
@@ -247,7 +249,7 @@ async function valerioLibro() {
   await VA('Xa que andas tanto pola estación... se o atopas, dálle isto. Que sen elas, el non é el.');
   give('pastillas');
   await MA('Un fogonero de ochenta y cinco años que sale de noche y vuelve oliendo a carbón. Ya sé dónde buscar. Y a qué hora no.', 'convencido');
-  toast(cocherasCompletas() ? 'Novo obxectivo: ás once, ás cocheras. Agardar tras o coche de viaxeiros' : 'Novo obxectivo: as cocheras do museo (o candado de catro cifras)');
+  toast(cocherasCompletas() ? 'Novo obxectivo: ás once, ás cocheras. Agardar dentro do coche de viaxeiros' : 'Novo obxectivo: as cocheras do museo (o candado de catro cifras)');
 }
 {
   const valerioA2 = valerioTalk;
@@ -266,8 +268,8 @@ async function valerioLibro() {
     if (flag('fimActo2') && flag('anxoNetoSabe') && !flag('a3AndresAvo')) return andresAvoActo3();
     if (flag('fimActo2') && flag('pistaCarbon') && !flag('a3AndresCarbon')) {
       setFlag('a3AndresCarbon');
-      await MA('Andrés, tu carbón. Sé dónde acaba: en las cocheras del museo. Al lado de una Mikado.', 'pensativo');
-      await AN('Nas cocheras? Nunha Mikado?');
+      await MA('Andrés, tu carbón. Sé dónde acaba: en las cocheras del museo. Con una pala de fogonero al lado. Y la Mikado a cien metros.', 'pensativo');
+      await AN('Nas cocheras? E a Mikado ao lado?');
       await AN('...Pois que lle aproveite á Mikado. Mellor nunha caldeira ca nunha grella: iso dío sempre o meu avó.');
       await AN('E agora, se me desculpas, as tumboas. Que están tortas.');
       await MA('(Las tumbonas están perfectas. Andrés las mueve un centímetro y las vuelve a poner donde estaban. Ahí hay algo que no me quiere contar.)', 'esceptico');
@@ -333,21 +335,25 @@ async function abrirCandado() {
   coche.key = true;
   coche.at = [200, 470]; coche.face = 'L';
   coche.done = () => !listoNoite() || flag('a3Noite');
-  coche.act = () => listoNoite() && !flag('a3Noite') ? vixilia() : MA(flag('fimActo2') ? 'Un coche de viajeros de los de cortinas. Buen sitio para esconderse... si tuviera algo que vigilar.' : 'Me subiría ahora mismo, aunque no vaya a ninguna parte. Pero está cerrado. Como todo lo bonito.', 'pensativo');
-  coche.look = () => listoNoite() && !flag('a3Noite') ? MA('El coche de viajeros. Desde detrás se ve la puerta del taller y nadie me ve a mí. Perfecto para esperar a las once.', 'convencido') : cocheLook();
+  // Martín escóndese DENTRO do coche (Oscar, 16-11-2026). Ábreo coa chave de cuadradillo que leva todo maquinista.
+  coche.act = () => listoNoite() && !flag('a3Noite') ? vixilia() : MA(flag('fimActo2') ? 'Un coche de viajeros de los de cortinas. La puerta se abre con llave de cuadradillo, y yo llevo una en el bolsillo, como todo maquinista. Pero sin nada que vigilar, entrar sería allanamiento con vistas.' : 'Me subiría ahora mismo, aunque no vaya a ninguna parte. Pero está cerrado. Como todo lo bonito.', 'pensativo');
+  coche.look = () => listoNoite() && !flag('a3Noite') ? MA('El coche de viajeros. Desde sus ventanillas, con las cortinas echadas, se ve la puerta del taller y nadie me ve a mí. Y se abre con mi llave de cuadradillo. Perfecto para esperar a las once.', 'convencido') : cocheLook();
   const enter0 = C.onEnter;
   C.onEnter = async function () {
     if (enter0) await enter0.call(this);
     if (listoNoite() && !flag('a3Noite') && !flag('a3AvisoNoite')) {
       setFlag('a3AvisoNoite');
-      await MA('Las once, «prueba de fuego». Y un fogonero que sale de noche oliendo a carbón. Me escondo detrás del coche de viajeros y espero.', 'convencido');
-      toast('Pista: agarda tras o coche de viaxeiros, á esquerda');
+      await MA('Las once, «prueba de fuego». Y un fogonero que sale de noche oliendo a carbón. Me meto en el coche de viajeros, con mi llave de cuadradillo, y espero.', 'convencido');
+      toast('Pista: agarda dentro do coche de viaxeiros, á esquerda');
     }
   };
 }
 
-/* ---------- A8 · Interior das cocheras, de día (fondo provisional) ---------- */
-const PISTAS_COCHERAS = ['pistaLousa', 'pistaMotor', 'pistaCarril', 'pistaPegadasC', 'pistaCarbon'];
+/* ---------- A8 · Interior das cocheras, de día (fondo provisional) ----------
+   Decisión de Oscar (16-11-2026): dentro NON está a Mikado. As cocheras gardan, baixo lonas, a maquinaria da carpintería
+   da Casa Juana (a da escritura de 1952 e a da foto de 1949). Como chegou aquí é ficción e non se sabe. A Mikado está fóra,
+   na rotonda do museo; aquí só se amañan as pezas e se garda o carbón. */
+const PISTAS_COCHERAS = ['pistaLousa', 'pistaMotor', 'pistaPeza', 'pistaPegadasC', 'pistaCarbon'];
 const cocherasCompletas = () => PISTAS_COCHERAS.every(flag);
 const listoNoite = () => cocherasCompletas() && flag('libro1958') && !flag('fimActo3');
 async function pistaCocheras(k) {
@@ -357,13 +363,13 @@ async function pistaCocheras(k) {
   if (n < PISTAS_COCHERAS.length) { toast(`Pistas das cocheras: ${n} de ${PISTAS_COCHERAS.length}`); return; }
   await MA('Vale. Lo junto todo antes de que me pillen aquí dentro.', 'pensativo');
   await showDoc(`<h4>Caderno de Martín · xoves</h4><p class="sub">Lo que sé</p>
-<p>Alguien está restaurando la Mikado a escondidas: presión de trabajo de 9 kilos, tubos, inyector. Esto no es un museo: es un taller.</p>
-<p>Grasa fresca en el carril, la misma de mi taller. Carbón de piedra, el de Andrés. Huellas de botas con carbonilla... y de zapatillas de andar por casa.</p>
-<p>El motor de la carpintería de mi casa, aquí, con «A.F.G.» grabado con la misma letra que el pilar. Y alguien lo ha abierto buscando algo.</p>
+<p>Alguien está poniendo en marcha la Mikado de la rotonda: presión de trabajo de 9 kilos, tubos, inyector. Las piezas se arreglan aquí dentro y se montan ahí fuera.</p>
+<p>Un inyector de bronce con la grasa de mi taller. Carbón de piedra, el de Andrés. Huellas de botas y de zapatillas de andar por casa, del carbón al postigo que da a la rotonda.</p>
+<p>La carpintería de mi casa, o una gemela, aquí guardada bajo lonas. Y el motor con «A.F.G.» grabado con la misma letra que el pilar. Alguien lo ha abierto buscando algo.</p>
 <p><b>Hoy, a las once: «proba de lume».</b></p>`);
-  if (flag('libro1958')) await MA('Esta noche, a las once, aquí. Escondido detrás del coche de viajeros. Y con las pastillas de Don Anxo en el bolsillo.', 'convencido');
+  if (flag('libro1958')) await MA('Esta noche, a las once, aquí. Escondido dentro del coche de viajeros, a ver quién sale con la carretilla. Y con las pastillas de Don Anxo en el bolsillo.', 'convencido');
   else await MA('Hasta las once tengo tiempo. Y Xoán me dijo que preguntara a quien guarda papeles viejos: Valerio y los libros de su padre.', 'convencido');
-  toast(flag('libro1958') ? 'Novo obxectivo: ás once, agardar tras o coche de viaxeiros' : 'Novo obxectivo: o libro de 1958 de Valerio (Farmacia de la Estación)');
+  toast(flag('libro1958') ? 'Novo obxectivo: ás once, agardar dentro do coche de viaxeiros' : 'Novo obxectivo: o libro de 1958 de Valerio (Farmacia de la Estación)');
 }
 const LOUSA = ['Presión: 9 kg', 'Probar inxector', 'Mércores: tubos ✓', 'Xoves 23:00:', 'proba de lume'];
 function pintarLousa(c, a) {
@@ -390,16 +396,17 @@ SCENES.cocherasDentro = {
   draw(c, t) {
     pintarLousa(c, flag('pistaLousa') ? 0.9 : 0.55);
     pintarMotor(c);
-    // fume tenue: a caldeira está morna
-    c.save(); c.globalAlpha = 0.12; c.fillStyle = '#c8c8d0';
-    for (let i = 0; i < 3; i++) { const k = (t * 0.15 + i / 3) % 1; c.beginPath(); c.arc(480 + Math.sin(t + i) * 8, 228 - k * 90, 10 + k * 20, 0, 7); c.fill(); }
+    // po no raio de luz do postigo
+    c.save(); c.globalAlpha = 0.18; c.fillStyle = '#f0e6c8';
+    for (let i = 0; i < 5; i++) { const k = (t * 0.06 + i / 5) % 1; c.beginPath(); c.arc(572 + Math.sin(t * 0.7 + i * 2) * 10, 350 - k * 60, 1.4, 0, 7); c.fill(); }
     c.restore();
   },
   async onEnter() {
     if (flag('a3DentroVisto')) return;
     setFlag('a3DentroVisto');
-    await MA('Madre mía. La Mikado. Aquí dentro, escondida, como quien guarda el coche bueno para las bodas.', 'sorprendido');
-    await MA('Y esto no huele a museo. Huele a taller: aceite, carbón... y a alguien que ha estado aquí hace nada.', 'pensativo');
+    await MA('Madre mía. Ni una locomotora. Máquinas de carpintería: una sierra de cinta, una sierra circular, un torno... Todo bajo lonas, como los muebles de una casa cerrada.', 'sorprendido');
+    await MA('Es lo que Rosario me contó del taller de mi casa. La escritura de 1952 dice a quién se vendió, no dónde acabó. Igual es otra carpintería. O igual no.', 'pensativo');
+    await MA('Y esto no huele a almacén. Huele a aceite, a carbón... y a alguien que ha estado aquí hace nada.', 'pensativo');
     toast('Pista: usa o OLLO, que o chan tamén fala');
   },
   hotspots: [
@@ -408,86 +415,159 @@ SCENES.cocherasDentro = {
     { name: 'Lousa', key: true, done: () => flag('pistaLousa'), r: [60, 186, 138, 120], at: [150, 500], face: 'L',
       look: async () => {
         await showDoc('<h4>A lousa</h4><p style="font-size:20px;font-style:italic;line-height:1.5">Presión: 9 kg<br>Probar inxector<br>Mércores: tubos ✓<br><b>Xoves 23:00: proba de lume</b></p><p class="sub">Letra de xiz, moi coidada. Letra de quen aprendeu a escribir con pluma.</p>');
-        await MA('Nueve kilos de presión: presión de trabajo de verdad. Esto no es limpiar una locomotora para las fotos. Esto es volver a ponerla en marcha.', 'sorprendido');
-        await MA('«Jueves, a las once: prueba de fuego». Jueves... es hoy.', 'convencido');
+        await MA('Nueve kilos de presión: presión de trabajo de verdad. Pero aquí dentro no hay nada con caldera. Sierras, un torno... madera y hierro frío.', 'dudoso');
+        await MA('La única caldera en cien metros es la de la Mikado de la rotonda. «Jueves, a las once: prueba de fuego». Jueves... es hoy.', 'convencido');
         await pistaCocheras('pistaLousa');
       } },
     { name: 'Motor baixo a lona', key: true, done: () => flag('pistaMotor'), r: [60, 336, 160, 100], at: [236, 500], face: 'L',
       act: async () => {
         if (flag('pistaMotor')) return motorLook();
-        await MA('Una lona sobre algo grande, encima del banco. Levanto una esquina... con cuidado, que aquí todo está ordenado como un cuadro de servicio.', 'pensativo');
+        await MA('Una lona sobre algo grande, encima del banco. Esta no tiene polvo: alguien la quita y la pone a menudo. Levanto una esquina...', 'pensativo');
         setFlag('pistaMotorAberto');
         await motorLook();
         await pistaCocheras('pistaMotor');
       },
-      look: () => flag('pistaMotor') ? motorLook() : MA('Algo grande tapado con una lona verde, encima del banco de trabajo. Con forma de motor. O de cerdo muy cuadrado.', 'dudoso') },
-    { name: 'Carril', key: true, olloOnly: 'carrilVisto', done: () => flag('pistaCarril'), r: [360, 476, 240, 40], at: [480, 520], face: 'B',
+      look: () => flag('pistaMotor') ? motorLook() : MA('Algo grande tapado con una lona verde, encima del banco de trabajo. La única lona de aquí sin polvo. Con forma de motor. O de cerdo muy cuadrado.', 'dudoso') },
+    { name: 'Peza de bronce', key: true, done: () => flag('pistaPeza'), r: [450, 392, 126, 44], at: [512, 486], face: 'B',
       look: async () => {
-        await MA('El carril, delante de las ruedas de la Mikado. Grasa fresca, brillante, sin una mota de polvo. De hoy, o de anoche.', 'sorprendido');
+        await MA('Una pieza de bronce encima del banco, pulida como un trofeo. La conozco: es un inyector de locomotora de vapor. Lo que mete el agua en la caldera.', 'sorprendido');
+        await MA('Lleva el sello de Renfe, y grasa de bielas fresca hasta en las roscas. Esto no es para una vitrina: es para montarlo esta noche.', 'pensativo');
         if (hasItem('trapo')) await MA('Y es la misma grasa que la del trapo de mi taller. Negra, espesa, de bielas. Idéntica.', 'convencido');
-        await pistaCocheras('pistaCarril');
+        await pistaCocheras('pistaPeza');
       },
-      use: { trapo: async () => { await MA('Comparo el trapo con el carril... La misma grasa. El que entra en mi taller sale de aquí. O entra aquí saliendo de mi taller.', 'convencido'); await pistaCocheras('pistaCarril'); } } },
-    { name: 'Pegadas', key: true, olloOnly: 'pegadasCVistas', done: () => flag('pistaPegadasC'), r: [214, 480, 120, 50],
+      act: () => MA('No lo toco. Un inyector recién ajustado es como un reloj suizo: si lo mueves, alguien lo nota. Y alguien va a venir a por él.', 'pensativo'),
+      use: { trapo: async () => { await MA('Comparo el trapo con el inyector... La misma grasa. El que entra en mi taller sale de aquí. O entra aquí saliendo de mi taller.', 'convencido'); await pistaCocheras('pistaPeza'); } } },
+    { name: 'Pegadas', key: true, olloOnly: 'pegadasCVistas', done: () => flag('pistaPegadasC'), r: [590, 366, 150, 140],
       look: async () => {
         await MA('Huellas en el polvo de carbón. Unas de botas, con la suela marcada de carbonilla: alguien que trabaja de pie. Muchas horas.', 'pensativo');
         await MA('Y otras... de zapatillas de andar por casa. Con cuadros, si no me engaña el polvo. ¿Quién viene a una cochera en zapatillas?', 'sorprendido');
-        await MA('Alguien que sale de casa de noche sin que se note que sale.', 'pensativo');
+        await MA('Y todas van y vienen de los sacos al postigo del fondo. El que da a las vías... y a la rotonda.', 'convencido');
         await pistaCocheras('pistaPegadasC');
       } },
     { name: 'Sacos de carbón', key: true, done: () => flag('pistaCarbon'), r: [700, 400, 220, 110], at: [740, 512], face: 'R',
       look: async () => {
-        await MA('Sacos de carbón de piedra. Del bueno: brilla y casi no mancha.', 'pensativo');
+        await MA('Sacos de carbón de piedra. Del bueno: brilla y casi no mancha. Y una carretilla con las ruedas negras de ir y venir.', 'pensativo');
         if (flag('carbonRoubado')) await MA('Carbón de piedra, que según Concha no compra nadie en Monforte desde hace años... Aquí acaba el carbón de Andrés. Saco a saco, y pagado.', 'convencido');
         else await MA('Carbón de piedra. Eso no se compra en el súper. Alguien lo trae de algún sitio, saco a saco.', 'dudoso');
         await pistaCocheras('pistaCarbon');
       },
       act: () => MA('No toco nada. Ya tengo bastante con que me pillen dentro; como encima me pillen con carbón en las manos, no hay excusa que valga.', 'avergonzado') },
-    { name: 'Mikado', r: [330, 230, 300, 240], at: [480, 500], face: 'B',
-      look: () => MA('La Mikado. Ochenta toneladas de hierro que llevaban años de adorno. Y la chimenea está tibia. Esta máquina ha tenido fuego hace menos de un día.', 'sorprendido'),
-      act: () => MA('¿Subir a la cabina sin permiso? Es como entrar en casa ajena. Aunque la casa sea una Mikado. Sobre todo si es una Mikado.', 'pensativo') },
-    { name: 'Bidóns', r: [640, 300, 50, 60], look: () => MA('Bidones azules de aceite. Etiquetas nuevas. Aquí alguien hace la compra con lista.', 'pensativo') },
-    { name: 'Pa', r: [870, 350, 60, 160], look: () => MA('Una pala de fogonero, con el mango gastado justo donde se agarra. Esta pala ha trabajado más que yo esta semana.', 'risueno') },
+    { name: 'Postigo', r: [556, 280, 54, 82],
+      look: () => MA('Un postigo en el portalón del fondo, entornado. Por ahí se sale a las vías y, más allá, a la rotonda de la Mikado. Lo han dejado abierto para volver.', 'pensativo'),
+      act: () => MA('Salir por la puerta de atrás de un museo, de día y con uniforme de Renfe... No. Salgo por donde entré, como las personas decentes. Y los cerrajeros.', 'risueno') },
+    { name: 'Serra de cinta', r: [258, 166, 76, 272], at: [300, 486], face: 'B',
+      look: () => MA(hasItem('foto1949') ? 'Una sierra de cinta de las de antes: dos volantes de hierro y una cinta que ya no corta nada. Se parece muchísimo a la de la foto de 1949.' : 'Una sierra de cinta de las de antes: dos volantes de hierro y una cinta que ya no corta nada. Como un reloj de pared, pero para madera.', 'pensativo'),
+      use: { foto1949: async () => {
+        await MA('Pongo la foto delante. Mismos volantes, la misma mesa... y la misma muesca en el bastidor, a la altura de la mano.', 'sorprendido');
+        await MA('O es ella, o tiene una gemela muy bien conservada. La sierra donde posaban Alfredo y los aprendices. Aquí, bajo una lona del museo.', 'pensativo');
+        await MA('No lo puedo demostrar. Pero el motor de la lona, con «A.F.G.», piensa lo mismo que yo.', 'convencido');
+        setFlag('serraFoto');
+      } } },
+    { name: 'Serra circular', r: [330, 366, 112, 88], look: () => MA('Una sierra circular con el disco medio tapado. Debajo de la mesa, con tiza: «Non tocar. R.». R de quien sea. Yo, por si acaso, no toco.', 'risueno') },
+    { name: 'Cepilladora tapada', r: [436, 318, 112, 76], look: () => MA('Otra lona, gris. Por la forma, una cepilladora. Esta no la ha destapado nadie en años: el polvo encima hace dunas.', 'pensativo') },
+    { name: 'Torno', r: [598, 350, 122, 92], look: () => MA('Un torno para madera, con la bancada lisa de tanto pasar el formón. Aquí se hicieron patas de mesa para medio Monforte. O eso me gusta pensar.', 'pensativo') },
+    { name: 'Prensas', r: [720, 280, 52, 120], look: () => MA('Prensas de carpintero, en fila, como soldados de hierro. La escritura de 1952 dice cuatro. Aquí hay dos. Las otras estarán apretando algo en otra parte.', 'risueno') },
+    { name: 'Bidóns', r: [636, 312, 56, 48], look: () => MA('Bidones azules de aceite. Etiquetas nuevas. Aquí alguien hace la compra con lista.', 'pensativo') },
+    { name: 'Pa', r: [870, 350, 60, 160], look: () => MA('Una pala de fogonero, con el mango gastado justo donde se agarra. En una carpintería no pinta nada. Al lado de una Mikado, todo.', 'pensativo') },
     { name: 'Fiestras', r: [740, 50, 220, 200], look: () => MA('Ventanas altas, con la luz de la tarde. De noche, desde fuera, se tiene que ver si hay alguien. Por eso la gente lo sabe. Por eso Concha lo sabe.', 'pensativo') },
     { name: 'Cuberta', r: [250, 0, 460, 60], look: () => MA('Vigas de madera, como las de mi taller. Aquí también hubo correas y poleas, seguro. Todo Monforte se movía con correas.', 'pensativo') },
   ],
 };
 async function motorLook() {
-  await showDoc('<h4>O motor da lona</h4><p>Un motor eléctrico Siemens de 10 CV, vello, desmontado polea a polea e todo moi ordenado.</p><p style="font-size:22px;text-align:center">A.F.G.</p><p class="sub">Gravado a navalla na carcasa. A mesma letra que o «X. N.» do piar do taller. Os parafusos da tapa son novos: alguén o abriu hai pouco. (O motor nas cocheras é ficción do xogo)</p>');
+  await showDoc('<h4>O motor da lona</h4><p>Un motor eléctrico Siemens de 10 CV, vello, desmontado polea a polea e todo moi ordenado.</p><p style="font-size:22px;text-align:center">A.F.G.</p><p class="sub">Gravado a navalla na carcasa. A mesma letra que o «X. N.» do piar do taller. Os parafusos da tapa son novos: alguén o abriu hai pouco. (O motor e a maquinaria nas cocheras son ficción do xogo)</p>');
   await MA('A.F.G.... Alfredo Fernández Gutiérrez. El carpintero de mi casa. Rosario dijo que el taller tenía un motor Siemens de diez caballos.', 'sorprendido');
   await MA('Y las letras están grabadas a navaja con la misma letra que el pilar de mi taller. La de Xosé N.', 'pensativo');
-  await MA('Cómo llegó hasta aquí el motor, ni idea. Pero el que lo grabó sabía de dónde venía. Y alguien lo ha abierto hace poco. Buscando algo.', 'dudoso');
+  await MA('Cómo llegó hasta aquí, con la sierra y el torno, ni idea. Pero el que lo grabó sabía de dónde venía. Y alguien lo ha abierto hace poco. Buscando algo.', 'dudoso');
 }
 
-/* ---------- A7 · A noite: vixilancia ---------- */
+/* ---------- A7b · A rotonda do museo coa Mikado, de día (portada de Oscar) ----------
+   Opcional. Chégase pola dereita do exterior das cocheras. A Mikado é unha peza de exposición ao aire libre. */
+const ROTONDA_CROP = [0, 160, 1536, 864];
+const ROTONDA_WALK = [[140, 424], [868, 424], [940, 540], [30, 540]];
+SCENES.rotonda = {
+  name: 'Rotonda do museo', bg: 'img/portada-rotonda.jpg', crop: ROTONDA_CROP, music: 'estacion', floor: 'pedra',
+  walk: ROTONDA_WALK, scale: [424, 0.4, 540, 0.56], actorH: 300, start: [480, 520], minSpeed: 0.4,
+  hotspots: [
+    { name: 'Cocheras do museo', key: true, r: [300, 506, 360, 34], at: [480, 530], face: 'F', exit: ['cocheras', [900, 480]], hint: 'D',
+      look: () => MA('Por ahí vuelvo a la fachada del museo y a las cocheras.', 'pensativo') },
+    { name: 'Mikado', key: true, r: [250, 130, 610, 210], at: [540, 432], face: 'B',
+      done: () => !flag('fimActo2') || flag('a3MikadoTibia'),
+      look: async () => {
+        if (!flag('fimActo2')) return MA('La Mikado. Ochenta toneladas de hierro negro, quieta encima de la plataforma como esperando turno. De crío pensaba que de noche se iba a dar una vuelta. Cosas de crío.', 'sonriente');
+        await MA('La Mikado. Le pongo la mano en la caldera, como quien toca la frente a un niño...', 'pensativo');
+        await MA('Tibia. Una máquina que lleva años de adorno no está tibia en noviembre. Esta ha tenido fuego hace menos de un día.', 'sorprendido');
+        setFlag('a3MikadoTibia');
+      },
+      act: () => MA('¿Subirme a la cabina de una pieza de museo, a plena luz del día y con el uniforme de Renfe? Mañana sale en el periódico. Y Concha lo lee antes que nadie.', 'avergonzado') },
+    { name: 'Ténder', r: [180, 160, 280, 170],
+      look: () => MA(flag('fimActo2') ? 'El ténder, con carbón. Carbón de piedra, brillante, recién echado: el de adorno es mate y tiene polvo. Este no.' : 'El ténder, lleno de carbón de exposición. Ese no ha ardido nunca. O eso creo.', 'pensativo') },
+    { name: 'Plataforma xiratoria', r: [120, 330, 760, 90], look: () => MA('La plataforma giratoria. Con ella se daba la vuelta a las locomotoras como quien gira un plato. Desde aquí se mandaba una máquina a cualquier vía. Hoy no manda a ninguna.', 'pensativo') },
+    { name: 'Rotonda', r: [0, 0, 960, 130], look: () => MA('Las cocheras en abanico, cada una con su máquina o su coche dormido. Un museo que, si cierras los ojos, todavía huele a turno de noche.', 'sonriente') },
+  ],
+};
+{
+  // exterior das cocheras: paso á rotonda pola dereita (todos os actos)
+  SCENES.cocheras.hotspots.push({ name: 'Rotonda do museo', key: true, r: [912, 372, 48, 130], at: [936, 480], face: 'R', exit: ['rotonda', [480, 520]], hint: 'R',
+    look: () => MA('Por ahí, rodeando el museo, está la rotonda con la Mikado. La que se ve desde mi balcón.', 'pensativo') });
+}
+
+/* ---------- A7c · A noite: vixilancia dende dentro do coche de viaxeiros ----------
+   Oscar (16-11-2026): Martín escóndese DENTRO do coche clásico, non detrás. Fondo PROVISIONAL (tools/fondos-acto3.py)
+   ata ter o debuxo de Oscar do interior do coche. Dende a fiestra vese a porta do taller. */
 async function vixilia() {
   setFlag('a3Noite');
-  await MA('Las once menos cuarto. Me agacho detrás del coche de viajeros. Si me ve alguien, estoy buscando un gato. Uno muy grande.', 'avergonzado');
+  await MA('Las once menos cuarto. Llave de cuadradillo, media vuelta... y dentro. Si me pillan, estoy revisando el material. De noche. Sin que nadie me lo pida.', 'avergonzado');
   E.fadeTo = 1; await sleep(500);
-  enterScene('cocherasNoite', [200, 470]);
+  enterScene('cocheNoite', [480, 500]);
   await sleep(300); E.fadeTo = 0;
+  await MA('Asientos de skai, olor a tren de los de antes y una cortina con un agujerito justo a la altura del ojo. El escondite perfecto.', 'risueno');
   await MA('...', 'pensativo');
+  SFX.door(); await sleep(400);
+  await MA('Ahí está. La persiana de las cocheras sube un palmo. Salen sombras: una carretilla cargada de carbón, un farol de mano... y unas zapatillas de cuadros.', 'sorprendido');
+  await MA('No van hacia la plaza. Rodean el museo hacia la rotonda. Hacia la Mikado.', 'pensativo');
   SFX.noise(1.6, 300, 0.6, 0.12);
-  await MA('Un resoplido. Dentro. Como un animal grande que respira despacio. Eso es una caldera cogiendo presión.', 'sorprendido');
-  await MA('Y la persiana del taller está subida un palmo. Hay luz. Vamos allá, Martín: tú tienes licencia de maquinista. Ellos, no sé qué tienen.', 'convencido');
-  toast('Novo obxectivo: entrar no taller das cocheras');
+  await MA('Y al rato, un resoplido que hace temblar el cristal. Una caldera cogiendo presión. Al aire libre, en mitad de Monforte.', 'sorprendido');
+  await MA('Vamos allá, Martín: tú tienes licencia de maquinista. Ellos, no sé qué tienen.', 'convencido');
+  toast('Novo obxectivo: saír do coche e seguilos ata a rotonda da Mikado');
 }
+SCENES.cocheNoite = {
+  name: 'Coche de viaxeiros · noite', bg: 'img/noite-coche-viaxeiros.jpg', music: null, floor: 'madeira',
+  walk: [[300, 470], [660, 470], [700, 540], [260, 540]],
+  scale: [470, 0.52, 540, 0.6], actorH: 300, start: [480, 500], minSpeed: 0.4,
+  draw(c, t) {
+    // a luz da persiana, que latexa ao fondo da fiestra
+    c.save(); c.globalAlpha = 0.14 + 0.06 * Math.sin(t * 5); c.fillStyle = '#ffb050'; c.fillRect(445, 238, 85, 16); c.restore();
+  },
+  hotspots: [
+    { name: 'Porta do coche', key: true, done: () => flag('a3NoiteEntrada'), r: [0, 120, 110, 400], at: [300, 500], face: 'L', exit: ['cocherasNoite', [200, 470]], door: true, hint: 'L',
+      look: () => MA('La puerta del coche. Fuera, el frío de noviembre y una Mikado respirando.', 'pensativo') },
+    { name: 'Fiestra', r: [300, 110, 360, 220], at: [480, 480], face: 'B',
+      look: () => MA(flag('a3Noite') ? 'Por el agujerito de la cortina: la persiana del taller subida un palmo y luz naranja por debajo. Y nadie a la vista. Se han ido todos a la rotonda.' : 'La ventanilla, con su cortina.', 'pensativo') },
+    { name: 'Asentos', r: [120, 300, 170, 200], look: () => MA('Asientos de skai azul, con su reposacabezas de ganchillo. En uno de estos me dormí yo con siete años, camino de Lugo. Y me desperté en Lugo, que era lo importante.', 'sonriente') },
+    { name: 'Cortinas', r: [660, 110, 60, 230], look: () => MA('Cortinas de tren, con su barra de latón. Echadas, como si el coche durmiera. Yo, de mientras, de guardia.', 'pensativo') },
+    { name: 'Portaequipaxes', r: [110, 40, 740, 60], look: () => MA('El portaequipajes, con su red. Vacío. Aquí viajaban maletas de cartón, cestas con chorizos y algún sueño de emigrante.', 'pensativo') },
+  ],
+};
 SCENES.cocherasNoite = {
   ...SCENES.cocheras, name: 'Museo do Ferrocarril · noite', bg: 'img/noite-cocheras.jpg', music: null,
   draw(c, t) { c.save(); c.globalAlpha = 0.18 + 0.08 * Math.sin(t * 5); c.fillStyle = '#ffb050'; c.fillRect(710, 380, 110, 18); c.restore(); },
   onEnter: null,
   hotspots: [
-    { name: 'Porta do taller', key: true, done: () => false, r: [720, 288, 102, 138], at: [700, 446], face: 'R', exit: ['cocherasNoiteDentro', [480, 520]], door: true,
-      look: () => MA('La persiana, subida un palmo. Luz naranja por debajo, como un horno. Y ese olor... carbón quemándose.', 'pensativo') },
-    { name: 'Coche de viaxeiros', r: [0, 215, 160, 238], look: () => MA('Mi escondite. Bonito, pero cada vez que pasa un coche me late el corazón a nueve kilos de presión.', 'avergonzado') },
+    { name: 'Rotonda do museo', key: true, done: () => false, r: [912, 372, 48, 130], at: [936, 480], face: 'R', exit: ['rotondaNoite', [480, 528]], hint: 'R',
+      look: () => MA('Por ahí se fueron, con la carretilla. Rodeando el museo, hacia la rotonda. Y de ahí viene el resoplido.', 'pensativo') },
+    { name: 'Porta do taller', r: [720, 288, 102, 138], at: [700, 446], face: 'R',
+      act: () => MA('Dentro ya no queda nadie: se han llevado el carbón y el inyector. Lo que importa esta noche está en la rotonda.', 'convencido'),
+      look: () => MA('La persiana, subida un palmo. Luz naranja por debajo: se la han dejado encendida para volver.', 'pensativo') },
+    { name: 'Coche de viaxeiros', r: [0, 215, 160, 238], at: [200, 470], face: 'L', exit: ['cocheNoite', [480, 500]], door: true,
+      look: () => MA('Mi escondite. Bonito, pero cada vez que pasa un coche de verdad me late el corazón a nueve kilos de presión.', 'avergonzado') },
     { name: 'Praza da Estación', r: [300, 506, 360, 34], at: [480, 528], face: 'F',
-      act: () => MA('¿Irme ahora? ¿Con una Mikado respirando ahí dentro? Ni loco. Bueno, un poco loco, pero no tanto.', 'convencido'),
+      act: () => MA('¿Irme ahora? ¿Con una Mikado respirando a la vuelta de la esquina? Ni loco. Bueno, un poco loco, pero no tanto.', 'convencido'),
       look: () => MA('Por ahí se vuelve a la plaza. Hoy, no.', 'convencido') },
-    { name: 'Fiestras acesas', r: [600, 240, 60, 60], look: () => MA('Las ventanas, iluminadas. Desde la plaza se tiene que ver. Media ciudad lo sabe y nadie dice nada. Muy de Monforte.', 'pensativo') },
+    { name: 'Fiestras acesas', r: [600, 240, 60, 60], look: () => MA('Las ventanas de las cocheras, iluminadas. Desde la plaza se tiene que ver. Media ciudad lo sabe y nadie dice nada. Muy de Monforte.', 'pensativo') },
   ],
 };
 
-/* ---------- A8 · Interior de noite: a Mikado acesa, Remedios, Don Anxo e os xubilados ---------- */
+/* ---------- A7b · A rotonda de noite: a Mikado acesa, Remedios, Don Anxo e os xubilados ---------- */
 async function noiteEntrada() {
   if (flag('a3NoiteEntrada')) return;
   setFlag('a3NoiteEntrada');
@@ -495,8 +575,9 @@ async function noiteEntrada() {
   await RE('Quen anda aí?! Isto é propiedade do museo!');
   await MA('Y yo, propiedad de Renfe. Martín Pardo, maquinista. El de la casa roja de Doctor Casares.', 'avergonzado');
   await RE('O da casa roxa...');
-  await RE('Pecha esa persiana. Rápido. E non toques nada, que aquí cada parafuso ten o seu nome.');
-  await MA('(Una mujer con mono azul y gafas de soldar. Un señor mayor con gorra... y zapatillas de cuadros. Y dos más junto a la máquina, de espaldas, que hacen como que no existen.)', 'pensativo');
+  await RE('Apaga a lanterna do móbil e baixa a voz. Se pasa a patrulla, aquí somos catro vellos limpando unha máquina. E ti, o sobriño.');
+  await MA('(Una mujer con mono azul y gafas de soldar. Un señor mayor con gorra... y zapatillas de cuadros. Y dos más junto al ténder, de espaldas, que hacen como que no existen.)', 'pensativo');
+  await MA('(Y la Mikado, encima de la plataforma, con fuego en la caldera. Respirando.)', 'entusiasmado');
   await AX('Remedios... As pastillas. Non as atopo.');
   await RE('Non as baixaches buscar, Anxo. Teimudo. Ti e mais a túa tensión.');
   await MA('(Don Anxo. El fogonero. Y se busca en los bolsillos unas pastillas que tengo yo.)', 'convencido');
@@ -544,7 +625,7 @@ async function anxoNota() {
   setFlag('anxoNota');
   await AX('...');
   await AX('Hai noites que mellor non lembrar.');
-  await MA('(Se da la vuelta y se va hacia el hogar. Le tiemblan las manos. No de frío.)', 'preocupado');
+  await MA('(Se da la vuelta y se va hacia la cabina, hacia el fuego. Le tiemblan las manos. No de frío.)', 'preocupado');
   await RE('Déixao, Martín. Hai cousas que levan sesenta e oito anos no mesmo sitio. Non se moven nunha noite.');
 }
 async function remediosTalk() {
@@ -555,7 +636,7 @@ async function remediosTalk() {
   }
   if (!flag('remediosConta')) {
     setFlag('remediosConta');
-    await RE('Ben. Xa que estás dentro... Chámome Remedios. Soldadora do depósito, xubilada. Aprendinlle a soldar a medio Monforte.');
+    await RE('Ben. Xa que estás aquí... Chámome Remedios. Soldadora do depósito, xubilada. Aprendinlle a soldar a medio Monforte.');
     await RE('Adif lévase a Mikado nun mes. Nun góndola, ao museo doutra cidade. Para sempre.');
     await RE('E nós queremos unha última saída. Polas súas rodas. Con lume de verdade. Unha vez.');
     await MA('¿Una salida? ¿Por la vía? ¿Con esta máquina? Eso no es restaurar: eso es... precioso. Y bastante ilegal.', 'sorprendido');
@@ -564,24 +645,32 @@ async function remediosTalk() {
   for (;;) {
     const opts = [
       ...(!flag('inxectorFeito') ? [{ t: '¿Qué os falta?', k: 'falta' }] : []),
-      ...(!flag('reLousa') ? [{ t: 'Nueve kilos de presión. Lo pone la pizarra.', k: 'lousa' }] : []),
-      ...(!flag('reMotor') ? [{ t: 'El motor de la lona es de mi casa. A.F.G.', k: 'motor' }] : []),
+      ...(!flag('reRotonda') ? [{ t: '¿Una caldera encendida en plena rotonda y nadie dice nada?', k: 'rotonda' }] : []),
+      ...(!flag('reLousa') ? [{ t: 'Nueve kilos de presión. Lo pone la pizarra de las cocheras.', k: 'lousa' }] : []),
+      ...(!flag('reMotor') ? [{ t: 'Lo de las cocheras es la carpintería de mi casa. El motor pone A.F.G.', k: 'motor' }] : []),
       ...(!flag('reCarbon') ? [{ t: 'El carbón es del Fluvial. Y alguien lo paga con billetes.', k: 'carbon' }] : []),
       ...(!flag('reAsubio') ? [{ t: '¿Quién silba de noche? Dos largos y uno corto.', k: 'asubio' }] : []),
       { t: 'Os dejo trabajar.', k: 'adeus' },
     ];
     const k = opts[await choose(opts)].k;
     if (k === 'falta') { await inxector(); if (flag('fimActo3')) return; }
+    if (k === 'rotonda') {
+      setFlag('reRotonda');
+      await RE('Ás once da noite, en Monforte, só quedan os gatos e Concha. E os gatos non falan.');
+      await MA('Concha sí.', 'esceptico');
+      await RE('Concha sábeo todo e non conta nada importante. É o seu xeito de gardar segredos.');
+      await RE('E de día, catro vellos con bayetas: «mantemento». Ninguén lle pregunta nada a un vello cunha bayeta.');
+    }
     if (k === 'lousa') { setFlag('reLousa'); await RE('Le a lousa e xa se cre de casa. Iso escribino eu. Letra de soldadora: recta e sen rebabas.'); }
     if (k === 'motor') {
       setFlag('reMotor');
-      await RE('Iso...');
+      await RE('O motor...');
       await RE('Iso é cousa doutro. Dese motor sabe máis outro que non está aquí esta noite. Leva meses abríndoo e pechándoo.');
       await MA('¿Buscando qué?', 'dudoso');
       await RE('Pregúntallo a el. Cando chegue o momento, xa cho dirá. Eu non lle conto as cousas a ninguén. Para iso está Concha.');
-      await MA('¿Y cómo llegó aquí? Rosario dice que en el cincuenta y dos se vendió todo a un ingeniero de Caminos y a un contratista.', 'pensativo');
-      await RE('Iso non o sabe ninguén, rapaz. Cando entrei eu no depósito, no setenta e cinco, xa estaba aí, nun recuncho, cunha lona enriba.');
-      await MA('Pues no me lo invento. Lo que no se sabe, se queda en pregunta. Y esta se queda aquí, con el motor.', 'convencido');
+      await MA('¿Y cómo llegó a las cocheras toda una carpintería? Rosario dice que en el cincuenta y dos se vendió todo a un ingeniero de Caminos y a un contratista.', 'pensativo');
+      await RE('Iso non o sabe ninguén, rapaz. Cando entrei eu no depósito, no setenta e cinco, xa estaba alí: serras, torno, prensas... todo baixo lonas, nun recuncho. Ninguén preguntaba. Nós usámola para amañar as pezas.');
+      await MA('Pues no me lo invento. Lo que no se sabe, se queda en pregunta. Y esta se queda en las cocheras, con el motor.', 'convencido');
     }
     if (k === 'carbon') {
       setFlag('reCarbon');
@@ -595,7 +684,7 @@ async function remediosTalk() {
 }
 /* puzzle do inxector: procedemento de maquinista, sen morte nin volta atrás (as opcións malas só dan broma) */
 async function inxector() {
-  await RE('Fáltanos o que non se compra. A caldeira colle presión, pero o inxector non mete auga. E sen auga na caldeira, non hai saída: hai unha bomba.');
+  await RE('Fáltanos o que non se compra. A caldeira colle presión, pero o inxector non mete auga. Montámolo esta noite, recén amañado, e nada. E sen auga na caldeira, non hai saída: hai unha bomba.');
   await RE('E ningún de nós ten licenza para movela. Anxo foi fogoneiro, eu soldadora, eses dous, de oficinas.');
   await RE('Ti dis que es maquinista. Pois cébame ese inxector, maquinista.');
   for (;;) {
@@ -632,32 +721,43 @@ async function inxector() {
 }
 async function fimActo3() {
   setFlag('fimActo3');
-  await showDoc('<h4>FIN DO ACTO 3 · «A curiosidade»</h4><p>Non había pantasma. Había unha soldadora, un fogoneiro de oitenta e cinco anos en zapatillas, dous xubilados de oficinas e unha Mikado que volve respirar.</p><p>E alguén que asubía, e que esta noite non veu.</p><p>O Acto 4, «A implicación», chegará nun próximo hito.</p>');
+  await showDoc('<h4>FIN DO ACTO 3 · «A curiosidade»</h4><p>Non había pantasma. Había unha soldadora, un fogoneiro de oitenta e cinco anos en zapatillas, dous xubilados de oficinas e unha Mikado que volve respirar no medio da rotonda.</p><p>E alguén que asubía, e que esta noite non veu.</p><p>O Acto 4, «A implicación», chegará nun próximo hito.</p>');
 }
-SCENES.cocherasNoiteDentro = {
-  ...SCENES.cocherasDentro, name: 'Cocheras do museo · noite', bg: 'img/noite-cocheras-interior.jpg',
+function pintarCarretilla(c, x, y) {
+  c.save(); c.strokeStyle = '#141010'; c.lineWidth = 2;
+  c.fillStyle = '#3c6a46'; c.beginPath(); c.moveTo(x - 30, y - 22); c.lineTo(x + 26, y - 22); c.lineTo(x + 16, y); c.lineTo(x - 22, y); c.closePath(); c.fill(); c.stroke();
+  c.fillStyle = '#18181a'; c.beginPath(); c.ellipse(x - 2, y - 22, 26, 7, 0, Math.PI, 0); c.fill();
+  c.fillStyle = '#222'; c.beginPath(); c.arc(x + 20, y + 4, 8, 0, 7); c.fill(); c.stroke();
+  c.strokeStyle = '#6a4a2a'; c.lineWidth = 3; c.beginPath(); c.moveTo(x - 28, y - 14); c.lineTo(x - 52, y + 6); c.stroke();
+  c.restore();
+}
+SCENES.rotondaNoite = {
+  ...SCENES.rotonda, name: 'Rotonda do museo · noite', bg: 'img/noite-rotonda.jpg', crop: null, music: null,
   draw(c, t) {
-    pintarLousa(c, 0.5);
-    pintarMotor(c);
-    // fume da chimenea e lume que latexa na fornalla
-    c.save(); c.fillStyle = '#d8d8e0';
-    for (let i = 0; i < 6; i++) { const k = (t * 0.25 + i / 6) % 1; c.globalAlpha = 0.35 * (1 - k); c.beginPath(); c.arc(480 + Math.sin(t * 0.8 + i) * 14 * k, 226 - k * 200, 12 + k * 40, 0, 7); c.fill(); }
-    c.globalCompositeOperation = 'lighter'; c.globalAlpha = 0.25 + 0.15 * Math.sin(t * 9) * Math.sin(t * 3.1); c.fillStyle = '#ff8a30';
-    c.beginPath(); c.ellipse(480, 490, 70, 22, 0, 0, 7); c.fill(); c.restore();
+    pintarCarretilla(c, 150, 470);
+    // fume da cheminea, lume que latexa na cabina e o farol de man
+    c.save(); c.fillStyle = '#c8c8d4';
+    for (let i = 0; i < 6; i++) { const k = (t * 0.25 + i / 6) % 1; c.globalAlpha = 0.32 * (1 - k); c.beginPath(); c.arc(760 + Math.sin(t * 0.8 + i) * 14 * k, 118 - k * 110, 10 + k * 34, 0, 7); c.fill(); }
+    c.globalCompositeOperation = 'lighter';
+    c.globalAlpha = 0.1 + 0.07 * Math.sin(t * 9) * Math.sin(t * 3.1); c.fillStyle = '#ff8a30';
+    c.beginPath(); c.ellipse(520, 232, 26, 20, 0, 0, 7); c.fill();
+    c.globalAlpha = 0.16 + 0.05 * Math.sin(t * 7); c.fillStyle = '#ffc070';
+    c.beginPath(); c.arc(190, 456, 26, 0, 7); c.fill();
+    c.restore();
   },
   onEnter: () => noiteEntrada(),
   hotspots: [
-    { name: 'Saír', r: [300, 512, 360, 28], at: [480, 528], face: 'F',
+    { name: 'Saír', r: [300, 512, 360, 28], at: [480, 530], face: 'F',
       act: () => MA(flag('fimActo3') ? 'Irme ahora sería como bajarse del tren en marcha. Ya habrá tiempo de dormir.' : 'Ahora no me voy. Ni aunque me echen. Bueno, si me echa Remedios, igual sí.', 'convencido') },
-    { name: 'Mikado', r: [330, 230, 300, 240], at: [480, 500], face: 'B',
-      look: () => MA('La Mikado, encendida. El farol, la chimenea, el resoplido... Está viva. Hace años que no veía una de vapor respirar así.', 'entusiasmado'),
-      act: () => MA(flag('inxectorFeito') ? 'Ya la he tocado. Y me ha contestado.' : 'Sin permiso de Remedios, a la cabina no subo. Aquí dentro, ella es el jefe de depósito.', 'pensativo') },
-    { name: 'Lousa', r: [60, 186, 138, 120], look: () => MA('«Jueves, 23:00: prueba de fuego». Y aquí estoy. Puntual, como un horario de tren.', 'risueno') },
-    { name: 'Motor baixo a lona', r: [60, 336, 160, 100], look: () => MA('El motor de mi casa. A.F.G. Remedios dice que de él sabe más otro que no está aquí.', 'pensativo') },
-    { name: 'Sacos de carbón', r: [700, 400, 220, 110], look: () => MA('El carbón de Andrés, haciendo por fin lo que tiene que hacer: arder en una caldera.', 'sonriente') },
+    { name: 'Mikado', r: [250, 130, 610, 210], at: [540, 432], face: 'B',
+      look: () => MA('La Mikado, encendida. El farol, la chimenea, el resoplido... Está viva. Hace años que no veía una de vapor respirar así. Y al aire libre, con las estrellas de público.', 'entusiasmado'),
+      act: () => MA(flag('inxectorFeito') ? 'Ya la he tocado. Y me ha contestado.' : 'Sin permiso de Remedios, a la cabina no subo. Aquí, esta noche, ella es el jefe de depósito.', 'pensativo') },
+    { name: 'Carretilla', r: [96, 440, 90, 50], look: () => MA('La carretilla de las cocheras, con el carbón de Andrés. Haciendo por fin lo que tiene que hacer: viajar hasta una caldera.', 'sonriente') },
+    { name: 'Plataforma xiratoria', r: [120, 340, 760, 70], look: () => MA('La plataforma giratoria, con la Mikado encima. De noche, con el fuego, parece un escenario. Y yo, el que llega tarde a la función.', 'pensativo') },
+    { name: 'Rotonda', r: [0, 0, 960, 120], look: () => MA('Las cocheras en abanico, a oscuras. Las otras máquinas duermen. La Mikado, esta noche, no.', 'pensativo') },
   ],
   npcs: [
-    { id: 'remedios', name: 'Remedios', key: true, x: 200, y: 512, w: 60, h: 300, at: [280, 514], face: 'L',
+    { id: 'remedios', name: 'Remedios', key: true, x: 250, y: 506, w: 60, h: 300, at: [330, 512], face: 'L',
       draw(c, t, talking, s) { figura(c, this.x, this.y, this.h * s, LOOK_REMEDIOS, t, talking); },
       done: () => flag('fimActo3'),
       look: () => MA('Mono azul, gafas de soldar en la frente y unas manos que han cerrado más costuras que una modista. Aquí manda ella.', 'pensativo'),
@@ -668,21 +768,21 @@ SCENES.cocherasNoiteDentro = {
         foto1949: () => RE('Xosé... Iso gárdao, Martín. Hai quen daría un brazo por esa foto. E non son eu.'),
         trapo: () => RE('O meu trapo! Levaba días buscándoo. Non, quédao: xa está feito unha pena.'),
       } },
-    { id: 'anxo', name: 'Don Anxo', key: true, x: 770, y: 514, w: 60, h: 290, at: [690, 516], face: 'R',
+    { id: 'anxo', name: 'Don Anxo', key: true, x: 720, y: 508, w: 60, h: 290, at: [640, 514], face: 'R',
       draw(c, t, talking, s) { figura(c, this.x, this.y, this.h * s, LOOK_ANXO, t, talking); },
       done: () => flag('anxoPastillas'),
-      look: () => MA(flag('anxoPastillas') ? 'Don Anxo, con su gorra, mirando el fuego como quien mira una tele que solo él entiende.' : 'Un señor mayor con gorra y zapatillas de cuadros. Se palpa los bolsillos una y otra vez. Busca algo que no lleva.', 'pensativo'),
+      look: () => MA(flag('anxoPastillas') ? 'Don Anxo, con su gorra, mirando el fuego de la cabina como quien mira una tele que solo él entiende.' : 'Un señor mayor con gorra y zapatillas de cuadros. Se palpa los bolsillos una y otra vez. Busca algo que no lleva.', 'pensativo'),
       talk: () => anxoTalk(),
       give: {
         pastillas: () => darPastillas(),
         nota1958: () => flag('anxoPastillas') ? (flag('anxoNota') ? AX('...') : anxoNota()) : AX('Agora non, rapaz. Agora busco as pastillas.'),
         foto1949: async () => { await AX('...'); await AX('Era bo rapaz.'); await MA('(No dice quién. No hace falta.)', 'preocupado'); },
       } },
-    { id: 'xub1', name: 'Xubilado', key: false, x: 318, y: 462, w: 40, h: 280,
+    { id: 'xub1', name: 'Xubilado', key: false, x: 390, y: 446, w: 40, h: 280,
       draw(c, t, talking, s) { figura(c, this.x, this.y, this.h * s, { costas: true, roupa: '#3a3a44', pelo: '#9a9a9a', pa: true }, t, talking); },
-      look: () => MA('Un jubilado de oficinas, de espaldas, con una pala. Hace como que no está. Se le da fatal.', 'risueno'),
+      look: () => MA('Un jubilado de oficinas, de espaldas, con una pala junto al ténder. Hace como que no está. Se le da fatal.', 'risueno'),
       talk: () => say('Xubilado', 'Eu non estou aquí. Eu estou na cama. Pregúntalle á miña muller.') },
-    { id: 'xub2', name: 'Xubilada', key: false, x: 648, y: 462, w: 40, h: 270,
+    { id: 'xub2', name: 'Xubilada', key: false, x: 600, y: 446, w: 40, h: 270,
       draw(c, t, talking, s) { figura(c, this.x, this.y, this.h * s, { costas: true, roupa: '#5a3a3a', pelo: '#d8d8d8' }, t, talking); },
       look: () => MA('Otra jubilada, de espaldas, apuntando algo en una libreta. La presión, seguro. O la lista de la compra. O las dos.', 'risueno'),
       talk: () => say('Xubilada', 'Nove quilos, Remedios! E subindo!') },
@@ -710,8 +810,8 @@ SCENES.cocherasNoiteDentro = {
     { when: () => A3() && flag('a3XoseN') && !flag('libro1958'), t: 'Valerio guarda los libros de su padre desde 1950. Pedirle enero de 1958 (Farmacia de la Estación).' },
     { when: () => A3() && !flag('candadoAberto'), t: 'El candado de cuatro cifras de las cocheras del museo. En el pilar del taller ponía 14-I-1958.' },
     { when: () => A3() && flag('candadoAberto') && !cocherasCompletas(), t: () => `Mirar bien dentro de las cocheras (con el OLLO, el suelo también habla). Pistas: ${PISTAS_COCHERAS.filter(flag).length} de ${PISTAS_COCHERAS.length}.` },
-    { when: () => listoNoite() && !flag('a3Noite'), t: 'Esta noche, a las once, a las cocheras: esconderse detrás del coche de viajeros. Y llevar las pastillas de Don Anxo.' },
-    { when: () => A3() && flag('a3Noite') && !flag('a3NoiteEntrada'), t: 'Entrar en el taller de las cocheras. La persiana está subida un palmo.' },
+    { when: () => listoNoite() && !flag('a3Noite'), t: 'Esta noche, a las once, a las cocheras: esconderse dentro del coche de viajeros (se abre con mi llave de cuadradillo). Y llevar las pastillas de Don Anxo.' },
+    { when: () => A3() && flag('a3Noite') && !flag('a3NoiteEntrada'), t: 'Seguir a los de la carretilla hasta la rotonda de la Mikado, a la derecha del museo.' },
     { when: () => A3() && flag('a3NoiteEntrada') && !flag('anxoPastillas'), t: 'Don Anxo busca sus pastillas. Las llevo yo, de parte de Valerio.' },
     { when: () => A3() && flag('anxoPastillas'), t: 'Hablar con Remedios. ¿Qué les falta?' },
     { when: () => flag('fimActo3'), t: 'Una salida de la Mikado. Un mes. Y alguien que silba y esta noche no vino. (Acto 4, próximamente.)' },

@@ -257,17 +257,35 @@
 - «Mércores, 8:00». Objetivo: la llave del taller (Concha).
 
 ### A6 · O taller vello (`tallerA2`, `vigasA2`), con la ilustración de Oscar
-- **Fondo (15-11-2026):** `img/bg-taller-interior.jpg`, ilustración de Oscar del interior: caja de madera a la izquierda, huellas de botas que van hacia el fondo, pilar de ladrillo en el centro con un trapo a sus pies, marcas circulares en el suelo a la derecha, cinco ventanas (la última con hiedra) y las vigas de la transmisión arriba. El pilar es capa delantera: Martín pasa por detrás. La misma imagen sale ahora cuando Martín mira por la rendija en el Acto 1. La vista de las vigas (`vigasA2`) sigue con la foto de Oscar.
+- **Fondo (15-11-2026):** `img/bg-taller-interior.jpg`, ilustración de Oscar del interior: caja de madera a la izquierda, huellas de botas que van hacia el fondo, pilar de ladrillo en el centro con un trapo a sus pies, marcas circulares en el suelo a la derecha, cinco ventanas (la última con hiedra) y las vigas de la transmisión arriba. El pilar es capa delantera: Martín pasa por detrás. La misma imagen sale ahora cuando Martín mira por la rendija en el Acto 1. La vista de las vigas (`vigasA2`) tiene ficha propia (A6b, abajo), con la ilustración de Oscar del 16-11-2026.
 - **Encaje de las pistas con el dibujo:** la foto de 1949 se dibuja clavada en el pilar (desaparece al cogerla) y el grabado, debajo; las huellas son las del dibujo; el trapo es el del dibujo, y Martín se lleva solo una esquina con la grasa (así el trapo sigue en la imagen sin contradicción); el cajón con la escritura es la caja de la izquierda; las marcas de pernos son los círculos del suelo de la derecha; las vigas de arriba llevan a la vista del 7.º soporte. Salida al patio abajo a la izquierda.
 - **Entrada:** desde el patio, usando la **Chave do taller** en la puerta verde (marca `tallerAberto`; después se entra sin más).
 - **Pistas** (rehechas el 15-11-2026: cada una cuenta la ficción y sirve más adelante; contador «Pistas do taller: n de 4»):
   - **foto vieja** del pilar → se coge (`foto1949`): «Pepe, Manolo, Xosé N.» y «Xosé entra en Renfe. Sorte, rapaz» (`pistaFoto`). Uso: Acto 3, enseñársela a Xoán;
   - con el ollo, **grabado en el pilar** bajo la foto: «X. N. 1949 / 14-I-1958» (`pistaData`). Uso: código 1401 del candado de las cocheras (Acto 3);
   - con el ollo, **huellas** desde el fondo, bajo las ventanas, hasta el pilar → al final, un **trapo con grasa de locomotora** (`trapo`, `pistaTrapo`). Uso: Acto 3, la grasa que falta del almacén;
-  - en las vigas, el **7.º soporte con la tapa soldada** (`pistaSoporte`). La navaja no puede. Se abre en el Acto 4.
+  - en las vigas, el **7.º soporte**: tapa de hierro con **cuatro tornillos, cada uno con un punto de soldadura en la cabeza** (`pistaSoporte`). Ni la mano, ni la navaja, ni el destornillador. Se abre en el Acto 4 (ver A6b).
   - Decorado opcional: el cajón con la **escritura n.º 375** y las **marcas de pernos**.
 - **Final:** con las cuatro pistas, el cuaderno de Martín resume lo que sabe y deja la pregunta «¿quién era Xosé N.?». **FIN DO ACTO 2.**
 - **Personas reales:** Alfredo Fernández Gutiérrez, Juan Lowy Szabo y Manuel Goñi Echeverría solo aparecen por lo que dice la escritura (la venta de 1952). Ni hablan ni se les atribuyen intenciones.
+
+### A6b · O taller vello, mirando arriba (`vigasA2`), con la ilustración de Oscar
+- **Fondo (16-11-2026):** `img/bg-taller-arriba.jpg`, ilustración de Oscar «parte superior del taller»: vigas y entablado de madera, un **hueco en el tejado** con cielo a la izquierda, el **eje de la transmisión** que cruza de izquierda a derecha y entra por un collar en una **caja de hierro** (el 7.º soporte) con una **tapa de cuatro tornillos**, sentada encima del **pilar de ladrillo** (ladrillo de dos agujeros), una **columna de hormigón** que sigue hasta el tejado y un **nido** arriba a la derecha, sobre la viga. Recorte del original 1688×932 a 16:9 (se quitan 16 px por cada lado) y 1600×900. Sustituye a la foto (`img/bg-taller-vigas.jpg`, que solo queda para la escena vieja de `data.js`, ya fuera de juego).
+- **Cómo llega Martín:** en `tallerA2`, la viga de arriba (hotspot «Viga da transmisión», toda la franja superior) lo lleva andando hasta el pie del pilar y cambia a esta vista: es lo que ve Martín al levantar la cabeza. La primera vez lo dice («Me pongo al pie del pilar y miro arriba»). Vista sin Martín (`noActor`). **Salida:** franja de abajo «Baixar a mirada» → `tallerA2`, junto al pilar. Siempre se puede volver, en cualquier acto.
+- **Encaje con la historia (cambio del 16-11-2026, revisar con Oscar):** el dibujo enseña una tapa atornillada, no soldada por los bordes. Se cuenta así: Xosé atornilló la tapa y **puso un punto de soldadura en la cabeza de cada tornillo**, para que nadie la abriera con un destornillador. «Soldada» sigue siendo verdad, y queda mejor con Remedios, que es soldadora: en el Acto 4 ella reconoce el trabajo y le presta a Martín su **piqueta de soldador** para saltar los puntos; luego basta el destornillador.
+- **Para subir:** los ladrillos de dos agujeros del dibujo hacen de peldaños. Martín sube apoyando la punta del pie y llega a la tapa (así se explica también cómo llega quien deja las huellas).
+- **Hotspots** (castellano de Martín):
+  - **Parafusos** (clave): las cuatro esquinas de la tapa. Mirar: un punto de soldadura brillante en cada cabeza, «esto no es óxido, es a propósito». Destornillador: no entra en la ranura, está llena de soldadura. Navaja: se mella.
+  - **Tapa do sétimo soporte** (clave, centro de la tapa): da la pista `pistaSoporte`. Mirar: «Los otros seis soportes se abren con una palometa; este, con cuatro tornillos soldados». Usar (mano): sube por los agujeros del ladrillo y tira, no se mueve.
+  - **Caixa do soporte:** el cojinete donde gira el eje; en una carpintería, el soporte guarda la grasa; hoy suena hueco al golpearlo («ahí dentro hay algo que no es grasa»).
+  - **Eixo da transmisión:** el motor hacía girar el eje y de él bajaban **las correas** a cada máquina. Siembra la frase de Xosé del Acto 4 («onde se moven as correas»): Martín lo dice sin darle importancia.
+  - **Piar de ladrillo:** ladrillo de dos agujeros que sirven de peldaños.
+  - **Columna de formigón:** la que sube hasta el tejado; arreglo posterior al ladrillo.
+  - **Burato do tellado:** cielo y tejas rotas; por ahí entra la luz (y el agua).
+  - **Niño** (no clave): nido de paja sobre la viga, ahora vacío. **Hueco preparado para el pájaro NPC de Oscar:** zona `[756, 78, 142, 86]` del lienzo 960×540; cuando llegue la hoja del pájaro se añade como `npcs` de `vigasA2` con `x≈826, y≈150` y el nido sigue de decorado.
+  - **Vigas** (todo lo demás): madera de castaño, setenta años aguantando.
+- **Acto 4 (preparado, aún sin dar):** objeto `piqueta` (Piqueta de soldador, ya definido). Piqueta en tornillos o tapa → salta los puntos (`puntosPicados`). Después, destornillador (o la mano, si Martín no lo lleva: «con la piqueta de palanca») → se abre la tapa (`soporteAberto`, `lataCollida`) y Martín coge la **lata de tabaco** (`lata`; con la navaja sale el parte). Con la tapa abierta, la caja se dibuja abierta por código. Si se usa la piqueta antes del Acto 4 no puede pasar porque aún no existe en el inventario.
+- **Sin callejones:** todo lo de esta vista es mirar o probar; nada se gasta ni se pierde.
 
 ### Sin callejones sin salida
 - Los pasteles se pueden comprar siempre a Genaro (y los ositos a Concha). La crema, si se pierde, Valerio da otra muestra. El minijuego no se puede perder del todo (empate técnico). La llave del taller no se gasta.
@@ -318,12 +336,14 @@
 
 - **Fondo:** ilustración de Oscar `img/bg-cocheras.jpg` (la misma de la cinemática del primer turno), recortada a 16:9 (`crop: [100, 0, 1571, 884]`).
 - **Llegada:** a pie desde A3 plaza de la estación, por la calle del fondo (flecha arriba). No es destino del mapa. **Salida:** borde de abajo → plaza de la estación.
-- **Candado:** en el Acto 1 (lunes) todavía no está: se tapa por código con un trozo liso de la propia persiana. Desde el Acto 2 (martes, tras la cinemática) se ve y se puede mirar y tocar. Es lo que cierra el paso: sin el código Martín prueba combinaciones y se rinde con una broma; con la fecha del pilar vista (o tras el Acto 2) piensa en «catorce, uno» pero quiere hablar antes con Xoán. El código 1401 abrirá el candado en el Acto 3 (interior A8 con la Mikado, pendiente de dibujos).
+- **Candado:** en el Acto 1 (lunes) todavía no está: se tapa por código con un trozo liso de la propia persiana. Desde el Acto 2 (martes, tras la cinemática) se ve y se puede mirar y tocar. Es lo que cierra el paso: sin el código Martín prueba combinaciones y se rinde con una broma; con la fecha del pilar vista (o tras el Acto 2) piensa en «catorce, uno» pero quiere hablar antes con Xoán. El código 1401 abre el candado en el Acto 3 (interior A8: almacén con la maquinaria de la carpintería de la Casa Juana; la Mikado está fuera, en la rotonda).
 - **Hotspots:** candado, puerta del taller, entrada del museo (cerrada a esas horas), persianas, coche de viajeros, cartel del maquinista, los dos letreros, escudo y reloj.
+- **Salida derecha (16-11-2026):** «Rotonda do museo» → A7b, la rotonda con la Mikado, en todos los actos.
 - **Sin callejones:** la vuelta a la plaza está siempre abierta.
 
 ## Acto 3 · «A curiosidade» (jueves) · 16-11-2026
 Código en `js/acto3.js`. Sigue a «FIN DO ACTO 2» y está en «Escoller acto». **Objetivo:** descubrir quién es el fantasma.
+**Cambio del 16-11-2026 (Oscar):** la Mikado **no está dentro de las cocheras**: es una pieza de exposición al aire libre, en la rotonda del museo (la que se ve desde el balcón y en las cinemáticas). Dentro de las cocheras está guardada la **maquinaria de la carpintería de la Casa Juana** (la de la escritura de 1952 y la foto de 1949) y allí los jubilados arreglan las piezas. La noche pasa en la rotonda.
 Reglas de Gilbert aplicadas: Martín dice el primer paso (preguntar a Xoán por Xosé N.) y cada personaje apunta al siguiente; dos caminos abiertos a la vez (cocheras y farmacia) que se juntan en la noche; el problema antes que la solución (Anxo busca sus pastillas en los bolsillos antes de que Martín se las dé; el inyector no coge agua antes de que Martín lo arregle); sin muertes ni callejones (fallar el candado o el inyector solo da una broma y una pista); la noche llega cuando el jugador lo tiene todo, no por reloj (tiempo de Hollywood).
 
 ### Apertura
@@ -336,7 +356,7 @@ Hoja «ACTO 3 · A curiosidade. Xoves.» → vestíbulo de la estación tras el 
 - **La foto de 1949**: «Gárdaa ben. Moi ben.» y se va al mural.
 
 ### A3b · Concha (cambios en el Acto 3)
-«Que se conta?»: Valerio anda preocupado porque Don Anxo, «o vello fogoneiro», no bajó el lunes a por las pastillas; y de noche hay luz en las cocheras del museo, «pero iso non cho dixen eu». Apunta a los dos caminos.
+«Que se conta?»: Valerio anda preocupado porque Don Anxo, «o vello fogoneiro», no bajó el lunes a por las pastillas; y de noche hay luz en las cocheras del museo y la Mikado de la rotonda echa humo, «pero iso non cho dixen eu». Apunta a los dos caminos.
 
 ### B2 · Farmacia: el libro de 1958 y la puerta a Don Anxo (ideas de Oscar del 15-11-2026, ficción)
 - Xoán ya no está en la farmacia.
@@ -347,27 +367,44 @@ Hoja «ACTO 3 · A curiosidade. Xoves.» → vestíbulo de la estación tras el 
 ### A7 · Exterior de las cocheras (cambios en el Acto 3)
 - **Candado de combinación** con la mecánica general `candadoCombinacion` de `engine.js` (cuatro ruedas, botones grandes para el dedo, flechas o números en el teclado). Código **1401** (14-I, la fecha del pilar). Broma al abrir: «¿Quién pone de contraseña una fecha? Mi madre. Y por lo visto, los jubilados del depósito». Fallar no cuesta nada; tras dos fallos, Martín recuerda «catorce del uno: día y mes, cuatro cifras justas». Con 1958 y 0000 hay frase propia.
 - El dibujo de Oscar muestra un candado de llave: el texto ya dice «cerradura de llave y, debajo, cuatro ruedecitas con números». **Pendiente de Oscar:** retocar el dibujo con las ruedas o dejarlo así.
-- **Coche de viajeros:** cuando Martín tiene las cinco pistas de dentro y las pastillas, es su escondite para esperar a las once (lanza la noche).
+- **Coche de viajeros:** cuando Martín tiene las cinco pistas de dentro y las pastillas, es su escondite para esperar a las once (lanza la noche). **Se esconde dentro** (Oscar, 16-11-2026): lo abre con la **llave de cuadradillo** que lleva todo maquinista. Antes de tiempo, Martín ya lo dice al tocarlo («sin nada que vigilar, entrar sería allanamiento con vistas»), así que el jugador sabe dónde esconderse cuando llegue la hora.
 
 ### A8 · Interior de las cocheras, de día (`cocherasDentro`) · fondo PROVISIONAL
-- **Fondo:** `img/bg-cocheras-interior.jpg`, generado con `tools/fondos-acto3.py` (paredes de ladrillo, cubierta de madera, la Mikado de frente recortada de la ilustración de Oscar de la cinemática, banco con lona, pizarra, sacos de carbón y pala). **Pendiente: ilustración de Oscar del interior con la Mikado.**
+- **Qué es:** el almacén donde está guardada, bajo lonas, **la maquinaria de la carpintería de la Casa Juana** (decisión de Oscar del 16-11-2026): sierra de cinta, sierra circular, cepilladora tapada, torno para madera, dos prensas, bancos y el motor Siemens. **No hay Mikado.** Cómo llegó allí no lo sabe nadie (ficción; la escritura de 1952 dice a quién se vendió, no dónde acabó).
+- **Fondo:** `img/bg-cocheras-interior.jpg`, generado con `tools/fondos-acto3.py`: paredes de ladrillo, cubierta de madera, portalón del fondo cerrado con un **postigo entornado** que da a las vías y a la rotonda, pizarra, banco con el motor tapado, las máquinas, un banco con una pieza de bronce, bidones, sacos de carbón, pala y carretilla, y huellas de carbonilla hacia el postigo. **Pendiente: ilustración de Oscar del interior con la maquinaria** (ver «Dibujos pendientes»).
+- **Al entrar:** «Ni una locomotora. Máquinas de carpintería...». Martín recuerda lo que contó Rosario y lo deja en hipótesis: «Igual es otra carpintería. O igual no».
 - **Cinco pistas** (contador «Pistas das cocheras: n de 5»):
-  1. **Pizarra** (`pistaLousa`): «Presión: 9 kg. Probar inxector. Mércores: tubos. Xoves, 23:00: proba de lume.», con muy buena letra. «Jueves a las once... es hoy.» Da la hora de la noche.
-  2. **Motor bajo la lona** (`pistaMotor`): Siemens de 10 CV desmontado polea a polea, con «A.F.G.» grabado a navaja **con la misma letra que el pilar del taller**. Martín: el motor de la carpintería de su casa; cómo llegó aquí, ni idea (hipótesis, nada sobre los compradores reales). Los tornillos de la tapa son nuevos: alguien busca algo dentro (siembra el Acto 4).
-  3. **Carril** (con el ollo, `pistaCarril`): grasa fresca; con el trapo del taller, «la misma grasa».
-  4. **Huellas** (con el ollo, `pistaPegadasC`): botas con carbonilla y zapatillas de andar por casa.
-  5. **Sacos de carbón** (`pistaCarbon`): carbón de piedra; si Andrés lo contó, «aquí acaba el carbón de Andrés».
-- **Mikado:** la caldera está templada; a la cabina no se sube sin permiso.
-- Con las cinco, cuaderno: alguien restaura la Mikado en secreto, esta noche a las once hay prueba de fuego. Si falta el libro de Valerio, Martín recuerda que tiene tiempo hasta las once y que «quien guarda papeles viejos» es Valerio.
+  1. **Pizarra** (`pistaLousa`): «Presión: 9 kg. Probar inxector. Mércores: tubos. Xoves, 23:00: proba de lume.» Martín: aquí no hay nada con caldera; la única en cien metros es la de la **Mikado de la rotonda**. «Jueves a las once... es hoy.»
+  2. **Motor bajo la lona** (`pistaMotor`): la única lona sin polvo. Siemens de 10 CV desmontado polea a polea, con «A.F.G.» grabado a navaja **con la misma letra que el pilar del taller**. Los tornillos de la tapa son nuevos: alguien busca algo dentro (siembra el Acto 4).
+  3. **Pieza de bronce** (`pistaPeza`, sustituye a la grasa del carril): un **inyector** de locomotora con el sello de Renfe y grasa de bielas fresca, «para montarlo esta noche». Con el trapo del taller: «la misma grasa». Siembra el puzzle del inyector de la noche.
+  4. **Huellas** (con el ollo, `pistaPegadasC`): botas con carbonilla y zapatillas de andar por casa, que van y vienen **de los sacos al postigo que da a la rotonda**.
+  5. **Sacos de carbón** (`pistaCarbon`) y la carretilla con las ruedas negras; si Andrés lo contó, «aquí acaba el carbón de Andrés».
+- **Opcionales:** sierra de cinta (con la **foto de 1949**: «o es ella, o tiene una gemela», flag `serraFoto`), sierra circular («Non tocar. R.»), cepilladora tapada, torno, prensas («la escritura dice cuatro; aquí hay dos»), postigo, bidones, pala, ventanas y cubierta.
+- Con las cinco, cuaderno: alguien está poniendo en marcha la Mikado de la rotonda; las piezas se arreglan aquí y se montan fuera; esta noche a las once, prueba de fuego. Si falta el libro de Valerio, Martín recuerda que tiene tiempo hasta las once.
+
+### A7b · Rotonda do museo, de día (`rotonda`) · opcional
+- **Fondo:** la portada de Oscar `img/portada-rotonda.jpg` (la rotonda con la plataforma giratoria y la Mikado encima), recortada a 16:9. Se llega por la derecha del exterior de las cocheras; se vuelve por abajo.
+- **Hotspots:** Mikado (en el Acto 3, Martín toca la caldera: **tibia**, `a3MikadoTibia`), ténder (carbón de piedra recién echado en el Acto 3), plataforma giratoria y las cocheras en abanico. Subir a la cabina de día: no, «mañana sale en el periódico».
+
+### A7c · Interior del coche de viajeros, de noche (`cocheNoite`) · fondo PROVISIONAL
+- **Fondo:** `img/noite-coche-viaxeiros.jpg` (`tools/fondos-acto3.py`): paneles de madera, portaequipajes con red, asientos de skai azul con reposacabezas de ganchillo, cortinas y, por la ventanilla, la puerta del taller con luz por debajo. **Pendiente: el dibujo de Oscar del interior del coche clásico** (lo sustituye tal cual; la ventanilla debería dejar ver la fachada de las cocheras).
+- **Hotspots:** puerta del coche (salida → exterior de noche), ventanilla, asientos, cortinas, portaequipajes.
+- **Cadena:** por un agujerito de la cortina, Martín ve subir la persiana: salen sombras con **la carretilla de carbón, un farol de mano y unas zapatillas de cuadros**, y rodean el museo hacia la rotonda. Luego, un resoplido que hace temblar el cristal. Objetivo: salir del coche y seguirlos.
 
 ### A7 · Cocheras de noche (`cocherasNoite`) · fondo provisional
-`img/noite-cocheras.jpg` (tratamiento de noche del dibujo de Oscar): la persiana del taller subida un palmo, luz dentro y en las ventanas. Martín, escondido tras el coche de viajeros. Se entra por la puerta del taller. No se puede volver a casa hasta terminar.
+`img/noite-cocheras.jpg` (tratamiento de noche del dibujo de Oscar). Tras la vigilancia desde dentro del coche de viajeros, que se ve desde aquí: salen sombras con **la carretilla de carbón, un farol de mano y unas zapatillas de cuadros**, y rodean el museo hacia la rotonda. Luego, un resoplido: una caldera cogiendo presión. Objetivo: seguirlos. La salida de la derecha lleva a la rotonda de noche. La puerta del taller ya no lleva a ningún sitio («lo que importa está en la rotonda»).
 
-### A8 · Interior de noche (`cocherasNoiteDentro`) · fondo y personajes PROVISIONALES
-- **Fondo:** `img/noite-cocheras-interior.jpg`: la Mikado con el farol encendido y fuego en la hogar; el humo y el fuego se animan por código.
-- **NPC (dibujados por código hasta tener las hojas de Oscar):** **Remedios** (mono azul, pelo gris recogido, gafas de soldar en la frente), **Don Anxo** (gorra, chaqueta de punto, zapatillas de andar por casa) y dos jubilados de espaldas junto a la máquina.
-- **Cadena:** al entrar, todos se quedan quietos; Remedios: «Quen anda aí?». Martín se presenta. Anxo se busca las pastillas en los bolsillos: este lunes no bajó a por ellas (problema). Martín se las da «de parte de Valerio» (solución) y Anxo le da las gracias; si Martín le enseña la nota de 1958, Anxo: «Hai noites que mellor non lembrar» y vuelve a la hogar. Si Martín sabe que es el abuelo de Andrés: «Non lle digas que me viches aquí... cando se preocupa, ponse a traballar»; Remedios: «O neto non sabe nada». Con Anxo a favor, Remedios habla: Adif se lleva la Mikado en un mes y quieren una última salida. Martín puede contarle lo que sabe (pizarra, motor, carbón, silbato), cada cosa con su respuesta y sin revelar a Xoán. **Puzzle del inyector** (procedimiento de maquinista): «Se es maquinista, cébame ese inxector». Tres opciones: vapor a tope (broma: riega al fogonero), un golpe con la llave inglesa (broma: «iso valía nos Seat 600») o **primero el agua y luego el vapor poco a poco hasta que el rebose deja de escupir** (bien: el inyector canta). Remedios: les falta un maquinista con licencia. **FIN DO ACTO 3.**
-- **El carbón de Andrés:** se lo lleva **Xoán** (elegido por Oscar el 16-11-2026). Remedios no lo delata y solo dice que lo trae «un amigo que paga, que é moi seu para as contas» (se descubre en el Acto 5).
+### A7b · Rotonda de noche (`rotondaNoite`) · fondo y personajes PROVISIONALES
+- **Fondo:** `img/noite-rotonda.jpg` (la portada de Oscar pasada a noche con `tools/fondos-acto3.py`), con el fuego de la cabina, el humo de la chimenea y un farol de mano animados por código, y la carretilla con carbón.
+- **NPC (dibujados por código hasta tener las hojas de Oscar):** **Remedios** (mono azul, pelo gris recogido, gafas de soldar en la frente), **Don Anxo** (gorra, chaqueta de punto, zapatillas de andar por casa) y dos jubilados de espaldas junto al ténder.
+- **Cadena:** Remedios: «Quen anda aí?». Martín se presenta; Remedios: «Apaga a lanterna... se pasa a patrulla, aquí somos catro vellos limpando unha máquina». Anxo se busca las pastillas en los bolsillos (problema). Martín se las da «de parte de Valerio» (solución); si le enseña la nota de 1958, «Hai noites que mellor non lembrar». Si sabe que es el abuelo de Andrés: «Non lle digas que me viches aquí»; Remedios: «O neto non sabe nada». Con Anxo a favor, Remedios habla: Adif se lleva la Mikado en un mes y quieren una última salida. Opciones de Martín: **la rotonda** («¿una caldera encendida en plena rotonda y nadie dice nada?» → «ás once só quedan os gatos e Concha»; de día, «catro vellos con bayetas: mantemento»), pizarra, **la carpintería** de las cocheras («cando entrei no 75 xa estaba alí, todo baixo lonas... nós usámola para amañar as pezas»), carbón y silbato. **Puzzle del inyector** (el que Martín vio en el banco, montado esta noche): vapor a tope (broma), golpe con la llave inglesa (broma) o **primero el agua y luego el vapor poco a poco** (canta). Remedios: les falta un maquinista con licencia. **FIN DO ACTO 3.**
+- **El carbón de Andrés:** se lo lleva **Xoán** (elegido por Oscar el 16-11-2026). Remedios no lo delata: «un amigo que paga» (se descubre en el Acto 5).
+
+### Dibujos pendientes para Oscar (Acto 3)
+1. **Interior de las cocheras de día con la maquinaria** (sustituye al provisional): portalón del fondo con un postigo entornado; a la izquierda, pizarra en la pared y banco con el motor bajo una lona verde; sierra de cinta alta, sierra circular, cepilladora tapada con lona gris, torno, dos prensas; en el centro, un banco con una pieza de bronce (inyector); a la derecha, sacos de carbón, pala y carretilla. Zona para caminar: la franja de abajo.
+2. **La rotonda de noche con la Mikado encendida, a pie de suelo** (opcional: ahora se usa la portada pasada a noche, vista desde arriba). Fuego en la cabina, humo, un farol de mano en el suelo y sitio abajo para cuatro personajes y Martín.
+3. **Interior del coche clásico de viajeros** (lo manda Oscar): el escondite de Martín; ventanilla con la fachada de las cocheras de noche.
+4. Hojas de **Remedios** y **Don Anxo**.
 
 ### Personas reales
-Solo se nombra a Alfredo Fernández Gutiérrez por las iniciales del motor (el motor Siemens de su carpintería es un dato real; que esté en las cocheras con «A.F.G.» es ficción, ver `04`). Nada sobre los compradores de 1952.
+Solo se nombra a Alfredo Fernández Gutiérrez por las iniciales del motor (el motor Siemens y la lista de máquinas de su carpintería son datos reales; que estén guardados en las cocheras del museo es ficción, ver `04`). Nada sobre los compradores de 1952: Martín y Remedios dicen que nadie sabe cómo llegó allí.
