@@ -466,7 +466,10 @@ const CINE = (() => {
 
   /* [inicio, función, fundido de entrada, fundido de saída] */
   const SHOTS = [[T.s1, s1, 0.6, 0.5], [T.s2, s2, 0.9, 0], [T.s3, s3, 0, 0], [T.s4, s4, 0, 0], [T.s5, s5, 0, 0], [T.s6, s6, 0, 0], [T.s7, s7, 0, 0.4], [T.s8, s8, 0.5, 0.8], [T.s9, s9, 0, 0], [T.s10, s10, 1, 0.5], [T.s11, s11, 0.5, 0.5], [T.s12, s12, 0.5, 1], [T.s13, s13, 0, 0]];
-  function render(c, t) {
+  /* Unha «película» é { T (con T.end), SHOTS, K, prepare(), score(ferramentas de son), overlay(c, t), day }.
+     A de inicio é MAIN; as doutros actos (js/cinematica2.js) rexístranse por fóra e reprodúcense con play({ film }). */
+  function render(c, t, F = MAIN) {
+    const { T, SHOTS, K } = F;
     t = clamp(t, 0, T.end - 0.001);
     let i = SHOTS.length - 1; while (i > 0 && SHOTS[i][0] > t) i--;
     const [st, fn, fi, fo] = SHOTS[i], en = i + 1 < SHOTS.length ? SHOTS[i + 1][0] : T.end, u = (t - st) / K, ur = t - st;
@@ -475,11 +478,12 @@ const CINE = (() => {
     if (a < 1) { c.fillStyle = `rgba(2,3,6,${1 - a})`; c.fillRect(0, 0, W, H); }
     // bandas de cine
     c.fillStyle = '#000'; c.fillRect(0, 0, W, 34); c.fillRect(0, H - 34, W, 34);
+    if (F.overlay) { c.save(); F.overlay(c, t); c.restore(); }
   }
 
   /* ================= SON ================= */
   let AU = null;
-  function audioStart() {
+  function audioStart(F = MAIN) {
     SFX.init(); const ac = SFX.ctx; if (!ac) return null;
     const master = ac.createGain(); master.gain.value = E.opts.sfx; master.connect(ac.destination);
     const t0 = ac.currentTime + 0.12, nodes = [];
@@ -499,6 +503,10 @@ const CINE = (() => {
     const whistle = (at, v, dest) => { for (const [w0, dur] of WHP) { for (const f of [440, 523, 659]) { const o = tone(at + w0, [[0.07, v / 3], [dur - 0.1, v / 3], [dur, 0]], f * 0.93, 'sawtooth', null, dest.lp); o.frequency.exponentialRampToValueAtTime(f, t0 + at + w0 + 0.09); } nz(at + w0, [[0.05, v * 0.35], [dur - 0.08, v * 0.3], [dur, 0]], 'bandpass', 2400, 0.6, dest.lp); } };
     const bus = (cut, echo) => { const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = cut; lp.connect(master); if (echo) { const dl = ac.createDelay(1), fb = ac.createGain(), wet = ac.createGain(); dl.delayTime.value = 0.36; fb.gain.value = 0.45; wet.gain.value = 0.6; lp.connect(dl); dl.connect(fb); fb.connect(dl); dl.connect(wet); wet.connect(master); } return { lp }; };
 
+    F.score({ nz, tone, whistle, bus, master });
+    return { ac, master, t0, nodes };
+  }
+  function mainScore({ nz, tone, whistle, bus, master }) {
     // chuvia de 1958 (ata o parte) e vento
     nz(0, [[1.5, 0.05], [T.s2, 0.05], [T.s2 + 1, 0.028], [T.s6, 0.03], [T.s7, 0.03], [T.s7 + 0.6, 0.075], [T.s8, 0.06], [T.s8 + 1, 0.02], [T.s9 - 0.6, 0.02], [T.s9, 0]], 'highpass', 4200, 0.5);
     nz(0, [[2, 0.05], [T.s2, 0.04], [T.s3, 0.02], [T.s6, 0.03], [T.s8, 0.035], [T.s8 + 0.8, 0]], 'bandpass', 900, 0.4);
@@ -549,8 +557,8 @@ const CINE = (() => {
     tone(T.s13 + 0.5 * K, [[0.02, 0.8], [3.5, 0]], 55, 'sine', 36); nz(T.s13 + 0.5 * K, [[0.02, 0.35], [1.2, 0]], 'lowpass', 160);
     for (const [f, v] of [[73.4, 0.2], [110, 0.13], [146.8, 0.1], [174.6, 0.07], [220, 0.05]]) tone(T.s13 + 0.5 * K, [[1.2, v], [5.3 * K, v * 0.7], [8.2 * K - 0.6, 0]], f, 'triangle');
     tone(T.s13 + 5.3 * K, [[0.6, 0.06], [2.8, 0]], 293.7, 'sine'); tone(T.s13 + 5.3 * K, [[0.6, 0.04], [2.8, 0]], 440, 'sine');
-    return { ac, master, t0, nodes };
   }
+  const MAIN = { T, SHOTS, K, prepare, score: mainScore, day: 'Luns, 7:52' };
   function audioStop(fast) {
     if (!AU) return; const { ac, master, nodes } = AU; AU = null;
     try { master.gain.cancelScheduledValues(ac.currentTime); master.gain.setValueAtTime(master.gain.value, ac.currentTime); master.gain.linearRampToValueAtTime(0, ac.currentTime + (fast ? 0.25 : 0.6)); } catch (e) { }
@@ -573,16 +581,17 @@ const CINE = (() => {
     if (cv.width !== w) { cv.width = w; cv.height = Math.round(w * 9 / 16); }
     return cv.width / W;
   }
-  function drawFrame(t) { const c = cv.getContext('2d'), s = fit(); c.setTransform(s, 0, 0, s, 0, 0); render(c, t); }
+  function drawFrame(t, F) { const c = cv.getContext('2d'), s = fit(); c.setTransform(s, 0, 0, s, 0, 0); render(c, t, F); }
   /* Reproduce a cinemática. A promesa resólvese cando remata ou cando se salta
      (coa pantalla aínda en negro); despois o fundido descobre o xogo. */
   async function play(opts = {}) {
     if (playing) return; playing = true; mount();
+    const F = opts.film || MAIN; el.querySelector('#cineDay').textContent = F.day || '';
     el.style.transition = 'none'; el.style.opacity = 1; el.hidden = false; void el.offsetWidth; el.style.transition = '';
     const skipB = el.querySelector('#cineSkip'), day = el.querySelector('#cineDay'); skipB.classList.remove('on'); day.classList.remove('on');
     { const c = cv.getContext('2d'); fit(); c.setTransform(1, 0, 0, 1, 0, 0); c.fillStyle = '#000'; c.fillRect(0, 0, cv.width, cv.height); }
-    await prepare();
-    AU = audioStart();
+    await prepare(); if (F !== MAIN) await F.prepare();
+    AU = audioStart(F);
     const p0 = performance.now(), au = AU; let skipped = false, raf = 0, hideT = 0;
     const now = () => (au && au.ac.state === 'running' ? Math.max(0, au.ac.currentTime - au.t0) : (performance.now() - p0) / 1000);
     await new Promise(done => {
@@ -592,7 +601,7 @@ const CINE = (() => {
       el.onclick = ev => { if (ev.target === skipB) return; ask(); };
       skipB.onclick = ev => { ev.stopPropagation(); finish(true); };
       window.addEventListener('keydown', key, true);
-      const loop = () => { const t = now(); if (t >= T.end) return finish(false); drawFrame(t); raf = requestAnimationFrame(loop); };
+      const loop = () => { const t = now(); if (t >= F.T.end) return finish(false); drawFrame(t, F); raf = requestAnimationFrame(loop); };
       loop();
     });
     audioStop(skipped);
@@ -604,6 +613,8 @@ const CINE = (() => {
     setTimeout(() => { el.hidden = true; playing = false; }, opts.day !== false ? 1900 : 1400);
   }
   /* para probas: debuxa o fotograma do segundo t, sen son */
-  async function frame(t) { mount(); el.style.opacity = 1; el.hidden = false; await prepare(); drawFrame(t); }
-  return { play, frame, T, get playing() { return playing; } };
+  async function frame(t, F = MAIN) { mount(); el.style.opacity = 1; el.hidden = false; await prepare(); if (F !== MAIN) await F.prepare(); drawFrame(t, F); }
+  /* caixa de ferramentas para as cinemáticas doutros actos */
+  const kit = { W, H, OUT, MONO, TAU, clamp, lerp, ss, ease, R, poly, rrect, disc, line, glow, puff, fogBand, rain, vignette, cam, typed, load, bakeNight, WHP };
+  return { play, frame, T, kit, get playing() { return playing; } };
 })();
