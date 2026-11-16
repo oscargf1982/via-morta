@@ -11,12 +11,13 @@
      Martín ve saír os xubilados coa carretilla cara á rotonda e séguelos → a Mikado acesa na rotonda, Remedios, Don Anxo e os xubilados.
    Anxo busca as pastillas (problema) → Martín dállas (solución) → Remedios fala → puzzle do inxector → FIN DO ACTO 3.
    Fichas: docs/05_FICHAS_ESCENARIOS.md, sección «Acto 3». Fondos do interior e da rotonda de noite PROVISIONAIS (tools/fondos-acto3.py);
-   Remedios, Don Anxo e os xubilados, debuxados por código ata ter as follas de Oscar.
+   Remedios: sprite e retrato do debuxo de Oscar (tools/sprite-remedios.py). Don Anxo e os xubilados, debuxados por código ata ter as follas de Oscar.
    Martín fala en castelán; os NPC, en galego; a interface, en galego.
    ========================================================== */
 const RE = t => say('Remedios', t);
 const AX = t => say('Don Anxo', t);
 Object.assign(PORTRAIT_COLORS, { 'Remedios': '#9fc2ff', 'Don Anxo': '#e8c89a' });
+Object.assign(PORTRAITS, { 'Remedios': 'img/remedios-face.png' });
 
 /* Quen leva o carbón de Andrés: Xoán (escollido por Oscar o 16-11-2026; as outras opcións eran 'remedios' e 'anxo').
    No Acto 3 só cambia o que responde Remedios na noite. */
@@ -37,7 +38,7 @@ Object.assign(ITEMS, {
   pastillas: { name: 'Pastillas de Don Anxo', icon: ico.pastillas, look: () => MA('Una cajita con una etiqueta a mano: «Anxo C. Unha ao deitarse». Letra de Valerio. Y debajo, más pequeño: «E non te esquezas».', 'pensativo') },
 });
 
-/* ---------- figuras provisionais (Remedios, Don Anxo e os xubilados) ----------
+/* ---------- figuras provisionais (Don Anxo e os xubilados; Remedios xa ten sprite do debuxo de Oscar) ----------
    Debuxo sinxelo por código, de fronte, ata ter as follas de personaxe de Oscar. h = altura en píxeles. */
 function figura(c, x, y, h, o, t, talking) {
   const u = h / 100, ink = '#141010';
@@ -75,7 +76,6 @@ function figura(c, x, y, h, o, t, talking) {
   c.restore();
   c.restore();
 }
-const LOOK_REMEDIOS = { roupa: '#3a5a8c', pernas: '#33507e', zapatos: '#2a2420', pel: '#e8c0a0', pelo: '#c8c8c8', mono: true, gafasSoldar: true, luvas: '#c89a5a', peto: true };
 const LOOK_ANXO = { roupa: '#8a6a4a', pernas: '#6a6a70', zapatos: '#7a2a2a', pel: '#e0b898', gorra: '#4a3a2e', bigote: true, botons: true, encorvado: 3, buscando: () => !flag('anxoPastillas') };
 
 /* ---------- apertura do acto ---------- */
@@ -602,7 +602,7 @@ async function noiteEntrada() {
   await MA('Y yo, propiedad de Renfe. Martín Pardo, maquinista. El de la casa roja de Doctor Casares.', 'avergonzado');
   await RE('O da casa roxa...');
   await RE('Apaga a lanterna do móbil e baixa a voz. Se pasa a patrulla, aquí somos catro vellos limpando unha máquina. E ti, o sobriño.');
-  await MA('(Una mujer con mono azul y gafas de soldar. Un señor mayor con gorra... y zapatillas de cuadros. Y dos más junto al ténder, de espaldas, que hacen como que no existen.)', 'pensativo');
+  await MA('(Una mujer con mono azul, gafas de soldar en la frente... y zapatillas de cuadros. Las del polvo de las cocheras. Un señor mayor con gorra. Y dos más junto al ténder, de espaldas, que hacen como que no existen.)', 'pensativo');
   await MA('(Y la Mikado, encima de la plataforma, con fuego en la caldera. Respirando.)', 'entusiasmado');
   await AX('Remedios... As pastillas. Non as atopo.');
   await RE('Non as baixaches buscar, Anxo. Teimudo. Ti e mais a túa tensión.');
@@ -783,10 +783,10 @@ SCENES.rotondaNoite = {
     { name: 'Rotonda', r: [0, 0, 960, 120], look: () => MA('Las cocheras en abanico, a oscuras. Las otras máquinas duermen. La Mikado, esta noche, no.', 'pensativo') },
   ],
   npcs: [
-    { id: 'remedios', name: 'Remedios', key: true, x: 250, y: 506, w: 60, h: 300, at: [330, 512], face: 'L',
-      draw(c, t, talking, s) { figura(c, this.x, this.y, this.h * s, LOOK_REMEDIOS, t, talking); },
+    { id: 'remedios', name: 'Remedios', key: true, sheet: 'img/remedios-sprite.png', spec: { cw: 160, ch: 280, cols: 8 }, idle: 0, talkFrames: [1, 0],
+      x: 250, y: 506, w: 60, h: 330, at: [330, 512], face: 'L',
       done: () => flag('fimActo3'),
-      look: () => MA('Mono azul, gafas de soldar en la frente y unas manos que han cerrado más costuras que una modista. Aquí manda ella.', 'pensativo'),
+      look: () => MA('Mono azul remangado, gafas de soldar en la frente, gafas de ver debajo y zapatillas de cuadros. Una mano en la cadera y cara de haber visto llegar a muchos listos. Aquí manda ella.', 'pensativo'),
       talk: () => remediosTalk(),
       give: {
         pastillas: () => RE('A min non. A Anxo. Eu as miñas tómoas á hora, coma as persoas.'),
@@ -797,7 +797,7 @@ SCENES.rotondaNoite = {
     { id: 'anxo', name: 'Don Anxo', key: true, x: 720, y: 508, w: 60, h: 290, at: [640, 514], face: 'R',
       draw(c, t, talking, s) { figura(c, this.x, this.y, this.h * s, LOOK_ANXO, t, talking); },
       done: () => flag('anxoPastillas'),
-      look: () => MA(flag('anxoPastillas') ? 'Don Anxo, con su gorra, mirando el fuego de la cabina como quien mira una tele que solo él entiende.' : 'Un señor mayor con gorra y zapatillas de cuadros. Se palpa los bolsillos una y otra vez. Busca algo que no lleva.', 'pensativo'),
+      look: () => MA(flag('anxoPastillas') ? 'Don Anxo, con su gorra, mirando el fuego de la cabina como quien mira una tele que solo él entiende.' : 'Un señor mayor con gorra y zapatillas de andar por casa. Se palpa los bolsillos una y otra vez. Busca algo que no lleva.', 'pensativo'),
       talk: () => anxoTalk(),
       give: {
         pastillas: () => darPastillas(),

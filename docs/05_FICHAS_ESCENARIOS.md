@@ -399,7 +399,7 @@ Hoja «ACTO 3 · A curiosidade. Xoves.» → vestíbulo de la estación tras el 
 
 ### A7b · Rotonda de noche (`rotondaNoite`) · fondo y personajes PROVISIONALES
 - **Fondo:** `img/noite-rotonda.jpg` (la portada de Oscar pasada a noche con `tools/fondos-acto3.py`), con el fuego de la cabina, el humo de la chimenea y un farol de mano animados por código, y la carretilla con carbón.
-- **NPC (dibujados por código hasta tener las hojas de Oscar):** **Remedios** (mono azul, pelo gris recogido, gafas de soldar en la frente), **Don Anxo** (gorra, chaqueta de punto, zapatillas de andar por casa) y dos jubilados de espaldas junto al ténder.
+- **NPC:** **Remedios** con el sprite del dibujo de Oscar (`img/remedios-sprite.png`, ver `02_PERSONAJES`; mono azul remangado, pelo gris recogido, gafas de soldar en la frente y **zapatillas de cuadros**: son las huellas de las cocheras y las que Martín ve salir desde el coche). Dibujados por código hasta tener las hojas de Oscar: **Don Anxo** (gorra, chaqueta de punto, zapatillas de andar por casa) y dos jubilados de espaldas junto al ténder.
 - **Cadena:** Remedios: «Quen anda aí?». Martín se presenta; Remedios: «Apaga a lanterna... se pasa a patrulla, aquí somos catro vellos limpando unha máquina». Anxo se busca las pastillas en los bolsillos (problema). Martín se las da «de parte de Valerio» (solución); si le enseña la nota de 1958, «Hai noites que mellor non lembrar». Si sabe que es el abuelo de Andrés: «Non lle digas que me viches aquí»; Remedios: «O neto non sabe nada». Con Anxo a favor, Remedios habla: Adif se lleva la Mikado en un mes y quieren una última salida. Opciones de Martín: **la rotonda** («¿una caldera encendida en plena rotonda y nadie dice nada?» → «ás once só quedan os gatos e Concha»; de día, «catro vellos con bayetas: mantemento»), pizarra, **la carpintería** de las cocheras («cando entrei no 75 xa estaba alí, todo baixo lonas... nós usámola para amañar as pezas»), carbón y silbato. **Puzzle del inyector** (el que Martín vio en el banco, montado esta noche): vapor a tope (broma), golpe con la llave inglesa (broma) o **primero el agua y luego el vapor poco a poco** (canta). Remedios: les falta un maquinista con licencia. **FIN DO ACTO 3.**
 - **El carbón de Andrés:** se lo lleva **Xoán** (elegido por Oscar el 16-11-2026). Remedios no lo delata: «un amigo que paga» (se descubre en el Acto 5).
 
@@ -408,7 +408,7 @@ Hoja «ACTO 3 · A curiosidade. Xoves.» → vestíbulo de la estación tras el 
 2. **La rotonda de noche con la Mikado encendida, a pie de suelo** (opcional: ahora se usa la portada pasada a noche, vista desde arriba). Fuego en la cabina, humo, un farol de mano en el suelo y sitio abajo para cuatro personajes y Martín.
 3. ~~Interior del coche de viajeros~~: hecho con el dibujo de Oscar del 16-11-2026.
 4. **Vista del balcón del salón** (Oscar, 16-11-2026): hay que reformarla más adelante para que enseñe la rotonda buena (la de la portada, con plataforma giratoria), no una glorieta de tráfico. De momento no se toca.
-5. Hojas de **Remedios** y **Don Anxo**.
+5. Hoja de **Don Anxo** (Remedios ya está; si va a andar en los Actos 4 y 5, faltan sus vistas de espaldas, perfil y andar).
 
 ### Personas reales
 Solo se nombra a Alfredo Fernández Gutiérrez por las iniciales del motor (el motor Siemens y la lista de máquinas de su carpintería son datos reales; que estén guardados en las cocheras del museo es ficción, ver `04`). Nada sobre los compradores de 1952: Martín y Remedios dicen que nadie sabe cómo llegó allí.
