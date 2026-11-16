@@ -924,7 +924,7 @@ async function abrirTaller() {
    · foto de 1949 (obxecto): «Xosé entra en Renfe» → no Acto 3 ensínaselle a Xoán;
    · gravado no piar (co ollo): «X. N. 1949 / 14-I-1958» → código 1401 do candado novo das cocheras (Acto 3);
    · pegadas (co ollo) → trapo con graxa de locomotora: quen entra vén do depósito (Acto 3: a graxa que falta do almacén);
-   · 7.º soporte: tapa de catro parafusos con puntos de soldadura; non se abre neste acto (ábrese no Acto 4 coa piqueta de Remedios).
+   · 7.º soporte: tapa de catro parafusos con puntos de soldadura; non se abre neste acto (ábrese no Acto 4 coas pombas: js/pombas.js).
    A escritura de 1952 (datos reais) e as marcas de pernos quedan como decorado opcional. */
 Object.assign(ico, {
   foto(c) { c.fillStyle = '#e8dcc0'; c.fillRect(8, 10, 32, 28); c.fillStyle = '#6a5a44'; c.fillRect(11, 13, 26, 18); c.fillStyle = '#c8b898'; for (const x of [15, 22, 29]) { c.beginPath(); c.arc(x + 2, 19, 2.5, 0, 7); c.fill(); c.fillRect(x, 22, 5, 8); } },
@@ -1042,7 +1042,7 @@ SCENES.tallerA2 = {
 /* ---------- A6b · O taller vello, mirando arriba (ilustración de Oscar, 16-11-2026) ----------
    Eixo da transmisión, o 7.º soporte (caixa de ferro con tapa de catro parafusos, cada un cun punto de soldadura na cabeza),
    o piar de ladrillo de dous buratos (fan de chanzos), o burato do tellado e un niño (oco para o paxaro NPC futuro).
-   Acto 4 (preparado): piqueta de soldador de Remedios → salta os puntos (puntosPicados) → desaparafusador → lata (soporteAberto). */
+   Acto 4: ábrese coas pombas do taller (js/pombas.js). A piqueta de Remedios queda sen uso (cambio de Oscar do 16-11-2026). */
 Object.assign(ico, {
   piqueta(c) { c.strokeStyle = '#6a4a2a'; c.lineWidth = 5; c.beginPath(); c.moveTo(12, 40); c.lineTo(30, 16); c.stroke(); c.fillStyle = '#8a8f96'; c.save(); c.translate(30, 15); c.rotate(-0.65); c.fillRect(-14, -4, 28, 8); c.beginPath(); c.moveTo(14, -4); c.lineTo(22, 0); c.lineTo(14, 4); c.fill(); c.restore(); },
 });

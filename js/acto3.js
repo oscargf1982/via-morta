@@ -752,7 +752,7 @@ async function inxector() {
 }
 async function fimActo3() {
   setFlag('fimActo3');
-  await showDoc('<h4>FIN DO ACTO 3 · «A curiosidade»</h4><p>Non había pantasma. Había unha soldadora en zapatillas de cuadros, un fogoneiro de noventa e dous anos, dous xubilados de oficinas e unha Mikado que volve respirar no medio da rotonda.</p><p>E alguén que asubía, e que esta noite non veu.</p><p>O Acto 4, «A implicación», chegará nun próximo hito.</p>');
+  await showDoc('<h4>FIN DO ACTO 3 · «A curiosidade»</h4><p>Non había pantasma. Había unha soldadora en zapatillas de cuadros, un fogoneiro de noventa e dous anos, dous xubilados de oficinas e unha Mikado que volve respirar no medio da rotonda.</p><p>E alguén que asubía, e que esta noite non veu.</p><p>E agora, o Acto 4: «A implicación».</p>');
 }
 function pintarCarretilla(c, x, y) {
   c.save(); c.strokeStyle = '#141010'; c.lineWidth = 2;

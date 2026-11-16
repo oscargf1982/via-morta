@@ -101,7 +101,7 @@ async function tirarMillo() {
   pose(MARTIN.pick, 0.6); SFX.noise(0.4, 4200, 0.6, 0.1, 0, 'highpass');
   const nova = POMBA_ONDAS[w];
   if (n === 0) await MA('Un puñado de maíz al suelo, como quien no quiere la cosa...', 'pensativo');
-  else await MA('Otro puñado. A ver si tiene primas.', 'sonriente');
+  else await MA(['', 'Otro puñado. A ver si vienen las primas.', 'Otro puñado. Que corra la voz por los tejados.', 'Un puñado más, generoso. A ver hasta dónde llega esto.'][w], 'sonriente');
   await chegan(n, nova);
   setFlag('pombas', nova);
   if (nova === 1) {
@@ -166,7 +166,7 @@ async function cadeaEstoupido() {
   await sleep(3300);
   setFlag('tapaCaida'); setFlag('soporteAberto'); E.vooT0 = null;
   await MA('...', 'sorprendido');
-  await MA('Tres palomas contra la tapa, una detrás de otra. Y los cuatro puntos de soldadura, que aguantaron setenta años... han saltado.', 'sorprendido');
+  await MA('Tres palomas contra la tapa, una detrás de otra. Y los cuatro puntos de soldadura, que aguantaban desde hace décadas... han saltado.', 'sorprendido');
   await MA('La tapa ha caído al suelo. Y el soporte está abierto.', 'entusiasmado');
   await MA('A ver cómo le explico yo a quien soldase esto que se lo ha abierto una paloma. Bueno, tres.', 'risueno');
   toast('Novo obxectivo: ver que hai dentro do 7.º soporte');
@@ -289,7 +289,7 @@ function pintarVoo(c, t) {
   const cxLook = caixa.look;
   caixa.look = () => flag('tapaCaida') ? MA(flag('lataCollida') ? 'El soporte abierto. Por dentro, ni grasa: solo el hueco cuadrado de una lata.' : 'El soporte, abierto de par en par. Dentro no hay grasa. Hay una lata.', 'pensativo') : cxLook();
   V.hotspots.unshift({ name: 'Lata', key: true, when: () => flag('tapaCaida') && !flag('lataCollida'), done: () => flag('lataCollida'), r: [684, 216, 92, 66],
-    look: () => MA('Una lata de tabaco, al fondo de la caja. Setenta años esperando a que alguien llegase. Ha llegado una paloma. Y luego yo.', 'sorprendido'),
+    look: () => MA('Una lata de tabaco, al fondo de la caja. Sesenta y ocho años esperando a que alguien llegase. Ha llegado una paloma. Y luego yo.', 'sorprendido'),
     act: async () => {
       await MA('Subo por los agujeros del ladrillo, me agarro al eje y meto la mano en la caja...', 'convencido');
       setFlag('lataCollida'); give('lata');
@@ -306,7 +306,7 @@ function pintarVoo(c, t) {
     await abrir();
     if (!A4() || flag('a4Parte')) return;
     setFlag('a4Parte'); setFlag('pombasFora');
-    await MA('Para quien venga a buscar. Pues aquí estoy, Xosé. Setenta años tarde, pero aquí.', 'pensativo');
+    await MA('Para quien venga a buscar. Pues aquí estoy, Xosé. Sesenta y ocho años tarde, pero aquí.', 'pensativo');
     await MA('(Abajo, las palomas mareadas se recuperan y se van por el tejado. Ofendidas.)', 'risueno');
     await showDoc('<h4>ACTO 4 · A implicación</h4><p>Ata aquí chega, de momento, o Acto 4: a tapa do sétimo soporte e o parte de 1958.</p><p>O resto (a válvula de Pepe, o carbón de Andrés e o permiso de Eladio) chegará nun próximo hito.</p>');
   };
@@ -320,7 +320,7 @@ function pintarVoo(c, t) {
 /* ---------- comezo provisional do Acto 4 (só o soporte) ---------- */
 async function inicioActo4Pombas() {
   E.act = 'acto4';
-  await showDoc('<h4>ACTO 4 · «A implicación»</h4><p>Venres.</p><p>Un motor con parafusos novos nas cocheras, alguén que busca algo dentro... e no meu taller, unha caixa que ninguén abriu en setenta anos.</p><p class="sub">Obxectivo: abrir a tapa do sétimo soporte. (Tramo en obras: de momento só esta parte do Acto 4.)</p>');
+  await showDoc('<h4>ACTO 4 · «A implicación»</h4><p>Venres.</p><p>Un motor con parafusos novos nas cocheras, alguén que busca algo dentro... e no meu taller, unha caixa que ninguén abre dende hai décadas.</p><p class="sub">Obxectivo: abrir a tapa do sétimo soporte. (Tramo en obras: de momento só esta parte do Acto 4.)</p>');
   await goScene('casaSalon', [600, 480]);
   await MA('Viernes. Anoche, en las cocheras, el motor de Xosé tenía los tornillos de la tapa nuevos. Alguien lo abre buscando algo.', 'pensativo');
   await MA('Pero si Xosé escondió algo, no lo dejó en un motor que se podía vender. Lo dejó donde no se mueve nada: en el séptimo soporte de mi taller. Con los tornillos soldados.', 'convencido');
