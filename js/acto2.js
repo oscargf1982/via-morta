@@ -192,6 +192,7 @@ async function conchaChaveTaller() {
    Entre a praza da estación e a farmacia: para ir á farmacia pásase antes por aquí. Panadería de ficción.
    Genaro, o panadeiro (folla de Oscar, tools/sprite-genaro.py), vende os pasteis de crema que Valerio pide pola crema de agulletas. */
 async function genaroTalk() {
+  if (flag('estoupido') && flag('milloTrocado') && !flag('genaroDescubre')) { setFlag('genaroDescubre'); await genaroDescubre(); }
   if (!flag('genaroSauda')) {
     await GE('Bo día! Ti es o da casa roxa. Non mo digas: Concha. Pasou ás oito a por unha barra e contoume a túa vida en tres minutos. A barra levouna sen cortar, de tanto que falaba.', 'hablando');
     await MA('En Monforte las noticias llegan antes que el pan.', 'risueno');
@@ -213,7 +214,7 @@ async function genaroTalk() {
       { t: '¿Y el local de al lado, el de «Se vende»?', k: 'sevende' },
       { t: 'Si madrugas tanto... ¿no oyes nada raro de noche?', k: 'asubio' },
       { t: '¿Y tú qué haces cuando no estás amasando?', k: 'xogos' },
-      ...(milloPreciso() && flag('milloVisto') && !hasItem('millo') ? [{ t: '(Despistarlo.) Oye, Genaro... ¿eso que huele no es la broa quemándose?', k: 'despiste' }] : []),
+      ...(milloPreciso() && flag('milloVisto') && !flag('milloTrocado') ? [{ t: '(Despistarlo.) Oye, Genaro... ¿eso que huele no es la broa quemándose?', k: 'despiste' }] : []),
       { t: 'Hasta luego, Genaro.', k: 'adeus' },
     ];
     const k = opts[await choose(opts)].k;
@@ -268,6 +269,20 @@ async function genaroTalk() {
     if (k === 'adeus') { await GE('Vai, e mira por onde pisas: entre as vallas e as tapas, esta rúa é unha carreira de obstáculos.', 'contento'); return; }
   }
 }
+/* idea de Oscar (16-11-2026): despois das pombas, Genaro abriu o saco para moer e atopou serrín. Non sabe quen foi. */
+async function genaroDescubre() {
+  await GE('Martín! Mira isto. Abro o saco para moer a broa de mañá e... serrín. SERRÍN. Eu mercara millo. Ou iso cría.', 'gritando-enfadado');
+  await MA('Vaya. Qué... misterio. ¿Seguro que no te lo vendieron así?', 'avergonzado');
+  await GE('Ao meu provedor coñézoo dende hai trinta anos. Non me vendería serrín nin aínda que lle pagase en madeira.', 'pensativo');
+  await GE('Primeiro un tren pantasma, agora un saco pantasma. Este barrio está enmeigado.', 'preocupado');
+  await MA('(Si se entera de que su maíz ha acabado alimentando a las palomas de mi taller, me hace broa a mí.)', 'avergonzado');
+  E.cuartaT0 = E.t; SFX.music(null);
+  try {
+    await GE4('Ti. Ti sabes algo. Teño olfato para os que platinan: sempre levan nos petos o que non é deles.', 'esceptico');
+    await GE4('Non digo nada. Pero a próxima bolla cóbrocha dobre.', 'guino');
+  } finally { E.cuartaT0 = null; SFX.music(E.scene.music); }
+  await GE('O serrín polo menos ten uso: póñoo no chan cando chove, que entra media Monforte coas botas mollas.', 'resignado');
+}
 /* idea de Oscar (16-11-2026): Genaro rompe a cuarta parede unha vez. Vira a cara ao xogador (cela 6, de fronte)
    e fálalle a el; Martín non se entera. Non bloquea nada. */
 async function genaroCuartaParede() {
@@ -284,34 +299,34 @@ async function genaroCuartaParede() {
   await GE('Cos gatos. Ás catro da mañá fálolles moito. Hoxe adianteime.', 'rascandose');
 }
 /* ---------- o cambiazo do serrín polo millo (idea de Oscar, 16-11-2026) ----------
-   O saco de serrín cóllese na porta de Maderas Somel (rúa da farmacia). Os sacos de millo da broa están ao pé da
-   panadería: con Genaro diante, «iso non se toca». Despístase (a broa queimándose), Genaro entra no forno e Martín
-   cambia un saco por outro. Tempo de Hollywood: Genaro non volve ata que Martín fai algo cos sacos ou sae da rúa.
-   O millo só ten sentido no Acto 4 (as pombas do taller, js/pombas.js); antes, a opción de despistar non sae. Repetible. */
+   Debuxos: folla de sacos de Oscar (assets/obxectos/sacos-hoja-oscar.png → tools/sacos.py → img/sacos/).
+   Os sacos de serrín están diante de Maderas Somel (rúa da farmacia): ao collelos desaparecen. Os sacos de millo en gran
+   están diante da panadería: con Genaro diante, «iso non se toca». Despístase (a broa queimándose), Genaro entra e Martín
+   deixa o serrín no sitio do millo: diante da panadería quedan os sacos de serrín. Tempo de Hollywood: Genaro non volve
+   ata que Martín fai algo cos sacos ou sae da rúa. O millo só ten sentido no Acto 4 (as pombas do taller, js/pombas.js);
+   antes, a opción de despistar non sae. Ao gastar o millo no taller queda o saco baleiro (`sacoBaleiro`, pombas.js).
+   Despois das pombas (marca `estoupido`), diante da panadería está o saco de serrín aberto e Genaro descobre o cambiazo. */
 const milloPreciso = () => flag('pombaVista') || flag('tapaGolpe');
-ico.serrin = c => { c.fillStyle = '#e8dcc0'; c.beginPath(); c.moveTo(12, 14); c.quadraticCurveTo(8, 42, 24, 42); c.quadraticCurveTo(40, 42, 36, 14); c.closePath(); c.fill();
-  c.strokeStyle = '#8a7650'; c.lineWidth = 2; c.stroke(); c.fillStyle = '#c8a870'; for (let i = 0; i < 9; i++) c.fillRect(16 + (i * 7) % 16, 22 + (i * 5) % 16, 3, 2); c.fillStyle = '#8a7650'; c.fillRect(18, 10, 12, 5); };
-if (!ITEMS.serrin) ITEMS.serrin = { name: 'Saco de serrín', icon: ico.serrin,
-  look: () => MA('Un saco de serrín de Maderas Somel. Pesa como un saco de harina y huele a pino. No sé para qué, pero tal vez me resulte útil.', 'pensativo') };
-ico.millo = ico.millo || (c => { c.fillStyle = '#d9c08a'; c.beginPath(); c.moveTo(12, 14); c.quadraticCurveTo(8, 42, 24, 42); c.quadraticCurveTo(40, 42, 36, 14); c.closePath(); c.fill();
-  c.strokeStyle = '#7a5a2a'; c.lineWidth = 2; c.stroke(); c.fillStyle = '#f2c020'; for (let i = 0; i < 9; i++) { c.beginPath(); c.arc(16 + (i * 7) % 16, 22 + (i * 5) % 16, 2, 0, 7); c.fill(); } c.fillStyle = '#7a5a2a'; c.fillRect(18, 10, 12, 5); });
+const SACOS = ['serrin-pila', 'millo-pila', 'serrin-aberto', 'ico-serrin', 'ico-millo', 'ico-baleiro'];
+for (const k of SACOS) img(`img/sacos/${k}.png`);   // precarga: as iconas do inventario debúxanse dunha vez
+const icoImg = src => c => { const i = img(src); if (i) { const k = Math.min(48 / i.naturalWidth, 48 / i.naturalHeight); c.drawImage(i, (48 - i.naturalWidth * k) / 2, (48 - i.naturalHeight * k) / 2, i.naturalWidth * k, i.naturalHeight * k); } };
+ico.serrin = icoImg('img/sacos/ico-serrin.png');
+ico.millo = icoImg('img/sacos/ico-millo.png');
+ico.sacoBaleiro = icoImg('img/sacos/ico-baleiro.png');
+if (!ITEMS.serrin) ITEMS.serrin = { name: 'Sacos de serrín', icon: ico.serrin,
+  look: () => MA('Sacos de serrín de Maderas Somel. Pesan como sacos de harina y huelen a pino. No sé para qué, pero tal vez me resulten útiles.', 'pensativo') };
 if (!ITEMS.millo) ITEMS.millo = { name: 'Saco de millo', icon: ico.millo,
-  look: () => MA('Un saco de maíz en grano de la panadería de Genaro. En su sitio dejé uno de serrín. Mismo peso, mismo saco... distinta broa.', 'avergonzado') };
-function sacoDraw(c, x, y, k, cor, gran) {
-  c.save(); c.translate(x, y); c.scale(k, k);
-  c.fillStyle = 'rgba(0,0,0,0.25)'; c.beginPath(); c.ellipse(0, 0, 20, 5, 0, 0, 7); c.fill();
-  c.fillStyle = cor; c.strokeStyle = '#4a3a22'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(-17, 0); c.quadraticCurveTo(-22, -26, -11, -38); c.lineTo(11, -38); c.quadraticCurveTo(22, -26, 17, 0); c.closePath(); c.fill(); c.stroke();
-  c.beginPath(); c.moveTo(-8, -38); c.lineTo(-5, -45); c.lineTo(5, -45); c.lineTo(8, -38); c.fill(); c.stroke();
-  c.fillStyle = gran; for (let i = 0; i < 6; i++) c.fillRect(-10 + (i * 7) % 18, -30 + (i * 9) % 22, 3, 2);
-  c.restore();
-}
+  look: () => MA('Maíz en grano de la panadería de Genaro. En su sitio dejé el serrín. Mismo peso, mismo saco... distinta broa.', 'avergonzado') };
+// debuxa un dos sacos de Oscar co pé (centro da base) en x, y e un ancho w
+function sacoImg(c, k, x, y, w) { const i = img(`img/sacos/${k}.png`); if (!i) return; const h = w * i.naturalHeight / i.naturalWidth; c.drawImage(i, x - w / 2, y - h, w, h); }
+const sacoPanaderia = () => !flag('milloTrocado') ? 'millo-pila' : flag('estoupido') ? 'serrin-aberto' : 'serrin-pila';
 async function genaroVolve(trocado) {
   await sleep(500); setFlag('genaroDentro', false);
   await GE('Falsa alarma: a broa estaba perfecta. Será o forno da veciña, que esa queima ata a auga.', 'resignado');
   if (!trocado) return;
   await MA('(Ni se ha fijado en los sacos. Bien.)', 'sonriente');
   E.cuartaT0 = E.t; SFX.music(null);
-  try { await GE4('Eu non vin nada. Ti tampouco. Pero este cambiazo vaiche dar un trofeo, xa verás.', 'guino'); }
+  try { await GE4('Eu non vin nada. Ti tampouco. Pero este cambiazo vaiche dar un trofeo, xa verás. E a min un desgusto, cando abra o saco.', 'guino'); }
   finally { E.cuartaT0 = null; SFX.music(E.scene.music); }
 }
 SCENES.panaderia = {
@@ -319,7 +334,7 @@ SCENES.panaderia = {
   walk: [[660, 540], [960, 540], [960, 524], [800, 480], [700, 454], [600, 430], [520, 406], [440, 378], [360, 350], [326, 340], [352, 356], [412, 386], [470, 420], [512, 450], [570, 490]],
   scale: [330, 0.03, 540, 0.58], actorH: 300, start: [452, 386], minSpeed: 0.5,
   onEnter() { setFlag('genaroDentro', false); for (const e of GENARO_EXP) img(`img/genaro/${e}.webp`); },
-  draw(c) { sacoDraw(c, 812, 482, 1, '#d9c08a', '#f2c020'); sacoDraw(c, 846, 486, 1.05, '#d4b880', '#f2c020'); },   // precarga as expresións (24 × ~15 KB)
+  draw(c) { const k = sacoPanaderia(); sacoImg(c, k, 830, 490, k === 'serrin-aberto' ? 70 : 84); },   // precarga as expresións (24 × ~15 KB)
   // cuarta parede: a rúa escurece e Genaro aparece en primeiro plano, de fronte, mirando ao xogador
   drawFront(c, t) {
     if (E.cuartaT0 == null) return;
@@ -338,11 +353,10 @@ SCENES.panaderia = {
       look: () => MA('Por aquí, hacia el sur, la Farmacia de la Estación, la de Valerio. La de la cruz verde de toda la vida.', 'pensativo') },
     { name: 'Praza da Estación', key: true, r: [296, 318, 100, 44], at: [346, 350], face: 'B', exit: ['praza2', [450, 346]], hint: 'U',
       look: () => MA('Al fondo de la calle, la plaza de la estación y el quiosco de Concha. Medio minuto, si no me para nadie. En Monforte siempre te para alguien.', 'pensativo') },
-    { name: 'Sacos de millo', key: true, done: () => hasItem('millo') || !milloPreciso(), r: [788, 432, 80, 58], at: [780, 505], face: 'R',
-      look: () => MA(flag('genaroDentro') ? 'Los sacos de maíz, solos. Genaro está dentro con la broa. Es el momento.' : 'Sacos de maíz en grano, de los gordos, al pie de la panadería. Genaro lo muele él mismo para la broa. Genaro los vigila como si fueran lingotes.', 'pensativo'),
+    { name: 'Sacos de millo', key: true, when: () => !flag('milloTrocado'), done: () => !milloPreciso(), r: [786, 426, 88, 66], at: [780, 505], face: 'R',
+      look: () => MA(flag('genaroDentro') ? 'Los sacos de maíz, solos. Genaro está dentro con la broa. Es el momento.' : 'Sacos de maíz en grano, de los gordos, al pie de la panadería. Genaro lo muele él mismo para la broa y los vigila como si fueran lingotes.', 'pensativo'),
       act: async () => {
         setFlag('milloVisto');
-        if (hasItem('millo')) return MA('Ya tengo uno. Dos sería abusar, y Genaro acabaría haciendo broa de serrín de verdad.', 'avergonzado');
         if (!flag('genaroDentro')) {
           await GE('Eh, eh! Iso non se toca, rapaz. É millo en gran, que moo eu para a broa. Ten máis valor ca o pan que levas na barriga.', 'enfadado');
           return MA(milloPreciso() ? '(Con él delante, imposible. Tendría que entretenerlo un momento... y no dejar un hueco que se note.)' : 'Perdona, perdona. Solo miraba. Tampoco sabría qué hacer con un saco de maíz.', milloPreciso() ? 'pensativo' : 'avergonzado');
@@ -354,9 +368,15 @@ SCENES.panaderia = {
         }
         return cambiazo();
       },
-      use: { serrin: async () => { setFlag('milloVisto'); if (hasItem('millo')) return MA('Ya hice el cambio una vez. Mejor no tentar a la suerte. Ni a Genaro.', 'avergonzado');
+      use: { serrin: async () => { setFlag('milloVisto');
         if (!flag('genaroDentro')) { await GE('Que fas cos meus sacos? Iso non se toca!', 'enfadado'); return MA(milloPreciso() ? '(Con él mirando, no. Primero tengo que mandarlo dentro con alguna excusa.)' : 'Nada, nada. Comparaba sacos. Es una afición.', 'avergonzado'); }
         return cambiazo(); } } },
+    { name: 'Sacos de serrín', when: () => flag('milloTrocado') && !flag('estoupido'), r: [786, 426, 88, 66], at: [780, 505], face: 'R',
+      act: () => MA('No los toco. Cuanto menos los mire, menos se nota. Silbando, Martín. Silbando.', 'avergonzado'),
+      look: () => MA('Mis sacos de serrín, haciéndose pasar por maíz delante de la panadería. Desde aquí, ni Genaro notaría la diferencia. Desde dentro del saco, sí.', 'avergonzado') },
+    { name: 'Saco de serrín aberto', when: () => flag('estoupido'), r: [796, 436, 70, 58], at: [780, 505], face: 'R',
+      act: () => MA('Mejor no acercarme mucho a la escena del crimen. Dicen que el culpable siempre vuelve. Yo ya he vuelto dos veces.', 'avergonzado'),
+      look: () => MA('El saco de serrín, abierto. Genaro ya ha descubierto el pastel. Bueno, la broa.', 'avergonzado') },
     { name: 'Panadería Estación', key: true, r: [724, 318, 70, 150], at: [705, 478], face: 'R',
       act: () => flag('genaroDentro') ? MA('Genaro está dentro, peleándose con el horno. No es momento de pedir bollos.', 'pensativo') : genaroTalk(),
       look: () => MA('La puerta de la panadería, blanca y con cristales empañados de calor. Huele a pan, a azúcar y a madrugón.', 'sonriente') },
@@ -413,7 +433,7 @@ SCENES.calvoSotelo = {
     c.save(); c.globalCompositeOperation = 'lighter'; c.globalAlpha = a; c.shadowColor = '#2aff8a'; c.shadowBlur = 24; c.fillStyle = '#3aff96';
     c.fillRect(426, 186, 30, 76); c.fillRect(408, 208, 66, 30); c.restore();
     // sacos de serrín ao pé do portalón de Maderas Somel (por código: non saen no debuxo)
-    sacoDraw(c, 340, 364, 0.55, '#ece2c8', '#c8a870'); sacoDraw(c, 360, 367, 0.6, '#e4d8bc', '#c8a870');
+    if (!flag('serrinColleito')) sacoImg(c, 'serrin-pila', 348, 374, 50);
   },
   front: [
     { y: 459, r: [694, 300, 22, 160] },   // tronco da árbore de diante
@@ -444,10 +464,10 @@ SCENES.calvoSotelo = {
       } },
       look: () => MA(flag('preservativoColleito') ? 'La máquina azul de la farmacia. La tapa ya cierra regular, por mi culpa. Mejor no quedarme mirándola mucho rato.' : 'Una máquina azul de esas de las farmacias, para cuando están cerradas. Por el dibujo del cartel, vende preservativos. A plena luz del día y a dos metros de la puerta de Valerio. Qué valor.', 'avergonzado') },
     { name: 'Maderas Somel', r: [270, 184, 102, 64], look: () => MA('«Maderas Somel». Un almacén de madera de los de toda la vida, con el pino apilado en el patio. Huele a serrín desde la acera.', 'pensativo') },
-    { name: 'Sacos de serrín', key: true, done: () => hasItem('serrin') || flag('milloTrocado'), r: [326, 324, 50, 46], at: [352, 380], face: 'B',
+    { name: 'Sacos de serrín', key: true, when: () => !flag('serrinColleito'), r: [320, 336, 56, 40], at: [352, 382], face: 'B',
       look: () => MA('Sacos de serrín tirados junto al portalón de Maderas Somel. Los deben de dejar para quien los quiera: para las cuadras, para los gatos...', 'pensativo'),
-      act: async () => { if (hasItem('serrin')) return MA('Ya llevo uno. Con uno ya parezco un serrador de feria.', 'risueno');
-        give('serrin'); await MA('Me llevo uno. Aquí sobran, y tal vez me resulte útil. Uno nunca sabe cuándo va a necesitar un saco de serrín. Bueno, casi nunca.', 'pensativo'); } },
+      act: async () => { setFlag('serrinColleito'); give('serrin');
+        await MA('Me los llevo. Aquí están tirados, y tal vez me resulten útiles. Uno nunca sabe cuándo va a necesitar serrín. Bueno, casi nunca.', 'pensativo'); } },
     { name: 'Portalón verde', r: [286, 248, 40, 118], act: () => MA('No es asunto mío meterme en un almacén ajeno. Además, si piso un tablón, seguro que me cae otro.', 'esceptico'),
       look: () => MA('El portalón verde del almacén, abierto de par en par. Al fondo, tablones apilados como un tren de mercancías parado.', 'pensativo') },
     { name: 'Portal', r: [826, 258, 74, 196], act: () => MA('Es un portal de vecinos. No conozco a nadie aquí. Bueno, en Monforte seguro que sí, pero no sé a quién.', 'dudoso'),
