@@ -23,29 +23,18 @@ Object.assign(ITEMS, {
 /* Valerio e Mega Andrés: sprites das follas de Oscar (tools/sprite-valerio.py e tools/sprite-andres.py). */
 Object.assign(PORTRAITS, { 'Valerio': 'img/valerio-face.png', 'Mega Andrés': 'img/andres-face.png' });
 
-/* ---------- C2 · cinemática do primeiro turno (martes) ----------
-   A Mikado na rotonda e, despois, o exterior das cocheras do Museo do Ferrocarril (ilustración de Oscar,
-   img/bg-cocheras.jpg): a cámara achégase ao candado novo da porta dereita do taller. */
-const ZOOM_MIKADO_ROTONDA = { x: 0.5, y: 0.55, z: 1.5 };
-const ZOOM_CANDADO = { x: 0.766, y: 0.673, z: 2.6 };
+/* ---------- C2 · cinemática da primeira quenda (martes) ----------
+   js/cinematica2.js (CINE2), guion A «Primeira quenda»: a Mikado ao amencer, a xornada diante das cocheras,
+   o carril engraxado e as pegadas, o candado novo da porta dereita e Xoán, que non quere falar del.
+   Pódese saltar (dous toques). Non di de que tipo é o candado. */
 async function primeiroTurno() {
   E.act = 'acto2';
-  await cine('img/portada-rotonda.jpg', [
-    'Martes, 6:40. Primeiro turno no depósito de Monforte.',
-    'Martín: «Café de máquina, un compañero que no habla hasta las ocho... y la Mikado ahí, en su rotonda, mirándome como un perro viejo al que nadie saca a pasear.»',
-  ], ZOOM_MIKADO_ROTONDA);
-  await cine('img/bg-cocheras.jpg', [
-    'Martín: «Al salir paso por delante del museo. La puerta de la derecha, la del taller, lleva años sin abrirse.»',
-    'Martín: «Hoy tiene un candado nuevo. Brillante. De los caros.»',
-    'Martín: «Ni una mota de polvo encima. Y no es de llave nada más: debajo de la cerradura tiene cuatro ruedecitas con números. De combinación.»',
-    'Martín: «Quien lo puso no quería llaves que se pierdan. Ni que se copien.»',
-    'Martín: «Nadie le pone un candado de cuarenta euros a una puerta que no se abre. A no ser que alguien la abra.»',
-    'Martes, 15:10. Fin do turno.',
-  ], ZOOM_CANDADO);
+  SFX.music(null);
+  await CINE2.play();
   setFlag('a2Inicio');
   await goScene('praza');
   await MA('Primer turno superado. Y los gemelos, destrozados: lo de subirme ayer a la silla del Concello me ha dejado las piernas de un señor de ochenta años.', 'frustrado');
-  await MA('Hoy toca saludar a los de siempre. Y para saber dónde anda todo el mundo en Monforte no hace falta GPS: hace falta Concha.', 'sonriente');
+  await MA('Lo del candado nuevo de las cocheras y lo del silbato, me lo apunto. Pero para saber dónde anda todo el mundo en Monforte no hace falta GPS: hace falta Concha.', 'sonriente');
   toast('Novo obxectivo: falar con Concha, no quiosco da praza');
 }
 

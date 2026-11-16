@@ -185,11 +185,12 @@
 ## Acto 2 · «O reencontro» (versión intermedia, elegida por Oscar el 14-11-2026)
 > Código en `js/acto2.js`. Sin Brais ni la Volta do Castelo. Los fondos marcados **provisional** se dibujan por código hasta que lleguen las ilustraciones de Oscar; Valerio y Andrés ya usan los sprites de las hojas de Oscar.
 
-### C2 · Cinemática del primer turno (martes)
-- **Cuándo:** justo después de «FIN DO ACTO 1» y al elegir «Acto 2» en Escoller acto.
-- **Fondo:** primero la Mikado en la rotonda (`img/portada-rotonda.jpg`) y después el **exterior de las cocheras del Museo do Ferrocarril** (`img/bg-cocheras.jpg`, ilustración de Oscar del 15-11-2026), con acercamiento al **candado nuevo de la puerta derecha del taller**. La misma imagen servirá de fondo de A7 en el Acto 3. En el dibujo se ve la cerradura de llave; Martín dice que debajo tiene cuatro ruedecitas con números (de combinación, código 1401 en el Acto 3). Si Oscar quiere, puede añadir las ruedecitas al dibujo.
-- **Texto:** «Martes, 6:40. Primeiro turno no depósito». Martín: la cadena oxidada de siempre y, hoy, un candado nuevo, brillante, «de los caros». «Martes, 15:10. Fin do turno». Al salir se queja de los gemelos (pista de la crema).
-- **Después:** Martín aparece en la praza da Estación (A3). Objetivo: «Saudar aos de sempre. Concha sabe onde anda todo o mundo».
+### C2 · Cinemática del primer turno (martes) · «Primeira quenda»
+- **Cuándo:** justo después de «FIN DO ACTO 1» y al elegir «Acto 2» en Escoller acto. Se salta con dos toques («Saltar ▸»).
+- **Qué es (16-11-2026):** cinemática animada por planos, del mismo tipo que la de inicio, en `js/cinematica2.js` (`CINE2`), sobre el reproductor de `js/cinematica.js`. Unos 69 segundos, 8 planos, con subtítulos. Guion y lista de dibujos en `07_CINEMATICA_ACTO2_GUION.md`. Sustituye a la versión sencilla de dos imágenes.
+- **Fondos:** la rotonda (`img/portada-rotonda.jpg`, pasada a amanecer por código) y la fachada de las cocheras (`img/bg-cocheras.jpg`), con Martín y Xoán como sprites. **Provisionales:** el plano del suelo (carril engrasado y huellas), dibujado por código, y el primer plano del candado, que es una ampliación de la fachada.
+- **Qué cuenta:** martes, 6:40; la Mikado al amanecer; la jornada pasa delante de las cocheras; carril recién engrasado y pisadas ante la puerta derecha; candado nuevo; Xoán lo despacha con «Cousas do museo»; fin de la jornada a las 15:10 y objetivo del acto (ver a los de siempre y averiguar quién silba de noche). **No dice de qué tipo es el candado**: eso se ve al mirarlo en A7.
+- **Después:** Martín aparece en la praza da Estación (A3) y se queja de los gemelos (pista de la crema). Objetivo: hablar con Concha.
 
 ### A3b · Quiosco de Concha (cambios en el Acto 2)
 - Nueva opción «¿Qué se cuenta hoy?»: Valerio preguntó por Martín (Farmacia de la Estación, calle Calvo Sotelo, detrás del quiosco) y Andrés dice que le debe la revancha de natación. Marcas `objValerio`, `objAndres`.
@@ -259,7 +260,7 @@
 - **B4 Concello:** devolver la silla la deja atornillada en el mismo paso (`cadeiraPosta` + `cadeiraDevolta`). Al sellar, Eladio menciona a «un tal Nogal» (`eladioNogal`).
 - **B5 Café:** hotspot nuevo «Desaparafusador» encima de la barra (flag `desapCafe`).
 - **A2 Vestíbulo (Acto 2):** Xoán con charla nueva (`a2XoanSauda`, `xoanCandadoV`).
-- **C2 Cinemática del primer turno:** el candado es de combinación, de cuatro cifras.
+- **C2 Cinemática del primer turno:** el candado es de combinación, de cuatro cifras (desde el 16-11-2026 lo dice Martín al mirar el candado en A7, no la cinemática).
 - **C2 Club Fluvial:** tras la primera derrota se puede elegir «Otra» o «Empate técnico».
 - **Motor:** cuaderno de Martín (`CADERNO`, botón y tecla C) y opción «Modo axuda».
 

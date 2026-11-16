@@ -42,6 +42,7 @@ Abre `index.html` con un servidor local; si lo abres con doble clic, algunos nav
 index.html          interfaz (lienzo, inventario, diálogo, documentos, cinemática, menú, aviso de girar)
 js/engine.js        motor: escenas, caminos A*, capas, ollo, bocadillos, inventario, diálogos, sonido, menú, guardado
 js/cinematica.js   cinemática de inicio «Dous longos e un curto» (dibujada por código; CINE.frame(t) para capturas)
+js/cinematica2.js  cinemática de inicio del Acto 2 «Primeira quenda» (CINE2.frame(t) para capturas; usa las herramientas de cinematica.js)
 js/data.js          común: retratos, objetos, demo de la Casa Juana, selector de actos (ACTS) y créditos
 js/acto1.js         Acto 1: andén, vestíbulo, plaza y mapa de Monforte
 tools/fondos.py     genera el mapa provisional (python3 tools/fondos.py)
