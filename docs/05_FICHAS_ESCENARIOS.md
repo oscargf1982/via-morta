@@ -106,7 +106,8 @@
 
 ## A5 · Casa Juana, salón comedor (`casaSalon`)
 - **Fondo:** `img/bg-casa-salon.jpg`, ilustración de Oscar. Salón comedor amueblado, de alquiler: sofá rinconera gris con cojines, mesitas, aparador de madera tallada con una planta, dos cuadros de paisaje, mesa de comedor con seis sillas y lámparas colgantes. A la izquierda una ventana; a la derecha, puertas balconeras que dan a la gasolinera, la iglesia de la estación y el colegio ferroviario.
-- **Llegada:** desde la puerta de la Casa Juana (A4) con llaves y contrato. La primera vez Martín abre, entra y comenta la casa; después, una pista: «explora a casa, a cociña está á dereita».
+- **Llegada:** desde la puerta de la Casa Juana (A4) con las llaves, con o sin contrato. La primera vez Martín abre, entra y comenta la casa, y en seguida dice lo que quiere: **una ducha** (pedido por Oscar, 16-11-2026: diez horas de tren, «huelo a jabalí»), a ver si hay agua caliente. Salta solo al entrar, sin pulsar nada. Pista: «Novo obxectivo: proba a billa da cociña (á dereita)» y el cuaderno: «Ducharme. A ver si hay agua caliente: el grifo de la cocina».
+- **Sin ducha no hay nada más (pedido por Oscar, 16-11-2026).** Antes de probar el grifo, Martín no sale a la calle, no mira el balcón ni se acuesta: «primero la ducha». Después, mientras no haya agua, solo hace lo que lleva al agua (firmar el contrato y el Concello, y lo que piden por el camino: periódico, bolígrafo, reloj del café, silla, destornillador del cajón). Se niega a lo que no lleva al agua: el balcón, el patio y su muro, la rendija del taller y dormir. Mirar sigue funcionando siempre. Nunca hay callejón: la cocina queda siempre a mano y, con el grifo probado, la calle también. Con el alta del agua (`aguaAlta`) vuelve todo: «la ducha, mañana».
 - **Suelo:** la tarima. Obstáculos: el sofá, las mesitas y la mesa con las sillas (Martín pasa por delante).
 - **Salidas:**
   - Derecha → cocina (A5b).
@@ -122,8 +123,8 @@
 - **Fondo:** `img/bg-casa-cocina.jpg`, ilustración de Oscar. Cocina reformada: muebles crema, encimera de madera, azulejos hidráulicos, placa, horno, microondas, fregadero, lavavajillas, tabla de cortar, nevera e isla con frutero y taburete. Puerta balconera a la izquierda: se ven el supermercado de enfrente y, en lo alto del monte, la Torre del Homenaje de Monforte.
 - **Llegada:** desde el salón (A5), salida derecha.
 - **Suelo:** la tarima entre la isla y los muebles. Obstáculos: la isla y el taburete quedan fuera del suelo.
-- **Salidas:** puerta de la pared derecha → salón (A5).
-- **Hotspots:** grifo (clave: **no sale agua**; Martín deduce que hay que dar de alta el agua en el Concello con el contrato, que llegará en M2; marca `sinAgua`), balcón, Torre del Homenaje, supermercado, nevera, frutero, isla, taburete, placa, horno, microondas, tabla de cortar, lavavajillas, azulejos, armarios.
+- **Salidas:** puerta de la pared derecha → salón (A5). Abajo, la puerta de atrás → patio (A5c): sin agua, Martín no sale al patio («el patio, después de la ducha»).
+- **Hotspots:** grifo (clave: **no sale agua**. Martín viene a por agua caliente para la ducha; abre, nada, y bromea: «Ni que esto fuera una corredoira de aldea». Dice que no piensa hacer nada más hasta ducharse y deduce que el agua se da de alta en el Concello, con el contrato firmado; marca `sinAgua`), balcón, Torre del Homenaje, supermercado, nevera, frutero, isla, taburete, placa, horno, microondas, tabla de cortar, lavavajillas, azulejos, armarios.
 - **Personas reales:** ninguna. La Torre del Homenaje solo se nombra y se ve.
 
 ## A5c · Casa Juana, patio trasero (`casaPatio`)
