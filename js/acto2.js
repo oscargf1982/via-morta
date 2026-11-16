@@ -39,6 +39,23 @@ async function primeiroTurno() {
   toast('Novo obxectivo: falar con Concha, no quiosco da praza');
 }
 
+/* ---------- a mañá do martes (cambio 2 da 3.ª revisión Gilbert) ----------
+   Entre a cinemática do final do Acto 1 e a do primeiro turno, un respiro xogable: Martín esperta no salón
+   e é o xogador quen sae á rúa. A porta lanza «Primeira quenda». */
+async function espertarMartes() {
+  E.act = 'acto2';
+  await goScene('casaSalon', [170, 492]);
+  E.fadeTo = 0;
+  await MA('Martes, seis de la mañana. He dormido cuatro horas, y tres eran de silbato.', 'esceptico');
+  await MA('Primer turno en el depósito. Y hoy, Xoán: él sabrá quién silba así. O conocerá a alguien que lo sepa.', 'pensativo');
+  toast('Novo obxectivo: primeiro turno no depósito (sae á rúa pola porta de abaixo)');
+}
+{
+  const S = SCENES.casaSalon.hotspots.find(h => h.name === 'Saír á rúa'), actA1 = S.act, lookA1 = S.look;
+  S.act = () => flag('fimActo1') && !flag('a2Inicio') ? primeiroTurno() : actA1();
+  S.look = () => flag('fimActo1') && !flag('a2Inicio') ? MA('La puerta de la calle. Detrás, el primer turno. Delante, un hombre que ha dormido cuatro horas.', 'esceptico') : lookA1();
+}
+
 /* ---------- A3b · Concha no Acto 2 ---------- */
 async function conchaActo2() {
   if (!flag('a2ConchaSauda')) {
@@ -874,7 +891,8 @@ SCENES.vigasA2 = {
 {
   const A2 = () => flag('fimActo1') && !flag('fimActo2');
   CADERNO.push(
-    { when: () => A2() && !flag('objValerio'), t: 'Hablar con Concha, en el quiosco: ella sabe dónde anda todo el mundo. (Y Xoán, en la estación, quizá sepa quién silba.)' },
+    { when: () => A2() && !flag('a2Inicio'), t: 'Primer turno en el depósito. Salir a la calle por la puerta de abajo del salón.' },
+    { when: () => A2() && flag('a2Inicio') && !flag('objValerio'), t: 'Hablar con Concha, en el quiosco: ella sabe dónde anda todo el mundo. (Y Xoán, en la estación, quizá sepa quién silba.)' },
     { when: () => A2() && flag('objValerio') && !flag('valerioFeito'), t: () => flag('valerioDoce') ? (hasItem('ositos') ? 'Darle los ositos a Valerio, en la Farmacia de la Estación (calle Calvo Sotelo). Su «peaje» por la crema.' : 'Valerio no suelta la crema sin algo dulce. Ositos de goma, en el quiosco de Concha.') : 'Pasar por la Farmacia de la Estación, la de Valerio: calle Calvo Sotelo, saliendo de la plaza por detrás del quiosco de Concha.' },
     { when: () => A2() && flag('objAndres') && !flag('andresFeito'), t: () => 'La revancha de natación con Mega Andrés, en el Club Fluvial (en el mapa).' + (!hasItem('crema') && !flag('cremaPosta') ? ' Antes, algo para estos gemelos.' : '') },
     { when: () => A2() && flag('avisoChampions') && !flag('champions') && (!flag('faltanPilas') || flag('teleAcesa')), t: 'Champions en la Fraternal, con el tío Demetrio. Hay cosas que no se negocian.' },

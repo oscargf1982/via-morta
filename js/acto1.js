@@ -785,9 +785,7 @@ async function noiteActo1() {
   SFX.music(null);
   await CINEF1.play();   // js/cinematica1fin.js: «O asubío ten enderezo»; remata co rótulo de fin de acto
   setFlag('fimActo1');
-  E.fadeTo = 0; await sleep(400);
-  await MA('Mañana, Xoán. Él sabrá quién silba así. O conocerá a alguien que lo sepa.', 'pensativo');
-  await primeiroTurno();   // segue o Acto 2 (js/acto2.js)
+  await espertarMartes();   // a mañá do martes, xogable, e despois a cinemática do turno (js/acto2.js)
 }
 async function estanciaPechada(linea, mood) { await MA(linea, mood || 'pensativo'); toast('Estancia en construción · chega nun próximo hito'); }
 
