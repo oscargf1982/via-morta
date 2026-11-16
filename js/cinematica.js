@@ -615,6 +615,24 @@ const CINE = (() => {
   /* para probas: debuxa o fotograma do segundo t, sen son */
   async function frame(t, F = MAIN) { mount(); el.style.opacity = 1; el.hidden = false; await prepare(); if (F !== MAIN) await F.prepare(); drawFrame(t, F); }
   /* caixa de ferramentas para as cinemáticas doutros actos */
-  const kit = { W, H, OUT, MONO, TAU, clamp, lerp, ss, ease, R, poly, rrect, disc, line, glow, puff, fogBand, rain, vignette, cam, typed, load, bakeNight, WHP };
+  /* subtítulos para as películas con diálogo: SUBS = [[plano, inicio, fin (segundos de guion), quen, texto], ...] */
+  function wrap(c, txt, max) { const out = []; let ln = ''; for (const w of txt.split(' ')) { const tr = ln ? ln + ' ' + w : w; if (c.measureText(tr).width > max && ln) { out.push(ln); ln = w; } else ln = tr; } out.push(ln); return out; }
+  function subtitles(SUBS, T, K, WHO) {
+    return (c, t) => {
+      for (const [sh, a, b, who, txt] of SUBS) {
+        const t0 = T[sh] + a * K, t1 = T[sh] + b * K; if (t < t0 || t > t1) continue;
+        const al = Math.min(clamp((t - t0) / 0.2), clamp((t1 - t) / 0.2));
+        c.globalAlpha = al; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.font = '700 27px "Trebuchet MS", Verdana, sans-serif';
+        const ls = wrap(c, txt, 820), lh = 34, y0 = H - 52 - (ls.length - 1) * lh;
+        let bw = 0; for (const l of ls) bw = Math.max(bw, c.measureText(l).width);
+        rrect(c, W / 2 - bw / 2 - 22, y0 - 62, bw + 44, ls.length * lh + 46, 12, 'rgba(8,10,16,.72)');
+        c.font = '700 17px "Trebuchet MS", Verdana, sans-serif'; c.fillStyle = WHO[who] || '#fff'; c.fillText(who.toUpperCase(), W / 2, y0 - 38);
+        c.font = '700 27px "Trebuchet MS", Verdana, sans-serif'; c.lineJoin = 'round'; c.lineWidth = 5; c.strokeStyle = 'rgba(0,0,0,.85)'; c.fillStyle = '#fff';
+        ls.forEach((l, i) => { c.strokeText(l, W / 2, y0 - 6 + i * lh); c.fillText(l, W / 2, y0 - 6 + i * lh); });
+        c.globalAlpha = 1;
+      }
+    };
+  }
+  const kit = { subtitles, W, H, OUT, MONO, TAU, clamp, lerp, ss, ease, R, poly, rrect, disc, line, glow, puff, fogBand, rain, vignette, cam, typed, load, bakeNight, WHP };
   return { play, frame, T, kit, get playing() { return playing; } };
 })();
