@@ -735,7 +735,8 @@ async function cadernoMartin() {
   await MA('Un aprendiz que se hizo maquinista. Una fecha. Grasa del depósito. Y un silbato que llama a esta casa.', 'pensativo');
   await MA('Mañana, Xoán. Él se sabe todas las fechas de Monforte. A ver si se sabe esta.', 'dudoso');
   setFlag('fimActo2');
-  await showDoc('<h4>FIN DO ACTO 2 · «O reencontro»</h4><p>Valerio, Andrés, a Champions con Demetrio... e un taller que alguén visita sen chave, cun nome a medias e unha data gravada no piar.</p><p>O Acto 3, «A curiosidade», chegará nun próximo hito.</p>');
+  await showDoc('<h4>FIN DO ACTO 2 · «O reencontro»</h4><p>Valerio, Andrés, a Champions con Demetrio... e un taller que alguén visita sen chave, cun nome a medias e unha data gravada no piar.</p>');
+  if (typeof inicioActo3 === 'function') await inicioActo3();   // js/acto3.js
 }
 SCENES.tallerA2 = {
   // interior do taller: ilustración de Oscar (15-11-2026). Caixón á esquerda, pegadas cara ao fondo, piar de ladrillo co trapo ao pé,
@@ -902,6 +903,5 @@ SCENES.vigasA2 = {
     { when: () => A2() && flag('silbato2') && !hasItem('chave') && !flag('tallerAberto'), t: () => flag('chaveNovidade') ? 'La llave del taller: Concha quiere una noticia que no sepa nadie. ¿Qué me han contado a mí y a nadie más?' : 'La llave del taller: la tiene Concha. Quiere un detalle.' },
     { when: () => A2() && hasItem('chave') && !flag('tallerAberto'), t: 'Abrir el taller, al fondo del patio de casa.' },
     { when: () => A2() && flag('tallerAberto'), t: () => `Revisar el taller con calma. Con el OLLO se ve lo que se escapa, y las vigas de arriba también cuentan. Pistas: ${PISTAS_TALLER.filter(flag).length} de ${PISTAS_TALLER.length}.` },
-    { when: () => flag('fimActo2'), t: 'Preguntarle a Xoán quién era Xosé N. Y probar ese candado nuevo de las cocheras. (Acto 3, próximamente.)' },
   );
 }
