@@ -214,6 +214,7 @@ async function genaroTalk() {
       { t: '¿Y el local de al lado, el de «Se vende»?', k: 'sevende' },
       { t: 'Si madrugas tanto... ¿no oyes nada raro de noche?', k: 'asubio' },
       { t: '¿Y tú qué haces cuando no estás amasando?', k: 'xogos' },
+      ...(flag('genaroCuarta') ? [{ t: flag('genaroDispositivo') ? '¿Otra vez hablando con los gatos?' : 'Antes hablabas con alguien... ¿con los gatos?', k: 'dispositivo' }] : []),
       ...(milloAlcance() && flag('milloVisto') && !flag('milloTrocado') && hasItem('trapo') ? [{ t: '(Despistarlo.) Genaro, ¿me sujetas este trapo un segundo?', k: 'despiste' }] : []),
       { t: 'Hasta luego, Genaro.', k: 'adeus' },
     ];
@@ -260,6 +261,7 @@ async function genaroTalk() {
       await MA('Un panadero que platina la vida. Me lo apunto en el cuaderno. Literalmente.', 'risueno');
       if (!flag('genaroCuarta')) { setFlag('genaroCuarta'); await genaroCuartaParede(); }
     }
+    if (k === 'dispositivo') await genaroDispositivo();   // js/dispositivo.js (Oscar, 17-11-2026)
     if (k === 'despiste') return genaroTrapo();
     if (k === 'adeus') { await GE('Vai, e mira por onde pisas: entre as vallas e as tapas, esta rúa é unha carreira de obstáculos.', 'contento'); return; }
   }
