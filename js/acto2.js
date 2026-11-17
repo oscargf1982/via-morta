@@ -802,7 +802,12 @@ function comprobarChampions() {
 Object.assign(ico, {
   pilas(c) { for (const [x, r] of [[14, -0.2], [26, 0.15]]) { c.save(); c.translate(x + 4, 25); c.rotate(r); c.fillStyle = '#2a2a2e'; c.fillRect(-5, -14, 10, 28); c.fillStyle = '#d9a032'; c.fillRect(-5, -14, 10, 9); c.fillStyle = '#ccc'; c.fillRect(-2, -17, 4, 3); c.restore(); } },
 });
+Object.assign(ico, {
+  xornal1958(c) { c.fillStyle = '#d9c99a'; c.beginPath(); c.moveTo(8, 10); c.lineTo(40, 10); c.lineTo(40, 32); c.lineTo(34, 36); c.lineTo(28, 31); c.lineTo(20, 38); c.lineTo(14, 33); c.lineTo(8, 37); c.closePath(); c.fill();
+    c.fillStyle = '#3a2f22'; c.fillRect(11, 13, 26, 4); c.fillStyle = '#8a7a58'; for (let i = 0; i < 3; i++) { c.fillRect(11, 20 + i * 4, 12, 2); c.fillRect(26, 20 + i * 4, 11, 2); } c.fillStyle = 'rgba(90,70,40,.35)'; c.fillRect(23.5, 10, 1, 26); },
+});
 Object.assign(ITEMS, {
+  xornal1958: { name: 'Recorte de 1958', icon: ico.xornal1958, look: () => lerXornal1958() },
   pilas: { name: 'Pilas gastadas', icon: ico.pilas, look: () => MA('Dos pilas del cajón de las gastadas. Si las froto un poco con las manos, siempre les queda energía para un par de clics. No lo dice ningún manual. Lo dice cualquier maquinista.', 'risueno') },
 });
 async function championsNoite() {
@@ -814,7 +819,7 @@ async function championsNoite() {
   await XO('Foi en mércores, Demetrio. E chovía. Catorce de marzo, minuto oitenta e un, de cabeza e de rebote.');
   await DA('De rebote?! Cinco euros a que non!');
   await XO('Está na acta do partido. Teño copia.');
-  await MA('(¿Copia del acta de un partido de Tercera de hace treinta años? Este hombre no tiene memoria: tiene archivo.)', 'pensativo');
+  await MA('(¿Copia del acta de un partido de Tercera de hace cuarenta años? Este hombre no tiene memoria: tiene archivo.)', 'pensativo');
   await RO('Xoán ten copia de todo. Ata das miñas notas do colexio. Por iso non o deixo entrar na casa.');
   await DA('E mentres, o partido empezando e nós mirando unha tele apagada. Coma na posguerra, pero sen radio.');
   await MA('Pilas... Alguna habrá en este bar. Aunque sea gastada: si las frotas un poco con las manos, siempre les queda energía para un par de clics. Ciencia de maquinista.', 'pensativo');
@@ -828,6 +833,38 @@ async function acenderTele() {
   await DA('Acendeu! Martín, es un mago! Un mago con pilas mortas!');
   await XO('Dous clics, dixo. Non cambies de canle, Demetrio. Por favor.');
   await MA('Ciencia de maquinista. Y ahora, que nadie toque el mando.', 'orgulloso');
+  await noiteUnited();
+}
+/* A noite do United (pedido por Oscar, 17-11-2026). Real: o 14-I-1958 (martes) o Manchester United gañou 2-1 ao Estrela
+   Vermella en Old Trafford, ida de cuartos da Copa de Europa; o 6-II-1958, á volta de Belgrado, o accidente de Múnich.
+   Ficción: Demetrio de neno na Fraternal co seu pai, a radio, o «presaxio» e o recorte de «El Eco del Cabe» (inventado). */
+async function noiteUnited() {
+  await DA('Mira quen xoga: o Manchester United. O United...');
+  await DA('Sabes que eu vivín un partido do United aquí dentro? Catorce de xaneiro do cincuenta e oito. Un martes, coma hoxe. Eu tiña sete anos.');
+  await DA('Co meu pai, nesta mesma barra. Daquela en Monforte non había tele: había unha radio enriba do mostrador e corenta homes calados coma na misa.');
+  await DA('O United contra o Estrela Vermella de Belgrado, ida dos cuartos da Copa de Europa. Dous a un. Os «Busby Babes», chamábanlles: uns rapaces.');
+  await DA('E á volta, en febreiro, o avión. Múnich. Oito daqueles rapaces non volveron á casa.');
+  await MA('Lo de Múnich lo sé. Lo que no sabía es que lo viviste aquí, con tu padre.', 'pensativo');
+  await DA('O meu pai sempre dixo que aquel partido foi un presaxio. Porque esa mesma noite, aquí en Monforte, á hora do partido, pasou unha cousa que...');
+  await XO('Demetrio. O partido. Que xa marcaron.');
+  await DA('Xa?! Quen?! Ves? Por andar contando batallas.');
+  await MA('(Nadie ha marcado. Y Xoán no ha despegado los ojos de la tele. Esa misma noche, en Monforte, pasó algo. Catorce de enero de mil novecientos cincuenta y ocho.)', 'pensativo');
+  setFlag('demetrio1958');
+  await sleep(500);
+  await DA('(baixiño) Ti non lle fagas caso a Xoán, que se pon raro con ese ano. Toma: o meu pai gardou a páxina do xornal do día seguinte.');
+  await DA('(baixiño) Lévoa na carteira dende neno. Está rota por abaixo, xusto onde vén o de aquí. Eu xa a sei de memoria; a ti fáiche máis falta.');
+  give('xornal1958');
+  await MA('Un recorte de 1958, doblado en cuatro. Lo leeré con calma. Lejos de Xoán.', 'dudoso');
+  toast('Pista: o recorte de 1958 está no inventario. Tócao para lelo');
+}
+async function lerXornal1958() {
+  await showDoc(`<h4>EL ECO DEL CABE</h4><p class="sub">Monforte de Lemos · miércoles, 15 de enero de 1958 · página 4</p>
+<p><b>FÚTBOL · COPA DE EUROPA.</b> El Manchester United vence al Estrella Roja de Belgrado (2-1). Los jóvenes de Matt Busby ganaron anoche en Old Trafford la ida de los cuartos de final. La vuelta se jugará en Belgrado.</p>
+<p><b>MONFORTE · SOBRESALTO EN LA ESTACIÓN.</b> A las nueve y media de la noche, mientras en el andén 1 aguardaba el tren de los emigrantes, un tren de mercancías entró en la estación a una velocidad impropia. Fue desviado a…</p>
+<p class="sub">[aquí la página está rota]</p>
+<p>…sin que haya que lamentar víctimas. La Red Nacional atribuye lo ocurrido a un error del maqui…</p>
+<p class="sub">[el resto falta]</p>`);
+  if (!flag('xornal1958Lido')) { setFlag('xornal1958Lido'); await MA('Un mercancías sin control y un tren lleno de emigrantes esperando. Y justo donde lo explica, la página se rompe. «Un error del maqui...» ¿Del maquinista? ¿De qué maquinista?', 'sorprendido'); }
 }
 async function xoanChampions() {
   for (;;) {
@@ -920,7 +957,7 @@ SCENES.fraternalNoite = {
     { name: 'Tele', key: true, done: () => flag('teleAcesa'), r: [724, 76, 70, 50],
       act: () => flag('teleAcesa') ? MA('Ni la toco. Dos clics, dijo Xoán. Uno ya lo hemos gastado.', 'risueno') : hasItem('pilas') ? acenderTele() : MA('Sin mando no hay tele, y sin pilas no hay mando. Demetrio dijo dónde acabaron las últimas pilas del bar. Y ese sitio no está dando la hora.', 'pensativo'),
       use: { pilas: () => acenderTele() },
-      look: () => flag('teleAcesa') ? MA('Champions. Corre uno, se cae otro, el árbitro pita algo que nadie entiende. Lo mismo que en la Tercera de Demetrio, pero con mejor césped.', 'risueno') : MA('La tele, apagada. Negra como la carbonilla. Y Demetrio mirándola igual, por si acaso.', 'esceptico') },
+      look: () => flag('demetrio1958') ? MA('El United. Para Demetrio no es un equipo: es una fecha. Y para Xoán, por lo visto, también.', 'pensativo') : flag('teleAcesa') ? MA('Champions. Corre uno, se cae otro, el árbitro pita algo que nadie entiende. Lo mismo que en la Tercera de Demetrio, pero con mejor césped.', 'risueno') : MA('La tele, apagada. Negra como la carbonilla. Y Demetrio mirándola igual, por si acaso.', 'esceptico') },
   ],
   npcs: [
     { ...SCENES.fraternal.npcs[0], done: () => true, talk: async () => { await RO('Shhh, que xa empezou. E que tal a casa? Xa tes auga?'); await MA('Agua, luz y un silbato de regalo.', 'esceptico'); await RO('Iso non vén no contrato. Non me fago responsable.'); } },
@@ -1056,6 +1093,7 @@ async function cadernoMartin() {
   await showDoc(`<h4>Cuaderno de Martín · miércoles</h4><p class="sub">Lo que sé</p>
 <p>1949: Xosé N. aprendía el oficio en esta carpintería. Luego entró en Renfe.</p>
 <p>Alguien grabó en el pilar «X. N. 1949» y, debajo, con la misma letra pero temblando, «14-I-1958». El 14 de enero de 1958 pasó algo. Y tiene que ver con él.</p>
+${flag('demetrio1958') ? '<p>Esa noche, la del United en la radio de la Fraternal, un mercancías entró sin control en la estación mientras esperaba el tren de los emigrantes. El recorte de Demetrio se rompe justo en «un error del maqui…». Y Xoán no dejó a Demetrio terminar.</p>' : ''}
 <p>Alguien entra aquí sin llave, por la ventana del fondo, y va siempre al séptimo soporte. Se dejó un trapo con grasa de locomotora: viene del depósito.</p>
 <p>El séptimo soporte tiene los cuatro tornillos de la tapa soldados. Los otros seis se abren con la mano. Ahí dentro hay algo.</p>
 <p>Y alguien silba, dos largos y uno corto, para que yo lo oiga.</p>
@@ -1106,7 +1144,8 @@ SCENES.tallerA2 = {
         await MA('Debajo de donde estaba la foto, algo grabado a navaja en el ladrillo. Hay que acercarse mucho...', 'pensativo');
         await showDoc('<h4>Gravado a navalla no piar</h4><p style="font-size:22px;text-align:center">X. N. 1949</p><p style="font-size:22px;text-align:center;font-style:italic">14-I-1958</p><p class="sub">A mesma letra nas dúas liñas. A segunda, máis tremente, coma feita á présa.</p>');
         await MA('«X. N.», como el aprendiz de la foto. Y debajo, la misma letra, pero temblando: catorce de enero de mil novecientos cincuenta y ocho.', 'sorprendido');
-        await MA('Esa fecha... Ese invierno pasó algo en el depósito. No sé qué. Pero alguien quiso dejarlo escrito donde no lo borrase nadie.', 'dudoso');
+        if (flag('demetrio1958')) await MA('El catorce de enero del cincuenta y ocho. ¡La noche del United de Demetrio! La del mercancías del recorte, el que entró sin control mientras esperaban los emigrantes. Alguien quiso dejarlo escrito donde no lo borrase nadie.', 'sorprendido');
+        else await MA('Esa fecha... Ese invierno pasó algo en el depósito. No sé qué. Pero alguien quiso dejarlo escrito donde no lo borrase nadie.', 'dudoso');
         await MA('Catorce, uno... (¿Por qué me suena a cuatro ruedecitas con números?)', 'pensativo');
         await pistaTaller('pistaData');
       } },
@@ -1314,6 +1353,7 @@ SCENES.vigasA2 = {
   const A2 = () => flag('fimActo1') && !flag('fimActo2');
   CADERNO.push(
     { when: () => A2() && !flag('a2Inicio'), t: 'Primer turno en el depósito. Salir a la calle por la puerta de abajo del salón.' },
+    { when: () => A2() && flag('demetrio1958') && !flag('pistaData'), t: () => (flag('xornal1958Lido') ? '' : 'Leer el recorte de 1958 que me dio Demetrio (en el inventario). ') + 'El 14 de enero de 1958, la noche del United, pasó algo en Monforte. Demetrio iba a contarlo y Xoán le cortó.' },
     { when: () => A2() && flag('a2Inicio') && !flag('objValerio'), t: 'Hablar con Concha, en el quiosco: ella sabe dónde anda todo el mundo. (Y Xoán, en la estación, quizá sepa quién silba.)' },
     { when: () => A2() && flag('objValerio') && !flag('valerioFeito'), t: () => flag('valerioDoce') ? (hasItem('pasteis') ? 'Darle los pasteles a Valerio, en la Farmacia de la Estación (calle Calvo Sotelo). Su «peaje» por la crema.' : 'Valerio no suelta la crema sin tres pasteles de crema. Se compran en la Panadería Estación, la de Genaro, camino de la farmacia.') : 'Pasar por la Farmacia de la Estación, la de Valerio: calle Calvo Sotelo arriba, pasada la panadería, saliendo de la plaza por detrás del quiosco de Concha.' },
     { when: () => A2() && flag('objAndres') && !flag('andresFeito'), t: () => 'La revancha de natación con Mega Andrés, en el Club Fluvial (en el mapa).' + (!hasItem('crema') && !flag('cremaPosta') ? ' Antes, algo para estos gemelos.' : '') },
