@@ -42,7 +42,7 @@ SCENES.salonEpilogo = {
     ...SCENES.salon.hotspots.filter(h => !h.exit && !h.use),
     { name: 'Sobre', key: true, when: () => flag('presSobre'), r: [570, 244, 70, 38], at: [600, 470], face: 'B',
       look: () => MA('«Expediente n.º 2. Confidencial.» Lacrado. Con el logo de Renfe y una vía que se acaba.', 'pensativo'),
-      act: () => MA(flag('presAcepta') ? 'Lo abro en el tren. Como los maquinistas de verdad: con un café de máquina y sin prisa.' : 'Aún no. Si lo abro, ya he dicho que sí. Y lo sé. Y él lo sabe.', 'risueno') },
+      act: () => MA('Aún no. Si lo abro, ya he dicho que sí. Y lo sé. Y él lo sabe.', 'risueno') },
   ],
   npcs: [
     { id: 'presidente', name: PRES, key: true, sheet: 'img/presidente-sprite.png', spec: { cw: 160, ch: 280, cols: 8 }, idle: 0, talkFrames: [1, 0], anims: {},
@@ -89,22 +89,12 @@ async function visitaPresidente() {
     await MA('Acabo de decirle a mi madre que me quedo en Monforte.', 'pensativo');
     await PR('Mellor aínda. Monforte foi nó ferroviario cen anos. A sede pode estar aquí, na Casa Juana, se ma alugas.', 'sonriente');
   }
-  const k = await choose([
-    { t: 'Acepto. ¿Cuál es la primera misión?' },
-    { t: '¿Y si digo que no?' },
-    { t: 'Déjeme pensarlo. Con un caldo delante.' },
-  ]);
-  if (k === 0) {
-    setFlag('presAcepta');
-    await PR('Sabía que dirías iso. Está todo neste sobre.', 'sonriente');
-  } else if (k === 1) {
-    presPose('cruzado');
-    await PR('Entón deixareiche isto enriba da mesa. Por se cambias de idea.', 'esceptico');
-    await MA('(No voy a cambiar de idea.) (Ya he cambiado de idea.)', 'avergonzado');
-    presPose();
-  } else {
-    await PR('O caldo de Vilatán? Ese tamén chegou ao meu despacho. Pensa canto queiras: o sobre queda aquí.', 'sonriente');
-  }
+  // Martín non contesta (decisión de Oscar, 21-11-2026): o presidente deixa o sobre e marcha
+  await MA('...', 'pensativo');
+  presPose('pensando');
+  await PR('Non me contestes agora. Os bos maquinistas non arrancan sen mirar o manómetro.', 'sonriente');
+  presPose();
+  await PR('Déixoche isto enriba da mesa.', 'neutro');
   setFlag('presSobre'); SFX.tone(220, 0.08, 'triangle', 0.15);
   await PR('Expediente número dous. Confidencial.', 'serio');
   presPose('costas');
