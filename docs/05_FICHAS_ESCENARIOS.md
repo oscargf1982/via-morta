@@ -435,3 +435,70 @@ Hoja «ACTO 3 · A curiosidade. Xoves.» → vestíbulo de la estación tras el 
 
 ### Personas reales
 Solo se nombra a Alfredo Fernández Gutiérrez por las iniciales del motor (el motor Siemens y la lista de máquinas de su carpintería son datos reales; que estén guardados en las cocheras del museo es ficción, ver `04`). Nada sobre los compradores de 1952: Martín y Remedios dicen que nadie sabe cómo llegó allí.
+
+## Acto 4 · «A implicación» (viernes) · 21-11-2026
+Código: `js/acto4.js` (sustituye al comienzo provisional de `js/pombas.js`). Martín habla en castellano; los NPC, en gallego.
+
+### Apertura
+- Tras el «FIN DO ACTO 3»: hoja «ACTO 4 · A implicación. Venres». Martín despierta en el salón: **llamada perdida y audio de Valencia** (plaza de jefe de maquinistas, respuesta el lunes; ver «Pendiente de Oscar»). Al salir, en la plaza, **Concha lo llama a gritos**: «Adif adianta a góndola ao luns» y «Remedios quere verte na rotonda, xa».
+- Objetivo único y claro: ir a ver a Remedios a la rotonda del museo (Gilbert: un personaje dice el primer paso).
+
+### A7b · Rotonda de día con Remedios y Don Anxo (`rotonda`, Acto 4)
+- Mismo fondo (portada de Oscar). Remedios (sprite de Oscar) junto a la Mikado; Don Anxo con una bayeta en el ténder.
+- **Los tres encargos de golpe:** la **válvula de seguridad** buena (la tiene Suso do Taller, en la rúa Morín), el **carbón** para ir hasta A Barreira (diez veces el de la prueba: Mega Andrés) y el **permiso** del Concello para cortar la calle del paso a nivel del ramal viejo (Eladio).
+- **La carta:** si Martín pregunta por el motor de los tornillos nuevos, Remedios cuenta que «o do asubío» tiene una carta de su abuelo: «Deixeino onde se moven as correas, onde aprendín o oficio» y que lleva meses abriendo el motor de las cocheras. Con la **foto de 1949** (mirarla o enseñársela a Remedios) Martín lo entiende: el primer oficio de Xosé fue el de carpintero, en **su** taller → objetivo «abrir el 7.º soporte» (flag `a4Soporte`) y empieza el puzzle de las palomas.
+- **Entregas:** la válvula (en la carretilla) y el permiso sellado se le dan a Remedios. El carbón cuenta al aceptarlo Andrés.
+- **El parte y la soldadura:** al enseñarle el parte, Remedios pregunta cómo abrió la tapa; los cuatro puntos en la cabeza de los tornillos son **su soldadura**, de hacia 1980, encargo de Anxo. Se vuelve hacia Anxo, que deja la bayeta y se va sin decir nada (`a4Soldadura`). Remedios: «Vai buscalo. Estará no seu banco da praza, vendo pasar o rexional».
+
+### A4c · Rúa Morín: Suso do Taller (`morin`, Acto 4)
+- Sin fondo nuevo: el taller de Suso son las **puertas de madera** de la izquierda del dibujo de Oscar (ubicación provisional; en `03` ponía «por confirmar»). Suso está en la puerta, dibujado por código hasta que haya hoja de personaje.
+- Suso guarda la válvula desde 1987 y no se la vende a «o suízo ese, que fala demasiado ben». A Martín sí, porque va de parte de Remedios («débolle unha soldadura»). Pero pesa 40 kg y Suso tiene hernia: **hace falta con qué llevarla** (problema antes que solución).
+- Con la **carretilla** del Fluvial: se carga la válvula → objeto «Válvula na carretilla».
+
+### C2 · Club Fluvial (`fluvial`, Acto 4)
+- **Carbón:** Andrés no pregunta nunca para qué es el carbón. Para diez sacos, sí. Si Martín miente («un churrasco»), broma y vuelta a empezar; si dice la verdad (la Mikado sale mañana), Andrés se pone a colocar tumbonas (su tic) y luego: «Levade todos. E fogoneiro? ... Agora si» (`a4Carbon`, siembra el Acto 5). No dice nada de su abuelo.
+- **Carretilla:** la azul de las tumbonas (pintada por código). Se puede coger cuando Martín sabe que la válvula pesa 40 kg (`a4SusoPeso`); antes, comentario.
+
+### B4 · Concello: el permiso (`concelloVest`, Acto 4)
+- Eladio: modelo **T-14** y **100 firmas** de vecinos empadronados. Al buscar el impreso saca la solicitud del mes pasado, sin tramitar: «**Xoán Carballeira Nogal**». El gran «¡claro!»: Xoán es nieto de Xosé (`a4XoanNogal`).
+- Martín lleva el impreso a **Concha**; «media hora» después (tiempo de Hollywood, sin esperar) vuelve con **112 firmas**; una dice «Mega Andrés, tumbona 4».
+- Eladio sella el permiso y confiesa: «O meu pai era guardagullas» (Pepe, el de la foto).
+
+### A3 · Praza da Estación: Don Anxo en su banco (`praza`, Acto 4)
+- Tras la soldadura, Anxo está sentado en el banco de delante de la estación. Martín le enseña el parte. Sale Xoán de la estación, ve el papel: «Esa letra...». Anxo lo mira y lo reconoce. Xoán: «Mañá. Na vía. Contámolo todo». Anxo: «Mañá falarei. Diante de todos» (`a4Anxo`).
+
+### Fin del acto
+- Con válvula, carbón, permiso y la palabra de Anxo (en cualquier orden): «FIN DO ACTO 4» y empieza el Acto 5.
+
+## Acto 5 · «O descubrimento» (sábado y domingo) · 21-11-2026
+Código: `js/acto5.js`.
+
+### A7b · Rotonda, sábado 20:30 (`rotondaSabado`) · fondo PROVISIONAL (la rotonda de noche)
+- Media ciudad mirando: Remedios, Andrés con los sacos, Don Anxo, Concha, Valerio (ha cerrado la farmacia por primera vez un sábado: «Pechado por asuntos de familia», cartel con la letra de su abuelo), Eladio con el permiso y Genaro (cuarta pared). Xoán no está: llega con el silbato.
+- **Puzzle 0, la plataforma giratoria:** la manivela no se mueve con un hombre solo; Remedios: «iso é cousa de dous». Con Andrés, la plataforma gira y la Mikado apunta a la vía de salida (`a5Xirada`). Sin girar, no se sube a la cabina.
+
+### A7d · Cabina de la Mikado (`cabina`) · fondo PROVISIONAL dibujado por código
+- Frontal de la caldera: puerta del hogar, manómetro, inyector, freno, regulador y cordón del silbato. Andrés de fogonero con la pala (por código).
+- **Procedimiento, en orden** (si se equivoca, broma y se repite; nunca explota nada): 1) abrir el hogar y pedirle fuego a Andrés (si se lo pide antes de abrir, broma: «polo burato da cheminea?»); manómetro a **9 kg**; 2) inyector (agua); 3) aflojar el freno; 4) silbato de salida: el cordón no suena (solo hay un tapón) y **llega Xoán con la mochila y el silbato original**, que montan; 5) regulador: la Mikado sale.
+- Andrés: «O avó dicía que o carbón bo se coñece polo son. Escoita, Martín: este é do bo».
+
+### A9 · A Barreira, 21:40 (`barreira`) · fondo PROVISIONAL (`img/cine-mikado.jpg`, la Mikado de frente con lluvia: «empieza a chispear, como en el 58»)
+- **La aguja vieja**, pintada por código: cerrada con candado desde 1958. Eladio, que corta la calle en el paso a nivel con su permiso, le da a Martín **la llave de guardagujas de su padre**: «Sorte, rapaz» (como el reverso de la foto). Con la llave, la aguja se mueve (imagen de la aguja de la cinemática) y la Mikado entra en la vía muerta.
+- **El silbido:** Xoán: «Toca ti. Dous longos e un curto». El jugador tira del cordón.
+- **La revelación:** Xoán cuenta quién es; Martín lee el parte; Anxo confiesa (firmó, sabía dónde estaba, lo hizo soldar); Andrés: «Xa o sabía, avó» y sigue con la pala; Concha reconoce el silbido (su madre); Valerio, Remedios y Eladio cierran.
+- **Valencia:** suena el móvil. Martín no contesta: «el lunes».
+
+### Domingo, 6:00 · el mural (`cine-mural.jpg`)
+- Cinemática corta con Xoán delante del mural.
+
+### E1 · Vilatán, cocina de la madre (`vilatan`) · fondo PROVISIONAL (`img/bg-cocina.jpg`, la cocina de la demo técnica)
+- La madre habla desde el fogón (sin sprite). Caldo y la elección: **Valencia** («As raíces non son para quedar quieto: son para saber onde volver») o **quedarse** («esta semana he visto media ciudad en un andén»).
+- **Epílogo**, igual en los dos finales: placa junto al mural, «Xosé Nogal, maquinista. 14 de xaneiro de 1958». FIN.
+
+### Dibujos pendientes para Oscar (Actos 4 y 5)
+1. Suso do Taller (hoja de personaje) y, si quiere, su taller.
+2. Cabina de la Mikado por dentro (frontal de la caldera).
+3. A Barreira de noche: la vía muerta, la aguja vieja y el paso a nivel.
+4. Cocina de la madre en Vilatán, y la madre.
+5. Mega Andrés de pie con pala (ahora solo existe tumbado) y vistas de Remedios y Anxo andando.
+6. Rotonda del sábado con gente.

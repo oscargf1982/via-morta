@@ -845,6 +845,6 @@ SCENES.rotondaNoite = {
     { when: () => A3() && flag('a3Noite') && !flag('a3NoiteEntrada'), t: 'Seguir a los de la carretilla hasta la rotonda de la Mikado, a la derecha del museo.' },
     { when: () => A3() && flag('a3NoiteEntrada') && !flag('anxoPastillas'), t: 'Don Anxo busca sus pastillas. Las llevo yo, de parte de Valerio.' },
     { when: () => A3() && flag('anxoPastillas'), t: 'Hablar con Remedios. ¿Qué les falta?' },
-    { when: () => flag('fimActo3'), t: 'Una salida de la Mikado. Un mes. Y alguien que silba y esta noche no vino. (Acto 4, próximamente.)' },
+    { when: () => flag('fimActo3') && !flag('a4Inicio'), t: 'Una salida de la Mikado. Un mes. Y alguien que silba y esta noche no vino.' },
   );
 }
