@@ -36,6 +36,8 @@
 
 - **Añadido en la revisión del 16-11-2026 (elegido por Oscar):** el silbato original de la Mikado que Xoán hace sonar con aire comprimido; la carta de Xosé a su hija («onde aprendín o oficio»); la versión canónica de la noche de 1958 (la Mikado en cabeza del mercancías, Pepe el guardagujas, el contravapor); que Remedios soldó los tornillos del 7.º soporte por encargo de Don Anxo, que sabía dónde estaba el parte; que la madre de Concha llevaba el quiosco; que los libros de la farmacia son del abuelo de Valerio; Suso do Taller; el apellido Castiñeira de Anxo y Andrés; el perro negro de la casa pistacho; el ramal viejo de A Barreira con paso a nivel, que no es de Adif; que Adif adelanta la góndola al lunes. Todo es ficción.
 
+- **Añadido el 17-11-2026 (Oscar):** la noche del United en la Champions. **Real:** el 14 de enero de 1958 (martes) el Manchester United ganó 2-1 al Estrella Roja de Belgrado en Old Trafford, ida de los cuartos de final de la Copa de Europa; tras la vuelta en Belgrado, el 6 de febrero de 1958 el avión del equipo se estrelló en Múnich y murieron ocho jugadores entre veintitrés víctimas. **Ficción:** que Demetrio lo siguiera de niño en la Fraternal con su padre (por la radio), el «presagio», el periódico «El Eco del Cabe» (cabecera inventada) y su suelto local, y el partido del United que echan hoy en la tele.
+
 ## 4. Reglas para el juego
 1. **Créditos y fuentes** siempre visibles en el menú.
 2. Nada de lenguaje de «información oficial», ni catastral, ni registral, ni histórica. El juego es una obra de ficción inspirada en lugares reales.
