@@ -9,8 +9,7 @@
         inflado coma un globo e picado coa navalla. ¡PAM!
      5. As pombas saen disparadas cara arriba, tres pétanse contra a tapa e a tapa cae ao chan. Dentro: a lata (→ parte de 1958).
    Sen atascos: o millo dá xusto para os catro puñados (o saco queda baleiro ao encher o taller), a máquina dá outro preservativo, o globo non se pica se o taller non está cheo.
-   A cadea só se activa co flag `a4Soporte` (Martín decide abrir o soporte). De momento pono o comezo provisional do Acto 4
-   ao final do Acto 3; o Acto 4 definitivo só ten que poñer ese flag onde Martín o entenda.
+   A cadea só se activa co flag `a4Soporte`: pono js/acto4.js cando Martín entende a frase da carta coa foto de 1949.
    Sprites: folla de Oscar → tools/sprite-paloma.py → img/paloma-sprite.png (240×160, 8 columnas):
      0 quieto · 1-3 andar · 4-6 correr · 7-9 voar · 10-12 atacar · 13 tumbada · 14-16 mareada
    ============================================================================ */
@@ -313,7 +312,7 @@ function pintarVoo(c, t) {
     setFlag('a4Parte'); setFlag('pombasFora');
     await MA('Para quien venga a buscar. Pues aquí estoy, Xosé. Sesenta y ocho años tarde, pero aquí.', 'pensativo');
     await MA('(Abajo, las palomas mareadas se recuperan y se van por el tejado. Ofendidas.)', 'risueno');
-    await showDoc('<h4>ACTO 4 · A implicación</h4><p>Ata aquí chega, de momento, o Acto 4: a tapa do sétimo soporte e o parte de 1958.</p><p>O resto (a válvula de Pepe, o carbón de Andrés e o permiso de Eladio) chegará nun próximo hito.</p>');
+    if (typeof parteAtopado === 'function') await parteAtopado();   // js/acto4.js
   };
   // en calquera orde: a lata tamén se abre se se escolle primeiro e despois a navalla
   ITEMS.lata.combine = { ...(ITEMS.lata.combine || {}), navalla: () => ITEMS.navalla.combine.lata() };
@@ -322,31 +321,7 @@ function pintarVoo(c, t) {
 /* O millo conséguese na Panadería Estación (cambiazo de sacos de serrín por millo, fío «Montar nuevo exterior de la farmacia»):
    aquí só se usa o obxecto 'millo'. */
 
-/* ---------- comezo provisional do Acto 4 (só o soporte) ---------- */
-async function inicioActo4Pombas() {
-  E.act = 'acto4';
-  await showDoc('<h4>ACTO 4 · «A implicación»</h4><p>Venres.</p><p>Un motor con parafusos novos nas cocheras, alguén que busca algo dentro... e no meu taller, unha caixa que ninguén abre dende hai décadas.</p><p class="sub">Obxectivo: abrir a tapa do sétimo soporte. (Tramo en obras: de momento só esta parte do Acto 4.)</p>');
-  await goScene('casaSalon', [600, 480]);
-  await MA('Viernes. Anoche, en las cocheras, el motor de Xosé tenía los tornillos de la tapa nuevos. Alguien lo abre buscando algo.', 'pensativo');
-  await MA('Pero si Xosé escondió algo, no lo dejó en un motor que se podía vender. Lo dejó donde no se mueve nada: en el séptimo soporte de mi taller. Con los tornillos soldados.', 'convencido');
-  setFlag('a4Soporte');
-  toast('Novo obxectivo: abrir a tapa do 7.º soporte (taller, mirando ás vigas)');
-}
-{
-  const f3 = fimActo3;
-  fimActo3 = async () => { await f3(); if (!flag('a4Soporte')) await inicioActo4Pombas(); };
-}
-
-/* ---------- preset do Acto 4 en «Escoller acto» ---------- */
-{
-  const F = { ...(ACTS.find(a => a.id === 'acto3').flags || {}) };
-  for (const k of ['a3XoseN', 'a3Graxa', 'libro1958', 'candadoAberto', 'pistaLousa', 'pistaMotor', 'pistaPeza', 'pistaPegadasC', 'pistaCarbon', 'a3Noite', 'a3NoiteEntrada',
-    'anxoPastillas', 'inxectorFeito', 'fimActo3', 'vigasArribaVisto']) F[k] = true;
-  const i = ACTS.findIndex(a => a.id === 'acto4');
-  ACTS[i] = { id: 'acto4', name: 'Acto 4 · A implicación', desc: 'Venres (en obras): o sétimo soporte, as pombas do taller e o parte de 1958',
-    scene: 'casaSalon', at: [600, 480], inv: ['chavesCasa', 'contrato', 'navalla', 'chave', 'foto1949', 'trapo'], flags: F,
-    intro: async () => { E.act = 'acto4'; await MA('Viernes. Si Xosé escondió algo, lo dejó donde no se mueve nada: en el séptimo soporte de mi taller.', 'convencido'); setFlag('a4Soporte'); toast('Novo obxectivo: abrir a tapa do 7.º soporte (taller, mirando ás vigas)'); } };
-}
+/* O comezo do Acto 4 (que pon `a4Soporte` cando Martín entende a frase da carta) e o preset de «Escoller acto» están en js/acto4.js. */
 
 /* ---------- caderno de Martín · Acto 4 (tramo das pombas) ---------- */
 CADERNO.push(
@@ -357,5 +332,4 @@ CADERNO.push(
   { when: () => A4() && nPombas() >= POMBA_CHEO && !flag('estoupido'), t: () => 'El taller, lleno de palomas. Si se asustan todas a la vez, salen disparadas hacia arriba... hacia el soporte.' + (flag('pombasRuido') ? ' Hace falta un ruido de verdad, como un petardo o un globo que revienta.' : ' ¿Cómo se asusta a diez palomas?') },
   { when: () => A4() && flag('tapaCaida') && !flag('lataCollida'), t: 'La tapa ha caído. Mirar qué hay dentro del séptimo soporte (vigas del taller).' },
   { when: () => A4() && hasItem('lata'), t: 'Abrir la lata de tabaco. La navaja hace palanca.' },
-  { when: () => flag('a4Parte'), t: 'Tengo el parte de 1958. (El resto del Acto 4, próximamente.)' },
 );
